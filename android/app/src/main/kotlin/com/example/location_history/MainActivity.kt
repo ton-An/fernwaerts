@@ -1,4 +1,4 @@
-package com.example.location_history
+package eu.ton-an.location_history
 
 import io.flutter.embedding.android.FlutterActivity
 
