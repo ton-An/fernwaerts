@@ -5,7 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location_history/core/dependency_injector.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_expansion_cubit/calendar_expansion_cubit.dart';
-import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_type_cubit.dart';
+import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_cubit.dart';
 import 'package:location_history/features/map/presentation/pages/map_page.dart';
 
 void main() {

@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'calendar_type_state.freezed.dart';
+part 'calendar_selection_state.freezed.dart';
 
 abstract class CalendarSelectionTypeState {
   const CalendarSelectionTypeState();
