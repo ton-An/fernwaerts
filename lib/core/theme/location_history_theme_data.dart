@@ -9,6 +9,7 @@ class LocationHistoryThemeData {
     this.text = const LocationHistoryTextThemeData(),
     this.spacing = const LocationHistorySpacingThemeData(),
     this.radii = const LocationHistoryRadiiThemeData(),
+    this.durations = const LocationHistoryDurationsThemeData(),
     this.misc = const LocationHistoryMiscThemeData(),
   });
 
@@ -16,5 +17,6 @@ class LocationHistoryThemeData {
   final LocationHistoryTextThemeData text;
   final LocationHistorySpacingThemeData spacing;
   final LocationHistoryRadiiThemeData radii;
+  final LocationHistoryDurationsThemeData durations;
   final LocationHistoryMiscThemeData misc;
 }

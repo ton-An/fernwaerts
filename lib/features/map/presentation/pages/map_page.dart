@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:location_history/core/theme/location_history_theme.dart';
-import 'package:location_history/features/calendar/presentation/widgets/calendar_stepper/calendar_stepper.dart';
+import 'package:location_history/features/calendar/presentation/widgets/calendar_composite.dart';
 import 'package:location_history/features/map/presentation/widgets/map_widget.dart';
 
 class MapPage extends StatelessWidget {
@@ -22,7 +22,7 @@ class MapPage extends StatelessWidget {
               child: Padding(
             padding: EdgeInsets.symmetric(
                 horizontal: LocationHistoryTheme.of(context).spacing.medium),
-            child: CalendarStepper(),
+            child: CalendarComposite(),
           )),
         ),
       ],

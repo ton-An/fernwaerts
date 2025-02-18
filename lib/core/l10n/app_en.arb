@@ -1,3 +1,8 @@
 {
-    "appTitle": "Location History"
+    "appTitle": "Location History",
+    "range": "Range",
+    "day": "Day",
+    "week": "Week",
+    "month": "Month",
+    "year": "Year"
 }

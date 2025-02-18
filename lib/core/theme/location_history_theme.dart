@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+part '_default_durations.dart';
 part '_default_misc.dart';
 part '_default_radii.dart';
 part '_default_spacing.dart';
@@ -11,6 +12,7 @@ part '_inherited_location_history_theme.dart';
 part '_text_theme_defaults_builder.dart';
 part 'location_history_color_theme_data.dart';
 part 'location_history_colors.dart';
+part 'location_history_durations_theme_data.dart';
 part 'location_history_misc_theme_data.dart';
 part 'location_history_radii_theme_data.dart';
 part 'location_history_spacing_theme_data.dart';
