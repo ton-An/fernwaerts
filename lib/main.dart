@@ -1,22 +1,22 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:go_router/go_router.dart';
+import 'package:location_history/features/map/presentation/pages/map_page.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return CupertinoApp.router(
+      onGenerateTitle: (BuildContext context) =>
+          AppLocalizations.of(context)!.appTitle,
+      routerConfig: router,
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -28,4 +28,16 @@ class MainApp extends StatelessWidget {
       ],
     );
   }
+
+  final GoRouter router = GoRouter(
+    initialLocation: MapPage.route,
+    routes: <RouteBase>[
+      GoRoute(
+        path: MapPage.route,
+        builder: (BuildContext context, GoRouterState state) {
+          return const MapPage();
+        },
+      ),
+    ],
+  );
 }
