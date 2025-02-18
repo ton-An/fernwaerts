@@ -19,9 +19,7 @@ class _CalendarContainer extends StatelessWidget {
           ),
           child: Padding(
             padding: EdgeInsets.only(
-              left: theme.spacing.medium,
               top: theme.spacing.xSmall,
-              right: theme.spacing.medium,
               bottom: theme.spacing.medium,
             ),
             child: child,

@@ -6,11 +6,22 @@ class MultiYearCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
     return Container(
       width: double.infinity,
       height: 300,
-      color: LocationHistoryTheme.of(context).colors.primary,
-      child: Text('Multi Year Calendar'),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(
+          LocationHistoryTheme.of(context).radii.medium,
+        ),
+        color: theme.colors.translucentBackground,
+      ),
+      child: Center(
+        child: Text(
+          'Multi Year Calendar',
+          style: theme.text.headline.copyWith(color: theme.colors.hint),
+        ),
+      ),
     );
   }
 }

@@ -1,8 +1,9 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:location_history/core/theme/location_history_theme.dart';
 import 'package:location_history/core/widgets/custom_segmented_control.dart';
+import 'package:location_history/core/widgets/gaps/gaps.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_type_state.dart';
 import 'package:location_history/features/calendar/presentation/widgets/monthly_calendar/monthly_calendar.dart';
@@ -10,6 +11,8 @@ import 'package:location_history/features/calendar/presentation/widgets/multi_ye
 import 'package:location_history/features/calendar/presentation/widgets/yearly_calendar/yearly_calendar.dart';
 
 part '_calendar_container.dart';
+part '_calendar_header.dart';
+part '_calendar_header_switch.dart';
 part '_calendar_type_selector.dart';
 
 enum CalendarSelectionType {
@@ -30,14 +33,29 @@ class Calendar extends StatelessWidget {
       return _CalendarContainer(
         child: Column(
           children: [
-            if (selectionTypeState is CalendarRangeSelection ||
-                selectionTypeState is CalendarDaySelection ||
-                selectionTypeState is CalendarWeekSelection)
-              MonthlyCalendar(),
-            if (selectionTypeState is CalendarMonthSelection) YearlyCalendar(),
-            if (selectionTypeState is CalendarYearSelection)
-              MultiYearCalendar(),
-            _CalendarTypeSelector(),
+            _CalendarHeader(
+              label: "June 2021",
+              onPreviousPressed: () {},
+              onNextPressed: () {},
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: LocationHistoryTheme.of(context).spacing.medium),
+              child: Column(
+                children: [
+                  if (selectionTypeState is CalendarRangeSelection ||
+                      selectionTypeState is CalendarDaySelection ||
+                      selectionTypeState is CalendarWeekSelection)
+                    MonthlyCalendar(),
+                  if (selectionTypeState is CalendarMonthSelection)
+                    YearlyCalendar(),
+                  if (selectionTypeState is CalendarYearSelection)
+                    MultiYearCalendar(),
+                  XXSmallGap(),
+                  _CalendarTypeSelector(),
+                ],
+              ),
+            ),
           ],
         ),
       );

@@ -33,14 +33,18 @@ class CalendarStepper extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   _Switch(
-                      icon: Icons.arrow_back_ios_new_rounded, onPressed: () {}),
+                    icon: Icons.arrow_back_ios_new_rounded,
+                    onPressed: () {},
+                  ),
                   Elevated(
                     child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: height),
                         child: _DateButton()),
                   ),
                   _Switch(
-                      icon: Icons.arrow_forward_ios_rounded, onPressed: () {}),
+                    icon: Icons.arrow_forward_ios_rounded,
+                    onPressed: () {},
+                  ),
                 ],
               ),
             ],
