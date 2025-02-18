@@ -24,6 +24,7 @@ dependencies:
   # Data Class Generation
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
+  gap: ^3.0.1
 
 dev_dependencies:
   flutter_test:
