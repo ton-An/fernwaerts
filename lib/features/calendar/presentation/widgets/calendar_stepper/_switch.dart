@@ -2,7 +2,6 @@ part of 'calendar_stepper.dart';
 
 class _Switch extends StatefulWidget {
   const _Switch({
-    super.key,
     required this.icon,
     required this.onPressed,
   });
