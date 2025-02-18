@@ -31,6 +31,8 @@ dependencies:
   # Maps
   latlong2: ^0.9.1
   flutter_map: ^8.0.0
+  elevated_flex: ^0.0.7
+  cupertino_icons: ^1.0.8
 
 dev_dependencies:
   flutter_test:

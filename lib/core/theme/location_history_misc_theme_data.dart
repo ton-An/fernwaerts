@@ -6,15 +6,20 @@ part of 'location_history_theme.dart';
 class LocationHistoryMiscThemeData {
   const LocationHistoryMiscThemeData({
     double? largeIconSize,
+    ImageFilter? blurFilter,
   }) : this._(
           largeIconSize,
+          blurFilter,
         );
 
   const LocationHistoryMiscThemeData._(
     this._largeIconSize,
+    this._blurFilter,
   );
 
   final double? _largeIconSize;
+  final ImageFilter? _blurFilter;
 
   double get largeIconSize => _largeIconSize ?? _DefaultMisc.largeIconSize;
+  ImageFilter get blurFilter => _blurFilter ?? _DefaultMisc.blurFilter;
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
+import 'package:location_history/features/calendar/presentation/cubits/calendar_expansion_cubit/calendar_expansion_cubit.dart';
 import 'package:location_history/features/map/presentation/pages/map_page.dart';
 
 void main() {
@@ -35,7 +37,8 @@ class MainApp extends StatelessWidget {
       GoRoute(
         path: MapPage.route,
         builder: (BuildContext context, GoRouterState state) {
-          return const MapPage();
+          return BlocProvider(
+              create: (context) => CalendarExpansionCubit(), child: MapPage());
         },
       ),
     ],
