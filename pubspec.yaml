@@ -1,6 +1,6 @@
 name: location_history
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
@@ -9,11 +9,28 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # State Management
+  flutter_bloc: ^8.1.4
+  # Dependency Injection
+  get_it: ^7.6.7
+  # Routing
+  go_router: ^13.2.0
+  # Functional Programming
+  dartz: ^0.10.1
+  # Data Class Generation
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.8.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  # Testing
+  mocktail: ^1.0.3
+  # Code Generation
+  build_runner: ^2.4.8
+  freezed: ^2.4.7
+  json_serializable: ^6.7.1
 
 flutter:
   uses-material-design: true
