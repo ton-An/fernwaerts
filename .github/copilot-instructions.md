@@ -54,29 +54,7 @@ The following packages are **mandatory**:
 - `go_router` (for routing management)
 - `dartz` (for functional programming and error handling)
 - `mocktail` (for testing and mocking dependencies)
-
-## Folder Structure
-
-```
-/core                  # Shared components and logic
-  widgets/             # Reusable UI components
-  theme/               # Theming configurations
-  l10n/                # Localization files
-
-/features
-  <feature_name>/
-    data/
-      datasources/     # Remote and local data sources
-      repositories/    # Repository implementations
-    domain/
-      use_cases/       # Business logic
-      repositories/    # Repository interfaces
-      models/          # Domain models
-    presentation/
-      cubits/          # State management
-      pages/           # UI screens
-      widgets/         # Feature-specific UI components
-```
+-
 
 ## Commit Message Guidelines
 
