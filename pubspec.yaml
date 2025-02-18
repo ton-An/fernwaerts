@@ -9,6 +9,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # Localizations
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.19.0
   # State Management
   flutter_bloc: ^8.1.4
   # Dependency Injection
@@ -34,3 +38,4 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true
