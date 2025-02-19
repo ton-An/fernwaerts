@@ -146,38 +146,40 @@ abstract class _CalendarDaySelected implements CalendarDaySelected {
 }
 
 /// @nodoc
-mixin _$CalendarRangeSelected {
+mixin _$CalendarCustomRangeSelected {
   DateTime? get startDate => throw _privateConstructorUsedError;
   DateTime? get endDate => throw _privateConstructorUsedError;
 
-  /// Create a copy of CalendarRangeSelected
+  /// Create a copy of CalendarCustomRangeSelected
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $CalendarRangeSelectedCopyWith<CalendarRangeSelected> get copyWith =>
-      throw _privateConstructorUsedError;
+  $CalendarCustomRangeSelectedCopyWith<CalendarCustomRangeSelected>
+      get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $CalendarRangeSelectedCopyWith<$Res> {
-  factory $CalendarRangeSelectedCopyWith(CalendarRangeSelected value,
-          $Res Function(CalendarRangeSelected) then) =
-      _$CalendarRangeSelectedCopyWithImpl<$Res, CalendarRangeSelected>;
+abstract class $CalendarCustomRangeSelectedCopyWith<$Res> {
+  factory $CalendarCustomRangeSelectedCopyWith(
+          CalendarCustomRangeSelected value,
+          $Res Function(CalendarCustomRangeSelected) then) =
+      _$CalendarCustomRangeSelectedCopyWithImpl<$Res,
+          CalendarCustomRangeSelected>;
   @useResult
   $Res call({DateTime? startDate, DateTime? endDate});
 }
 
 /// @nodoc
-class _$CalendarRangeSelectedCopyWithImpl<$Res,
-        $Val extends CalendarRangeSelected>
-    implements $CalendarRangeSelectedCopyWith<$Res> {
-  _$CalendarRangeSelectedCopyWithImpl(this._value, this._then);
+class _$CalendarCustomRangeSelectedCopyWithImpl<$Res,
+        $Val extends CalendarCustomRangeSelected>
+    implements $CalendarCustomRangeSelectedCopyWith<$Res> {
+  _$CalendarCustomRangeSelectedCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of CalendarRangeSelected
+  /// Create a copy of CalendarCustomRangeSelected
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -199,27 +201,28 @@ class _$CalendarRangeSelectedCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$CalendarRangeSelectedImplCopyWith<$Res>
-    implements $CalendarRangeSelectedCopyWith<$Res> {
-  factory _$$CalendarRangeSelectedImplCopyWith(
-          _$CalendarRangeSelectedImpl value,
-          $Res Function(_$CalendarRangeSelectedImpl) then) =
-      __$$CalendarRangeSelectedImplCopyWithImpl<$Res>;
+abstract class _$$CalendarCustomRangeSelectedImplCopyWith<$Res>
+    implements $CalendarCustomRangeSelectedCopyWith<$Res> {
+  factory _$$CalendarCustomRangeSelectedImplCopyWith(
+          _$CalendarCustomRangeSelectedImpl value,
+          $Res Function(_$CalendarCustomRangeSelectedImpl) then) =
+      __$$CalendarCustomRangeSelectedImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({DateTime? startDate, DateTime? endDate});
 }
 
 /// @nodoc
-class __$$CalendarRangeSelectedImplCopyWithImpl<$Res>
-    extends _$CalendarRangeSelectedCopyWithImpl<$Res,
-        _$CalendarRangeSelectedImpl>
-    implements _$$CalendarRangeSelectedImplCopyWith<$Res> {
-  __$$CalendarRangeSelectedImplCopyWithImpl(_$CalendarRangeSelectedImpl _value,
-      $Res Function(_$CalendarRangeSelectedImpl) _then)
+class __$$CalendarCustomRangeSelectedImplCopyWithImpl<$Res>
+    extends _$CalendarCustomRangeSelectedCopyWithImpl<$Res,
+        _$CalendarCustomRangeSelectedImpl>
+    implements _$$CalendarCustomRangeSelectedImplCopyWith<$Res> {
+  __$$CalendarCustomRangeSelectedImplCopyWithImpl(
+      _$CalendarCustomRangeSelectedImpl _value,
+      $Res Function(_$CalendarCustomRangeSelectedImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of CalendarRangeSelected
+  /// Create a copy of CalendarCustomRangeSelected
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -227,7 +230,7 @@ class __$$CalendarRangeSelectedImplCopyWithImpl<$Res>
     Object? startDate = freezed,
     Object? endDate = freezed,
   }) {
-    return _then(_$CalendarRangeSelectedImpl(
+    return _then(_$CalendarCustomRangeSelectedImpl(
       startDate: freezed == startDate
           ? _value.startDate
           : startDate // ignore: cast_nullable_to_non_nullable
@@ -242,8 +245,9 @@ class __$$CalendarRangeSelectedImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$CalendarRangeSelectedImpl implements _CalendarRangeSelected {
-  const _$CalendarRangeSelectedImpl(
+class _$CalendarCustomRangeSelectedImpl
+    implements _CalendarCustomRangeSelected {
+  const _$CalendarCustomRangeSelectedImpl(
       {required this.startDate, required this.endDate});
 
   @override
@@ -253,14 +257,14 @@ class _$CalendarRangeSelectedImpl implements _CalendarRangeSelected {
 
   @override
   String toString() {
-    return 'CalendarRangeSelected(startDate: $startDate, endDate: $endDate)';
+    return 'CalendarCustomRangeSelected(startDate: $startDate, endDate: $endDate)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$CalendarRangeSelectedImpl &&
+            other is _$CalendarCustomRangeSelectedImpl &&
             (identical(other.startDate, startDate) ||
                 other.startDate == startDate) &&
             (identical(other.endDate, endDate) || other.endDate == endDate));
@@ -269,31 +273,32 @@ class _$CalendarRangeSelectedImpl implements _CalendarRangeSelected {
   @override
   int get hashCode => Object.hash(runtimeType, startDate, endDate);
 
-  /// Create a copy of CalendarRangeSelected
+  /// Create a copy of CalendarCustomRangeSelected
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$CalendarRangeSelectedImplCopyWith<_$CalendarRangeSelectedImpl>
-      get copyWith => __$$CalendarRangeSelectedImplCopyWithImpl<
-          _$CalendarRangeSelectedImpl>(this, _$identity);
+  _$$CalendarCustomRangeSelectedImplCopyWith<_$CalendarCustomRangeSelectedImpl>
+      get copyWith => __$$CalendarCustomRangeSelectedImplCopyWithImpl<
+          _$CalendarCustomRangeSelectedImpl>(this, _$identity);
 }
 
-abstract class _CalendarRangeSelected implements CalendarRangeSelected {
-  const factory _CalendarRangeSelected(
+abstract class _CalendarCustomRangeSelected
+    implements CalendarCustomRangeSelected {
+  const factory _CalendarCustomRangeSelected(
       {required final DateTime? startDate,
-      required final DateTime? endDate}) = _$CalendarRangeSelectedImpl;
+      required final DateTime? endDate}) = _$CalendarCustomRangeSelectedImpl;
 
   @override
   DateTime? get startDate;
   @override
   DateTime? get endDate;
 
-  /// Create a copy of CalendarRangeSelected
+  /// Create a copy of CalendarCustomRangeSelected
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$CalendarRangeSelectedImplCopyWith<_$CalendarRangeSelectedImpl>
+  _$$CalendarCustomRangeSelectedImplCopyWith<_$CalendarCustomRangeSelectedImpl>
       get copyWith => throw _privateConstructorUsedError;
 }
 

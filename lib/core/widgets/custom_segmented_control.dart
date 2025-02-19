@@ -50,7 +50,7 @@ class CustomSegmentedControl<T> extends StatelessWidget {
               widthFactor: 1 / items.length,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Color(0xFFFFC107),
+                  color: theme.colors.primary,
                   borderRadius: BorderRadius.circular(
                     theme.radii.small,
                   ),

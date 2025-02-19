@@ -31,8 +31,14 @@ dependencies:
   # Maps
   latlong2: ^0.9.1
   flutter_map: ^8.0.0
-  elevated_flex: ^0.0.7
+  elevated_flex:
+    path: ../elevated_flex
   cupertino_icons: ^1.0.8
+  in_date_utils: ^1.2.1
+  flutter_carousel_widget:
+    git:
+      url: https://github.com/nixrajput/flutter_carousel_widget
+      ref: ba5eedbbf85cb361be1f2dedf961db85483de236
 
 dev_dependencies:
   flutter_test:

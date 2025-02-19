@@ -9,7 +9,7 @@ part of 'location_history_theme.dart';
 ///
 /// A collection of Cupertino colors
 class LocationHistoryColors {
-  static const Color primary = Color(0xFF007AFF);
+  static const Color primary = Color(0xFFFFC107);
   static const Color translucentBackground = Color(0x73FFFFFF);
   static const Color cameraViewBackground = Color(0xFF000000);
   static const Color white = Color(0xFFFFFFFF);

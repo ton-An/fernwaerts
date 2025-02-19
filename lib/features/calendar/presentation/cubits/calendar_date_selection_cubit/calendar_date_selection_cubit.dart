@@ -25,18 +25,19 @@ class CalendarDateSelectionCubit extends Cubit<CalendarDateSelectionState> {
   }
 
   void _selectRange(DateTime selectedDate) {
-    if (state is! CalendarRangeSelected) {
-      emit(CalendarRangeSelected(startDate: selectedDate, endDate: null));
+    if (state is! CalendarCustomRangeSelected) {
+      emit(CalendarCustomRangeSelected(startDate: selectedDate, endDate: null));
       return;
     }
 
-    final CalendarRangeSelected currentRange = state as CalendarRangeSelected;
+    final CalendarCustomRangeSelected currentRange =
+        state as CalendarCustomRangeSelected;
 
     if (_isDateAlreadySelected(selectedDate, currentRange)) return;
 
     if (currentRange.startDate == null) {
       emit(
-        CalendarRangeSelected(
+        CalendarCustomRangeSelected(
           startDate: selectedDate,
           endDate: currentRange.endDate,
         ),
@@ -45,29 +46,27 @@ class CalendarDateSelectionCubit extends Cubit<CalendarDateSelectionState> {
 
     if (selectedDate.isBefore(currentRange.startDate!)) {
       emit(
-        CalendarRangeSelected(
+        CalendarCustomRangeSelected(
           startDate: selectedDate,
           endDate: currentRange.startDate,
         ),
       );
-    }
-
-    if (currentRange.endDate == null ||
+    } else if (currentRange.endDate == null ||
         selectedDate.isAfter(currentRange.endDate!)) {
       emit(
-        CalendarRangeSelected(
+        CalendarCustomRangeSelected(
           startDate: currentRange.startDate,
           endDate: selectedDate,
         ),
       );
+    } else {
+      emit(
+        CalendarCustomRangeSelected(
+          startDate: selectedDate,
+          endDate: null,
+        ),
+      );
     }
-
-    emit(
-      CalendarRangeSelected(
-        startDate: selectedDate,
-        endDate: null,
-      ),
-    );
   }
 
   void _selectWeek(DateTime selectedDate) {
@@ -111,7 +110,8 @@ class CalendarDateSelectionCubit extends Cubit<CalendarDateSelectionState> {
     );
   }
 
-  bool _isDateAlreadySelected(DateTime date, CalendarRangeSelected range) {
+  bool _isDateAlreadySelected(
+      DateTime date, CalendarCustomRangeSelected range) {
     return (range.startDate != null &&
             date.isAtSameMomentAs(range.startDate!)) ||
         (range.endDate != null && date.isAtSameMomentAs(range.endDate!));

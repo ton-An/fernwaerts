@@ -13,17 +13,24 @@ class CalendarDaySelected extends CalendarDateSelectionState
       _CalendarDaySelected;
 }
 
-@freezed
-class CalendarRangeSelected extends CalendarDateSelectionState
-    with _$CalendarRangeSelected {
-  const factory CalendarRangeSelected({
-    required DateTime? startDate,
-    required DateTime? endDate,
-  }) = _CalendarRangeSelected;
+abstract class CalendarRangeSelected extends CalendarDateSelectionState {
+  const CalendarRangeSelected();
+
+  DateTime? get startDate;
+  DateTime? get endDate;
 }
 
 @freezed
-class CalendarWeekSelected extends CalendarDateSelectionState
+class CalendarCustomRangeSelected extends CalendarRangeSelected
+    with _$CalendarCustomRangeSelected {
+  const factory CalendarCustomRangeSelected({
+    required DateTime? startDate,
+    required DateTime? endDate,
+  }) = _CalendarCustomRangeSelected;
+}
+
+@freezed
+class CalendarWeekSelected extends CalendarRangeSelected
     with _$CalendarWeekSelected {
   const factory CalendarWeekSelected({
     required DateTime? startDate,
@@ -32,7 +39,7 @@ class CalendarWeekSelected extends CalendarDateSelectionState
 }
 
 @freezed
-class CalendarMonthSelected extends CalendarDateSelectionState
+class CalendarMonthSelected extends CalendarRangeSelected
     with _$CalendarMonthSelected {
   const factory CalendarMonthSelected({
     required DateTime? startDate,
@@ -41,7 +48,7 @@ class CalendarMonthSelected extends CalendarDateSelectionState
 }
 
 @freezed
-class CalendarYearSelected extends CalendarDateSelectionState
+class CalendarYearSelected extends CalendarRangeSelected
     with _$CalendarYearSelected {
   const factory CalendarYearSelected({
     required DateTime? startDate,
