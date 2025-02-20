@@ -7,7 +7,7 @@ import 'package:location_history/features/calendar/presentation/cubits/calendar_
 import 'package:location_history/features/calendar/presentation/cubits/yearly_calendar_cubit/yearly_calendar_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/yearly_calendar_cubit/yearly_calendar_state.dart';
 import 'package:location_history/features/calendar/presentation/widgets/big_calendar_cell.dart';
-import 'package:location_history/features/calendar/presentation/widgets/calendar_view_background.dart';
+import 'package:location_history/features/calendar/presentation/widgets/calendar_view_container.dart';
 
 part '_months_grid.dart';
 

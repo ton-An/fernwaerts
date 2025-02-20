@@ -9,7 +9,7 @@ import 'package:location_history/features/calendar/presentation/cubits/calendar_
 import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_type_state.dart';
 import 'package:location_history/features/calendar/presentation/cubits/monthly_calendar_cubit/monthly_calendar_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/monthly_calendar_cubit/monthly_calendar_state.dart';
-import 'package:location_history/features/calendar/presentation/widgets/calendar_view_background.dart';
+import 'package:location_history/features/calendar/presentation/widgets/calendar_view_container.dart';
 
 part '_day_cell.dart';
 part '_days_grid.dart';
