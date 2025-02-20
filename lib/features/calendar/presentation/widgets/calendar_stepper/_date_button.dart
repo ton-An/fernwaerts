@@ -129,6 +129,12 @@ class _DateButtonState extends State<_DateButton>
           .format(dateSelectionState.selectedDate);
     }
 
+    if (dateSelectionState is CalendarYearSelected) {
+      _labelSize = _LabelSize.large;
+      return DateFormat.y(Localizations.localeOf(context).languageCode)
+          .format(dateSelectionState.startDate!);
+    }
+
     if (dateSelectionState is CalendarRangeSelected) {
       if (dateSelectionState.startDate == null &&
               dateSelectionState.endDate != null ||
