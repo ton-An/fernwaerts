@@ -1,4 +1,4 @@
-part of 'multi_year_calendar.dart';
+part of 'decennially_year_calendar.dart';
 
 class _YearsGrid extends StatelessWidget {
   const _YearsGrid({

@@ -16,8 +16,8 @@ import 'package:location_history/features/calendar/presentation/cubits/monthly_c
 import 'package:location_history/features/calendar/presentation/cubits/monthly_calendar_cubit/monthly_calendar_state.dart';
 import 'package:location_history/features/calendar/presentation/cubits/yearly_calendar_cubit/yearly_calendar_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/yearly_calendar_cubit/yearly_calendar_state.dart';
+import 'package:location_history/features/calendar/presentation/widgets/decennially_year_calendar/decennially_year_calendar.dart';
 import 'package:location_history/features/calendar/presentation/widgets/monthly_calendar/monthly_calendar.dart';
-import 'package:location_history/features/calendar/presentation/widgets/multi_year_calendar/multi_year_calendar.dart';
 import 'package:location_history/features/calendar/presentation/widgets/yearly_calendar/yearly_calendar.dart';
 
 part '_calendar_container.dart';
