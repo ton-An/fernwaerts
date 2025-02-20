@@ -37,7 +37,11 @@ class CalendarStepper extends StatelessWidget {
                 children: [
                   _Switch(
                     icon: Icons.arrow_back_ios_new_rounded,
-                    onPressed: () {},
+                    onPressed: () {
+                      context
+                          .read<CalendarDateSelectionCubit>()
+                          .moveRange(false);
+                    },
                   ),
                   Elevated(
                     child: Padding(
@@ -46,7 +50,11 @@ class CalendarStepper extends StatelessWidget {
                   ),
                   _Switch(
                     icon: Icons.arrow_forward_ios_rounded,
-                    onPressed: () {},
+                    onPressed: () {
+                      context
+                          .read<CalendarDateSelectionCubit>()
+                          .moveRange(true);
+                    },
                   ),
                 ],
               ),

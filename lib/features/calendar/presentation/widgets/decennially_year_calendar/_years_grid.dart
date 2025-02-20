@@ -15,8 +15,9 @@ class _YearsGrid extends StatelessWidget {
       builder: (context, calendarDateSelectionState) {
         return BlocBuilder<DecenniallyCalendarCubit, DecenniallyCalendarState>(
           builder: (context, decenniallyCalendarState) {
-            final DateTime focusedDecadeStart =
-                DTU.addYears(decenniallyCalendarState.startYear, decadeOffset);
+            final DateTime focusedDecadeStart = DTU.addYears(
+                decenniallyCalendarState.startYear,
+                decadeOffset * _yearsInDecade);
 
             return GridView.builder(
                 shrinkWrap: true,
