@@ -8,7 +8,9 @@ import 'package:location_history/core/dependency_injector.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_expansion_cubit/calendar_expansion_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_cubit.dart';
+import 'package:location_history/features/calendar/presentation/cubits/decennially_calendar_cubit/decennially_calendar_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/monthly_calendar_cubit/monthly_calendar_cubit.dart';
+import 'package:location_history/features/calendar/presentation/cubits/yearly_calendar_cubit/yearly_calendar_cubit.dart';
 import 'package:location_history/features/map/presentation/pages/map_page.dart';
 
 void main() {
@@ -55,6 +57,9 @@ class MainApp extends StatelessWidget {
             BlocProvider(
                 create: (context) => getIt<CalendarSelectionTypeCubit>()),
             BlocProvider(create: (context) => getIt<MonthlyCalendarCubit>()),
+            BlocProvider(create: (context) => getIt<YearlyCalendarCubit>()),
+            BlocProvider(
+                create: (context) => getIt<DecenniallyCalendarCubit>()),
             BlocProvider(
                 create: (context) => getIt<CalendarDateSelectionCubit>()),
           ], child: MapPage());

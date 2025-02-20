@@ -13,10 +13,12 @@ class _DayCell extends StatelessWidget {
   const _DayCell({
     required this.date,
     required this.type,
+    this.inRangeBorderRadius,
   });
 
   final DateTime date;
   final _DayCellType type;
+  final BorderRadius? inRangeBorderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +54,7 @@ class _DayCell extends StatelessWidget {
   }
 
   Widget _buildRangeUnderlay(LocationHistoryThemeData theme) {
-    BorderRadius? borderRadius;
+    BorderRadius? borderRadius = inRangeBorderRadius;
     Color? color;
 
     if (type == _DayCellType.rangeStart) {
@@ -68,7 +70,7 @@ class _DayCell extends StatelessWidget {
     if (type == _DayCellType.inRange ||
         type == _DayCellType.rangeStart ||
         type == _DayCellType.rangeEnd) {
-      color = theme.colors.primary.withValues(alpha: .2);
+      color = theme.colors.primaryTranslucent;
     }
 
     return Container(

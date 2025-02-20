@@ -61,9 +61,24 @@ class _DaysGrid extends StatelessWidget {
                   focusedMonth,
                 );
 
+                BorderRadius? inRangeBorderRadius;
+
+                if (cellType == _DayCellType.inRange) {
+                  inRangeBorderRadius = _calculateInRangeBorderRadius(
+                    context,
+                    index,
+                    rowNumber,
+                    rowCount,
+                    dayDate,
+                    calendarDateSelectionState,
+                    focusedMonth,
+                  );
+                }
+
                 return _DayCell(
                   date: dayDate,
                   type: cellType,
+                  inRangeBorderRadius: inRangeBorderRadius,
                 );
               },
             );
@@ -92,7 +107,9 @@ class _DaysGrid extends StatelessWidget {
     int dayInMonthIndex,
     DateTime focusedMonth,
   ) {
-    if (dayInMonthIndex <= 0) {
+    final bool isDateInPreviousMonth = dayInMonthIndex <= 0;
+
+    if (isDateInPreviousMonth) {
       final int dayNumber =
           DateTime(focusedMonth.year, focusedMonth.month, 0).day +
               dayInMonthIndex;
@@ -100,8 +117,10 @@ class _DaysGrid extends StatelessWidget {
       return focusedMonth.copyWith(month: monthNumber, day: dayNumber);
     }
 
-    if (dayInMonthIndex >
-        DateTime(focusedMonth.year, focusedMonth.month + 1, 0).day) {
+    final bool isDateInNextMonth = dayInMonthIndex >
+        DateTime(focusedMonth.year, focusedMonth.month + 1, 0).day;
+
+    if (isDateInNextMonth) {
       final int monthNumber = focusedMonth.month + 1;
       final int dayNumber =
           dayInMonthIndex - DateTime(focusedMonth.year, monthNumber, 0).day;
@@ -125,31 +144,93 @@ class _DaysGrid extends StatelessWidget {
     }
 
     if (selectionState is CalendarRangeSelected) {
-      if (selectionState.startDate == null && date == selectionState.endDate ||
-          selectionState.endDate == null && date == selectionState.startDate) {
+      final bool isLonelyRangeBoundary = selectionState.startDate == null &&
+              date == selectionState.endDate ||
+          selectionState.endDate == null && date == selectionState.startDate;
+
+      if (isLonelyRangeBoundary) {
         return _DayCellType.selected;
       }
 
-      if (date == selectionState.startDate) {
+      final bool isRangeStart = date == selectionState.startDate;
+      if (isRangeStart) {
         return _DayCellType.rangeStart;
       }
 
-      if (date == selectionState.endDate) {
+      final bool isRangeEnd = date == selectionState.endDate;
+      if (isRangeEnd) {
         return _DayCellType.rangeEnd;
       }
 
-      if (selectionState.startDate != null &&
+      final bool isInRange = selectionState.startDate != null &&
           selectionState.endDate != null &&
           date.isAfter(selectionState.startDate!) &&
-          date.isBefore(selectionState.endDate!)) {
+          date.isBefore(selectionState.endDate!);
+      if (isInRange) {
         return _DayCellType.inRange;
       }
     }
 
-    if (date.month != focusedMonth.month) {
+    bool isInDifferentMonth = date.month != focusedMonth.month;
+    if (isInDifferentMonth) {
       return _DayCellType.filler;
     }
 
     return _DayCellType.unselected;
+  }
+
+  BorderRadius? _calculateInRangeBorderRadius(
+    BuildContext context,
+    int index,
+    int rowNumber,
+    int rowCount,
+    DateTime dayDate,
+    CalendarDateSelectionState calendarDateSelectionState,
+    DateTime focusedMonth,
+  ) {
+    BorderRadius? inRangeBorderRadius;
+
+    final bool isFirstDayCellInRow = (index - rowNumber) % _daysInWeek == 1;
+    final bool isLastDayCellInRow = (index - rowNumber) % _daysInWeek == 0;
+    if (isFirstDayCellInRow || isLastDayCellInRow) {
+      final bool isFirstRow = rowNumber == 0;
+      final bool isLastRow = rowNumber == rowCount - 1;
+      final _DayCellType? cellTypeAbove = isFirstRow
+          ? null
+          : _getDayCellType(
+              dayDate.subtract(Duration(days: _daysInWeek)),
+              calendarDateSelectionState,
+              focusedMonth,
+            );
+      final _DayCellType? cellTypeBelow = isLastRow
+          ? null
+          : _getDayCellType(
+              dayDate.add(Duration(days: _daysInWeek)),
+              calendarDateSelectionState,
+              focusedMonth,
+            );
+
+      final bool isCellAboveInRange = cellTypeAbove == _DayCellType.inRange;
+      final bool isCellBelowInRange = cellTypeBelow == _DayCellType.inRange;
+      if (!isCellAboveInRange || !isCellBelowInRange) {
+        final double borderRadius =
+            LocationHistoryTheme.of(context).radii.small;
+        inRangeBorderRadius = BorderRadius.only(
+          topLeft: !isCellAboveInRange && isFirstDayCellInRow
+              ? Radius.circular(borderRadius)
+              : Radius.zero,
+          topRight: !isCellAboveInRange && isLastDayCellInRow
+              ? Radius.circular(borderRadius)
+              : Radius.zero,
+          bottomLeft: !isCellBelowInRange && isFirstDayCellInRow
+              ? Radius.circular(borderRadius)
+              : Radius.zero,
+          bottomRight: !isCellBelowInRange && isLastDayCellInRow
+              ? Radius.circular(borderRadius)
+              : Radius.zero,
+        );
+      }
+    }
+    return inRangeBorderRadius;
   }
 }

@@ -9,6 +9,7 @@ import 'package:location_history/features/calendar/presentation/cubits/calendar_
 import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_type_state.dart';
 import 'package:location_history/features/calendar/presentation/cubits/monthly_calendar_cubit/monthly_calendar_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/monthly_calendar_cubit/monthly_calendar_state.dart';
+import 'package:location_history/features/calendar/presentation/widgets/calendar_view_background.dart';
 
 part '_day_cell.dart';
 part '_days_grid.dart';
@@ -25,21 +26,7 @@ class MonthlyCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.only(
-        left: theme.spacing.small,
-        top: theme.spacing.xSmall,
-        right: theme.spacing.xSmall,
-        bottom: theme.spacing.small,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-          LocationHistoryTheme.of(context).radii.medium,
-        ),
-        color: theme.colors.translucentBackground,
-      ),
+    return CalendarViewContainer(
       child: Column(
         children: [
           _WeekdaysHeader(),

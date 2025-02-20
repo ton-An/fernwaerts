@@ -11,6 +11,7 @@ part of 'location_history_theme.dart';
 class LocationHistoryColorThemeData {
   const LocationHistoryColorThemeData({
     this.primary = LocationHistoryColors.primary,
+    this.primaryTranslucent = LocationHistoryColors.primaryTranslucent,
     this.primaryContrast = LocationHistoryColors.white,
     this.accent = LocationHistoryColors.accent,
     this.translucentBackground = LocationHistoryColors.translucentBackground,
@@ -32,6 +33,7 @@ class LocationHistoryColorThemeData {
 
   final Color primary;
   final Color primaryContrast;
+  final Color primaryTranslucent;
   final Color accent;
   final Color translucentBackground;
   final Color cameraViewBackground;

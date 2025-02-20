@@ -73,13 +73,14 @@ class _CalendarCompositeState extends State<CalendarComposite>
               Opacity(
                 opacity: _fadeAnimation.value,
                 child: Transform.translate(
-                    offset: Offset(0, _translateAnimation.value),
-                    child: Column(
-                      children: [
-                        MediumGap(),
-                        Calendar(),
-                      ],
-                    )),
+                  offset: Offset(0, _translateAnimation.value),
+                  child: Column(
+                    children: [
+                      MediumGap(),
+                      Calendar(),
+                    ],
+                  ),
+                ),
               ),
           ],
         );

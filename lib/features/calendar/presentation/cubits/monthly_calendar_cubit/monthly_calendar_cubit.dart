@@ -31,4 +31,12 @@ class MonthlyCalendarCubit extends Cubit<MonthlyCalendarState> {
       ),
     );
   }
+
+  void showMonth(DateTime month) {
+    emit(
+      MonthlyCalendarState(
+        focusedMonth: DateTime(month.year, month.month),
+      ),
+    );
+  }
 }

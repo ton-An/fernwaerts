@@ -1,4 +1,4 @@
-part of 'calendar_stepper.dart';
+part of "calendar_stepper.dart";
 
 enum _LabelSize { small, medium, large }
 
@@ -125,7 +125,7 @@ class _DateButtonState extends State<_DateButton>
     if (dateSelectionState is CalendarDaySelected) {
       _labelSize = _LabelSize.large;
 
-      return DateFormat('d MMM y', Localizations.localeOf(context).languageCode)
+      return DateFormat("d MMM y", Localizations.localeOf(context).languageCode)
           .format(dateSelectionState.selectedDate);
     }
 
@@ -136,7 +136,7 @@ class _DateButtonState extends State<_DateButton>
               dateSelectionState.startDate != null) {
         _labelSize = _LabelSize.large;
         return DateFormat(
-                'd MMM y', Localizations.localeOf(context).languageCode)
+                "d MMM y", Localizations.localeOf(context).languageCode)
             .format(
                 dateSelectionState.startDate ?? dateSelectionState.endDate!);
       }
@@ -147,18 +147,28 @@ class _DateButtonState extends State<_DateButton>
             dateSelectionState.endDate!.year) {
           if (dateSelectionState.startDate!.month ==
               dateSelectionState.endDate!.month) {
+            if (dateSelectionState.startDate!.day == 1 &&
+                dateSelectionState.endDate!.day ==
+                    DateTime(dateSelectionState.startDate!.year,
+                            dateSelectionState.startDate!.month + 1, 0)
+                        .day) {
+              _labelSize = _LabelSize.large;
+              return DateFormat(
+                      "MMMM y", Localizations.localeOf(context).languageCode)
+                  .format(dateSelectionState.startDate!);
+            }
             _labelSize = _LabelSize.large;
-            return '${DateFormat('d', Localizations.localeOf(context).languageCode).format(dateSelectionState.startDate!)} - ${DateFormat('d MMM y', Localizations.localeOf(context).languageCode).format(dateSelectionState.endDate!)}';
+            return "${DateFormat("d", Localizations.localeOf(context).languageCode).format(dateSelectionState.startDate!)} - ${DateFormat("d MMM y", Localizations.localeOf(context).languageCode).format(dateSelectionState.endDate!)}";
           }
 
           _labelSize = _LabelSize.medium;
-          return '${DateFormat('d MMM', Localizations.localeOf(context).languageCode).format(dateSelectionState.startDate!)} - ${DateFormat('d MMM yy', Localizations.localeOf(context).languageCode).format(dateSelectionState.endDate!)}';
+          return "${DateFormat("d MMM", Localizations.localeOf(context).languageCode).format(dateSelectionState.startDate!)} - ${DateFormat("d MMM yy", Localizations.localeOf(context).languageCode).format(dateSelectionState.endDate!)}";
         }
 
         _labelSize = _LabelSize.small;
-        return '${DateFormat('d MMM yy', Localizations.localeOf(context).languageCode).format(dateSelectionState.startDate!)} - ${DateFormat('d MMM yy', Localizations.localeOf(context).languageCode).format(dateSelectionState.endDate!)}';
+        return "${DateFormat("d MMM yy", Localizations.localeOf(context).languageCode).format(dateSelectionState.startDate!)} - ${DateFormat("d MMM yy", Localizations.localeOf(context).languageCode).format(dateSelectionState.endDate!)}";
       }
     }
-    return 'hihi';
+    return "hooops :)";
   }
 }
