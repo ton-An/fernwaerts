@@ -55,24 +55,32 @@ class _DaysGrid extends StatelessWidget {
                   focusedMonth,
                 );
 
+                final bool isFirstDayCellInRow =
+                    (index - rowNumber) % _daysInWeek == 1;
+                final bool isLastDayCellInRow =
+                    (index - rowNumber) % _daysInWeek == 0;
+
                 final _DayCellType cellType = _getDayCellType(
                   dayDate,
                   calendarDateSelectionState,
                   focusedMonth,
+                  isFirstDayCellInRow,
+                  isLastDayCellInRow,
                 );
 
                 BorderRadius? inRangeBorderRadius;
 
                 if (cellType == _DayCellType.inRange) {
                   inRangeBorderRadius = _calculateInRangeBorderRadius(
-                    context,
-                    index,
-                    rowNumber,
-                    rowCount,
-                    dayDate,
-                    calendarDateSelectionState,
-                    focusedMonth,
-                  );
+                      context,
+                      index,
+                      rowNumber,
+                      rowCount,
+                      dayDate,
+                      calendarDateSelectionState,
+                      focusedMonth,
+                      isFirstDayCellInRow,
+                      isLastDayCellInRow);
                 }
 
                 return _DayCell(
@@ -136,6 +144,8 @@ class _DaysGrid extends StatelessWidget {
     DateTime date,
     CalendarDateSelectionState selectionState,
     DateTime focusedMonth,
+    bool isFirstDayCellInRow,
+    bool isLastDayCellInRow,
   ) {
     if (selectionState is CalendarDaySelected) {
       if (date == selectionState.selectedDate) {
@@ -154,11 +164,17 @@ class _DaysGrid extends StatelessWidget {
 
       final bool isRangeStart = date == selectionState.startDate;
       if (isRangeStart) {
+        if (isLastDayCellInRow) {
+          return _DayCellType.selected;
+        }
         return _DayCellType.rangeStart;
       }
 
       final bool isRangeEnd = date == selectionState.endDate;
       if (isRangeEnd) {
+        if (isFirstDayCellInRow) {
+          return _DayCellType.selected;
+        }
         return _DayCellType.rangeEnd;
       }
 
@@ -187,11 +203,11 @@ class _DaysGrid extends StatelessWidget {
     DateTime dayDate,
     CalendarDateSelectionState calendarDateSelectionState,
     DateTime focusedMonth,
+    bool isFirstDayCellInRow,
+    bool isLastDayCellInRow,
   ) {
     BorderRadius? inRangeBorderRadius;
 
-    final bool isFirstDayCellInRow = (index - rowNumber) % _daysInWeek == 1;
-    final bool isLastDayCellInRow = (index - rowNumber) % _daysInWeek == 0;
     if (isFirstDayCellInRow || isLastDayCellInRow) {
       final bool isFirstRow = rowNumber == 0;
       final bool isLastRow = rowNumber == rowCount - 1;
@@ -201,6 +217,8 @@ class _DaysGrid extends StatelessWidget {
               dayDate.subtract(Duration(days: _daysInWeek)),
               calendarDateSelectionState,
               focusedMonth,
+              isFirstDayCellInRow,
+              isLastDayCellInRow,
             );
       final _DayCellType? cellTypeBelow = isLastRow
           ? null
@@ -208,6 +226,8 @@ class _DaysGrid extends StatelessWidget {
               dayDate.add(Duration(days: _daysInWeek)),
               calendarDateSelectionState,
               focusedMonth,
+              isFirstDayCellInRow,
+              isLastDayCellInRow,
             );
 
       final bool isCellAboveInRange = cellTypeAbove == _DayCellType.inRange;
