@@ -29,6 +29,8 @@ class LocationHistoryColorThemeData {
     this.disabledButton = LocationHistoryColors.disabled,
     this.transparent = LocationHistoryColors.transparent,
     this.backgroundContrast = LocationHistoryColors.black,
+    this.translucentBackgroundContrast =
+        LocationHistoryColors.translucentBackgroundContrast,
   });
 
   final Color primary;
@@ -50,4 +52,5 @@ class LocationHistoryColorThemeData {
   final Color disabledButton;
   final Color transparent;
   final Color backgroundContrast;
+  final Color translucentBackgroundContrast;
 }

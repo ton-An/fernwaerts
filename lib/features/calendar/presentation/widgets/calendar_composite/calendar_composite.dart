@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:location_history/core/widgets/gaps/gaps.dart';
+import 'package:location_history/core/theme/location_history_theme.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_state.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_expansion_cubit/calendar_expansion_cubit.dart';
@@ -14,6 +17,8 @@ import 'package:location_history/features/calendar/presentation/cubits/yearly_ca
 import 'package:location_history/features/calendar/presentation/widgets/calendar/calendar.dart';
 import 'package:location_history/features/calendar/presentation/widgets/calendar_stepper/calendar_stepper.dart';
 
+part '_layout_render_object_widget.dart';
+
 class CalendarComposite extends StatefulWidget {
   const CalendarComposite({super.key});
 
@@ -22,8 +27,10 @@ class CalendarComposite extends StatefulWidget {
 }
 
 class _CalendarCompositeState extends State<CalendarComposite>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
+    with TickerProviderStateMixin {
+  late AnimationController _translateAnimationController;
+  late AnimationController _fadeAnimationController;
+
   late Animation<double> _translateAnimation;
   late Animation<double> _fadeAnimation;
 
@@ -33,33 +40,47 @@ class _CalendarCompositeState extends State<CalendarComposite>
   void initState() {
     super.initState();
 
-    _animationController = AnimationController(
+    _translateAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
+      reverseDuration: Duration(milliseconds: 580),
     );
 
-    _animationController.addListener(() {
+    _translateAnimationController.addListener(() {
       setState(() {});
     });
 
-    _translateAnimation = Tween<double>(begin: -45, end: 0).animate(
+    _fadeAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+      reverseDuration: Duration(milliseconds: 200),
+    );
+
+    _fadeAnimationController.addListener(() {
+      setState(() {});
+    });
+
+    _translateAnimation = Tween<double>(begin: 1, end: 0).animate(
       CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeInOut,
+        parent: _translateAnimationController,
+        curve: Curves.easeOutCubic,
+        reverseCurve: Curves.easeInCubic,
       ),
     );
 
     _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeInOut,
+        parent: _fadeAnimationController,
+        curve: Curves.easeOut,
+        reverseCurve: Curves.easeOut,
       ),
     );
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    _translateAnimationController.dispose();
+    _fadeAnimationController.dispose();
     super.dispose();
   }
 
@@ -89,11 +110,13 @@ class _CalendarCompositeState extends State<CalendarComposite>
         return BlocConsumer<CalendarExpansionCubit, CalendarExpansionState>(
           listener: (context, expansionState) {
             if (expansionState is CalendarCollapsed) {
-              _animationController.reverse();
+              _translateAnimationController.reverse();
+              _fadeAnimationController.reverse();
             }
 
             if (expansionState is CalendarExpanded) {
-              _animationController.forward();
+              _translateAnimationController.forward();
+              _fadeAnimationController.forward();
 
               final bool hasMovedRange =
                   context.read<CalendarDateSelectionCubit>().hasMovedRange;
@@ -124,24 +147,24 @@ class _CalendarCompositeState extends State<CalendarComposite>
             }
           },
           builder: (context, state) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CalendarStepper(),
-                if (_animationController.status != AnimationStatus.dismissed)
-                  Opacity(
-                    opacity: _fadeAnimation.value,
-                    child: Transform.translate(
-                      offset: Offset(0, _translateAnimation.value),
-                      child: Column(
-                        children: [
-                          MediumGap(),
-                          Calendar(),
-                        ],
-                      ),
+            return ClipRRect(
+              borderRadius: BorderRadius.circular(
+                  LocationHistoryTheme.of(context).radii.medium),
+              child: _LayoutRenderObjectWidget(
+                itemSpacing: LocationHistoryTheme.of(context).spacing.medium,
+                calendarOffset: _translateAnimation.value,
+                children: [
+                  CalendarStepper(),
+                  if (!(_translateAnimationController.status ==
+                          AnimationStatus.dismissed &&
+                      _fadeAnimationController.status ==
+                          AnimationStatus.dismissed))
+                    Opacity(
+                      opacity: _fadeAnimation.value,
+                      child: Calendar(),
                     ),
-                  ),
-              ],
+                ],
+              ),
             );
           },
         );

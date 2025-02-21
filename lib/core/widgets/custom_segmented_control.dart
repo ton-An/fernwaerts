@@ -32,7 +32,7 @@ class CustomSegmentedControl<T> extends StatelessWidget {
     return Container(
       height: 44,
       decoration: BoxDecoration(
-        color: theme.colors.backgroundContrast.withAlpha(20),
+        color: theme.colors.translucentBackgroundContrast,
         borderRadius: BorderRadius.circular(
           theme.radii.small,
         ),
