@@ -1,11 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:location_history/core/theme/location_history_theme.dart';
+import 'package:location_history/core/widgets/gaps/gaps.dart';
 
-enum _ModalSize {
-  small,
-  medium,
-  large,
-}
+part '_header.dart';
+part '_location_list.dart';
+part '_modal_handle.dart';
 
 class LocationHistoryModal extends StatefulWidget {
   const LocationHistoryModal({
@@ -39,81 +39,68 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
   @override
   Widget build(BuildContext context) {
     final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
+
     return ClipRRect(
       borderRadius:
           BorderRadius.vertical(top: Radius.circular(theme.radii.xLarge)),
       child: BackdropFilter(
         filter: theme.misc.blurFilter,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
+        child: Container(
           color: theme.colors.translucentBackground,
           child: Column(
             children: [
               GestureDetector(
                 behavior: HitTestBehavior.translucent,
-                onVerticalDragEnd: (details) {
-                  final double dragEnd = details.globalPosition.dy;
-                  widget.draggableScrollableController.animateTo(
-                    _getModalHeight(_dragStart > dragEnd),
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                  );
-                },
-                onVerticalDragUpdate: (details) {
-                  double currentExtent =
-                      widget.draggableScrollableController.size;
-
-                  double newExtent = (currentExtent -
-                          details.primaryDelta! /
-                              MediaQuery.of(context).size.height)
-                      .clamp(LocationHistoryModal.smallModalHeight,
-                          LocationHistoryModal.largeModalHeight);
-                  widget.draggableScrollableController.jumpTo(newExtent);
-                },
-                onVerticalDragStart: (details) {
-                  _dragStart = details.globalPosition.dy;
-                },
+                onVerticalDragEnd: _verticalDragEnd,
+                onVerticalDragUpdate: _verticalDragUpdate,
+                onVerticalDragStart: _verticalDragStart,
                 child: Padding(
                   padding:
                       EdgeInsets.symmetric(horizontal: theme.spacing.medium),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      SizedBox(height: theme.spacing.medium),
-                      Center(
-                        child: Container(
-                          height: 5,
-                          width: 36,
-                          decoration: BoxDecoration(
-                            color: theme.colors.translucentBackgroundContrast,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: theme.spacing.medium),
-                      Text(
-                        "History",
-                        style: theme.text.largeTitle
-                            .copyWith(fontWeight: FontWeight.w600),
-                      ),
+                      MediumGap(),
+                      _ModalHandle(),
+                      MediumGap(),
+                      _Header(),
+                      MediumGap(),
                     ],
                   ),
                 ),
               ),
               Expanded(
-                child: ListView.builder(
-                  controller: widget.scrollController,
-                  itemCount: 10,
-                  padding: EdgeInsets.only(bottom: theme.spacing.medium),
-                  itemBuilder: (context, index) {
-                    return Text("Location $index");
-                  },
-                ),
+                child: _LocationList(),
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  void _verticalDragStart(DragStartDetails details) {
+    _dragStart = details.globalPosition.dy;
+  }
+
+  void _verticalDragUpdate(DragUpdateDetails details) {
+    (details) {
+      double currentExtent = widget.draggableScrollableController.size;
+
+      double newExtent = (currentExtent -
+              details.primaryDelta! / MediaQuery.of(context).size.height)
+          .clamp(LocationHistoryModal.smallModalHeight,
+              LocationHistoryModal.largeModalHeight);
+      widget.draggableScrollableController.jumpTo(newExtent);
+    };
+  }
+
+  void _verticalDragEnd(DragEndDetails details) {
+    final double dragEnd = details.globalPosition.dy;
+    widget.draggableScrollableController.animateTo(
+      _getModalHeight(_dragStart > dragEnd),
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
     );
   }
 }

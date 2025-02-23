@@ -52,6 +52,7 @@ class _MapPageState extends State<MapPage> {
                   LocationHistoryModal.largeModalHeight
                 ],
                 controller: _draggableScrollableController,
+                snapAnimationDuration: const Duration(milliseconds: 300),
                 builder: (context, scrollController) => LocationHistoryModal(
                   scrollController: scrollController,
                   draggableScrollableController: _draggableScrollableController,
