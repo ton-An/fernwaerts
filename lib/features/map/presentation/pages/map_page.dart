@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:location_history/core/theme/location_history_theme.dart';
 import 'package:location_history/features/calendar/presentation/widgets/calendar_composite/calendar_composite.dart';
 import 'package:location_history/features/map/presentation/widgets/location_history_modal/location_history_modal.dart';

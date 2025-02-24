@@ -4,5 +4,14 @@
     "day": "Day",
     "week": "Week",
     "month": "Month",
-    "year": "Year"
+    "year": "Year",    
+    "activityTypeWalking": "Walking",
+    "activityTypeCycling": "Cycling",
+    "activityTypeRunning": "Running",
+    "activityTypeDriving": "Driving",
+    "general": "General",
+    "account": "Account",
+    "admin": "Admin",
+    "settings": "Settings",
+    "yourHistory": "Your History"
 }

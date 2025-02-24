@@ -21,7 +21,7 @@ class _Header extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: theme.spacing.xTiny),
             child: Text(
-              'Your History',
+              AppLocalizations.of(context)!.yourHistory,
               style: theme.text.title1.copyWith(
                 fontWeight: FontWeight.w600,
               ),
@@ -29,38 +29,29 @@ class _Header extends StatelessWidget {
           ),
           Row(
             children: [
-              _SmallIconButton(icon: CupertinoIcons.pencil),
+              SmallIconButton(icon: CupertinoIcons.pencil, onPressed: () {}),
               XXSmallGap(),
-              _SmallIconButton(icon: CupertinoIcons.settings),
+              SmallIconButton(
+                  icon: CupertinoIcons.settings,
+                  onPressed: () {
+                    _showSettings(context);
+                  }),
             ],
           ),
         ],
       ),
     );
   }
-}
 
-class _SmallIconButton extends StatelessWidget {
-  const _SmallIconButton({
-    required this.icon,
-  });
-
-  final IconData icon;
-
-  @override
-  Widget build(BuildContext context) {
-    final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
-
-    return Container(
-      padding: EdgeInsets.all(theme.spacing.xSmall),
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: theme.colors.translucentBackgroundContrast,
-      ),
-      child: Icon(
-        icon,
-        color: theme.colors.text,
-      ),
+  void _showSettings(BuildContext context) {
+    showGeneralDialog(
+      context: context,
+      barrierColor: Colors.transparent,
+      barrierDismissible: false,
+      transitionDuration: const Duration(milliseconds: 140),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return const SettingsPage();
+      },
     );
   }
 }

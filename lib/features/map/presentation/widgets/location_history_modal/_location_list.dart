@@ -1,17 +1,36 @@
 part of 'location_history_modal.dart';
 
 class _LocationList extends StatelessWidget {
-  const _LocationList();
+  const _LocationList({required this.scrollController});
+
+  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: 10,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text('Location $index'),
-        );
-      },
+    final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
+    return ListEdgeFade(
+      bottom: false,
+      child: ListView.builder(
+        padding: EdgeInsets.all(
+          theme.spacing.xMedium,
+        ),
+        shrinkWrap: true,
+        itemCount: mockLocationHistoryItems.length,
+        controller: scrollController,
+        itemBuilder: (context, index) {
+          if (mockLocationHistoryItems[index] is Activity) {
+            return _ActivityListItem(
+              activity: mockLocationHistoryItems[index] as Activity,
+            );
+          } else if (mockLocationHistoryItems[index] is Place) {
+            return _PlaceListItem(
+              place: mockLocationHistoryItems[index] as Place,
+            );
+          } else {
+            return const SizedBox();
+          }
+        },
+      ),
     );
   }
 }

@@ -52,17 +52,21 @@ class MainApp extends StatelessWidget {
       GoRoute(
         path: MapPage.route,
         builder: (BuildContext context, GoRouterState state) {
-          return MultiBlocProvider(providers: [
-            BlocProvider(create: (context) => getIt<CalendarExpansionCubit>()),
-            BlocProvider(
-                create: (context) => getIt<CalendarSelectionTypeCubit>()),
-            BlocProvider(create: (context) => getIt<MonthlyCalendarCubit>()),
-            BlocProvider(create: (context) => getIt<YearlyCalendarCubit>()),
-            BlocProvider(
-                create: (context) => getIt<DecenniallyCalendarCubit>()),
-            BlocProvider(
-                create: (context) => getIt<CalendarDateSelectionCubit>()),
-          ], child: MapPage());
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                  create: (context) => getIt<CalendarExpansionCubit>()),
+              BlocProvider(
+                  create: (context) => getIt<CalendarSelectionTypeCubit>()),
+              BlocProvider(create: (context) => getIt<MonthlyCalendarCubit>()),
+              BlocProvider(create: (context) => getIt<YearlyCalendarCubit>()),
+              BlocProvider(
+                  create: (context) => getIt<DecenniallyCalendarCubit>()),
+              BlocProvider(
+                  create: (context) => getIt<CalendarDateSelectionCubit>()),
+            ],
+            child: MapPage(),
+          );
         },
       ),
     ],

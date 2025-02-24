@@ -20,7 +20,9 @@ mixin _$Place {
   DateTime get startTime => throw _privateConstructorUsedError;
   DateTime get endTime => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  PlaceType get type => throw _privateConstructorUsedError;
   Coordinate get coordinate => throw _privateConstructorUsedError;
+  Address get address => throw _privateConstructorUsedError;
 
   /// Create a copy of Place
   /// with the given fields replaced by the non-null parameter values.
@@ -38,9 +40,12 @@ abstract class $PlaceCopyWith<$Res> {
       DateTime startTime,
       DateTime endTime,
       String name,
-      Coordinate coordinate});
+      PlaceType type,
+      Coordinate coordinate,
+      Address address});
 
   $CoordinateCopyWith<$Res> get coordinate;
+  $AddressCopyWith<$Res> get address;
 }
 
 /// @nodoc
@@ -62,7 +67,9 @@ class _$PlaceCopyWithImpl<$Res, $Val extends Place>
     Object? startTime = null,
     Object? endTime = null,
     Object? name = null,
+    Object? type = null,
     Object? coordinate = null,
+    Object? address = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -81,10 +88,18 @@ class _$PlaceCopyWithImpl<$Res, $Val extends Place>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as PlaceType,
       coordinate: null == coordinate
           ? _value.coordinate
           : coordinate // ignore: cast_nullable_to_non_nullable
               as Coordinate,
+      address: null == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as Address,
     ) as $Val);
   }
 
@@ -95,6 +110,16 @@ class _$PlaceCopyWithImpl<$Res, $Val extends Place>
   $CoordinateCopyWith<$Res> get coordinate {
     return $CoordinateCopyWith<$Res>(_value.coordinate, (value) {
       return _then(_value.copyWith(coordinate: value) as $Val);
+    });
+  }
+
+  /// Create a copy of Place
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AddressCopyWith<$Res> get address {
+    return $AddressCopyWith<$Res>(_value.address, (value) {
+      return _then(_value.copyWith(address: value) as $Val);
     });
   }
 }
@@ -111,10 +136,14 @@ abstract class _$$PlaceImplCopyWith<$Res> implements $PlaceCopyWith<$Res> {
       DateTime startTime,
       DateTime endTime,
       String name,
-      Coordinate coordinate});
+      PlaceType type,
+      Coordinate coordinate,
+      Address address});
 
   @override
   $CoordinateCopyWith<$Res> get coordinate;
+  @override
+  $AddressCopyWith<$Res> get address;
 }
 
 /// @nodoc
@@ -134,7 +163,9 @@ class __$$PlaceImplCopyWithImpl<$Res>
     Object? startTime = null,
     Object? endTime = null,
     Object? name = null,
+    Object? type = null,
     Object? coordinate = null,
+    Object? address = null,
   }) {
     return _then(_$PlaceImpl(
       id: null == id
@@ -153,10 +184,18 @@ class __$$PlaceImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as PlaceType,
       coordinate: null == coordinate
           ? _value.coordinate
           : coordinate // ignore: cast_nullable_to_non_nullable
               as Coordinate,
+      address: null == address
+          ? _value.address
+          : address // ignore: cast_nullable_to_non_nullable
+              as Address,
     ));
   }
 }
@@ -169,7 +208,9 @@ class _$PlaceImpl implements _Place {
       required this.startTime,
       required this.endTime,
       required this.name,
-      required this.coordinate});
+      required this.type,
+      required this.coordinate,
+      required this.address});
 
   @override
   final String id;
@@ -180,11 +221,15 @@ class _$PlaceImpl implements _Place {
   @override
   final String name;
   @override
+  final PlaceType type;
+  @override
   final Coordinate coordinate;
+  @override
+  final Address address;
 
   @override
   String toString() {
-    return 'Place(id: $id, startTime: $startTime, endTime: $endTime, name: $name, coordinate: $coordinate)';
+    return 'Place(id: $id, startTime: $startTime, endTime: $endTime, name: $name, type: $type, coordinate: $coordinate, address: $address)';
   }
 
   @override
@@ -197,13 +242,15 @@ class _$PlaceImpl implements _Place {
                 other.startTime == startTime) &&
             (identical(other.endTime, endTime) || other.endTime == endTime) &&
             (identical(other.name, name) || other.name == name) &&
+            (identical(other.type, type) || other.type == type) &&
             (identical(other.coordinate, coordinate) ||
-                other.coordinate == coordinate));
+                other.coordinate == coordinate) &&
+            (identical(other.address, address) || other.address == address));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, startTime, endTime, name, coordinate);
+  int get hashCode => Object.hash(
+      runtimeType, id, startTime, endTime, name, type, coordinate, address);
 
   /// Create a copy of Place
   /// with the given fields replaced by the non-null parameter values.
@@ -220,7 +267,9 @@ abstract class _Place implements Place {
       required final DateTime startTime,
       required final DateTime endTime,
       required final String name,
-      required final Coordinate coordinate}) = _$PlaceImpl;
+      required final PlaceType type,
+      required final Coordinate coordinate,
+      required final Address address}) = _$PlaceImpl;
 
   @override
   String get id;
@@ -231,7 +280,11 @@ abstract class _Place implements Place {
   @override
   String get name;
   @override
+  PlaceType get type;
+  @override
   Coordinate get coordinate;
+  @override
+  Address get address;
 
   /// Create a copy of Place
   /// with the given fields replaced by the non-null parameter values.
