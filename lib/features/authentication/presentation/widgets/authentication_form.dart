@@ -3,6 +3,7 @@ import 'package:location_history/core/theme/location_history_theme.dart';
 import 'package:location_history/core/widgets/custom_cupertino_text_button.dart';
 import 'package:location_history/core/widgets/custom_cupertino_text_field.dart';
 import 'package:location_history/core/widgets/gaps/gaps.dart';
+import 'package:location_history/core/widgets/small_icon_button.dart';
 
 class AuthenticationForm extends StatelessWidget {
   const AuthenticationForm({
@@ -13,6 +14,8 @@ class AuthenticationForm extends StatelessWidget {
     required this.buttonText,
     required this.textFields,
     required this.onButtonPressed,
+    this.showBackButton = false,
+    this.onBackPressed,
     this.hint,
   });
 
@@ -23,6 +26,8 @@ class AuthenticationForm extends StatelessWidget {
   final String buttonText;
   final List<CustomCupertinoTextField> textFields;
   final VoidCallback onButtonPressed;
+  final bool showBackButton;
+  final VoidCallback? onBackPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +46,17 @@ class AuthenticationForm extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          if (showBackButton) ...[
+            Align(
+              alignment: Alignment.topLeft,
+              child: SmallIconButton(
+                icon: CupertinoIcons.back,
+                alignmentOffset: Offset(-1, 0),
+                onPressed: onBackPressed ?? () {},
+              ),
+            ),
+            XTinyGap(),
+          ],
           Icon(
             icon,
             color: theme.colors.primary.withValues(alpha: .6),

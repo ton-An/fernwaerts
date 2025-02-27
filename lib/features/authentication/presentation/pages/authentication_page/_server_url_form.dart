@@ -17,7 +17,9 @@ class _ServerUrlForm extends StatelessWidget {
           onChanged: (_) {},
         ),
       ],
-      onButtonPressed: () {},
+      onButtonPressed: () {
+        context.read<AuthenticationCubit>().continueToLogInInfo("");
+      },
     );
   }
 }
