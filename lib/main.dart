@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location_history/core/dependency_injector.dart';
+import 'package:location_history/features/authentication/presentation/pages/authentication_page/authentication_page.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_expansion_cubit/calendar_expansion_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_cubit.dart';
@@ -32,7 +33,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoApp.router(
       onGenerateTitle: (BuildContext context) =>
-          AppLocalizations.of(context)!.appTitle,
+          AppLocalizations.of(context)!.appName,
       routerConfig: router,
       localizationsDelegates: const [
         AppLocalizations.delegate,
@@ -47,8 +48,14 @@ class MainApp extends StatelessWidget {
   }
 
   final GoRouter router = GoRouter(
-    initialLocation: MapPage.route,
+    initialLocation: AuthenticationPage.route,
     routes: <RouteBase>[
+      GoRoute(
+        path: AuthenticationPage.route,
+        builder: (BuildContext context, GoRouterState state) {
+          return const AuthenticationPage();
+        },
+      ),
       GoRoute(
         path: MapPage.route,
         builder: (BuildContext context, GoRouterState state) {

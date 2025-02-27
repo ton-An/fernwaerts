@@ -9,7 +9,7 @@ part of 'location_history_theme.dart';
 ///
 /// A collection of Cupertino colors
 class LocationHistoryColors {
-  static const Color primary = Color(0xFFFFC107);
+  static const Color primary = Color.fromARGB(255, 7, 114, 255);
   static const Color primaryTranslucent = Color(0x33FFC107);
   static const Color translucentBackground = Color(0x73FFFFFF);
   static const Color translucentBackgroundContrast =

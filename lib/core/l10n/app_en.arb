@@ -1,5 +1,6 @@
 {
-    "appTitle": "Location History",
+    "appName": "Location History",
+    "appDescription": "A simple app to track your location history.\nIt is fully open source, self hosted and free to use.",
     "range": "Range",
     "day": "Day",
     "week": "Week",
@@ -13,5 +14,15 @@
     "account": "Account",
     "admin": "Admin",
     "settings": "Settings",
-    "yourHistory": "Your History"
+    "yourHistory": "Your History",
+    "serverDetails": "Server Details",
+    "serverDetailsDescription": "Enter the URL of your server",
+    "serverDetailsHint": "It should look like this: https://example.com",
+    "continueButton": "Continue",
+    "serverUrl": "Server Url",
+    "signIn": "Sign In",
+    "signInDescription": "Enter your username and password",
+    "username": "Username",
+    "password": "Password",
+    "getStarted": "Get Started"
 }
