@@ -1,28 +1,36 @@
 part of 'authentication_page.dart';
 
-class _SignInForm extends StatelessWidget {
-  const _SignInForm();
+class _AdminSignUpForm extends StatelessWidget {
+  const _AdminSignUpForm();
 
   @override
   Widget build(BuildContext context) {
     return AuthenticationForm(
         showBackButton: true,
         icon: CupertinoIcons.person_fill,
-        label: AppLocalizations.of(context)!.signIn,
-        description: AppLocalizations.of(context)!.signInDescription,
-        buttonText: AppLocalizations.of(context)!.signIn,
+        label: AppLocalizations.of(context)!.createAdmin,
+        description: AppLocalizations.of(context)!.adminSignUpDescription,
+        buttonText: AppLocalizations.of(context)!.createAdmin,
         textFields: [
           CustomCupertinoTextField(
             hint: AppLocalizations.of(context)!.username,
             onChanged: (_) {},
           ),
           CustomCupertinoTextField(
+            hint: AppLocalizations.of(context)!.email,
+            onChanged: (_) {},
+          ),
+          CustomCupertinoTextField(
             hint: AppLocalizations.of(context)!.password,
+            onChanged: (_) {},
+          ),
+          CustomCupertinoTextField(
+            hint: AppLocalizations.of(context)!.confirmPassword,
             onChanged: (_) {},
           ),
         ],
         onButtonPressed: () {
-          context.read<AuthenticationCubit>().logIn("", "");
+          context.read<AuthenticationCubit>().signUpAdmin("", "", "", "");
         },
         onBackPressed: () {
           context.read<AuthenticationCubit>().toServerDetails();

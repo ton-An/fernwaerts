@@ -5,13 +5,22 @@ import 'package:location_history/features/authentication/presentation/cubits/aut
 class AuthenticationCubit extends Cubit<AuthenticationState> {
   AuthenticationCubit() : super(AuthenticationInitial());
 
-  void continueToServerDetails() {
+  void toServerDetails() {
     emit(EnterServerDetails());
   }
 
-  void continueToLogInInfo(String url) {
+  void toLogInInfo(String serverUrl) {
     emit(AuthenticationError(failure: ServerNotReachableFailure()));
-    emit(EnterLogInInfo());
+    emit(EnterAdminSignUpInfo());
+  }
+
+  void signUpAdmin(
+    String username,
+    String email,
+    String password,
+    String confirmPassword,
+  ) {
+    emit(AdminSignUpSuccessful());
   }
 
   void logIn(String username, String password) {

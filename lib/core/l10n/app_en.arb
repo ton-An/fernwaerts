@@ -23,6 +23,10 @@
     "signIn": "Sign In",
     "signInDescription": "Enter your username and password",
     "username": "Username",
-    "password": "Password",
-    "getStarted": "Get Started"
+    "email": "E-Mail",
+    "password": "Password",    
+    "confirmPassword": "Confirm Password",
+    "getStarted": "Get Started",
+    "createAdmin": "Create Admin",
+    "adminSignUpDescription": "You are accessing a fresh install.\nPlease create an admin account."
 }

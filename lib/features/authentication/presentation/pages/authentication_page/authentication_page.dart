@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -15,10 +16,16 @@ import 'package:location_history/features/map/presentation/pages/map_page.dart';
 import 'package:simple_shadow/simple_shadow.dart';
 import 'package:video_player/video_player.dart';
 
+part '_admin_sign_up_form.dart';
 part '_server_url_form.dart';
 part '_sign_in_form.dart';
 part '_video_background.dart';
 part '_welcome.dart';
+
+enum AuthenticationFormType {
+  logIn,
+  adminSignUp,
+}
 
 class AuthenticationPage extends StatefulWidget {
   const AuthenticationPage({super.key});
@@ -32,6 +39,8 @@ class AuthenticationPage extends StatefulWidget {
 
 class _AuthenticationPageState extends State<AuthenticationPage> {
   late ExpandableCarouselController _carouselController;
+
+  AuthenticationFormType _formType = AuthenticationFormType.logIn;
 
   @override
   void initState() {
@@ -55,10 +64,20 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         }
 
         if (state is EnterLogInInfo) {
+          setState(() {
+            _formType = AuthenticationFormType.logIn;
+          });
           _animateToPage(2);
         }
 
-        if (state is LogInSuccessful) {
+        if (state is EnterAdminSignUpInfo) {
+          setState(() {
+            _formType = AuthenticationFormType.adminSignUp;
+          });
+          _animateToPage(2);
+        }
+
+        if (state is LogInSuccessful || state is AdminSignUpSuccessful) {
           context.go(MapPage.route);
         }
 
@@ -85,17 +104,20 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                     items: [
                       _Welcome(),
                       _ServerUrlForm(),
-                      _SignInForm(),
+                      if (_formType == AuthenticationFormType.adminSignUp)
+                        _AdminSignUpForm()
+                      else
+                        _SignInForm(),
                     ],
                     options: ExpandableCarouselOptions(
                       controller: _carouselController,
+                      expansionAlignment: Alignment.bottomCenter,
                       viewportFraction: 1,
                       showIndicator: false,
                       padEnds: false,
                       disableCenter: true,
                       physics: NeverScrollableScrollPhysics(),
                       autoPlayCurve: Curves.easeOut,
-                      // physics: NeverScrollableScrollPhysics(),
                     ),
                   ),
                 ),

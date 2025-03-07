@@ -21,10 +21,6 @@ class _Decoration extends StatelessWidget {
           decoration: BoxDecoration(
             color: theme.colors.background.withValues(alpha: .6),
             borderRadius: BorderRadius.circular(theme.radii.medium),
-            border: Border.all(
-              width: .3,
-              color: theme.colors.border.withValues(alpha: .3),
-            ),
           ),
           child: child,
         ),

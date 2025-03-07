@@ -18,8 +18,16 @@ class EnterLogInInfo extends AuthenticationState {
   const EnterLogInInfo();
 }
 
+class EnterAdminSignUpInfo extends AuthenticationState {
+  const EnterAdminSignUpInfo();
+}
+
 class LogInSuccessful extends AuthenticationState {
   const LogInSuccessful();
+}
+
+class AdminSignUpSuccessful extends AuthenticationState {
+  const AdminSignUpSuccessful();
 }
 
 class AuthenticationError extends AuthenticationState {

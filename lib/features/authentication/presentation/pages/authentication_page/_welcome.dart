@@ -49,7 +49,7 @@ class _Welcome extends StatelessWidget {
           CustomCupertinoTextButton(
             text: AppLocalizations.of(context)!.getStarted,
             onPressed: () {
-              context.read<AuthenticationCubit>().continueToServerDetails();
+              context.read<AuthenticationCubit>().toServerDetails();
             },
           ),
         ],
