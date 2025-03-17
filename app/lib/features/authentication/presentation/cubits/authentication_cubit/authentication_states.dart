@@ -14,6 +14,10 @@ class EnterServerDetails extends AuthenticationState {
   const EnterServerDetails();
 }
 
+class EnterServerDetailsLoading extends AuthenticationState {
+  const EnterServerDetailsLoading();
+}
+
 class EnterLogInInfo extends AuthenticationState {
   const EnterLogInInfo();
 }

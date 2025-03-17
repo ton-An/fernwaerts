@@ -9,7 +9,6 @@ import 'package:location_history/features/authentication/domain/repositories/aut
   To-Do:
     - [ ] Complete the Failure conversion
     - [ ] Write unit tests
-    - [ ] Implement checkIfServerSetUp method
 */
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
@@ -22,9 +21,24 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   final RepositoryFailureHandler repositoryFailureHandler;
 
   @override
-  Future<Either<Failure, bool>> checkIfServerSetUp({required Uri serverUrl}) {
-    // TODO: implement checkIfServerSetUp
-    throw UnimplementedError();
+  Future<Either<Failure, bool>> checkIfServerSetUp({
+    required Uri serverUrl,
+  }) async {
+    try {
+      final isSetupComplete = await authRemoteDataSource.checkIfServerSetUp(
+        serverUrl,
+      );
+
+      return Right(isSetupComplete);
+    } on DioException catch (dioException) {
+      final Failure failure = repositoryFailureHandler.dioExceptionMapper(
+        dioException,
+      );
+
+      return Left(failure);
+    } on Failure catch (failure) {
+      return Left(failure);
+    }
   }
 
   @override
@@ -40,6 +54,8 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         dioException,
       );
 
+      return Left(failure);
+    } on Failure catch (failure) {
       return Left(failure);
     }
   }
