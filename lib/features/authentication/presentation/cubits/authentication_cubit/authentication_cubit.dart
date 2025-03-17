@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:location_history/core/failures/general/server_not_reachable_failure.dart';
+import 'package:location_history/core/failures/general/request_timeout_failure.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_states.dart';
 
 class AuthenticationCubit extends Cubit<AuthenticationState> {
@@ -10,7 +10,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   }
 
   void toLogInInfo(String serverUrl) {
-    emit(AuthenticationError(failure: ServerNotReachableFailure()));
+    emit(AuthenticationError(failure: RequestTimeoutFailure()));
     emit(EnterAdminSignUpInfo());
   }
 
