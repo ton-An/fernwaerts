@@ -1,6 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:location_history/core/failures/failure.dart';
 
+/*
+  To-Do:
+    - [ ] Add Failures to docs
+*/
+
 abstract class AuthenticationRepository {
   /// Checks if the server is reachable.
   ///

@@ -2,6 +2,11 @@ import 'package:dartz/dartz.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 
+/*
+  To-Do:
+    - [ ] Add Failures to docs
+*/
+
 /// {@template check_if_server_set_up}
 /// Checks if the server is set up. This is used to determine if the initial setup needs to be run.
 ///

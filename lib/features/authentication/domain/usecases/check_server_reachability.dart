@@ -2,6 +2,11 @@ import 'package:dartz/dartz.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 
+/*
+  To-Do:
+    - [ ] Add Failures to docs
+*/
+
 /// {@template check_server_reachability}
 /// Checks if the server is reachable.
 ///
