@@ -1,0 +1,71 @@
+name: location_history
+description: "A new Flutter project."
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ^3.7.0
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # Localizations
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.19.0
+  # State Management
+  flutter_bloc: ^8.1.4
+  # Dependency Injection
+  get_it: ^7.6.7
+  # Routing
+  go_router: ^13.2.0
+  # Functional Programming
+  dartz: ^0.10.1
+  # Data Class Generation
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.8.1
+  webfabrik_theme:
+    path: ../../../webfabrik_theme
+
+  # Layout
+  gap: ^3.0.1
+
+  # Maps
+  latlong2: ^0.9.1
+  flutter_map: ^8.0.0
+  elevated_flex:
+    path: ../../elevated_flex
+  cupertino_icons: ^1.0.8
+  in_date_utils: ^1.2.1
+  flutter_carousel_widget:
+    path: ../../flutter_carousel_widget
+  dotted_line: ^3.2.3
+  supabase_flutter: ^2.8.4
+  video_player: ^2.9.3
+  simple_shadow: ^0.3.1
+  dio:
+    ^5.8.0+1
+    # git:
+    #   url: https://github.com/nixrajput/flutter_carousel_widget
+    #   ref: ba5eedbbf85cb361be1f2dedf961db85483de236
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  # Testing
+  mocktail: ^1.0.3
+  # Code Generation
+  build_runner: ^2.4.8
+  freezed: ^2.4.7
+  json_serializable: ^6.7.1
+  flutter_launcher_icons: "^0.14.3"
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/videos/
+    - assets/images/
