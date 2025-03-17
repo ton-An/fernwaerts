@@ -22,7 +22,7 @@ class _DayCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
     return BlocBuilder<CalendarSelectionTypeCubit, CalendarSelectionTypeState>(
       builder: (context, selectionTypeState) {
         return GestureDetector(
@@ -53,7 +53,7 @@ class _DayCell extends StatelessWidget {
     );
   }
 
-  Widget _buildRangeUnderlay(LocationHistoryThemeData theme) {
+  Widget _buildRangeUnderlay(WebfabrikThemeData theme) {
     BorderRadius? borderRadius = inRangeBorderRadius;
     Color? color;
 
@@ -81,7 +81,7 @@ class _DayCell extends StatelessWidget {
     );
   }
 
-  Color? _getCellBackground(LocationHistoryThemeData theme) {
+  Color? _getCellBackground(WebfabrikThemeData theme) {
     if (type == _DayCellType.selected ||
         type == _DayCellType.rangeStart ||
         type == _DayCellType.rangeEnd) {
@@ -91,7 +91,7 @@ class _DayCell extends StatelessWidget {
     return null;
   }
 
-  TextStyle _getTextStyle(LocationHistoryThemeData theme) {
+  TextStyle _getTextStyle(WebfabrikThemeData theme) {
     late Color color;
     FontWeight? fontWeight;
 

@@ -19,7 +19,7 @@ class _WeekdaysHeader extends StatelessWidget {
             child: Center(
               child: Text(
                 weekdays[(i + 1) % 7].toUpperCase(),
-                style: LocationHistoryTheme.of(context).text.footnote.copyWith(
+                style: WebfabrikTheme.of(context).text.footnote.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
               ),

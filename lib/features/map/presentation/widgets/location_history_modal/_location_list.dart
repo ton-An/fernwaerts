@@ -7,9 +7,11 @@ class _LocationList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
-    return ListEdgeFade(
-      bottom: false,
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
+    return EdgeFade(
+      bottomOptions: EdgeFadeOptions(
+        enabled: false,
+      ),
       child: ListView.builder(
         padding: EdgeInsets.all(
           theme.spacing.xMedium,

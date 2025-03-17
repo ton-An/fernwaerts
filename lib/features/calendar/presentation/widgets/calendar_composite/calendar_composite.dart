@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:location_history/core/theme/location_history_theme.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_state.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_expansion_cubit/calendar_expansion_cubit.dart';
@@ -16,6 +15,7 @@ import 'package:location_history/features/calendar/presentation/cubits/monthly_c
 import 'package:location_history/features/calendar/presentation/cubits/yearly_calendar_cubit/yearly_calendar_cubit.dart';
 import 'package:location_history/features/calendar/presentation/widgets/calendar/calendar.dart';
 import 'package:location_history/features/calendar/presentation/widgets/calendar_stepper/calendar_stepper.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_layout_render_object_widget.dart';
 
@@ -149,9 +149,9 @@ class _CalendarCompositeState extends State<CalendarComposite>
           builder: (context, state) {
             return ClipRRect(
               borderRadius: BorderRadius.circular(
-                  LocationHistoryTheme.of(context).radii.medium),
+                  WebfabrikTheme.of(context).radii.medium),
               child: _LayoutRenderObjectWidget(
-                itemSpacing: LocationHistoryTheme.of(context).spacing.medium,
+                itemSpacing: WebfabrikTheme.of(context).spacing.medium,
                 calendarOffset: _translateAnimation.value,
                 children: [
                   CalendarStepper(),

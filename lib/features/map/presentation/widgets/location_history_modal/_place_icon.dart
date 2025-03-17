@@ -6,7 +6,7 @@ class _PlaceIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
     final _PlaceIconData placeIconData = getIcon(type, theme);
 
     return Container(
@@ -24,7 +24,7 @@ class _PlaceIcon extends StatelessWidget {
 
   _PlaceIconData getIcon(
     PlaceType type,
-    LocationHistoryThemeData theme,
+    WebfabrikThemeData theme,
   ) {
     switch (type) {
       case PlaceType.groceryStore:

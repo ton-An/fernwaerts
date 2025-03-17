@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:location_history/core/theme/location_history_theme.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_type_state.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 class CalendarViewContainer extends StatelessWidget {
   const CalendarViewContainer({super.key, required this.child});
@@ -11,7 +11,7 @@ class CalendarViewContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
     return BlocBuilder<CalendarSelectionTypeCubit, CalendarSelectionTypeState>(
       builder: (context, selectionTypeState) {
@@ -28,7 +28,7 @@ class CalendarViewContainer extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(
-              LocationHistoryTheme.of(context).radii.medium,
+              WebfabrikTheme.of(context).radii.medium,
             ),
             color: theme.colors.translucentBackground,
           ),

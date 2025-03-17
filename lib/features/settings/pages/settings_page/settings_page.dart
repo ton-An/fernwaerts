@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:location_history/core/theme/location_history_theme.dart';
-import 'package:location_history/core/widgets/list_edge_fade.dart';
-import 'package:location_history/core/widgets/small_icon_button.dart';
 import 'package:location_history/features/map/presentation/pages/map_page.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_footer.dart';
 part '_page_container.dart';
@@ -18,14 +16,16 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
     return _PageContainer(
       child: Column(
         children: [
           Expanded(
-            child: ListEdgeFade(
-              top: false,
+            child: EdgeFade(
+              topOptions: EdgeFadeOptions(
+                enabled: false,
+              ),
               child: ListView(
                 padding: EdgeInsets.only(
                   left: theme.spacing.medium,

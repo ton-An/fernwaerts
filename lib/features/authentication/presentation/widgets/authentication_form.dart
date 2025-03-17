@@ -1,9 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:location_history/core/theme/location_history_theme.dart';
-import 'package:location_history/core/widgets/custom_cupertino_text_button.dart';
-import 'package:location_history/core/widgets/custom_cupertino_text_field.dart';
-import 'package:location_history/core/widgets/gaps/gaps.dart';
-import 'package:location_history/core/widgets/small_icon_button.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 class AuthenticationForm extends StatelessWidget {
   const AuthenticationForm({
@@ -31,7 +27,7 @@ class AuthenticationForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
     return Padding(
       padding: EdgeInsets.only(

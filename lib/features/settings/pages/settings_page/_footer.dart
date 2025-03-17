@@ -5,7 +5,7 @@ class _Footer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
     return Container(
       margin: EdgeInsets.only(
         left: theme.spacing.medium,

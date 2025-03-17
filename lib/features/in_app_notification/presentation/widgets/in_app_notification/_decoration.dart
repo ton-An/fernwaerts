@@ -9,7 +9,7 @@ class _Decoration extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(

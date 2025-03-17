@@ -38,7 +38,7 @@ class _SwitchState extends State<_Switch> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
     return GestureDetector(
       onTapDown: (_) {

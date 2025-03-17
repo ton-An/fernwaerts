@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:location_history/core/theme/location_history_theme.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_type_state.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 enum BigCalendarCellType {
   unselected,
@@ -25,7 +25,7 @@ class BigCalendarCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
     return BlocBuilder<CalendarSelectionTypeCubit, CalendarSelectionTypeState>(
       builder: (context, selectionTypeState) {
@@ -61,7 +61,7 @@ class BigCalendarCell extends StatelessWidget {
 
   Color _getBackgroundColor(
     BigCalendarCellType cellType,
-    LocationHistoryThemeData theme,
+    WebfabrikThemeData theme,
   ) {
     switch (cellType) {
       case BigCalendarCellType.unselected:

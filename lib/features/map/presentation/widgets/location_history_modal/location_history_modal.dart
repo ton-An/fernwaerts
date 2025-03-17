@@ -5,14 +5,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:location_history/core/misc/mock_location_history_items.dart';
 import 'package:location_history/core/misc/number_formatter.dart';
 import 'package:location_history/core/misc/time_date_formatter.dart';
-import 'package:location_history/core/theme/location_history_theme.dart';
-import 'package:location_history/core/widgets/dott.dart';
-import 'package:location_history/core/widgets/gaps/gaps.dart';
-import 'package:location_history/core/widgets/list_edge_fade.dart';
-import 'package:location_history/core/widgets/small_icon_button.dart';
 import 'package:location_history/features/map/domain/models/activity.dart';
 import 'package:location_history/features/map/domain/models/place.dart';
 import 'package:location_history/features/settings/pages/settings_page/settings_page.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_activity_icon.dart';
 part '_activity_list_item.dart';
@@ -55,7 +51,7 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
 
   @override
   Widget build(BuildContext context) {
-    final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
     return ClipRRect(
       borderRadius: BorderRadius.vertical(

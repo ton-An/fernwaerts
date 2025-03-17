@@ -43,7 +43,7 @@ class _DateButtonState extends State<_DateButton>
 
   @override
   Widget build(BuildContext context) {
-    final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
     return BlocBuilder<CalendarDateSelectionCubit, CalendarDateSelectionState>(
       builder: (context, dateSelectionState) {
@@ -102,7 +102,7 @@ class _DateButtonState extends State<_DateButton>
     );
   }
 
-  TextStyle _getLabelStyle(LocationHistoryThemeData theme) {
+  TextStyle _getLabelStyle(WebfabrikThemeData theme) {
     final TextStyle largeLabelStyle =
         theme.text.title3.copyWith(fontWeight: FontWeight.w600);
 

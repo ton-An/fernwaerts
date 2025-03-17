@@ -23,7 +23,7 @@ class _ActivityListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
     final String distance = NumberFormatter.formatDistance(
       activity.distance,
       Localizations.localeOf(context).languageCode,

@@ -24,6 +24,8 @@ dependencies:
   # Data Class Generation
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
+  webfabrik_theme:
+    path: ../../webfabrik_theme
 
   # Layout
   gap: ^3.0.1
@@ -39,9 +41,9 @@ dependencies:
     path: ../flutter_carousel_widget
   dotted_line: ^3.2.3
   supabase_flutter: ^2.8.4
-  video_player:
-    ^2.9.3
-  simple_shadow: ^0.3.1
+  video_player: ^2.9.3
+  simple_shadow:
+    ^0.3.1
     # git:
     #   url: https://github.com/nixrajput/flutter_carousel_widget
     #   ref: ba5eedbbf85cb361be1f2dedf961db85483de236

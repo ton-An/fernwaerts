@@ -5,7 +5,7 @@ class _CalendarHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = LocationHistoryTheme.of(context);
+    final theme = WebfabrikTheme.of(context);
 
     return BlocBuilder<DecenniallyCalendarCubit, DecenniallyCalendarState>(
       builder: (context, decenniallyCalendarState) {

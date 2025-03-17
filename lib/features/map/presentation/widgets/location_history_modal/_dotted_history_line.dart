@@ -5,7 +5,7 @@ class _DottedHistoryLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
     return SizedBox(
       height: 120,
       child: Padding(

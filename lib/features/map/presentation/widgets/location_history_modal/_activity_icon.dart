@@ -7,7 +7,7 @@ class _ActivityIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
     final IconData icon = getIcon(type);
     return Icon(
       icon,

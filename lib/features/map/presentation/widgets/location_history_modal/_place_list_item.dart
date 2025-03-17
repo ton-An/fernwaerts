@@ -13,7 +13,7 @@ class _PlaceListItem extends StatelessWidget {
       Localizations.localeOf(context).languageCode,
     );
 
-    final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [

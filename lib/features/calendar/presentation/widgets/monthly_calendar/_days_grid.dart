@@ -233,8 +233,7 @@ class _DaysGrid extends StatelessWidget {
       final bool isCellAboveInRange = cellTypeAbove == _DayCellType.inRange;
       final bool isCellBelowInRange = cellTypeBelow == _DayCellType.inRange;
       if (!isCellAboveInRange || !isCellBelowInRange) {
-        final double borderRadius =
-            LocationHistoryTheme.of(context).radii.small;
+        final double borderRadius = WebfabrikTheme.of(context).radii.small;
         inRangeBorderRadius = BorderRadius.only(
           topLeft: !isCellAboveInRange && isFirstDayCellInRow
               ? Radius.circular(borderRadius)

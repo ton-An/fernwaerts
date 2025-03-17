@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:location_history/core/theme/location_history_theme.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_state.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_expansion_cubit/calendar_expansion_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_expansion_cubit/calendar_expansion_state.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_date_button.dart';
 part '_switch.dart';
@@ -19,11 +19,11 @@ class CalendarStepper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
     return ClipRRect(
       borderRadius:
-          BorderRadius.circular(LocationHistoryTheme.of(context).radii.medium),
+          BorderRadius.circular(WebfabrikTheme.of(context).radii.medium),
       child: BackdropFilter(
         filter: theme.misc.blurFilter,
         child: Container(

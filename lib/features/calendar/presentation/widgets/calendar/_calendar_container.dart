@@ -7,7 +7,7 @@ class _CalendarContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
     return ClipRRect(
       borderRadius: BorderRadius.circular(theme.radii.medium),
       child: BackdropFilter(

@@ -9,7 +9,7 @@ class _WeekNumberCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = LocationHistoryTheme.of(context);
+    final theme = WebfabrikTheme.of(context);
 
     return Center(
       child: Text(

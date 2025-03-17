@@ -3,9 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
-import 'package:location_history/core/theme/location_history_theme.dart';
-import 'package:location_history/core/widgets/custom_segmented_control.dart';
-import 'package:location_history/core/widgets/gaps/gaps.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_type_state.dart';
 import 'package:location_history/features/calendar/presentation/cubits/decennially_calendar_cubit/decennially_calendar_cubit.dart';
@@ -17,6 +14,7 @@ import 'package:location_history/features/calendar/presentation/cubits/yearly_ca
 import 'package:location_history/features/calendar/presentation/widgets/decennially_year_calendar/decennially_year_calendar.dart';
 import 'package:location_history/features/calendar/presentation/widgets/monthly_calendar/monthly_calendar.dart';
 import 'package:location_history/features/calendar/presentation/widgets/yearly_calendar/yearly_calendar.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_calendar_container.dart';
 part '_calendar_header.dart';
@@ -53,7 +51,7 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
-    final LocationHistoryThemeData theme = LocationHistoryTheme.of(context);
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
     return BlocConsumer<CalendarSelectionTypeCubit, CalendarSelectionTypeState>(
         listener: (context, selectionTypeState) {},
         builder: (context, selectionTypeState) {
