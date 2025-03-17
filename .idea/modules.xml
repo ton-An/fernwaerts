@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/location_history.iml" filepath="$PROJECT_DIR$/location_history.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/location_history_android.iml" filepath="$PROJECT_DIR$/android/location_history_android.iml" />
+    </modules>
+  </component>
+</project>
