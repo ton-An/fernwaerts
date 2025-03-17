@@ -7,10 +7,7 @@ import 'package:location_history/features/in_app_notification/presentation/widge
 /// __In App Notification Listener__ manages the overlay for [InAppNotification]s and
 /// works in conjunction with [InAppNotificationCubit]
 class InAppNotificationListener extends StatelessWidget {
-  const InAppNotificationListener({
-    super.key,
-    required this.child,
-  });
+  const InAppNotificationListener({super.key, required this.child});
 
   final Widget child;
 
@@ -21,14 +18,12 @@ class InAppNotificationListener extends StatelessWidget {
         if (state is InAppNotificationInitiating) {
           final OverlayEntry overlayEntry = OverlayEntry(
             builder: (context) {
-              return InAppNotification(
-                failure: state.failure,
-              );
+              return InAppNotification(failure: state.failure);
             },
           );
           context.read<InAppNotificationCubit>().deliverNotification(
-                overlayEntry: overlayEntry,
-              );
+            overlayEntry: overlayEntry,
+          );
         }
 
         if (state is InAppNotificationDelivering) {

@@ -12,7 +12,8 @@ part of 'monthly_calendar_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 /// @nodoc
 mixin _$MonthlyCalendarState {
@@ -27,16 +28,19 @@ mixin _$MonthlyCalendarState {
 
 /// @nodoc
 abstract class $MonthlyCalendarStateCopyWith<$Res> {
-  factory $MonthlyCalendarStateCopyWith(MonthlyCalendarState value,
-          $Res Function(MonthlyCalendarState) then) =
-      _$MonthlyCalendarStateCopyWithImpl<$Res, MonthlyCalendarState>;
+  factory $MonthlyCalendarStateCopyWith(
+    MonthlyCalendarState value,
+    $Res Function(MonthlyCalendarState) then,
+  ) = _$MonthlyCalendarStateCopyWithImpl<$Res, MonthlyCalendarState>;
   @useResult
   $Res call({DateTime focusedMonth});
 }
 
 /// @nodoc
-class _$MonthlyCalendarStateCopyWithImpl<$Res,
-        $Val extends MonthlyCalendarState>
+class _$MonthlyCalendarStateCopyWithImpl<
+  $Res,
+  $Val extends MonthlyCalendarState
+>
     implements $MonthlyCalendarStateCopyWith<$Res> {
   _$MonthlyCalendarStateCopyWithImpl(this._value, this._then);
 
@@ -49,24 +53,27 @@ class _$MonthlyCalendarStateCopyWithImpl<$Res,
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? focusedMonth = null,
-  }) {
-    return _then(_value.copyWith(
-      focusedMonth: null == focusedMonth
-          ? _value.focusedMonth
-          : focusedMonth // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-    ) as $Val);
+  $Res call({Object? focusedMonth = null}) {
+    return _then(
+      _value.copyWith(
+            focusedMonth:
+                null == focusedMonth
+                    ? _value.focusedMonth
+                    : focusedMonth // ignore: cast_nullable_to_non_nullable
+                        as DateTime,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$MonthlyCalendarStateImplCopyWith<$Res>
     implements $MonthlyCalendarStateCopyWith<$Res> {
-  factory _$$MonthlyCalendarStateImplCopyWith(_$MonthlyCalendarStateImpl value,
-          $Res Function(_$MonthlyCalendarStateImpl) then) =
-      __$$MonthlyCalendarStateImplCopyWithImpl<$Res>;
+  factory _$$MonthlyCalendarStateImplCopyWith(
+    _$MonthlyCalendarStateImpl value,
+    $Res Function(_$MonthlyCalendarStateImpl) then,
+  ) = __$$MonthlyCalendarStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({DateTime focusedMonth});
@@ -76,23 +83,25 @@ abstract class _$$MonthlyCalendarStateImplCopyWith<$Res>
 class __$$MonthlyCalendarStateImplCopyWithImpl<$Res>
     extends _$MonthlyCalendarStateCopyWithImpl<$Res, _$MonthlyCalendarStateImpl>
     implements _$$MonthlyCalendarStateImplCopyWith<$Res> {
-  __$$MonthlyCalendarStateImplCopyWithImpl(_$MonthlyCalendarStateImpl _value,
-      $Res Function(_$MonthlyCalendarStateImpl) _then)
-      : super(_value, _then);
+  __$$MonthlyCalendarStateImplCopyWithImpl(
+    _$MonthlyCalendarStateImpl _value,
+    $Res Function(_$MonthlyCalendarStateImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of MonthlyCalendarState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? focusedMonth = null,
-  }) {
-    return _then(_$MonthlyCalendarStateImpl(
-      focusedMonth: null == focusedMonth
-          ? _value.focusedMonth
-          : focusedMonth // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-    ));
+  $Res call({Object? focusedMonth = null}) {
+    return _then(
+      _$MonthlyCalendarStateImpl(
+        focusedMonth:
+            null == focusedMonth
+                ? _value.focusedMonth
+                : focusedMonth // ignore: cast_nullable_to_non_nullable
+                    as DateTime,
+      ),
+    );
   }
 }
 
@@ -127,9 +136,11 @@ class _$MonthlyCalendarStateImpl implements _MonthlyCalendarState {
   @override
   @pragma('vm:prefer-inline')
   _$$MonthlyCalendarStateImplCopyWith<_$MonthlyCalendarStateImpl>
-      get copyWith =>
-          __$$MonthlyCalendarStateImplCopyWithImpl<_$MonthlyCalendarStateImpl>(
-              this, _$identity);
+  get copyWith =>
+      __$$MonthlyCalendarStateImplCopyWithImpl<_$MonthlyCalendarStateImpl>(
+        this,
+        _$identity,
+      );
 }
 
 abstract class _MonthlyCalendarState implements MonthlyCalendarState {
@@ -144,5 +155,5 @@ abstract class _MonthlyCalendarState implements MonthlyCalendarState {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$MonthlyCalendarStateImplCopyWith<_$MonthlyCalendarStateImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  get copyWith => throw _privateConstructorUsedError;
 }

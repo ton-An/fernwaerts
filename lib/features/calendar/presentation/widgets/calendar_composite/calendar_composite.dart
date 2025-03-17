@@ -122,24 +122,25 @@ class _CalendarCompositeState extends State<CalendarComposite>
                   context.read<CalendarDateSelectionCubit>().hasMovedRange;
 
               if (hasMovedRange) {
-                final DateTime? selectionStart =
-                    _getStartDateOfSelection(context);
+                final DateTime? selectionStart = _getStartDateOfSelection(
+                  context,
+                );
 
                 if (selectionStart != null) {
                   if (selectionTypeState is CalendarRangeSelection ||
                       selectionTypeState is CalendarDaySelection ||
                       selectionTypeState is CalendarWeekSelection) {
-                    context
-                        .read<MonthlyCalendarCubit>()
-                        .showMonth(selectionStart);
+                    context.read<MonthlyCalendarCubit>().showMonth(
+                      selectionStart,
+                    );
                   } else if (selectionTypeState is CalendarMonthSelection) {
-                    context
-                        .read<YearlyCalendarCubit>()
-                        .showYear(selectionStart);
+                    context.read<YearlyCalendarCubit>().showYear(
+                      selectionStart,
+                    );
                   } else if (selectionTypeState is CalendarYearSelection) {
-                    context
-                        .read<DecenniallyCalendarCubit>()
-                        .showDecade(selectionStart);
+                    context.read<DecenniallyCalendarCubit>().showDecade(
+                      selectionStart,
+                    );
                   }
                 }
               }
@@ -149,7 +150,8 @@ class _CalendarCompositeState extends State<CalendarComposite>
           builder: (context, state) {
             return ClipRRect(
               borderRadius: BorderRadius.circular(
-                  WebfabrikTheme.of(context).radii.medium),
+                WebfabrikTheme.of(context).radii.medium,
+              ),
               child: _LayoutRenderObjectWidget(
                 itemSpacing: WebfabrikTheme.of(context).spacing.medium,
                 calendarOffset: _translateAnimation.value,
@@ -159,10 +161,7 @@ class _CalendarCompositeState extends State<CalendarComposite>
                           AnimationStatus.dismissed &&
                       _fadeAnimationController.status ==
                           AnimationStatus.dismissed))
-                    Opacity(
-                      opacity: _fadeAnimation.value,
-                      child: Calendar(),
-                    ),
+                    Opacity(opacity: _fadeAnimation.value, child: Calendar()),
                 ],
               ),
             );

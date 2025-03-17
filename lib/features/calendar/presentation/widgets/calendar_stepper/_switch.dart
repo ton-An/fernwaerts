@@ -1,10 +1,7 @@
 part of 'calendar_stepper.dart';
 
 class _Switch extends StatefulWidget {
-  const _Switch({
-    required this.icon,
-    required this.onPressed,
-  });
+  const _Switch({required this.icon, required this.onPressed});
 
   final IconData icon;
   final VoidCallback onPressed;
@@ -63,14 +60,10 @@ class _SwitchState extends State<_Switch> with SingleTickerProviderStateMixin {
           decoration: BoxDecoration(
             color: theme.colors.text.withAlpha(_fadeAnimation.value),
             borderRadius: BorderRadius.horizontal(
-                left: Radius.circular(
-              theme.radii.medium,
-            )),
+              left: Radius.circular(theme.radii.medium),
+            ),
           ),
-          child: Icon(
-            widget.icon,
-            color: theme.colors.text,
-          ),
+          child: Icon(widget.icon, color: theme.colors.text),
         ),
       ),
     );

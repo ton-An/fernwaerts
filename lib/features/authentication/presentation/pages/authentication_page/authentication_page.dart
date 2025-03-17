@@ -19,10 +19,7 @@ part '_sign_in_form.dart';
 part '_video_background.dart';
 part '_welcome.dart';
 
-enum AuthenticationFormType {
-  logIn,
-  adminSignUp,
-}
+enum AuthenticationFormType { logIn, adminSignUp }
 
 class AuthenticationPage extends StatefulWidget {
   const AuthenticationPage({super.key});
@@ -47,8 +44,11 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   }
 
   void _animateToPage(int pageIndex) {
-    _carouselController.animateToPage(pageIndex,
-        duration: Duration(milliseconds: 420), curve: Curves.easeInOut);
+    _carouselController.animateToPage(
+      pageIndex,
+      duration: Duration(milliseconds: 420),
+      curve: Curves.easeInOut,
+    );
   }
 
   @override
@@ -79,9 +79,9 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         }
 
         if (state is AuthenticationError) {
-          context
-              .read<InAppNotificationCubit>()
-              .sendFailureNotification(state.failure);
+          context.read<InAppNotificationCubit>().sendFailureNotification(
+            state.failure,
+          );
         }
       },
       child: Stack(
@@ -120,7 +120,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

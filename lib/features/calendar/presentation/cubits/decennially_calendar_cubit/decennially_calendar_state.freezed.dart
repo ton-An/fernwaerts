@@ -12,7 +12,8 @@ part of 'decennially_calendar_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 /// @nodoc
 mixin _$DecenniallyCalendarState {
@@ -28,16 +29,19 @@ mixin _$DecenniallyCalendarState {
 
 /// @nodoc
 abstract class $DecenniallyCalendarStateCopyWith<$Res> {
-  factory $DecenniallyCalendarStateCopyWith(DecenniallyCalendarState value,
-          $Res Function(DecenniallyCalendarState) then) =
-      _$DecenniallyCalendarStateCopyWithImpl<$Res, DecenniallyCalendarState>;
+  factory $DecenniallyCalendarStateCopyWith(
+    DecenniallyCalendarState value,
+    $Res Function(DecenniallyCalendarState) then,
+  ) = _$DecenniallyCalendarStateCopyWithImpl<$Res, DecenniallyCalendarState>;
   @useResult
   $Res call({DateTime startYear, DateTime endYear});
 }
 
 /// @nodoc
-class _$DecenniallyCalendarStateCopyWithImpl<$Res,
-        $Val extends DecenniallyCalendarState>
+class _$DecenniallyCalendarStateCopyWithImpl<
+  $Res,
+  $Val extends DecenniallyCalendarState
+>
     implements $DecenniallyCalendarStateCopyWith<$Res> {
   _$DecenniallyCalendarStateCopyWithImpl(this._value, this._then);
 
@@ -50,20 +54,22 @@ class _$DecenniallyCalendarStateCopyWithImpl<$Res,
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? startYear = null,
-    Object? endYear = null,
-  }) {
-    return _then(_value.copyWith(
-      startYear: null == startYear
-          ? _value.startYear
-          : startYear // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      endYear: null == endYear
-          ? _value.endYear
-          : endYear // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-    ) as $Val);
+  $Res call({Object? startYear = null, Object? endYear = null}) {
+    return _then(
+      _value.copyWith(
+            startYear:
+                null == startYear
+                    ? _value.startYear
+                    : startYear // ignore: cast_nullable_to_non_nullable
+                        as DateTime,
+            endYear:
+                null == endYear
+                    ? _value.endYear
+                    : endYear // ignore: cast_nullable_to_non_nullable
+                        as DateTime,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -71,9 +77,9 @@ class _$DecenniallyCalendarStateCopyWithImpl<$Res,
 abstract class _$$DecenniallyCalendarStateImplCopyWith<$Res>
     implements $DecenniallyCalendarStateCopyWith<$Res> {
   factory _$$DecenniallyCalendarStateImplCopyWith(
-          _$DecenniallyCalendarStateImpl value,
-          $Res Function(_$DecenniallyCalendarStateImpl) then) =
-      __$$DecenniallyCalendarStateImplCopyWithImpl<$Res>;
+    _$DecenniallyCalendarStateImpl value,
+    $Res Function(_$DecenniallyCalendarStateImpl) then,
+  ) = __$$DecenniallyCalendarStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({DateTime startYear, DateTime endYear});
@@ -81,40 +87,46 @@ abstract class _$$DecenniallyCalendarStateImplCopyWith<$Res>
 
 /// @nodoc
 class __$$DecenniallyCalendarStateImplCopyWithImpl<$Res>
-    extends _$DecenniallyCalendarStateCopyWithImpl<$Res,
-        _$DecenniallyCalendarStateImpl>
+    extends
+        _$DecenniallyCalendarStateCopyWithImpl<
+          $Res,
+          _$DecenniallyCalendarStateImpl
+        >
     implements _$$DecenniallyCalendarStateImplCopyWith<$Res> {
   __$$DecenniallyCalendarStateImplCopyWithImpl(
-      _$DecenniallyCalendarStateImpl _value,
-      $Res Function(_$DecenniallyCalendarStateImpl) _then)
-      : super(_value, _then);
+    _$DecenniallyCalendarStateImpl _value,
+    $Res Function(_$DecenniallyCalendarStateImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of DecenniallyCalendarState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? startYear = null,
-    Object? endYear = null,
-  }) {
-    return _then(_$DecenniallyCalendarStateImpl(
-      startYear: null == startYear
-          ? _value.startYear
-          : startYear // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      endYear: null == endYear
-          ? _value.endYear
-          : endYear // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-    ));
+  $Res call({Object? startYear = null, Object? endYear = null}) {
+    return _then(
+      _$DecenniallyCalendarStateImpl(
+        startYear:
+            null == startYear
+                ? _value.startYear
+                : startYear // ignore: cast_nullable_to_non_nullable
+                    as DateTime,
+        endYear:
+            null == endYear
+                ? _value.endYear
+                : endYear // ignore: cast_nullable_to_non_nullable
+                    as DateTime,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 class _$DecenniallyCalendarStateImpl implements _DecenniallyCalendarState {
-  const _$DecenniallyCalendarStateImpl(
-      {required this.startYear, required this.endYear});
+  const _$DecenniallyCalendarStateImpl({
+    required this.startYear,
+    required this.endYear,
+  });
 
   @override
   final DateTime startYear;
@@ -145,14 +157,16 @@ class _$DecenniallyCalendarStateImpl implements _DecenniallyCalendarState {
   @override
   @pragma('vm:prefer-inline')
   _$$DecenniallyCalendarStateImplCopyWith<_$DecenniallyCalendarStateImpl>
-      get copyWith => __$$DecenniallyCalendarStateImplCopyWithImpl<
-          _$DecenniallyCalendarStateImpl>(this, _$identity);
+  get copyWith => __$$DecenniallyCalendarStateImplCopyWithImpl<
+    _$DecenniallyCalendarStateImpl
+  >(this, _$identity);
 }
 
 abstract class _DecenniallyCalendarState implements DecenniallyCalendarState {
-  const factory _DecenniallyCalendarState(
-      {required final DateTime startYear,
-      required final DateTime endYear}) = _$DecenniallyCalendarStateImpl;
+  const factory _DecenniallyCalendarState({
+    required final DateTime startYear,
+    required final DateTime endYear,
+  }) = _$DecenniallyCalendarStateImpl;
 
   @override
   DateTime get startYear;
@@ -164,5 +178,5 @@ abstract class _DecenniallyCalendarState implements DecenniallyCalendarState {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$DecenniallyCalendarStateImplCopyWith<_$DecenniallyCalendarStateImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  get copyWith => throw _privateConstructorUsedError;
 }

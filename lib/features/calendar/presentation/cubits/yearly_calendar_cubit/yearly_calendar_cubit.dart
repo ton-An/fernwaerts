@@ -3,45 +3,29 @@ import 'package:location_history/features/calendar/presentation/cubits/yearly_ca
 
 class YearlyCalendarCubit extends Cubit<YearlyCalendarState> {
   YearlyCalendarCubit()
-      : super(YearlyCalendarState(focusedYear: DateTime.now()));
+    : super(YearlyCalendarState(focusedYear: DateTime.now()));
 
   void showPreviousYear() {
     emit(
-      YearlyCalendarState(
-        focusedYear: DateTime(
-          state.focusedYear.year - 1,
-        ),
-      ),
+      YearlyCalendarState(focusedYear: DateTime(state.focusedYear.year - 1)),
     );
   }
 
   void showNextYear() {
     emit(
-      YearlyCalendarState(
-        focusedYear: DateTime(
-          state.focusedYear.year + 1,
-        ),
-      ),
+      YearlyCalendarState(focusedYear: DateTime(state.focusedYear.year + 1)),
     );
   }
 
   void showYearAtOffset(int offset) {
     emit(
       YearlyCalendarState(
-        focusedYear: DateTime(
-          state.focusedYear.year + offset,
-        ),
+        focusedYear: DateTime(state.focusedYear.year + offset),
       ),
     );
   }
 
   void showYear(DateTime year) {
-    emit(
-      YearlyCalendarState(
-        focusedYear: DateTime(
-          year.year,
-        ),
-      ),
-    );
+    emit(YearlyCalendarState(focusedYear: DateTime(year.year)));
   }
 }

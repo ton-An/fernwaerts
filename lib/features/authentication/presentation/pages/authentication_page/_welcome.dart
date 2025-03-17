@@ -41,9 +41,7 @@ class _Welcome extends StatelessWidget {
           Text(
             AppLocalizations.of(context)!.appDescription,
             textAlign: TextAlign.center,
-            style: theme.text.body.copyWith(
-              height: 1.45,
-            ),
+            style: theme.text.body.copyWith(height: 1.45),
           ),
           XXMediumGap(),
           CustomCupertinoTextButton(

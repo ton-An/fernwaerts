@@ -1,9 +1,7 @@
 part of in_app_notification;
 
 class _Decoration extends StatelessWidget {
-  const _Decoration({
-    required this.child,
-  });
+  const _Decoration({required this.child});
 
   final Widget child;
 
@@ -12,9 +10,7 @@ class _Decoration extends StatelessWidget {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
     return ClipRRect(
-      borderRadius: BorderRadius.circular(
-        theme.radii.medium,
-      ),
+      borderRadius: BorderRadius.circular(theme.radii.medium),
       child: BackdropFilter(
         filter: theme.misc.blurFilter,
         child: Container(

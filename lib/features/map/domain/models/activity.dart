@@ -4,12 +4,7 @@ import 'package:location_history/features/map/domain/models/location_history_ite
 
 part 'activity.freezed.dart';
 
-enum ActivityType {
-  running,
-  cycling,
-  walking,
-  driving,
-}
+enum ActivityType { running, cycling, walking, driving }
 
 @freezed
 class Activity extends LocationHistoryItem with _$Activity {

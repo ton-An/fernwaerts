@@ -103,8 +103,9 @@ class _DateButtonState extends State<_DateButton>
   }
 
   TextStyle _getLabelStyle(WebfabrikThemeData theme) {
-    final TextStyle largeLabelStyle =
-        theme.text.title3.copyWith(fontWeight: FontWeight.w600);
+    final TextStyle largeLabelStyle = theme.text.title3.copyWith(
+      fontWeight: FontWeight.w600,
+    );
 
     switch (_labelSize) {
       case _LabelSize.small:
@@ -121,18 +122,23 @@ class _DateButtonState extends State<_DateButton>
   }
 
   String _getDateString(
-      BuildContext context, CalendarDateSelectionState dateSelectionState) {
+    BuildContext context,
+    CalendarDateSelectionState dateSelectionState,
+  ) {
     if (dateSelectionState is CalendarDaySelected) {
       _labelSize = _LabelSize.large;
 
-      return DateFormat("d MMM y", Localizations.localeOf(context).languageCode)
-          .format(dateSelectionState.selectedDate);
+      return DateFormat(
+        "d MMM y",
+        Localizations.localeOf(context).languageCode,
+      ).format(dateSelectionState.selectedDate);
     }
 
     if (dateSelectionState is CalendarYearSelected) {
       _labelSize = _LabelSize.large;
-      return DateFormat.y(Localizations.localeOf(context).languageCode)
-          .format(dateSelectionState.startDate!);
+      return DateFormat.y(
+        Localizations.localeOf(context).languageCode,
+      ).format(dateSelectionState.startDate!);
     }
 
     if (dateSelectionState is CalendarRangeSelected) {
@@ -142,9 +148,9 @@ class _DateButtonState extends State<_DateButton>
               dateSelectionState.startDate != null) {
         _labelSize = _LabelSize.large;
         return DateFormat(
-                "d MMM y", Localizations.localeOf(context).languageCode)
-            .format(
-                dateSelectionState.startDate ?? dateSelectionState.endDate!);
+          "d MMM y",
+          Localizations.localeOf(context).languageCode,
+        ).format(dateSelectionState.startDate ?? dateSelectionState.endDate!);
       }
 
       if (dateSelectionState.startDate != null &&
@@ -155,13 +161,16 @@ class _DateButtonState extends State<_DateButton>
               dateSelectionState.endDate!.month) {
             if (dateSelectionState.startDate!.day == 1 &&
                 dateSelectionState.endDate!.day ==
-                    DateTime(dateSelectionState.startDate!.year,
-                            dateSelectionState.startDate!.month + 1, 0)
-                        .day) {
+                    DateTime(
+                      dateSelectionState.startDate!.year,
+                      dateSelectionState.startDate!.month + 1,
+                      0,
+                    ).day) {
               _labelSize = _LabelSize.large;
               return DateFormat(
-                      "MMMM y", Localizations.localeOf(context).languageCode)
-                  .format(dateSelectionState.startDate!);
+                "MMMM y",
+                Localizations.localeOf(context).languageCode,
+              ).format(dateSelectionState.startDate!);
             }
             _labelSize = _LabelSize.large;
             return "${DateFormat("d", Localizations.localeOf(context).languageCode).format(dateSelectionState.startDate!)} - ${DateFormat("d MMM y", Localizations.localeOf(context).languageCode).format(dateSelectionState.endDate!)}";

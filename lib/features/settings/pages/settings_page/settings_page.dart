@@ -23,9 +23,7 @@ class SettingsPage extends StatelessWidget {
         children: [
           Expanded(
             child: EdgeFade(
-              topOptions: EdgeFadeOptions(
-                enabled: false,
-              ),
+              topOptions: EdgeFadeOptions(enabled: false),
               child: ListView(
                 padding: EdgeInsets.only(
                   left: theme.spacing.medium,
@@ -34,20 +32,14 @@ class SettingsPage extends StatelessWidget {
                   bottom: theme.spacing.xMedium,
                 ),
                 children: [
-                  _SectionTitle(
-                    title: AppLocalizations.of(context)!.general,
-                  ),
+                  _SectionTitle(title: AppLocalizations.of(context)!.general),
                   _SubPageLink(),
                   _SubPageLink(),
                   _SubPageLink(),
-                  _SectionTitle(
-                    title: AppLocalizations.of(context)!.account,
-                  ),
+                  _SectionTitle(title: AppLocalizations.of(context)!.account),
                   _SubPageLink(),
                   _SubPageLink(),
-                  _SectionTitle(
-                    title: AppLocalizations.of(context)!.admin,
-                  ),
+                  _SectionTitle(title: AppLocalizations.of(context)!.admin),
                   _SubPageLink(),
                   _SubPageLink(),
                 ],

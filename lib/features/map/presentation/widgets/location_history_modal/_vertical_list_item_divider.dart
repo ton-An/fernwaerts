@@ -11,8 +11,9 @@ class _VerticalListItemDivider extends StatelessWidget {
       width: 3,
       height: 50,
       decoration: BoxDecoration(
-          color: theme.colors.translucentBackgroundContrast,
-          borderRadius: BorderRadius.circular(1)),
+        color: theme.colors.translucentBackgroundContrast,
+        borderRadius: BorderRadius.circular(1),
+      ),
     );
   }
 }

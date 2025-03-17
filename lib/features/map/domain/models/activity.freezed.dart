@@ -12,7 +12,8 @@ part of 'activity.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 /// @nodoc
 mixin _$Activity {
@@ -36,14 +37,15 @@ abstract class $ActivityCopyWith<$Res> {
   factory $ActivityCopyWith(Activity value, $Res Function(Activity) then) =
       _$ActivityCopyWithImpl<$Res, Activity>;
   @useResult
-  $Res call(
-      {String id,
-      DateTime startTime,
-      DateTime endTime,
-      ActivityType type,
-      Coordinate startCoordinate,
-      Coordinate endCoordinate,
-      double distance});
+  $Res call({
+    String id,
+    DateTime startTime,
+    DateTime endTime,
+    ActivityType type,
+    Coordinate startCoordinate,
+    Coordinate endCoordinate,
+    double distance,
+  });
 
   $CoordinateCopyWith<$Res> get startCoordinate;
   $CoordinateCopyWith<$Res> get endCoordinate;
@@ -72,36 +74,46 @@ class _$ActivityCopyWithImpl<$Res, $Val extends Activity>
     Object? endCoordinate = null,
     Object? distance = null,
   }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      startTime: null == startTime
-          ? _value.startTime
-          : startTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      endTime: null == endTime
-          ? _value.endTime
-          : endTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as ActivityType,
-      startCoordinate: null == startCoordinate
-          ? _value.startCoordinate
-          : startCoordinate // ignore: cast_nullable_to_non_nullable
-              as Coordinate,
-      endCoordinate: null == endCoordinate
-          ? _value.endCoordinate
-          : endCoordinate // ignore: cast_nullable_to_non_nullable
-              as Coordinate,
-      distance: null == distance
-          ? _value.distance
-          : distance // ignore: cast_nullable_to_non_nullable
-              as double,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            id:
+                null == id
+                    ? _value.id
+                    : id // ignore: cast_nullable_to_non_nullable
+                        as String,
+            startTime:
+                null == startTime
+                    ? _value.startTime
+                    : startTime // ignore: cast_nullable_to_non_nullable
+                        as DateTime,
+            endTime:
+                null == endTime
+                    ? _value.endTime
+                    : endTime // ignore: cast_nullable_to_non_nullable
+                        as DateTime,
+            type:
+                null == type
+                    ? _value.type
+                    : type // ignore: cast_nullable_to_non_nullable
+                        as ActivityType,
+            startCoordinate:
+                null == startCoordinate
+                    ? _value.startCoordinate
+                    : startCoordinate // ignore: cast_nullable_to_non_nullable
+                        as Coordinate,
+            endCoordinate:
+                null == endCoordinate
+                    ? _value.endCoordinate
+                    : endCoordinate // ignore: cast_nullable_to_non_nullable
+                        as Coordinate,
+            distance:
+                null == distance
+                    ? _value.distance
+                    : distance // ignore: cast_nullable_to_non_nullable
+                        as double,
+          )
+          as $Val,
+    );
   }
 
   /// Create a copy of Activity
@@ -129,18 +141,20 @@ class _$ActivityCopyWithImpl<$Res, $Val extends Activity>
 abstract class _$$ActivityImplCopyWith<$Res>
     implements $ActivityCopyWith<$Res> {
   factory _$$ActivityImplCopyWith(
-          _$ActivityImpl value, $Res Function(_$ActivityImpl) then) =
-      __$$ActivityImplCopyWithImpl<$Res>;
+    _$ActivityImpl value,
+    $Res Function(_$ActivityImpl) then,
+  ) = __$$ActivityImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String id,
-      DateTime startTime,
-      DateTime endTime,
-      ActivityType type,
-      Coordinate startCoordinate,
-      Coordinate endCoordinate,
-      double distance});
+  $Res call({
+    String id,
+    DateTime startTime,
+    DateTime endTime,
+    ActivityType type,
+    Coordinate startCoordinate,
+    Coordinate endCoordinate,
+    double distance,
+  });
 
   @override
   $CoordinateCopyWith<$Res> get startCoordinate;
@@ -153,8 +167,9 @@ class __$$ActivityImplCopyWithImpl<$Res>
     extends _$ActivityCopyWithImpl<$Res, _$ActivityImpl>
     implements _$$ActivityImplCopyWith<$Res> {
   __$$ActivityImplCopyWithImpl(
-      _$ActivityImpl _value, $Res Function(_$ActivityImpl) _then)
-      : super(_value, _then);
+    _$ActivityImpl _value,
+    $Res Function(_$ActivityImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of Activity
   /// with the given fields replaced by the non-null parameter values.
@@ -169,50 +184,60 @@ class __$$ActivityImplCopyWithImpl<$Res>
     Object? endCoordinate = null,
     Object? distance = null,
   }) {
-    return _then(_$ActivityImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      startTime: null == startTime
-          ? _value.startTime
-          : startTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      endTime: null == endTime
-          ? _value.endTime
-          : endTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as ActivityType,
-      startCoordinate: null == startCoordinate
-          ? _value.startCoordinate
-          : startCoordinate // ignore: cast_nullable_to_non_nullable
-              as Coordinate,
-      endCoordinate: null == endCoordinate
-          ? _value.endCoordinate
-          : endCoordinate // ignore: cast_nullable_to_non_nullable
-              as Coordinate,
-      distance: null == distance
-          ? _value.distance
-          : distance // ignore: cast_nullable_to_non_nullable
-              as double,
-    ));
+    return _then(
+      _$ActivityImpl(
+        id:
+            null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                    as String,
+        startTime:
+            null == startTime
+                ? _value.startTime
+                : startTime // ignore: cast_nullable_to_non_nullable
+                    as DateTime,
+        endTime:
+            null == endTime
+                ? _value.endTime
+                : endTime // ignore: cast_nullable_to_non_nullable
+                    as DateTime,
+        type:
+            null == type
+                ? _value.type
+                : type // ignore: cast_nullable_to_non_nullable
+                    as ActivityType,
+        startCoordinate:
+            null == startCoordinate
+                ? _value.startCoordinate
+                : startCoordinate // ignore: cast_nullable_to_non_nullable
+                    as Coordinate,
+        endCoordinate:
+            null == endCoordinate
+                ? _value.endCoordinate
+                : endCoordinate // ignore: cast_nullable_to_non_nullable
+                    as Coordinate,
+        distance:
+            null == distance
+                ? _value.distance
+                : distance // ignore: cast_nullable_to_non_nullable
+                    as double,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 class _$ActivityImpl implements _Activity {
-  const _$ActivityImpl(
-      {required this.id,
-      required this.startTime,
-      required this.endTime,
-      required this.type,
-      required this.startCoordinate,
-      required this.endCoordinate,
-      required this.distance});
+  const _$ActivityImpl({
+    required this.id,
+    required this.startTime,
+    required this.endTime,
+    required this.type,
+    required this.startCoordinate,
+    required this.endCoordinate,
+    required this.distance,
+  });
 
   @override
   final String id;
@@ -253,8 +278,16 @@ class _$ActivityImpl implements _Activity {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, startTime, endTime, type,
-      startCoordinate, endCoordinate, distance);
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    startTime,
+    endTime,
+    type,
+    startCoordinate,
+    endCoordinate,
+    distance,
+  );
 
   /// Create a copy of Activity
   /// with the given fields replaced by the non-null parameter values.
@@ -266,14 +299,15 @@ class _$ActivityImpl implements _Activity {
 }
 
 abstract class _Activity implements Activity {
-  const factory _Activity(
-      {required final String id,
-      required final DateTime startTime,
-      required final DateTime endTime,
-      required final ActivityType type,
-      required final Coordinate startCoordinate,
-      required final Coordinate endCoordinate,
-      required final double distance}) = _$ActivityImpl;
+  const factory _Activity({
+    required final String id,
+    required final DateTime startTime,
+    required final DateTime endTime,
+    required final ActivityType type,
+    required final Coordinate startCoordinate,
+    required final Coordinate endCoordinate,
+    required final double distance,
+  }) = _$ActivityImpl;
 
   @override
   String get id;

@@ -36,9 +36,7 @@ class _Footer extends StatelessWidget {
           ),
           Text(
             AppLocalizations.of(context)!.settings,
-            style: theme.text.title1.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+            style: theme.text.title1.copyWith(fontWeight: FontWeight.w600),
           ),
           SizedBox(width: 28),
         ],

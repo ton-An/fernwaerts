@@ -12,7 +12,8 @@ part of 'place.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 /// @nodoc
 mixin _$Place {
@@ -35,14 +36,15 @@ abstract class $PlaceCopyWith<$Res> {
   factory $PlaceCopyWith(Place value, $Res Function(Place) then) =
       _$PlaceCopyWithImpl<$Res, Place>;
   @useResult
-  $Res call(
-      {String id,
-      DateTime startTime,
-      DateTime endTime,
-      String name,
-      PlaceType type,
-      Coordinate coordinate,
-      Address address});
+  $Res call({
+    String id,
+    DateTime startTime,
+    DateTime endTime,
+    String name,
+    PlaceType type,
+    Coordinate coordinate,
+    Address address,
+  });
 
   $CoordinateCopyWith<$Res> get coordinate;
   $AddressCopyWith<$Res> get address;
@@ -71,36 +73,46 @@ class _$PlaceCopyWithImpl<$Res, $Val extends Place>
     Object? coordinate = null,
     Object? address = null,
   }) {
-    return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      startTime: null == startTime
-          ? _value.startTime
-          : startTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      endTime: null == endTime
-          ? _value.endTime
-          : endTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as PlaceType,
-      coordinate: null == coordinate
-          ? _value.coordinate
-          : coordinate // ignore: cast_nullable_to_non_nullable
-              as Coordinate,
-      address: null == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
-              as Address,
-    ) as $Val);
+    return _then(
+      _value.copyWith(
+            id:
+                null == id
+                    ? _value.id
+                    : id // ignore: cast_nullable_to_non_nullable
+                        as String,
+            startTime:
+                null == startTime
+                    ? _value.startTime
+                    : startTime // ignore: cast_nullable_to_non_nullable
+                        as DateTime,
+            endTime:
+                null == endTime
+                    ? _value.endTime
+                    : endTime // ignore: cast_nullable_to_non_nullable
+                        as DateTime,
+            name:
+                null == name
+                    ? _value.name
+                    : name // ignore: cast_nullable_to_non_nullable
+                        as String,
+            type:
+                null == type
+                    ? _value.type
+                    : type // ignore: cast_nullable_to_non_nullable
+                        as PlaceType,
+            coordinate:
+                null == coordinate
+                    ? _value.coordinate
+                    : coordinate // ignore: cast_nullable_to_non_nullable
+                        as Coordinate,
+            address:
+                null == address
+                    ? _value.address
+                    : address // ignore: cast_nullable_to_non_nullable
+                        as Address,
+          )
+          as $Val,
+    );
   }
 
   /// Create a copy of Place
@@ -127,18 +139,20 @@ class _$PlaceCopyWithImpl<$Res, $Val extends Place>
 /// @nodoc
 abstract class _$$PlaceImplCopyWith<$Res> implements $PlaceCopyWith<$Res> {
   factory _$$PlaceImplCopyWith(
-          _$PlaceImpl value, $Res Function(_$PlaceImpl) then) =
-      __$$PlaceImplCopyWithImpl<$Res>;
+    _$PlaceImpl value,
+    $Res Function(_$PlaceImpl) then,
+  ) = __$$PlaceImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call(
-      {String id,
-      DateTime startTime,
-      DateTime endTime,
-      String name,
-      PlaceType type,
-      Coordinate coordinate,
-      Address address});
+  $Res call({
+    String id,
+    DateTime startTime,
+    DateTime endTime,
+    String name,
+    PlaceType type,
+    Coordinate coordinate,
+    Address address,
+  });
 
   @override
   $CoordinateCopyWith<$Res> get coordinate;
@@ -151,8 +165,9 @@ class __$$PlaceImplCopyWithImpl<$Res>
     extends _$PlaceCopyWithImpl<$Res, _$PlaceImpl>
     implements _$$PlaceImplCopyWith<$Res> {
   __$$PlaceImplCopyWithImpl(
-      _$PlaceImpl _value, $Res Function(_$PlaceImpl) _then)
-      : super(_value, _then);
+    _$PlaceImpl _value,
+    $Res Function(_$PlaceImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of Place
   /// with the given fields replaced by the non-null parameter values.
@@ -167,50 +182,60 @@ class __$$PlaceImplCopyWithImpl<$Res>
     Object? coordinate = null,
     Object? address = null,
   }) {
-    return _then(_$PlaceImpl(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      startTime: null == startTime
-          ? _value.startTime
-          : startTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      endTime: null == endTime
-          ? _value.endTime
-          : endTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as PlaceType,
-      coordinate: null == coordinate
-          ? _value.coordinate
-          : coordinate // ignore: cast_nullable_to_non_nullable
-              as Coordinate,
-      address: null == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
-              as Address,
-    ));
+    return _then(
+      _$PlaceImpl(
+        id:
+            null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                    as String,
+        startTime:
+            null == startTime
+                ? _value.startTime
+                : startTime // ignore: cast_nullable_to_non_nullable
+                    as DateTime,
+        endTime:
+            null == endTime
+                ? _value.endTime
+                : endTime // ignore: cast_nullable_to_non_nullable
+                    as DateTime,
+        name:
+            null == name
+                ? _value.name
+                : name // ignore: cast_nullable_to_non_nullable
+                    as String,
+        type:
+            null == type
+                ? _value.type
+                : type // ignore: cast_nullable_to_non_nullable
+                    as PlaceType,
+        coordinate:
+            null == coordinate
+                ? _value.coordinate
+                : coordinate // ignore: cast_nullable_to_non_nullable
+                    as Coordinate,
+        address:
+            null == address
+                ? _value.address
+                : address // ignore: cast_nullable_to_non_nullable
+                    as Address,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 class _$PlaceImpl implements _Place {
-  const _$PlaceImpl(
-      {required this.id,
-      required this.startTime,
-      required this.endTime,
-      required this.name,
-      required this.type,
-      required this.coordinate,
-      required this.address});
+  const _$PlaceImpl({
+    required this.id,
+    required this.startTime,
+    required this.endTime,
+    required this.name,
+    required this.type,
+    required this.coordinate,
+    required this.address,
+  });
 
   @override
   final String id;
@@ -250,7 +275,15 @@ class _$PlaceImpl implements _Place {
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, id, startTime, endTime, name, type, coordinate, address);
+    runtimeType,
+    id,
+    startTime,
+    endTime,
+    name,
+    type,
+    coordinate,
+    address,
+  );
 
   /// Create a copy of Place
   /// with the given fields replaced by the non-null parameter values.
@@ -262,14 +295,15 @@ class _$PlaceImpl implements _Place {
 }
 
 abstract class _Place implements Place {
-  const factory _Place(
-      {required final String id,
-      required final DateTime startTime,
-      required final DateTime endTime,
-      required final String name,
-      required final PlaceType type,
-      required final Coordinate coordinate,
-      required final Address address}) = _$PlaceImpl;
+  const factory _Place({
+    required final String id,
+    required final DateTime startTime,
+    required final DateTime endTime,
+    required final String name,
+    required final PlaceType type,
+    required final Coordinate coordinate,
+    required final Address address,
+  }) = _$PlaceImpl;
 
   @override
   String get id;

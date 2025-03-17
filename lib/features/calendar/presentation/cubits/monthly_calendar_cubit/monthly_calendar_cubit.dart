@@ -3,13 +3,15 @@ import 'package:location_history/features/calendar/presentation/cubits/monthly_c
 
 class MonthlyCalendarCubit extends Cubit<MonthlyCalendarState> {
   MonthlyCalendarCubit()
-      : super(MonthlyCalendarState(focusedMonth: DateTime.now()));
+    : super(MonthlyCalendarState(focusedMonth: DateTime.now()));
 
   void showPreviousMonth() {
     emit(
       MonthlyCalendarState(
-        focusedMonth:
-            DateTime(state.focusedMonth.year, state.focusedMonth.month - 1),
+        focusedMonth: DateTime(
+          state.focusedMonth.year,
+          state.focusedMonth.month - 1,
+        ),
       ),
     );
   }
@@ -17,8 +19,10 @@ class MonthlyCalendarCubit extends Cubit<MonthlyCalendarState> {
   void showNextMonth() {
     emit(
       MonthlyCalendarState(
-        focusedMonth:
-            DateTime(state.focusedMonth.year, state.focusedMonth.month + 1),
+        focusedMonth: DateTime(
+          state.focusedMonth.year,
+          state.focusedMonth.month + 1,
+        ),
       ),
     );
   }
@@ -27,16 +31,14 @@ class MonthlyCalendarCubit extends Cubit<MonthlyCalendarState> {
     emit(
       MonthlyCalendarState(
         focusedMonth: DateTime(
-            state.focusedMonth.year, state.focusedMonth.month + offset),
+          state.focusedMonth.year,
+          state.focusedMonth.month + offset,
+        ),
       ),
     );
   }
 
   void showMonth(DateTime month) {
-    emit(
-      MonthlyCalendarState(
-        focusedMonth: DateTime(month.year, month.month),
-      ),
-    );
+    emit(MonthlyCalendarState(focusedMonth: DateTime(month.year, month.month)));
   }
 }

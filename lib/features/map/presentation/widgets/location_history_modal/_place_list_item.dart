@@ -25,7 +25,7 @@ class _PlaceListItem extends StatelessWidget {
             children: [
               Text(place.name, style: theme.text.headline),
               XTinyGap(),
-              Text(timeFrame, style: theme.text.body)
+              Text(timeFrame, style: theme.text.body),
             ],
           ),
         ),

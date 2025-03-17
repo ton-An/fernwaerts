@@ -34,7 +34,8 @@ class AuthenticationForm extends StatelessWidget {
         left: theme.spacing.xMedium,
         right: theme.spacing.xMedium,
         top: theme.spacing.xxMedium,
-        bottom: MediaQuery.of(context).viewPadding.bottom +
+        bottom:
+            MediaQuery.of(context).viewPadding.bottom +
             MediaQuery.of(context).viewInsets.bottom,
       ),
       child: Column(
@@ -82,9 +83,7 @@ class AuthenticationForm extends StatelessWidget {
                     Text(
                       description,
                       textAlign: TextAlign.center,
-                      style: theme.text.body.copyWith(
-                        height: 1.45,
-                      ),
+                      style: theme.text.body.copyWith(height: 1.45),
                     ),
                     if (hint != null)
                       Text(
@@ -114,9 +113,10 @@ class AuthenticationForm extends StatelessWidget {
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeOut,
             child: SizedBox(
-              height: MediaQuery.of(context).viewInsets.bottom == 0
-                  ? theme.spacing.medium
-                  : 0,
+              height:
+                  MediaQuery.of(context).viewInsets.bottom == 0
+                      ? theme.spacing.medium
+                      : 0,
             ),
           ),
         ],

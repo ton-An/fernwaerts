@@ -27,9 +27,10 @@ class _DayCell extends StatelessWidget {
       builder: (context, selectionTypeState) {
         return GestureDetector(
           onTap: () {
-            context
-                .read<CalendarDateSelectionCubit>()
-                .selectDate(date, selectionTypeState);
+            context.read<CalendarDateSelectionCubit>().selectDate(
+              date,
+              selectionTypeState,
+            );
           },
           child: Stack(
             children: [
@@ -40,10 +41,7 @@ class _DayCell extends StatelessWidget {
                   borderRadius: BorderRadius.circular(theme.radii.small),
                 ),
                 child: Center(
-                  child: Text(
-                    date.day.toString(),
-                    style: _getTextStyle(theme),
-                  ),
+                  child: Text(date.day.toString(), style: _getTextStyle(theme)),
                 ),
               ),
             ],
@@ -74,10 +72,7 @@ class _DayCell extends StatelessWidget {
     }
 
     return Container(
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: borderRadius,
-      ),
+      decoration: BoxDecoration(color: color, borderRadius: borderRadius),
     );
   }
 

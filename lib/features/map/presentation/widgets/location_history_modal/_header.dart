@@ -22,9 +22,7 @@ class _Header extends StatelessWidget {
             padding: EdgeInsets.only(left: theme.spacing.xTiny),
             child: Text(
               AppLocalizations.of(context)!.yourHistory,
-              style: theme.text.title1.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+              style: theme.text.title1.copyWith(fontWeight: FontWeight.w600),
             ),
           ),
           Row(
@@ -32,10 +30,11 @@ class _Header extends StatelessWidget {
               SmallIconButton(icon: CupertinoIcons.pencil, onPressed: () {}),
               XXSmallGap(),
               SmallIconButton(
-                  icon: CupertinoIcons.settings,
-                  onPressed: () {
-                    _showSettings(context);
-                  }),
+                icon: CupertinoIcons.settings,
+                onPressed: () {
+                  _showSettings(context);
+                },
+              ),
             ],
           ),
         ],

@@ -5,11 +5,7 @@ import 'package:location_history/features/calendar/presentation/cubits/calendar_
 import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_type_state.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
-enum BigCalendarCellType {
-  unselected,
-  fullySelected,
-  partlySelected,
-}
+enum BigCalendarCellType { unselected, fullySelected, partlySelected }
 
 class BigCalendarCell extends StatelessWidget {
   const BigCalendarCell({
@@ -31,9 +27,10 @@ class BigCalendarCell extends StatelessWidget {
       builder: (context, selectionTypeState) {
         return GestureDetector(
           onTap: () {
-            context
-                .read<CalendarDateSelectionCubit>()
-                .selectDate(date, selectionTypeState);
+            context.read<CalendarDateSelectionCubit>().selectDate(
+              date,
+              selectionTypeState,
+            );
           },
           child: Container(
             decoration: BoxDecoration(
@@ -44,12 +41,14 @@ class BigCalendarCell extends StatelessWidget {
               child: Text(
                 label,
                 style: theme.text.headline.copyWith(
-                  color: cellType == BigCalendarCellType.fullySelected
-                      ? theme.colors.background
-                      : theme.colors.text,
-                  fontWeight: cellType == BigCalendarCellType.fullySelected
-                      ? FontWeight.w600
-                      : FontWeight.w400,
+                  color:
+                      cellType == BigCalendarCellType.fullySelected
+                          ? theme.colors.background
+                          : theme.colors.text,
+                  fontWeight:
+                      cellType == BigCalendarCellType.fullySelected
+                          ? FontWeight.w600
+                          : FontWeight.w400,
                 ),
               ),
             ),

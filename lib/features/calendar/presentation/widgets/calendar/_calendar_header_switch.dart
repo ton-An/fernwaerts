@@ -1,10 +1,7 @@
 part of 'calendar.dart';
 
 class _Switch extends StatefulWidget {
-  const _Switch({
-    required this.icon,
-    required this.onPressed,
-  });
+  const _Switch({required this.icon, required this.onPressed});
 
   final IconData icon;
   final VoidCallback onPressed;
@@ -61,10 +58,7 @@ class _SwitchState extends State<_Switch> with SingleTickerProviderStateMixin {
         opacity: _fadeAnimation.value,
         child: Padding(
           padding: EdgeInsets.all(theme.spacing.xMedium - theme.spacing.small),
-          child: Icon(
-            widget.icon,
-            color: theme.colors.text,
-          ),
+          child: Icon(widget.icon, color: theme.colors.text),
         ),
       ),
     );

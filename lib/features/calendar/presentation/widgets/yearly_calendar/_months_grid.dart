@@ -1,9 +1,7 @@
 part of 'yearly_calendar.dart';
 
 class _MonthsGrid extends StatelessWidget {
-  const _MonthsGrid({
-    required this.yearOffset,
-  });
+  const _MonthsGrid({required this.yearOffset});
 
   final int yearOffset;
 
@@ -15,32 +13,39 @@ class _MonthsGrid extends StatelessWidget {
       builder: (context, calendarDateSelectionState) {
         return BlocBuilder<YearlyCalendarCubit, YearlyCalendarState>(
           builder: (context, yearlyCalendarState) {
-            final DateTime focusedYear =
-                DTU.addYears(yearlyCalendarState.focusedYear, yearOffset);
+            final DateTime focusedYear = DTU.addYears(
+              yearlyCalendarState.focusedYear,
+              yearOffset,
+            );
 
             return GridView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: _monthsInYear,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, childAspectRatio: 3),
-                itemBuilder: (context, index) {
-                  final DateTime monthDate =
-                      DateTime(focusedYear.year, index + 1);
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: _monthsInYear,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 3,
+              ),
+              itemBuilder: (context, index) {
+                final DateTime monthDate = DateTime(
+                  focusedYear.year,
+                  index + 1,
+                );
 
-                  final BigCalendarCellType cellType = _getMonthCellType(
-                    monthDate,
-                    calendarDateSelectionState,
-                  );
+                final BigCalendarCellType cellType = _getMonthCellType(
+                  monthDate,
+                  calendarDateSelectionState,
+                );
 
-                  return BigCalendarCell(
-                    label: DateFormat.MMMM(
-                            Localizations.localeOf(context).languageCode)
-                        .format(monthDate),
-                    date: monthDate,
-                    cellType: cellType,
-                  );
-                });
+                return BigCalendarCell(
+                  label: DateFormat.MMMM(
+                    Localizations.localeOf(context).languageCode,
+                  ).format(monthDate),
+                  date: monthDate,
+                  cellType: cellType,
+                );
+              },
+            );
           },
         );
       },
@@ -63,14 +68,19 @@ class _MonthsGrid extends StatelessWidget {
       final DateTime endOfMonth = DTU.lastDayOfMonth(monthDate);
 
       if (_isMonthFullySelected(
-          startOfMonth, endOfMonth, calendarDateSelectionState)) {
+        startOfMonth,
+        endOfMonth,
+        calendarDateSelectionState,
+      )) {
         return BigCalendarCellType.fullySelected;
       }
 
       if (_isStartDateInMonth(monthDate, calendarDateSelectionState)) {
         return BigCalendarCellType.partlySelected;
       } else if (_isEndDateInMonthAndStartUnselected(
-          monthDate, calendarDateSelectionState)) {
+        monthDate,
+        calendarDateSelectionState,
+      )) {
         return BigCalendarCellType.partlySelected;
       }
     }
@@ -78,8 +88,11 @@ class _MonthsGrid extends StatelessWidget {
     return BigCalendarCellType.unselected;
   }
 
-  bool _isMonthFullySelected(DateTime startOfMonth, DateTime endOfMonth,
-      CalendarRangeSelected calendarRangeSelectedState) {
+  bool _isMonthFullySelected(
+    DateTime startOfMonth,
+    DateTime endOfMonth,
+    CalendarRangeSelected calendarRangeSelectedState,
+  ) {
     return calendarRangeSelectedState.startDate != null &&
         calendarRangeSelectedState.endDate != null &&
         calendarRangeSelectedState.startDate!.day == startOfMonth.day &&
@@ -91,14 +104,18 @@ class _MonthsGrid extends StatelessWidget {
   }
 
   bool _isStartDateInMonth(
-      DateTime monthDate, CalendarRangeSelected calendarRangeSelectedState) {
+    DateTime monthDate,
+    CalendarRangeSelected calendarRangeSelectedState,
+  ) {
     return calendarRangeSelectedState.startDate != null &&
         calendarRangeSelectedState.startDate!.month == monthDate.month &&
         calendarRangeSelectedState.startDate!.year == monthDate.year;
   }
 
   bool _isEndDateInMonthAndStartUnselected(
-      DateTime monthDate, CalendarRangeSelected calendarRangeSelectedState) {
+    DateTime monthDate,
+    CalendarRangeSelected calendarRangeSelectedState,
+  ) {
     return calendarRangeSelectedState.startDate == null &&
         calendarRangeSelectedState.endDate != null &&
         calendarRangeSelectedState.endDate!.month == monthDate.month &&

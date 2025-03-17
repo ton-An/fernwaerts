@@ -18,11 +18,7 @@ class MapWidget extends StatelessWidget {
           userAgentPackageName: 'com.example.app',
         ),
         RichAttributionWidget(
-          attributions: [
-            TextSourceAttribution(
-              'OpenStreetMap contributors',
-            )
-          ],
+          attributions: [TextSourceAttribution('OpenStreetMap contributors')],
         ),
       ],
     );

@@ -28,15 +28,14 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Positioned.fill(
-          child: MapWidget(),
-        ),
+        Positioned.fill(child: MapWidget()),
         Column(
           children: [
             SafeArea(
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: WebfabrikTheme.of(context).spacing.medium),
+                  horizontal: WebfabrikTheme.of(context).spacing.medium,
+                ),
                 child: CalendarComposite(),
               ),
             ),
@@ -48,14 +47,16 @@ class _MapPageState extends State<MapPage> {
                 snap: true,
                 snapSizes: [
                   LocationHistoryModal.smallModalHeight,
-                  LocationHistoryModal.largeModalHeight
+                  LocationHistoryModal.largeModalHeight,
                 ],
                 controller: _draggableScrollableController,
                 snapAnimationDuration: const Duration(milliseconds: 300),
-                builder: (context, scrollController) => LocationHistoryModal(
-                  scrollController: scrollController,
-                  draggableScrollableController: _draggableScrollableController,
-                ),
+                builder:
+                    (context, scrollController) => LocationHistoryModal(
+                      scrollController: scrollController,
+                      draggableScrollableController:
+                          _draggableScrollableController,
+                    ),
               ),
             ),
           ],

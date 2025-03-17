@@ -12,17 +12,12 @@ import 'package:location_history/features/calendar/presentation/widgets/calendar
 part '_months_grid.dart';
 
 class YearlyCalendar extends StatelessWidget {
-  const YearlyCalendar({
-    super.key,
-    required this.yearOffset,
-  });
+  const YearlyCalendar({super.key, required this.yearOffset});
 
   final int yearOffset;
 
   @override
   Widget build(BuildContext context) {
-    return CalendarViewContainer(
-      child: _MonthsGrid(yearOffset: yearOffset),
-    );
+    return CalendarViewContainer(child: _MonthsGrid(yearOffset: yearOffset));
   }
 }

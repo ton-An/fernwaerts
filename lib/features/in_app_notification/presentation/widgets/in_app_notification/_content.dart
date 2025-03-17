@@ -1,9 +1,7 @@
 part of in_app_notification;
 
 class _Content extends StatelessWidget {
-  const _Content({
-    required this.failure,
-  });
+  const _Content({required this.failure});
 
   final Failure failure;
 
@@ -26,9 +24,7 @@ class _Content extends StatelessWidget {
             children: [
               Text(
                 failure.name,
-                style: theme.text.headline.copyWith(
-                  color: theme.colors.error,
-                ),
+                style: theme.text.headline.copyWith(color: theme.colors.error),
                 overflow: TextOverflow.ellipsis,
               ),
               const TinyGap(),

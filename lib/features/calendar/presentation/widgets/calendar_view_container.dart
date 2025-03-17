@@ -18,10 +18,11 @@ class CalendarViewContainer extends StatelessWidget {
         return Container(
           width: double.infinity,
           padding: EdgeInsets.only(
-            left: selectionTypeState is CalendarMonthSelection ||
-                    selectionTypeState is CalendarYearSelection
-                ? theme.spacing.xSmall
-                : theme.spacing.small,
+            left:
+                selectionTypeState is CalendarMonthSelection ||
+                        selectionTypeState is CalendarYearSelection
+                    ? theme.spacing.xSmall
+                    : theme.spacing.small,
             top: theme.spacing.xSmall,
             right: theme.spacing.xSmall,
             bottom: theme.spacing.xSmall,

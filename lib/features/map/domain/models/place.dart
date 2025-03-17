@@ -5,13 +5,7 @@ import 'package:location_history/features/map/domain/models/location_history_ite
 
 part 'place.freezed.dart';
 
-enum PlaceType {
-  groceryStore,
-  restaurant,
-  park,
-  museum,
-  other,
-}
+enum PlaceType { groceryStore, restaurant, park, museum, other }
 
 @freezed
 class Place extends LocationHistoryItem with _$Place {

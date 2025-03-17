@@ -1,9 +1,7 @@
 part of 'settings_page.dart';
 
 class _SectionTitle extends StatelessWidget {
-  const _SectionTitle({
-    required this.title,
-  });
+  const _SectionTitle({required this.title});
 
   final String title;
 
@@ -17,9 +15,7 @@ class _SectionTitle extends StatelessWidget {
       ),
       child: Text(
         title,
-        style: theme.text.title1.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
+        style: theme.text.title1.copyWith(fontWeight: FontWeight.w600),
       ),
     );
   }

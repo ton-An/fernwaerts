@@ -15,9 +15,7 @@ class _ActivityIcon extends StatelessWidget {
     );
   }
 
-  IconData getIcon(
-    ActivityType type,
-  ) {
+  IconData getIcon(ActivityType type) {
     switch (type) {
       case ActivityType.running:
         return Icons.run_circle;

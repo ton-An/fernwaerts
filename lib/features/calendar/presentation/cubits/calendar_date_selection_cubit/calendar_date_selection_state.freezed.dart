@@ -12,7 +12,8 @@ part of 'calendar_date_selection_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 /// @nodoc
 mixin _$CalendarDaySelected {
@@ -28,8 +29,9 @@ mixin _$CalendarDaySelected {
 /// @nodoc
 abstract class $CalendarDaySelectedCopyWith<$Res> {
   factory $CalendarDaySelectedCopyWith(
-          CalendarDaySelected value, $Res Function(CalendarDaySelected) then) =
-      _$CalendarDaySelectedCopyWithImpl<$Res, CalendarDaySelected>;
+    CalendarDaySelected value,
+    $Res Function(CalendarDaySelected) then,
+  ) = _$CalendarDaySelectedCopyWithImpl<$Res, CalendarDaySelected>;
   @useResult
   $Res call({DateTime selectedDate});
 }
@@ -48,24 +50,27 @@ class _$CalendarDaySelectedCopyWithImpl<$Res, $Val extends CalendarDaySelected>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? selectedDate = null,
-  }) {
-    return _then(_value.copyWith(
-      selectedDate: null == selectedDate
-          ? _value.selectedDate
-          : selectedDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-    ) as $Val);
+  $Res call({Object? selectedDate = null}) {
+    return _then(
+      _value.copyWith(
+            selectedDate:
+                null == selectedDate
+                    ? _value.selectedDate
+                    : selectedDate // ignore: cast_nullable_to_non_nullable
+                        as DateTime,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$CalendarDaySelectedImplCopyWith<$Res>
     implements $CalendarDaySelectedCopyWith<$Res> {
-  factory _$$CalendarDaySelectedImplCopyWith(_$CalendarDaySelectedImpl value,
-          $Res Function(_$CalendarDaySelectedImpl) then) =
-      __$$CalendarDaySelectedImplCopyWithImpl<$Res>;
+  factory _$$CalendarDaySelectedImplCopyWith(
+    _$CalendarDaySelectedImpl value,
+    $Res Function(_$CalendarDaySelectedImpl) then,
+  ) = __$$CalendarDaySelectedImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({DateTime selectedDate});
@@ -75,23 +80,25 @@ abstract class _$$CalendarDaySelectedImplCopyWith<$Res>
 class __$$CalendarDaySelectedImplCopyWithImpl<$Res>
     extends _$CalendarDaySelectedCopyWithImpl<$Res, _$CalendarDaySelectedImpl>
     implements _$$CalendarDaySelectedImplCopyWith<$Res> {
-  __$$CalendarDaySelectedImplCopyWithImpl(_$CalendarDaySelectedImpl _value,
-      $Res Function(_$CalendarDaySelectedImpl) _then)
-      : super(_value, _then);
+  __$$CalendarDaySelectedImplCopyWithImpl(
+    _$CalendarDaySelectedImpl _value,
+    $Res Function(_$CalendarDaySelectedImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of CalendarDaySelected
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? selectedDate = null,
-  }) {
-    return _then(_$CalendarDaySelectedImpl(
-      selectedDate: null == selectedDate
-          ? _value.selectedDate
-          : selectedDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-    ));
+  $Res call({Object? selectedDate = null}) {
+    return _then(
+      _$CalendarDaySelectedImpl(
+        selectedDate:
+            null == selectedDate
+                ? _value.selectedDate
+                : selectedDate // ignore: cast_nullable_to_non_nullable
+                    as DateTime,
+      ),
+    );
   }
 }
 
@@ -127,7 +134,9 @@ class _$CalendarDaySelectedImpl implements _CalendarDaySelected {
   @pragma('vm:prefer-inline')
   _$$CalendarDaySelectedImplCopyWith<_$CalendarDaySelectedImpl> get copyWith =>
       __$$CalendarDaySelectedImplCopyWithImpl<_$CalendarDaySelectedImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 }
 
 abstract class _CalendarDaySelected implements CalendarDaySelected {
@@ -154,23 +163,28 @@ mixin _$CalendarCustomRangeSelected {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   $CalendarCustomRangeSelectedCopyWith<CalendarCustomRangeSelected>
-      get copyWith => throw _privateConstructorUsedError;
+  get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $CalendarCustomRangeSelectedCopyWith<$Res> {
   factory $CalendarCustomRangeSelectedCopyWith(
-          CalendarCustomRangeSelected value,
-          $Res Function(CalendarCustomRangeSelected) then) =
-      _$CalendarCustomRangeSelectedCopyWithImpl<$Res,
-          CalendarCustomRangeSelected>;
+    CalendarCustomRangeSelected value,
+    $Res Function(CalendarCustomRangeSelected) then,
+  ) =
+      _$CalendarCustomRangeSelectedCopyWithImpl<
+        $Res,
+        CalendarCustomRangeSelected
+      >;
   @useResult
   $Res call({DateTime? startDate, DateTime? endDate});
 }
 
 /// @nodoc
-class _$CalendarCustomRangeSelectedCopyWithImpl<$Res,
-        $Val extends CalendarCustomRangeSelected>
+class _$CalendarCustomRangeSelectedCopyWithImpl<
+  $Res,
+  $Val extends CalendarCustomRangeSelected
+>
     implements $CalendarCustomRangeSelectedCopyWith<$Res> {
   _$CalendarCustomRangeSelectedCopyWithImpl(this._value, this._then);
 
@@ -183,20 +197,22 @@ class _$CalendarCustomRangeSelectedCopyWithImpl<$Res,
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? startDate = freezed,
-    Object? endDate = freezed,
-  }) {
-    return _then(_value.copyWith(
-      startDate: freezed == startDate
-          ? _value.startDate
-          : startDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      endDate: freezed == endDate
-          ? _value.endDate
-          : endDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-    ) as $Val);
+  $Res call({Object? startDate = freezed, Object? endDate = freezed}) {
+    return _then(
+      _value.copyWith(
+            startDate:
+                freezed == startDate
+                    ? _value.startDate
+                    : startDate // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+            endDate:
+                freezed == endDate
+                    ? _value.endDate
+                    : endDate // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -204,9 +220,9 @@ class _$CalendarCustomRangeSelectedCopyWithImpl<$Res,
 abstract class _$$CalendarCustomRangeSelectedImplCopyWith<$Res>
     implements $CalendarCustomRangeSelectedCopyWith<$Res> {
   factory _$$CalendarCustomRangeSelectedImplCopyWith(
-          _$CalendarCustomRangeSelectedImpl value,
-          $Res Function(_$CalendarCustomRangeSelectedImpl) then) =
-      __$$CalendarCustomRangeSelectedImplCopyWithImpl<$Res>;
+    _$CalendarCustomRangeSelectedImpl value,
+    $Res Function(_$CalendarCustomRangeSelectedImpl) then,
+  ) = __$$CalendarCustomRangeSelectedImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({DateTime? startDate, DateTime? endDate});
@@ -214,32 +230,36 @@ abstract class _$$CalendarCustomRangeSelectedImplCopyWith<$Res>
 
 /// @nodoc
 class __$$CalendarCustomRangeSelectedImplCopyWithImpl<$Res>
-    extends _$CalendarCustomRangeSelectedCopyWithImpl<$Res,
-        _$CalendarCustomRangeSelectedImpl>
+    extends
+        _$CalendarCustomRangeSelectedCopyWithImpl<
+          $Res,
+          _$CalendarCustomRangeSelectedImpl
+        >
     implements _$$CalendarCustomRangeSelectedImplCopyWith<$Res> {
   __$$CalendarCustomRangeSelectedImplCopyWithImpl(
-      _$CalendarCustomRangeSelectedImpl _value,
-      $Res Function(_$CalendarCustomRangeSelectedImpl) _then)
-      : super(_value, _then);
+    _$CalendarCustomRangeSelectedImpl _value,
+    $Res Function(_$CalendarCustomRangeSelectedImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of CalendarCustomRangeSelected
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? startDate = freezed,
-    Object? endDate = freezed,
-  }) {
-    return _then(_$CalendarCustomRangeSelectedImpl(
-      startDate: freezed == startDate
-          ? _value.startDate
-          : startDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      endDate: freezed == endDate
-          ? _value.endDate
-          : endDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-    ));
+  $Res call({Object? startDate = freezed, Object? endDate = freezed}) {
+    return _then(
+      _$CalendarCustomRangeSelectedImpl(
+        startDate:
+            freezed == startDate
+                ? _value.startDate
+                : startDate // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+        endDate:
+            freezed == endDate
+                ? _value.endDate
+                : endDate // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+      ),
+    );
   }
 }
 
@@ -247,8 +267,10 @@ class __$$CalendarCustomRangeSelectedImplCopyWithImpl<$Res>
 
 class _$CalendarCustomRangeSelectedImpl
     implements _CalendarCustomRangeSelected {
-  const _$CalendarCustomRangeSelectedImpl(
-      {required this.startDate, required this.endDate});
+  const _$CalendarCustomRangeSelectedImpl({
+    required this.startDate,
+    required this.endDate,
+  });
 
   @override
   final DateTime? startDate;
@@ -279,15 +301,17 @@ class _$CalendarCustomRangeSelectedImpl
   @override
   @pragma('vm:prefer-inline')
   _$$CalendarCustomRangeSelectedImplCopyWith<_$CalendarCustomRangeSelectedImpl>
-      get copyWith => __$$CalendarCustomRangeSelectedImplCopyWithImpl<
-          _$CalendarCustomRangeSelectedImpl>(this, _$identity);
+  get copyWith => __$$CalendarCustomRangeSelectedImplCopyWithImpl<
+    _$CalendarCustomRangeSelectedImpl
+  >(this, _$identity);
 }
 
 abstract class _CalendarCustomRangeSelected
     implements CalendarCustomRangeSelected {
-  const factory _CalendarCustomRangeSelected(
-      {required final DateTime? startDate,
-      required final DateTime? endDate}) = _$CalendarCustomRangeSelectedImpl;
+  const factory _CalendarCustomRangeSelected({
+    required final DateTime? startDate,
+    required final DateTime? endDate,
+  }) = _$CalendarCustomRangeSelectedImpl;
 
   @override
   DateTime? get startDate;
@@ -299,7 +323,7 @@ abstract class _CalendarCustomRangeSelected
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CalendarCustomRangeSelectedImplCopyWith<_$CalendarCustomRangeSelectedImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -316,16 +340,19 @@ mixin _$CalendarWeekSelected {
 
 /// @nodoc
 abstract class $CalendarWeekSelectedCopyWith<$Res> {
-  factory $CalendarWeekSelectedCopyWith(CalendarWeekSelected value,
-          $Res Function(CalendarWeekSelected) then) =
-      _$CalendarWeekSelectedCopyWithImpl<$Res, CalendarWeekSelected>;
+  factory $CalendarWeekSelectedCopyWith(
+    CalendarWeekSelected value,
+    $Res Function(CalendarWeekSelected) then,
+  ) = _$CalendarWeekSelectedCopyWithImpl<$Res, CalendarWeekSelected>;
   @useResult
   $Res call({DateTime? startDate, DateTime? endDate});
 }
 
 /// @nodoc
-class _$CalendarWeekSelectedCopyWithImpl<$Res,
-        $Val extends CalendarWeekSelected>
+class _$CalendarWeekSelectedCopyWithImpl<
+  $Res,
+  $Val extends CalendarWeekSelected
+>
     implements $CalendarWeekSelectedCopyWith<$Res> {
   _$CalendarWeekSelectedCopyWithImpl(this._value, this._then);
 
@@ -338,29 +365,32 @@ class _$CalendarWeekSelectedCopyWithImpl<$Res,
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? startDate = freezed,
-    Object? endDate = freezed,
-  }) {
-    return _then(_value.copyWith(
-      startDate: freezed == startDate
-          ? _value.startDate
-          : startDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      endDate: freezed == endDate
-          ? _value.endDate
-          : endDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-    ) as $Val);
+  $Res call({Object? startDate = freezed, Object? endDate = freezed}) {
+    return _then(
+      _value.copyWith(
+            startDate:
+                freezed == startDate
+                    ? _value.startDate
+                    : startDate // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+            endDate:
+                freezed == endDate
+                    ? _value.endDate
+                    : endDate // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$CalendarWeekSelectedImplCopyWith<$Res>
     implements $CalendarWeekSelectedCopyWith<$Res> {
-  factory _$$CalendarWeekSelectedImplCopyWith(_$CalendarWeekSelectedImpl value,
-          $Res Function(_$CalendarWeekSelectedImpl) then) =
-      __$$CalendarWeekSelectedImplCopyWithImpl<$Res>;
+  factory _$$CalendarWeekSelectedImplCopyWith(
+    _$CalendarWeekSelectedImpl value,
+    $Res Function(_$CalendarWeekSelectedImpl) then,
+  ) = __$$CalendarWeekSelectedImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({DateTime? startDate, DateTime? endDate});
@@ -370,36 +400,40 @@ abstract class _$$CalendarWeekSelectedImplCopyWith<$Res>
 class __$$CalendarWeekSelectedImplCopyWithImpl<$Res>
     extends _$CalendarWeekSelectedCopyWithImpl<$Res, _$CalendarWeekSelectedImpl>
     implements _$$CalendarWeekSelectedImplCopyWith<$Res> {
-  __$$CalendarWeekSelectedImplCopyWithImpl(_$CalendarWeekSelectedImpl _value,
-      $Res Function(_$CalendarWeekSelectedImpl) _then)
-      : super(_value, _then);
+  __$$CalendarWeekSelectedImplCopyWithImpl(
+    _$CalendarWeekSelectedImpl _value,
+    $Res Function(_$CalendarWeekSelectedImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of CalendarWeekSelected
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? startDate = freezed,
-    Object? endDate = freezed,
-  }) {
-    return _then(_$CalendarWeekSelectedImpl(
-      startDate: freezed == startDate
-          ? _value.startDate
-          : startDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      endDate: freezed == endDate
-          ? _value.endDate
-          : endDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-    ));
+  $Res call({Object? startDate = freezed, Object? endDate = freezed}) {
+    return _then(
+      _$CalendarWeekSelectedImpl(
+        startDate:
+            freezed == startDate
+                ? _value.startDate
+                : startDate // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+        endDate:
+            freezed == endDate
+                ? _value.endDate
+                : endDate // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 class _$CalendarWeekSelectedImpl implements _CalendarWeekSelected {
-  const _$CalendarWeekSelectedImpl(
-      {required this.startDate, required this.endDate});
+  const _$CalendarWeekSelectedImpl({
+    required this.startDate,
+    required this.endDate,
+  });
 
   @override
   final DateTime? startDate;
@@ -430,15 +464,18 @@ class _$CalendarWeekSelectedImpl implements _CalendarWeekSelected {
   @override
   @pragma('vm:prefer-inline')
   _$$CalendarWeekSelectedImplCopyWith<_$CalendarWeekSelectedImpl>
-      get copyWith =>
-          __$$CalendarWeekSelectedImplCopyWithImpl<_$CalendarWeekSelectedImpl>(
-              this, _$identity);
+  get copyWith =>
+      __$$CalendarWeekSelectedImplCopyWithImpl<_$CalendarWeekSelectedImpl>(
+        this,
+        _$identity,
+      );
 }
 
 abstract class _CalendarWeekSelected implements CalendarWeekSelected {
-  const factory _CalendarWeekSelected(
-      {required final DateTime? startDate,
-      required final DateTime? endDate}) = _$CalendarWeekSelectedImpl;
+  const factory _CalendarWeekSelected({
+    required final DateTime? startDate,
+    required final DateTime? endDate,
+  }) = _$CalendarWeekSelectedImpl;
 
   @override
   DateTime? get startDate;
@@ -450,7 +487,7 @@ abstract class _CalendarWeekSelected implements CalendarWeekSelected {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CalendarWeekSelectedImplCopyWith<_$CalendarWeekSelectedImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -467,16 +504,19 @@ mixin _$CalendarMonthSelected {
 
 /// @nodoc
 abstract class $CalendarMonthSelectedCopyWith<$Res> {
-  factory $CalendarMonthSelectedCopyWith(CalendarMonthSelected value,
-          $Res Function(CalendarMonthSelected) then) =
-      _$CalendarMonthSelectedCopyWithImpl<$Res, CalendarMonthSelected>;
+  factory $CalendarMonthSelectedCopyWith(
+    CalendarMonthSelected value,
+    $Res Function(CalendarMonthSelected) then,
+  ) = _$CalendarMonthSelectedCopyWithImpl<$Res, CalendarMonthSelected>;
   @useResult
   $Res call({DateTime? startDate, DateTime? endDate});
 }
 
 /// @nodoc
-class _$CalendarMonthSelectedCopyWithImpl<$Res,
-        $Val extends CalendarMonthSelected>
+class _$CalendarMonthSelectedCopyWithImpl<
+  $Res,
+  $Val extends CalendarMonthSelected
+>
     implements $CalendarMonthSelectedCopyWith<$Res> {
   _$CalendarMonthSelectedCopyWithImpl(this._value, this._then);
 
@@ -489,20 +529,22 @@ class _$CalendarMonthSelectedCopyWithImpl<$Res,
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? startDate = freezed,
-    Object? endDate = freezed,
-  }) {
-    return _then(_value.copyWith(
-      startDate: freezed == startDate
-          ? _value.startDate
-          : startDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      endDate: freezed == endDate
-          ? _value.endDate
-          : endDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-    ) as $Val);
+  $Res call({Object? startDate = freezed, Object? endDate = freezed}) {
+    return _then(
+      _value.copyWith(
+            startDate:
+                freezed == startDate
+                    ? _value.startDate
+                    : startDate // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+            endDate:
+                freezed == endDate
+                    ? _value.endDate
+                    : endDate // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -510,9 +552,9 @@ class _$CalendarMonthSelectedCopyWithImpl<$Res,
 abstract class _$$CalendarMonthSelectedImplCopyWith<$Res>
     implements $CalendarMonthSelectedCopyWith<$Res> {
   factory _$$CalendarMonthSelectedImplCopyWith(
-          _$CalendarMonthSelectedImpl value,
-          $Res Function(_$CalendarMonthSelectedImpl) then) =
-      __$$CalendarMonthSelectedImplCopyWithImpl<$Res>;
+    _$CalendarMonthSelectedImpl value,
+    $Res Function(_$CalendarMonthSelectedImpl) then,
+  ) = __$$CalendarMonthSelectedImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({DateTime? startDate, DateTime? endDate});
@@ -520,39 +562,43 @@ abstract class _$$CalendarMonthSelectedImplCopyWith<$Res>
 
 /// @nodoc
 class __$$CalendarMonthSelectedImplCopyWithImpl<$Res>
-    extends _$CalendarMonthSelectedCopyWithImpl<$Res,
-        _$CalendarMonthSelectedImpl>
+    extends
+        _$CalendarMonthSelectedCopyWithImpl<$Res, _$CalendarMonthSelectedImpl>
     implements _$$CalendarMonthSelectedImplCopyWith<$Res> {
-  __$$CalendarMonthSelectedImplCopyWithImpl(_$CalendarMonthSelectedImpl _value,
-      $Res Function(_$CalendarMonthSelectedImpl) _then)
-      : super(_value, _then);
+  __$$CalendarMonthSelectedImplCopyWithImpl(
+    _$CalendarMonthSelectedImpl _value,
+    $Res Function(_$CalendarMonthSelectedImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of CalendarMonthSelected
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? startDate = freezed,
-    Object? endDate = freezed,
-  }) {
-    return _then(_$CalendarMonthSelectedImpl(
-      startDate: freezed == startDate
-          ? _value.startDate
-          : startDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      endDate: freezed == endDate
-          ? _value.endDate
-          : endDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-    ));
+  $Res call({Object? startDate = freezed, Object? endDate = freezed}) {
+    return _then(
+      _$CalendarMonthSelectedImpl(
+        startDate:
+            freezed == startDate
+                ? _value.startDate
+                : startDate // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+        endDate:
+            freezed == endDate
+                ? _value.endDate
+                : endDate // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 class _$CalendarMonthSelectedImpl implements _CalendarMonthSelected {
-  const _$CalendarMonthSelectedImpl(
-      {required this.startDate, required this.endDate});
+  const _$CalendarMonthSelectedImpl({
+    required this.startDate,
+    required this.endDate,
+  });
 
   @override
   final DateTime? startDate;
@@ -583,14 +629,18 @@ class _$CalendarMonthSelectedImpl implements _CalendarMonthSelected {
   @override
   @pragma('vm:prefer-inline')
   _$$CalendarMonthSelectedImplCopyWith<_$CalendarMonthSelectedImpl>
-      get copyWith => __$$CalendarMonthSelectedImplCopyWithImpl<
-          _$CalendarMonthSelectedImpl>(this, _$identity);
+  get copyWith =>
+      __$$CalendarMonthSelectedImplCopyWithImpl<_$CalendarMonthSelectedImpl>(
+        this,
+        _$identity,
+      );
 }
 
 abstract class _CalendarMonthSelected implements CalendarMonthSelected {
-  const factory _CalendarMonthSelected(
-      {required final DateTime? startDate,
-      required final DateTime? endDate}) = _$CalendarMonthSelectedImpl;
+  const factory _CalendarMonthSelected({
+    required final DateTime? startDate,
+    required final DateTime? endDate,
+  }) = _$CalendarMonthSelectedImpl;
 
   @override
   DateTime? get startDate;
@@ -602,7 +652,7 @@ abstract class _CalendarMonthSelected implements CalendarMonthSelected {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CalendarMonthSelectedImplCopyWith<_$CalendarMonthSelectedImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -619,16 +669,19 @@ mixin _$CalendarYearSelected {
 
 /// @nodoc
 abstract class $CalendarYearSelectedCopyWith<$Res> {
-  factory $CalendarYearSelectedCopyWith(CalendarYearSelected value,
-          $Res Function(CalendarYearSelected) then) =
-      _$CalendarYearSelectedCopyWithImpl<$Res, CalendarYearSelected>;
+  factory $CalendarYearSelectedCopyWith(
+    CalendarYearSelected value,
+    $Res Function(CalendarYearSelected) then,
+  ) = _$CalendarYearSelectedCopyWithImpl<$Res, CalendarYearSelected>;
   @useResult
   $Res call({DateTime? startDate, DateTime? endDate});
 }
 
 /// @nodoc
-class _$CalendarYearSelectedCopyWithImpl<$Res,
-        $Val extends CalendarYearSelected>
+class _$CalendarYearSelectedCopyWithImpl<
+  $Res,
+  $Val extends CalendarYearSelected
+>
     implements $CalendarYearSelectedCopyWith<$Res> {
   _$CalendarYearSelectedCopyWithImpl(this._value, this._then);
 
@@ -641,29 +694,32 @@ class _$CalendarYearSelectedCopyWithImpl<$Res,
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? startDate = freezed,
-    Object? endDate = freezed,
-  }) {
-    return _then(_value.copyWith(
-      startDate: freezed == startDate
-          ? _value.startDate
-          : startDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      endDate: freezed == endDate
-          ? _value.endDate
-          : endDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-    ) as $Val);
+  $Res call({Object? startDate = freezed, Object? endDate = freezed}) {
+    return _then(
+      _value.copyWith(
+            startDate:
+                freezed == startDate
+                    ? _value.startDate
+                    : startDate // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+            endDate:
+                freezed == endDate
+                    ? _value.endDate
+                    : endDate // ignore: cast_nullable_to_non_nullable
+                        as DateTime?,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$CalendarYearSelectedImplCopyWith<$Res>
     implements $CalendarYearSelectedCopyWith<$Res> {
-  factory _$$CalendarYearSelectedImplCopyWith(_$CalendarYearSelectedImpl value,
-          $Res Function(_$CalendarYearSelectedImpl) then) =
-      __$$CalendarYearSelectedImplCopyWithImpl<$Res>;
+  factory _$$CalendarYearSelectedImplCopyWith(
+    _$CalendarYearSelectedImpl value,
+    $Res Function(_$CalendarYearSelectedImpl) then,
+  ) = __$$CalendarYearSelectedImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({DateTime? startDate, DateTime? endDate});
@@ -673,36 +729,40 @@ abstract class _$$CalendarYearSelectedImplCopyWith<$Res>
 class __$$CalendarYearSelectedImplCopyWithImpl<$Res>
     extends _$CalendarYearSelectedCopyWithImpl<$Res, _$CalendarYearSelectedImpl>
     implements _$$CalendarYearSelectedImplCopyWith<$Res> {
-  __$$CalendarYearSelectedImplCopyWithImpl(_$CalendarYearSelectedImpl _value,
-      $Res Function(_$CalendarYearSelectedImpl) _then)
-      : super(_value, _then);
+  __$$CalendarYearSelectedImplCopyWithImpl(
+    _$CalendarYearSelectedImpl _value,
+    $Res Function(_$CalendarYearSelectedImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of CalendarYearSelected
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? startDate = freezed,
-    Object? endDate = freezed,
-  }) {
-    return _then(_$CalendarYearSelectedImpl(
-      startDate: freezed == startDate
-          ? _value.startDate
-          : startDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-      endDate: freezed == endDate
-          ? _value.endDate
-          : endDate // ignore: cast_nullable_to_non_nullable
-              as DateTime?,
-    ));
+  $Res call({Object? startDate = freezed, Object? endDate = freezed}) {
+    return _then(
+      _$CalendarYearSelectedImpl(
+        startDate:
+            freezed == startDate
+                ? _value.startDate
+                : startDate // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+        endDate:
+            freezed == endDate
+                ? _value.endDate
+                : endDate // ignore: cast_nullable_to_non_nullable
+                    as DateTime?,
+      ),
+    );
   }
 }
 
 /// @nodoc
 
 class _$CalendarYearSelectedImpl implements _CalendarYearSelected {
-  const _$CalendarYearSelectedImpl(
-      {required this.startDate, required this.endDate});
+  const _$CalendarYearSelectedImpl({
+    required this.startDate,
+    required this.endDate,
+  });
 
   @override
   final DateTime? startDate;
@@ -733,15 +793,18 @@ class _$CalendarYearSelectedImpl implements _CalendarYearSelected {
   @override
   @pragma('vm:prefer-inline')
   _$$CalendarYearSelectedImplCopyWith<_$CalendarYearSelectedImpl>
-      get copyWith =>
-          __$$CalendarYearSelectedImplCopyWithImpl<_$CalendarYearSelectedImpl>(
-              this, _$identity);
+  get copyWith =>
+      __$$CalendarYearSelectedImplCopyWithImpl<_$CalendarYearSelectedImpl>(
+        this,
+        _$identity,
+      );
 }
 
 abstract class _CalendarYearSelected implements CalendarYearSelected {
-  const factory _CalendarYearSelected(
-      {required final DateTime? startDate,
-      required final DateTime? endDate}) = _$CalendarYearSelectedImpl;
+  const factory _CalendarYearSelected({
+    required final DateTime? startDate,
+    required final DateTime? endDate,
+  }) = _$CalendarYearSelectedImpl;
 
   @override
   DateTime? get startDate;
@@ -753,5 +816,5 @@ abstract class _CalendarYearSelected implements CalendarYearSelected {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CalendarYearSelectedImplCopyWith<_$CalendarYearSelectedImpl>
-      get copyWith => throw _privateConstructorUsedError;
+  get copyWith => throw _privateConstructorUsedError;
 }

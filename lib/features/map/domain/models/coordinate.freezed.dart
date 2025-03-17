@@ -12,7 +12,8 @@ part of 'coordinate.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 /// @nodoc
 mixin _$Coordinate {
@@ -29,8 +30,9 @@ mixin _$Coordinate {
 /// @nodoc
 abstract class $CoordinateCopyWith<$Res> {
   factory $CoordinateCopyWith(
-          Coordinate value, $Res Function(Coordinate) then) =
-      _$CoordinateCopyWithImpl<$Res, Coordinate>;
+    Coordinate value,
+    $Res Function(Coordinate) then,
+  ) = _$CoordinateCopyWithImpl<$Res, Coordinate>;
   @useResult
   $Res call({double latitude, double longitude});
 }
@@ -49,20 +51,22 @@ class _$CoordinateCopyWithImpl<$Res, $Val extends Coordinate>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? latitude = null,
-    Object? longitude = null,
-  }) {
-    return _then(_value.copyWith(
-      latitude: null == latitude
-          ? _value.latitude
-          : latitude // ignore: cast_nullable_to_non_nullable
-              as double,
-      longitude: null == longitude
-          ? _value.longitude
-          : longitude // ignore: cast_nullable_to_non_nullable
-              as double,
-    ) as $Val);
+  $Res call({Object? latitude = null, Object? longitude = null}) {
+    return _then(
+      _value.copyWith(
+            latitude:
+                null == latitude
+                    ? _value.latitude
+                    : latitude // ignore: cast_nullable_to_non_nullable
+                        as double,
+            longitude:
+                null == longitude
+                    ? _value.longitude
+                    : longitude // ignore: cast_nullable_to_non_nullable
+                        as double,
+          )
+          as $Val,
+    );
   }
 }
 
@@ -70,8 +74,9 @@ class _$CoordinateCopyWithImpl<$Res, $Val extends Coordinate>
 abstract class _$$CoordinateImplCopyWith<$Res>
     implements $CoordinateCopyWith<$Res> {
   factory _$$CoordinateImplCopyWith(
-          _$CoordinateImpl value, $Res Function(_$CoordinateImpl) then) =
-      __$$CoordinateImplCopyWithImpl<$Res>;
+    _$CoordinateImpl value,
+    $Res Function(_$CoordinateImpl) then,
+  ) = __$$CoordinateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({double latitude, double longitude});
@@ -82,27 +87,29 @@ class __$$CoordinateImplCopyWithImpl<$Res>
     extends _$CoordinateCopyWithImpl<$Res, _$CoordinateImpl>
     implements _$$CoordinateImplCopyWith<$Res> {
   __$$CoordinateImplCopyWithImpl(
-      _$CoordinateImpl _value, $Res Function(_$CoordinateImpl) _then)
-      : super(_value, _then);
+    _$CoordinateImpl _value,
+    $Res Function(_$CoordinateImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of Coordinate
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? latitude = null,
-    Object? longitude = null,
-  }) {
-    return _then(_$CoordinateImpl(
-      latitude: null == latitude
-          ? _value.latitude
-          : latitude // ignore: cast_nullable_to_non_nullable
-              as double,
-      longitude: null == longitude
-          ? _value.longitude
-          : longitude // ignore: cast_nullable_to_non_nullable
-              as double,
-    ));
+  $Res call({Object? latitude = null, Object? longitude = null}) {
+    return _then(
+      _$CoordinateImpl(
+        latitude:
+            null == latitude
+                ? _value.latitude
+                : latitude // ignore: cast_nullable_to_non_nullable
+                    as double,
+        longitude:
+            null == longitude
+                ? _value.longitude
+                : longitude // ignore: cast_nullable_to_non_nullable
+                    as double,
+      ),
+    );
   }
 }
 
@@ -145,9 +152,10 @@ class _$CoordinateImpl implements _Coordinate {
 }
 
 abstract class _Coordinate implements Coordinate {
-  const factory _Coordinate(
-      {required final double latitude,
-      required final double longitude}) = _$CoordinateImpl;
+  const factory _Coordinate({
+    required final double latitude,
+    required final double longitude,
+  }) = _$CoordinateImpl;
 
   @override
   double get latitude;

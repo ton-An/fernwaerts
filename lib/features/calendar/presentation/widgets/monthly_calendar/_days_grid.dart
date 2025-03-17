@@ -1,9 +1,7 @@
 part of 'monthly_calendar.dart';
 
 class _DaysGrid extends StatelessWidget {
-  const _DaysGrid({
-    required this.monthOffset,
-  });
+  const _DaysGrid({required this.monthOffset});
 
   final int monthOffset;
 
@@ -15,10 +13,15 @@ class _DaysGrid extends StatelessWidget {
       builder: (context, calendarDateSelectionState) {
         return BlocBuilder<MonthlyCalendarCubit, MonthlyCalendarState>(
           builder: (context, monthlyCalendarState) {
-            final DateTime focusedMonth =
-                DTU.addMonths(monthlyCalendarState.focusedMonth, monthOffset);
+            final DateTime focusedMonth = DTU.addMonths(
+              monthlyCalendarState.focusedMonth,
+              monthOffset,
+            );
             final DateTime firstDayOfMonth = DateTime(
-                focusedMonth.year, focusedMonth.month, _firstDayOfMonthNumber);
+              focusedMonth.year,
+              focusedMonth.month,
+              _firstDayOfMonthNumber,
+            );
             int startOffset = firstDayOfMonth.weekday % _daysInWeek;
             startOffset = startOffset == 0 ? 7 : startOffset;
             final int daysInMonth =
@@ -43,8 +46,11 @@ class _DaysGrid extends StatelessWidget {
 
                 if (_isFirstItemOfRow(index)) {
                   return _WeekNumberCell(
-                    weekNumber:
-                        _calculateWeekNumber(focusedMonth, index, rowNumber),
+                    weekNumber: _calculateWeekNumber(
+                      focusedMonth,
+                      index,
+                      rowNumber,
+                    ),
                   );
                 }
 
@@ -72,15 +78,16 @@ class _DaysGrid extends StatelessWidget {
 
                 if (cellType == _DayCellType.inRange) {
                   inRangeBorderRadius = _calculateInRangeBorderRadius(
-                      context,
-                      index,
-                      rowNumber,
-                      rowCount,
-                      dayDate,
-                      calendarDateSelectionState,
-                      focusedMonth,
-                      isFirstDayCellInRow,
-                      isLastDayCellInRow);
+                    context,
+                    index,
+                    rowNumber,
+                    rowCount,
+                    dayDate,
+                    calendarDateSelectionState,
+                    focusedMonth,
+                    isFirstDayCellInRow,
+                    isLastDayCellInRow,
+                  );
                 }
 
                 return _DayCell(
@@ -111,21 +118,19 @@ class _DaysGrid extends StatelessWidget {
     return weekNumber;
   }
 
-  DateTime _calculateDayDate(
-    int dayInMonthIndex,
-    DateTime focusedMonth,
-  ) {
+  DateTime _calculateDayDate(int dayInMonthIndex, DateTime focusedMonth) {
     final bool isDateInPreviousMonth = dayInMonthIndex <= 0;
 
     if (isDateInPreviousMonth) {
       final int dayNumber =
           DateTime(focusedMonth.year, focusedMonth.month, 0).day +
-              dayInMonthIndex;
+          dayInMonthIndex;
       final int monthNumber = focusedMonth.month - 1;
       return focusedMonth.copyWith(month: monthNumber, day: dayNumber);
     }
 
-    final bool isDateInNextMonth = dayInMonthIndex >
+    final bool isDateInNextMonth =
+        dayInMonthIndex >
         DateTime(focusedMonth.year, focusedMonth.month + 1, 0).day;
 
     if (isDateInNextMonth) {
@@ -154,8 +159,8 @@ class _DaysGrid extends StatelessWidget {
     }
 
     if (selectionState is CalendarRangeSelected) {
-      final bool isLonelyRangeBoundary = selectionState.startDate == null &&
-              date == selectionState.endDate ||
+      final bool isLonelyRangeBoundary =
+          selectionState.startDate == null && date == selectionState.endDate ||
           selectionState.endDate == null && date == selectionState.startDate;
 
       if (isLonelyRangeBoundary) {
@@ -178,7 +183,8 @@ class _DaysGrid extends StatelessWidget {
         return _DayCellType.rangeEnd;
       }
 
-      final bool isInRange = selectionState.startDate != null &&
+      final bool isInRange =
+          selectionState.startDate != null &&
           selectionState.endDate != null &&
           date.isAfter(selectionState.startDate!) &&
           date.isBefore(selectionState.endDate!);
@@ -211,42 +217,48 @@ class _DaysGrid extends StatelessWidget {
     if (isFirstDayCellInRow || isLastDayCellInRow) {
       final bool isFirstRow = rowNumber == 0;
       final bool isLastRow = rowNumber == rowCount - 1;
-      final _DayCellType? cellTypeAbove = isFirstRow
-          ? null
-          : _getDayCellType(
-              dayDate.subtract(Duration(days: _daysInWeek)),
-              calendarDateSelectionState,
-              focusedMonth,
-              isFirstDayCellInRow,
-              isLastDayCellInRow,
-            );
-      final _DayCellType? cellTypeBelow = isLastRow
-          ? null
-          : _getDayCellType(
-              dayDate.add(Duration(days: _daysInWeek)),
-              calendarDateSelectionState,
-              focusedMonth,
-              isFirstDayCellInRow,
-              isLastDayCellInRow,
-            );
+      final _DayCellType? cellTypeAbove =
+          isFirstRow
+              ? null
+              : _getDayCellType(
+                dayDate.subtract(Duration(days: _daysInWeek)),
+                calendarDateSelectionState,
+                focusedMonth,
+                isFirstDayCellInRow,
+                isLastDayCellInRow,
+              );
+      final _DayCellType? cellTypeBelow =
+          isLastRow
+              ? null
+              : _getDayCellType(
+                dayDate.add(Duration(days: _daysInWeek)),
+                calendarDateSelectionState,
+                focusedMonth,
+                isFirstDayCellInRow,
+                isLastDayCellInRow,
+              );
 
       final bool isCellAboveInRange = cellTypeAbove == _DayCellType.inRange;
       final bool isCellBelowInRange = cellTypeBelow == _DayCellType.inRange;
       if (!isCellAboveInRange || !isCellBelowInRange) {
         final double borderRadius = WebfabrikTheme.of(context).radii.small;
         inRangeBorderRadius = BorderRadius.only(
-          topLeft: !isCellAboveInRange && isFirstDayCellInRow
-              ? Radius.circular(borderRadius)
-              : Radius.zero,
-          topRight: !isCellAboveInRange && isLastDayCellInRow
-              ? Radius.circular(borderRadius)
-              : Radius.zero,
-          bottomLeft: !isCellBelowInRange && isFirstDayCellInRow
-              ? Radius.circular(borderRadius)
-              : Radius.zero,
-          bottomRight: !isCellBelowInRange && isLastDayCellInRow
-              ? Radius.circular(borderRadius)
-              : Radius.zero,
+          topLeft:
+              !isCellAboveInRange && isFirstDayCellInRow
+                  ? Radius.circular(borderRadius)
+                  : Radius.zero,
+          topRight:
+              !isCellAboveInRange && isLastDayCellInRow
+                  ? Radius.circular(borderRadius)
+                  : Radius.zero,
+          bottomLeft:
+              !isCellBelowInRange && isFirstDayCellInRow
+                  ? Radius.circular(borderRadius)
+                  : Radius.zero,
+          bottomRight:
+              !isCellBelowInRange && isLastDayCellInRow
+                  ? Radius.circular(borderRadius)
+                  : Radius.zero,
         );
       }
     }

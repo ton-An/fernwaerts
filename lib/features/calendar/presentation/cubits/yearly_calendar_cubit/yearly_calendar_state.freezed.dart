@@ -12,7 +12,8 @@ part of 'yearly_calendar_state.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
 
 /// @nodoc
 mixin _$YearlyCalendarState {
@@ -28,8 +29,9 @@ mixin _$YearlyCalendarState {
 /// @nodoc
 abstract class $YearlyCalendarStateCopyWith<$Res> {
   factory $YearlyCalendarStateCopyWith(
-          YearlyCalendarState value, $Res Function(YearlyCalendarState) then) =
-      _$YearlyCalendarStateCopyWithImpl<$Res, YearlyCalendarState>;
+    YearlyCalendarState value,
+    $Res Function(YearlyCalendarState) then,
+  ) = _$YearlyCalendarStateCopyWithImpl<$Res, YearlyCalendarState>;
   @useResult
   $Res call({DateTime focusedYear});
 }
@@ -48,24 +50,27 @@ class _$YearlyCalendarStateCopyWithImpl<$Res, $Val extends YearlyCalendarState>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? focusedYear = null,
-  }) {
-    return _then(_value.copyWith(
-      focusedYear: null == focusedYear
-          ? _value.focusedYear
-          : focusedYear // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-    ) as $Val);
+  $Res call({Object? focusedYear = null}) {
+    return _then(
+      _value.copyWith(
+            focusedYear:
+                null == focusedYear
+                    ? _value.focusedYear
+                    : focusedYear // ignore: cast_nullable_to_non_nullable
+                        as DateTime,
+          )
+          as $Val,
+    );
   }
 }
 
 /// @nodoc
 abstract class _$$YearlyCalendarStateImplCopyWith<$Res>
     implements $YearlyCalendarStateCopyWith<$Res> {
-  factory _$$YearlyCalendarStateImplCopyWith(_$YearlyCalendarStateImpl value,
-          $Res Function(_$YearlyCalendarStateImpl) then) =
-      __$$YearlyCalendarStateImplCopyWithImpl<$Res>;
+  factory _$$YearlyCalendarStateImplCopyWith(
+    _$YearlyCalendarStateImpl value,
+    $Res Function(_$YearlyCalendarStateImpl) then,
+  ) = __$$YearlyCalendarStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({DateTime focusedYear});
@@ -75,23 +80,25 @@ abstract class _$$YearlyCalendarStateImplCopyWith<$Res>
 class __$$YearlyCalendarStateImplCopyWithImpl<$Res>
     extends _$YearlyCalendarStateCopyWithImpl<$Res, _$YearlyCalendarStateImpl>
     implements _$$YearlyCalendarStateImplCopyWith<$Res> {
-  __$$YearlyCalendarStateImplCopyWithImpl(_$YearlyCalendarStateImpl _value,
-      $Res Function(_$YearlyCalendarStateImpl) _then)
-      : super(_value, _then);
+  __$$YearlyCalendarStateImplCopyWithImpl(
+    _$YearlyCalendarStateImpl _value,
+    $Res Function(_$YearlyCalendarStateImpl) _then,
+  ) : super(_value, _then);
 
   /// Create a copy of YearlyCalendarState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({
-    Object? focusedYear = null,
-  }) {
-    return _then(_$YearlyCalendarStateImpl(
-      focusedYear: null == focusedYear
-          ? _value.focusedYear
-          : focusedYear // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-    ));
+  $Res call({Object? focusedYear = null}) {
+    return _then(
+      _$YearlyCalendarStateImpl(
+        focusedYear:
+            null == focusedYear
+                ? _value.focusedYear
+                : focusedYear // ignore: cast_nullable_to_non_nullable
+                    as DateTime,
+      ),
+    );
   }
 }
 
@@ -127,7 +134,9 @@ class _$YearlyCalendarStateImpl implements _YearlyCalendarState {
   @pragma('vm:prefer-inline')
   _$$YearlyCalendarStateImplCopyWith<_$YearlyCalendarStateImpl> get copyWith =>
       __$$YearlyCalendarStateImplCopyWithImpl<_$YearlyCalendarStateImpl>(
-          this, _$identity);
+        this,
+        _$identity,
+      );
 }
 
 abstract class _YearlyCalendarState implements YearlyCalendarState {

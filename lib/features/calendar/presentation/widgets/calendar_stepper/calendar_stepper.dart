@@ -22,14 +22,13 @@ class CalendarStepper extends StatelessWidget {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
     return ClipRRect(
-      borderRadius:
-          BorderRadius.circular(WebfabrikTheme.of(context).radii.medium),
+      borderRadius: BorderRadius.circular(
+        WebfabrikTheme.of(context).radii.medium,
+      ),
       child: BackdropFilter(
         filter: theme.misc.blurFilter,
         child: Container(
-          decoration: BoxDecoration(
-            color: theme.colors.translucentBackground,
-          ),
+          decoration: BoxDecoration(color: theme.colors.translucentBackground),
           child: Stack(
             children: [
               ElevatedRow(
@@ -38,22 +37,23 @@ class CalendarStepper extends StatelessWidget {
                   _Switch(
                     icon: Icons.arrow_back_ios_new_rounded,
                     onPressed: () {
-                      context
-                          .read<CalendarDateSelectionCubit>()
-                          .moveRange(false);
+                      context.read<CalendarDateSelectionCubit>().moveRange(
+                        false,
+                      );
                     },
                   ),
                   Elevated(
                     child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: height),
-                        child: _DateButton()),
+                      padding: EdgeInsets.symmetric(horizontal: height),
+                      child: _DateButton(),
+                    ),
                   ),
                   _Switch(
                     icon: Icons.arrow_forward_ios_rounded,
                     onPressed: () {
-                      context
-                          .read<CalendarDateSelectionCubit>()
-                          .moveRange(true);
+                      context.read<CalendarDateSelectionCubit>().moveRange(
+                        true,
+                      );
                     },
                   ),
                 ],

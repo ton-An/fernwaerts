@@ -21,13 +21,7 @@ part '_calendar_header.dart';
 part '_calendar_header_switch.dart';
 part '_calendar_type_selector.dart';
 
-enum CalendarSelectionType {
-  customRange,
-  day,
-  week,
-  month,
-  year,
-}
+enum CalendarSelectionType { customRange, day, week, month, year }
 
 class Calendar extends StatefulWidget {
   const Calendar({super.key});
@@ -53,77 +47,77 @@ class _CalendarState extends State<Calendar> {
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
     return BlocConsumer<CalendarSelectionTypeCubit, CalendarSelectionTypeState>(
-        listener: (context, selectionTypeState) {},
-        builder: (context, selectionTypeState) {
-          return _CalendarContainer(
-            child: Column(
-              children: [
-                _CalendarHeader(),
-                ExpandableCarousel.builder(
-                  itemCount: _carouselItemCount,
-                  itemBuilder: (context, index, realIndex) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: theme.spacing.medium),
-                      child: _buildCalendar(
-                        index,
-                        selectionTypeState,
-                      ),
-                    );
+      listener: (context, selectionTypeState) {},
+      builder: (context, selectionTypeState) {
+        return _CalendarContainer(
+          child: Column(
+            children: [
+              _CalendarHeader(),
+              ExpandableCarousel.builder(
+                itemCount: _carouselItemCount,
+                itemBuilder: (context, index, realIndex) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: theme.spacing.medium,
+                    ),
+                    child: _buildCalendar(index, selectionTypeState),
+                  );
+                },
+                options: ExpandableCarouselOptions(
+                  controller: _carouselController,
+                  viewportFraction: 1,
+                  initialPage: _carouselCenter,
+                  showIndicator: false,
+                  autoPlayCurve: Curves.easeOut,
+                  onScrolled: (value) {
+                    if (value != null && value % 1 == 0) {
+                      int offsetFromCenter = value.toInt() - _carouselCenter;
+                      if (_lastOffsetFromCenter != offsetFromCenter &&
+                          offsetFromCenter != 0) {
+                        _showTimeFrameAtOffset(
+                          selectionTypeState,
+                          offsetFromCenter,
+                        );
+                        _carouselController.jumpToPage(_carouselCenter);
+                        _lastOffsetFromCenter = 0;
+                      } else if (offsetFromCenter == 0) {}
+                    }
                   },
-                  options: ExpandableCarouselOptions(
-                    controller: _carouselController,
-                    viewportFraction: 1,
-                    initialPage: _carouselCenter,
-                    showIndicator: false,
-                    autoPlayCurve: Curves.easeOut,
-                    onScrolled: (value) {
-                      if (value != null && value % 1 == 0) {
-                        int offsetFromCenter = value.toInt() - _carouselCenter;
-                        if (_lastOffsetFromCenter != offsetFromCenter &&
-                            offsetFromCenter != 0) {
-                          _showTimeFrameAtOffset(
-                              selectionTypeState, offsetFromCenter);
-                          _carouselController.jumpToPage(_carouselCenter);
-                          _lastOffsetFromCenter = 0;
-                        } else if (offsetFromCenter == 0) {}
-                      }
-                    },
-                  ),
                 ),
-                XXSmallGap(),
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: theme.spacing.medium),
-                  child: _CalendarTypeSelector(),
-                ),
-              ],
-            ),
-          );
-        });
+              ),
+              XXSmallGap(),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: theme.spacing.medium),
+                child: _CalendarTypeSelector(),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Widget? _buildCalendar(
-      int index, CalendarSelectionTypeState selectionTypeState) {
+    int index,
+    CalendarSelectionTypeState selectionTypeState,
+  ) {
     if (selectionTypeState is CalendarRangeSelection ||
         selectionTypeState is CalendarDaySelection ||
         selectionTypeState is CalendarWeekSelection) {
       return MonthlyCalendar(monthOffset: index - _carouselCenter);
     } else if (selectionTypeState is CalendarMonthSelection) {
-      return YearlyCalendar(
-        yearOffset: index - _carouselCenter,
-      );
+      return YearlyCalendar(yearOffset: index - _carouselCenter);
     } else if (selectionTypeState is CalendarYearSelection) {
-      return DecenniallyYearCalendar(
-        decadeOffset: index - _carouselCenter,
-      );
+      return DecenniallyYearCalendar(decadeOffset: index - _carouselCenter);
     }
 
     return null;
   }
 
   void _showTimeFrameAtOffset(
-      CalendarSelectionTypeState selectionTypeState, int offsetFromCenter) {
+    CalendarSelectionTypeState selectionTypeState,
+    int offsetFromCenter,
+  ) {
     if (selectionTypeState is CalendarRangeSelection ||
         selectionTypeState is CalendarDaySelection ||
         selectionTypeState is CalendarWeekSelection) {
@@ -131,9 +125,9 @@ class _CalendarState extends State<Calendar> {
     } else if (selectionTypeState is CalendarMonthSelection) {
       context.read<YearlyCalendarCubit>().showYearAtOffset(offsetFromCenter);
     } else if (selectionTypeState is CalendarYearSelection) {
-      context
-          .read<DecenniallyCalendarCubit>()
-          .showDecadeAtOffset(offsetFromCenter);
+      context.read<DecenniallyCalendarCubit>().showDecadeAtOffset(
+        offsetFromCenter,
+      );
     }
   }
 }

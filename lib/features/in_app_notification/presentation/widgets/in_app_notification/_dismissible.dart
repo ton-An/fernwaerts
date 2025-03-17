@@ -44,30 +44,31 @@ class _DismissibleState extends State<_Dismissible>
   void initState() {
     super.initState();
     _moveController = AnimationController(
-        duration: widget.movementDuration,
-        reverseDuration: widget.reverseMovementDuration,
-        vsync: this)
-      ..addStatusListener(_handleDismissStatusChanged);
+      duration: widget.movementDuration,
+      reverseDuration: widget.reverseMovementDuration,
+      vsync: this,
+    )..addStatusListener(_handleDismissStatusChanged);
     _updateMoveAnimation();
 
-    _entryController = AnimationController(
-        duration: widget.entryDuration, vsync: this)
-      ..addListener(() {
-        setState(() {});
-      })
-      ..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          context.read<InAppNotificationCubit>().confirmNotificationDelivered();
-        }
-      });
+    _entryController =
+        AnimationController(duration: widget.entryDuration, vsync: this)
+          ..addListener(() {
+            setState(() {});
+          })
+          ..addStatusListener((status) {
+            if (status == AnimationStatus.completed) {
+              context
+                  .read<InAppNotificationCubit>()
+                  .confirmNotificationDelivered();
+            }
+          });
 
-    _entryAnimation = _entryController!.drive(Tween<Offset>(
-      end: Offset.zero,
-      begin: const Offset(
-        0,
-        -1,
-      ),
-    ).chain(CurveTween(curve: Curves.easeOutCubic)));
+    _entryAnimation = _entryController!.drive(
+      Tween<Offset>(
+        end: Offset.zero,
+        begin: const Offset(0, -1),
+      ).chain(CurveTween(curve: Curves.easeOutCubic)),
+    );
 
     // ToDo: might restart if init state is called again? during the animation. Might not be a problem tho because of wantKeepAlive ??
     if (context.read<InAppNotificationCubit>().state
@@ -110,9 +111,10 @@ class _DismissibleState extends State<_Dismissible>
       child: BlocBuilder<InAppNotificationCubit, InAppNotificationState>(
         builder: (context, state) {
           return SlideTransition(
-            position: state is InAppNotificationDelivering
-                ? _entryAnimation
-                : _moveAnimation,
+            position:
+                state is InAppNotificationDelivering
+                    ? _entryAnimation
+                    : _moveAnimation,
             child: KeyedSubtree(key: _contentKey, child: widget.child),
           );
         },
@@ -169,10 +171,7 @@ class _DismissibleState extends State<_Dismissible>
   void _updateMoveAnimation() {
     final double end = _dragExtent.sign;
     _moveAnimation = _moveController!.drive(
-      Tween<Offset>(
-        begin: Offset.zero,
-        end: Offset(0, end),
-      ),
+      Tween<Offset>(begin: Offset.zero, end: Offset(0, end)),
     );
   }
 
@@ -222,14 +221,16 @@ class _DismissibleState extends State<_Dismissible>
           break;
         }
         _dragExtent = flingVelocity.sign;
-        _moveController!
-            .fling(velocity: flingVelocity.abs() * _kFlingVelocityScale);
+        _moveController!.fling(
+          velocity: flingVelocity.abs() * _kFlingVelocityScale,
+        );
       case _FlingGestureKind.reverse:
         assert(_dragExtent != 0.0);
         assert(!_moveController!.isDismissed);
         _dragExtent = flingVelocity.sign;
-        _moveController!
-            .fling(velocity: -flingVelocity.abs() * _kFlingVelocityScale);
+        _moveController!.fling(
+          velocity: -flingVelocity.abs() * _kFlingVelocityScale,
+        );
       case _FlingGestureKind.none:
         if (!_moveController!.isDismissed) {
           // we already know it's not completed, we check that above

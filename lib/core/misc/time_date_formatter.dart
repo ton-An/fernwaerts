@@ -10,7 +10,10 @@ class TimeDateFormatter {
   }
 
   static String getTimeFrame(
-      DateTime startTime, DateTime endTime, String languageCode) {
+    DateTime startTime,
+    DateTime endTime,
+    String languageCode,
+  ) {
     return "${DateFormat.Hm(languageCode).format(startTime)} - ${DateFormat.Hm(languageCode).format(endTime)}";
   }
 }

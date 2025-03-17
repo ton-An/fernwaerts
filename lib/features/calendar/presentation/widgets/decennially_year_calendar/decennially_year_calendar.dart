@@ -12,10 +12,7 @@ import 'package:location_history/features/calendar/presentation/widgets/calendar
 part '_years_grid.dart';
 
 class DecenniallyYearCalendar extends StatelessWidget {
-  const DecenniallyYearCalendar({
-    super.key,
-    required this.decadeOffset,
-  });
+  const DecenniallyYearCalendar({super.key, required this.decadeOffset});
 
   final int decadeOffset;
   @override

@@ -22,10 +22,7 @@ class _PlaceIcon extends StatelessWidget {
     );
   }
 
-  _PlaceIconData getIcon(
-    PlaceType type,
-    WebfabrikThemeData theme,
-  ) {
+  _PlaceIconData getIcon(PlaceType type, WebfabrikThemeData theme) {
     switch (type) {
       case PlaceType.groceryStore:
         return _PlaceIconData(

@@ -11,16 +11,11 @@ class _SubPageLink extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: EdgeInsets.symmetric(
-            vertical: theme.spacing.xSmall,
-          ),
+          padding: EdgeInsets.symmetric(vertical: theme.spacing.xSmall),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Sub Settings Page',
-                style: theme.text.body.copyWith(),
-              ),
+              Text('Sub Settings Page', style: theme.text.body.copyWith()),
               SmallIconButton(
                 icon: CupertinoIcons.forward,
                 onPressed: () {},
@@ -29,10 +24,7 @@ class _SubPageLink extends StatelessWidget {
             ],
           ),
         ),
-        Container(
-          height: 1,
-          color: theme.colors.translucentBackgroundContrast,
-        ),
+        Container(height: 1, color: theme.colors.translucentBackgroundContrast),
       ],
     );
   }

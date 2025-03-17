@@ -69,8 +69,9 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
                 onVerticalDragUpdate: _verticalDragUpdate,
                 onVerticalDragStart: _verticalDragStart,
                 child: Padding(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: theme.spacing.medium),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: theme.spacing.medium,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -83,9 +84,7 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
                 ),
               ),
               Expanded(
-                child: _LocationList(
-                  scrollController: widget.scrollController,
-                ),
+                child: _LocationList(scrollController: widget.scrollController),
               ),
             ],
           ),
@@ -103,8 +102,10 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
 
     double newExtent = (currentExtent -
             details.primaryDelta! / MediaQuery.of(context).size.height)
-        .clamp(LocationHistoryModal.smallModalHeight,
-            LocationHistoryModal.largeModalHeight);
+        .clamp(
+          LocationHistoryModal.smallModalHeight,
+          LocationHistoryModal.largeModalHeight,
+        );
     widget.draggableScrollableController.jumpTo(newExtent);
   }
 

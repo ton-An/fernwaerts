@@ -1,9 +1,7 @@
 part of 'monthly_calendar.dart';
 
 class _WeekNumberCell extends StatelessWidget {
-  const _WeekNumberCell({
-    required this.weekNumber,
-  });
+  const _WeekNumberCell({required this.weekNumber});
 
   final int weekNumber;
 

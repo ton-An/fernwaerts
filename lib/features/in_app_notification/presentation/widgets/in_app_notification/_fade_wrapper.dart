@@ -1,9 +1,7 @@
 part of in_app_notification;
 
 class _FadeWrapper extends StatefulWidget {
-  const _FadeWrapper({
-    required this.child,
-  });
+  const _FadeWrapper({required this.child});
 
   final Widget child;
 
@@ -44,22 +42,24 @@ class _FadeWrapperState extends State<_FadeWrapper>
   }
 
   void _initReplacementFadeAnimation() {
-    _replacementFadeController = AnimationController(
-      duration: const Duration(milliseconds: 220),
-      vsync: this,
-    )
-      ..addListener(() {
-        setState(() {});
-      })
-      ..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          context.read<InAppNotificationCubit>().confirmNotificationReplaced();
-        }
-      });
+    _replacementFadeController =
+        AnimationController(
+            duration: const Duration(milliseconds: 220),
+            vsync: this,
+          )
+          ..addListener(() {
+            setState(() {});
+          })
+          ..addStatusListener((status) {
+            if (status == AnimationStatus.completed) {
+              context
+                  .read<InAppNotificationCubit>()
+                  .confirmNotificationReplaced();
+            }
+          });
 
-    _replacementFadeAnimation = _replacementFadeController
-        .drive(Tween<double>(begin: 1, end: 0).chain(CurveTween(
-      curve: Curves.easeOut,
-    )));
+    _replacementFadeAnimation = _replacementFadeController.drive(
+      Tween<double>(begin: 1, end: 0).chain(CurveTween(curve: Curves.easeOut)),
+    );
   }
 }

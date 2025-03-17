@@ -20,10 +20,7 @@ part '_fade_wrapper.dart';
 
 /// __In App Notification__ builds an in app notification wich displays a [Failure]
 class InAppNotification extends StatelessWidget {
-  const InAppNotification({
-    required this.failure,
-    super.key,
-  });
+  const InAppNotification({required this.failure, super.key});
 
   final Failure failure;
 
@@ -37,8 +34,11 @@ class InAppNotification extends StatelessWidget {
         children: [
           _Dismissible(
             dismissThreshold: .17,
-            onDismissed: () =>
-                context.read<InAppNotificationCubit>().dismissNotification(),
+            onDismissed:
+                () =>
+                    context
+                        .read<InAppNotificationCubit>()
+                        .dismissNotification(),
             movementDuration: const Duration(milliseconds: 450),
             reverseMovementDuration: const Duration(milliseconds: 2000),
             entryDuration: const Duration(milliseconds: 800),
@@ -56,9 +56,7 @@ class InAppNotification extends StatelessWidget {
                       horizontal: theme.spacing.xMedium,
                       vertical: theme.spacing.medium,
                     ),
-                    child: _Content(
-                      failure: failure,
-                    ),
+                    child: _Content(failure: failure),
                   ),
                 ),
               ),

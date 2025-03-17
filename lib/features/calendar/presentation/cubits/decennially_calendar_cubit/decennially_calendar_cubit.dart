@@ -3,12 +3,12 @@ import 'package:location_history/features/calendar/presentation/cubits/decennial
 
 class DecenniallyCalendarCubit extends Cubit<DecenniallyCalendarState> {
   DecenniallyCalendarCubit()
-      : super(
-          DecenniallyCalendarState(
-            startYear: DateTime(2020),
-            endYear: DateTime(2029),
-          ),
-        );
+    : super(
+        DecenniallyCalendarState(
+          startYear: DateTime(2020),
+          endYear: DateTime(2029),
+        ),
+      );
 
   static const _yearsInDecade = 10;
 

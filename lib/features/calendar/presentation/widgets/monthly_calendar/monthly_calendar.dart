@@ -17,10 +17,7 @@ part '_week_number_cell.dart';
 part '_weekdays_header.dart';
 
 class MonthlyCalendar extends StatelessWidget {
-  const MonthlyCalendar({
-    super.key,
-    required this.monthOffset,
-  });
+  const MonthlyCalendar({super.key, required this.monthOffset});
 
   final int monthOffset;
 
@@ -28,10 +25,7 @@ class MonthlyCalendar extends StatelessWidget {
   Widget build(BuildContext context) {
     return CalendarViewContainer(
       child: Column(
-        children: [
-          _WeekdaysHeader(),
-          _DaysGrid(monthOffset: monthOffset),
-        ],
+        children: [_WeekdaysHeader(), _DaysGrid(monthOffset: monthOffset)],
       ),
     );
   }

@@ -20,7 +20,9 @@ class _LayoutRenderObjectWidget extends MultiChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, _LayoutRenderObject renderObject) {
+    BuildContext context,
+    _LayoutRenderObject renderObject,
+  ) {
     if (renderObject.itemSpacing != itemSpacing ||
         renderObject.calendarOffset != calendarOffset) {
       renderObject.itemSpacing = itemSpacing;
@@ -63,8 +65,10 @@ class _LayoutRenderObject extends RenderBox
       child.layout(constraints.loosen(), parentUsesSize: true);
 
       if (i == 1) {
-        childParentData.offset =
-            Offset(0, -child.size.height * calendarOffset + yOffset);
+        childParentData.offset = Offset(
+          0,
+          -child.size.height * calendarOffset + yOffset,
+        );
         yOffset += child.size.height - child.size.height * calendarOffset;
       }
 
@@ -103,11 +107,12 @@ class _LayoutRenderObject extends RenderBox
       final VerticalListParentData childParentData =
           child.parentData as VerticalListParentData;
       if (result.addWithPaintOffset(
-          offset: childParentData.offset,
-          position: position,
-          hitTest: (BoxHitTestResult result, Offset transformed) {
-            return child!.hitTest(result, position: transformed);
-          })) {
+        offset: childParentData.offset,
+        position: position,
+        hitTest: (BoxHitTestResult result, Offset transformed) {
+          return child!.hitTest(result, position: transformed);
+        },
+      )) {
         return true;
       }
       child = childParentData.nextSibling;

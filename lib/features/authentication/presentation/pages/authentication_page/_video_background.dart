@@ -27,12 +27,10 @@ class _VideoBackgroundState extends State<_VideoBackground>
       duration: const Duration(milliseconds: 1200),
     );
 
-    _fadeInAnimation = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(
-        parent: _fadeInController,
-        curve: Curves.easeIn,
-      ),
-    );
+    _fadeInAnimation = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(CurvedAnimation(parent: _fadeInController, curve: Curves.easeIn));
 
     _fadeInController.addListener(() {
       setState(() {});
@@ -40,25 +38,23 @@ class _VideoBackgroundState extends State<_VideoBackground>
 
     _fadeInController.forward();
 
-    _videoController = VideoPlayerController.asset(
-      "assets/videos/earth2.mp4",
-      videoPlayerOptions: VideoPlayerOptions(
-        mixWithOthers: true,
-      ),
-    )
-      ..setVolume(0)
-      ..initialize().then((_) {
-        setState(() {});
-        _videoController.play();
-      });
-    _videoController2 = VideoPlayerController.asset(
-      "assets/videos/earth2.mp4",
-      videoPlayerOptions: VideoPlayerOptions(
-        mixWithOthers: true,
-      ),
-    )
-      ..setVolume(0)
-      ..initialize();
+    _videoController =
+        VideoPlayerController.asset(
+            "assets/videos/earth2.mp4",
+            videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+          )
+          ..setVolume(0)
+          ..initialize().then((_) {
+            setState(() {});
+            _videoController.play();
+          });
+    _videoController2 =
+        VideoPlayerController.asset(
+            "assets/videos/earth2.mp4",
+            videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+          )
+          ..setVolume(0)
+          ..initialize();
 
     _videoController.addListener(() {
       if (!isShowingSecondVideo && _isAtEnd(_videoController)) {
@@ -110,9 +106,7 @@ class _VideoBackgroundState extends State<_VideoBackground>
                 child: SizedBox(
                   height: _videoController.value.size.height,
                   width: _videoController.value.size.width,
-                  child: VideoPlayer(
-                    _videoController,
-                  ),
+                  child: VideoPlayer(_videoController),
                 ),
               ),
             ),
@@ -125,9 +119,7 @@ class _VideoBackgroundState extends State<_VideoBackground>
                   child: AnimatedOpacity(
                     opacity: isShowingSecondVideo ? 1 : 0,
                     duration: transitionDuration,
-                    child: VideoPlayer(
-                      _videoController2,
-                    ),
+                    child: VideoPlayer(_videoController2),
                   ),
                 ),
               ),
