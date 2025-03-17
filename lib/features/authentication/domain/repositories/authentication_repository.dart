@@ -5,7 +5,6 @@ import 'package:location_history/core/failures/failure.dart';
   To-Do:
     - [ ] Add Failures to docs
 */
-
 abstract class AuthenticationRepository {
   /// Checks if the server is reachable.
   ///
@@ -17,7 +16,7 @@ abstract class AuthenticationRepository {
   ///
   /// Failures:
   /// - ...TBD...
-  Future<Either<Failure, bool>> checkServerReachability({
+  Future<Either<Failure, None>> checkServerReachability({
     required Uri serverUrl,
   });
 

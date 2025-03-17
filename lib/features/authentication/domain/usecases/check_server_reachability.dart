@@ -26,7 +26,7 @@ class CheckServerReachability {
   const CheckServerReachability({required this.authenticationRepository});
 
   /// {@macro check_server_reachability}
-  Future<Either<Failure, bool>> call({required Uri serverUrl}) async {
+  Future<Either<Failure, None>> call({required Uri serverUrl}) async {
     return await authenticationRepository.checkServerReachability(
       serverUrl: serverUrl,
     );
