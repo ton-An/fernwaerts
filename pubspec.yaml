@@ -45,6 +45,7 @@ dependencies:
   video_player: ^2.9.3
   simple_shadow:
     ^0.3.1
+  dio: ^5.8.0+1
     # git:
     #   url: https://github.com/nixrajput/flutter_carousel_widget
     #   ref: ba5eedbbf85cb361be1f2dedf961db85483de236
