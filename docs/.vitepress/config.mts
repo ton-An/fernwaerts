@@ -5,6 +5,13 @@ export default defineConfig({
   title: "Location History",
   description: "Documentation for the open source Location History app",
   base: "/location_history",
+  head: [
+    ["link", {
+      rel: "icon",
+      type: "image/x-icon",
+      href: "/location_history/assets/favicon.ico",
+    }],
+  ],
   themeConfig: {
     nav: [
       { text: "Home", link: "/" },
