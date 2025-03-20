@@ -4,8 +4,8 @@ import { defineConfig } from "vitepress";
 export default defineConfig({
   title: "Location History",
   description: "Documentation for the open source Location History app",
+  base: "/location_history",
   themeConfig: {
-    // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: "Home", link: "/" },
       { text: "Examples", link: "/markdown-examples" },
