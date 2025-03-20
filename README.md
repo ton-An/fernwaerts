@@ -2,6 +2,10 @@
 
 A privacy-focused Flutter application that tracks your location history. It's fully open source, self-hosted, and free to use.
 
+|   |   |   |
+|---|---|---|
+![](/docs/public/assets/screenshots/home.png)  |  ![](/docs/public/assets/screenshots/map.png) |  ![](/docs/public/assets/screenshots/map_modal.png)
+
 ## Features
 
 - **Privacy First**: Your data remains under your control, whether used locally or self-hosted
