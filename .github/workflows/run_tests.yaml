@@ -25,6 +25,9 @@ jobs:
       - name: CD into app directory
         run: cd app
 
+      - name: Print current dir
+        run: pwd
+
       - name: Restore packages
         run: flutter pub get
 
