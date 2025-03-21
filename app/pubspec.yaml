@@ -55,12 +55,13 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^5.0.0
   # Testing
-  mocktail: ^1.0.3
+  mocktail: ^1.0.4
   # Code Generation
   build_runner: ^2.4.8
   freezed: ^2.4.7
   json_serializable: ^6.7.1
   flutter_launcher_icons: "^0.14.3"
+
 
 flutter:
   uses-material-design: true
