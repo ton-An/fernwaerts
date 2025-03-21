@@ -1,4 +1,5 @@
 # Location History 📍
+[![codecov](https://codecov.io/gh/ton-An/location_history/graph/badge.svg?token=X5F77OEGXS)](https://codecov.io/gh/ton-An/location_history)
 
 A privacy-focused Flutter application that tracks your location history. It's fully open source, self-hosted, and free to use.
 
