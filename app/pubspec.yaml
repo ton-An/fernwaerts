@@ -26,7 +26,7 @@ dependencies:
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
   webfabrik_theme:
-    path: ../../../webfabrik_theme
+    git: https://github.com/ton-An/webfabrik_theme
 
   # Layout
   gap: ^3.0.1
