@@ -16,12 +16,15 @@ jobs:
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
-        
+
       - name: Install and set Flutter version
-        uses: subosito/flutter-action@v1.4.0
+        uses: subosito/flutter-action@v2
         with:
           channel: stable
           flutter-version-file: app/pubspec.yaml
+
+      - name: CD into app directory
+        run: cd app
 
       - name: Restore packages
         run: flutter pub get
