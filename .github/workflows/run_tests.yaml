@@ -12,7 +12,9 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: ./app
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
@@ -21,9 +23,6 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-
-      - name: CD into app directory
-        run: cd app
 
       - name: Print current dir
         run: pwd
