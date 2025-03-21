@@ -21,7 +21,6 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version-file: app/pubspec.yaml
 
       - name: CD into app directory
         run: cd app
