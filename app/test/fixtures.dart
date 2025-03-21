@@ -1,0 +1,31 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
+
+final String tServerUrlString = "https://coolness_checks.com";
+final String tServerCallPath = "/is_ted_cool";
+final Uri tServerUrl = Uri.parse(tServerUrlString + tServerCallPath);
+
+final Map<String, dynamic> tOkResponseData = {
+  "data": {
+    "is_ted_cool": true,
+    "message": "I am disappointed that you would even ask a question like that",
+  },
+};
+final Response tOkResponse = Response(
+  data: tOkResponseData,
+  statusCode: HttpStatus.ok,
+  requestOptions: RequestOptions(path: tServerCallPath),
+);
+
+final Response tBadResponse = Response(
+  data: null,
+  statusCode: HttpStatus.badRequest,
+  requestOptions: RequestOptions(path: tServerCallPath),
+);
+
+final Response tNullStatusCodeResponse = Response(
+  data: null,
+  statusCode: null,
+  requestOptions: RequestOptions(path: tServerCallPath),
+);
