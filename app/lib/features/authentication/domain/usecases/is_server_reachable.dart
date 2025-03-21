@@ -7,27 +7,27 @@ import 'package:location_history/features/authentication/domain/repositories/aut
     - [ ] Add Failures to docs
 */
 
-/// {@template check_if_server_set_up}
-/// Checks if the server is set up. This is used to determine if the initial setup needs to be run.
+/// {@template is_server_reachable}
+/// Checks if the server is reachable.
 ///
 /// Parameters:
 /// - [Uri] serverUrl: The URL of the server to check.
 ///
 /// Returns:
-/// - a [bool] indicating if the server is set up.
+/// - a [bool] indicating if the server is reachable.
 ///
 /// Failures:
 /// - ...TBD...
 /// {@endtemplate}
-class CheckIfServerSetUp {
-  /// {@macro check_if_server_set_up}
-  const CheckIfServerSetUp({required this.authenticationRepository});
-
+class IsServerReachable {
   final AuthenticationRepository authenticationRepository;
 
-  /// {@macro check_if_server_set_up}
-  Future<Either<Failure, bool>> call({required Uri serverUrl}) async {
-    return await authenticationRepository.checkIfServerSetUp(
+  /// {@macro is_server_reachable}
+  const IsServerReachable({required this.authenticationRepository});
+
+  /// {@macro is_server_reachable}
+  Future<Either<Failure, None>> call({required Uri serverUrl}) async {
+    return await authenticationRepository.isServerReachable(
       serverUrl: serverUrl,
     );
   }

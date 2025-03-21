@@ -21,11 +21,9 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   final RepositoryFailureHandler repositoryFailureHandler;
 
   @override
-  Future<Either<Failure, bool>> checkIfServerSetUp({
-    required Uri serverUrl,
-  }) async {
+  Future<Either<Failure, bool>> isServerSetUp({required Uri serverUrl}) async {
     try {
-      final isSetupComplete = await authRemoteDataSource.checkIfServerSetUp(
+      final isSetupComplete = await authRemoteDataSource.isServerSetUp(
         serverUrl,
       );
 
@@ -42,11 +40,11 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, None>> checkServerReachability({
+  Future<Either<Failure, None>> isServerReachable({
     required Uri serverUrl,
   }) async {
     try {
-      await authRemoteDataSource.checkServerReachability(serverUrl);
+      await authRemoteDataSource.isServerReachable(serverUrl);
 
       return const Right(None());
     } on DioException catch (dioException) {

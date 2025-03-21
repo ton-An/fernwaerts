@@ -16,9 +16,7 @@ abstract class AuthenticationRepository {
   ///
   /// Failures:
   /// - ...TBD...
-  Future<Either<Failure, None>> checkServerReachability({
-    required Uri serverUrl,
-  });
+  Future<Either<Failure, None>> isServerReachable({required Uri serverUrl});
 
   /// Checks if the server is set up.
   ///
@@ -30,5 +28,5 @@ abstract class AuthenticationRepository {
   ///
   /// Failures:
   /// - ...TBD...
-  Future<Either<Failure, bool>> checkIfServerSetUp({required Uri serverUrl});
+  Future<Either<Failure, bool>> isServerSetUp({required Uri serverUrl});
 }

@@ -4,8 +4,8 @@ import 'package:location_history/core/helpers/repository_failure_handler.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:location_history/features/authentication/data/repository_implementations/authentication_repository_impl.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
-import 'package:location_history/features/authentication/domain/usecases/check_if_server_set_up.dart';
-import 'package:location_history/features/authentication/domain/usecases/check_server_reachability.dart';
+import 'package:location_history/features/authentication/domain/usecases/is_server_reachable.dart';
+import 'package:location_history/features/authentication/domain/usecases/is_server_set_up.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_expansion_cubit/calendar_expansion_cubit.dart';
@@ -43,18 +43,16 @@ void registerInAppNotificationDependencies() {
 void registerAuthenticationDependencies() {
   // -- Presentation -- //
   getIt.registerFactory(
-    () => AuthenticationCubit(
-      checkServerReachability: getIt(),
-      checkIfServerSetUp: getIt(),
-    ),
+    () =>
+        AuthenticationCubit(isServerReachable: getIt(), isServerSetUp: getIt()),
   );
 
   // -- Domain -- //
   getIt.registerLazySingleton(
-    () => CheckServerReachability(authenticationRepository: getIt()),
+    () => IsServerReachable(authenticationRepository: getIt()),
   );
   getIt.registerLazySingleton(
-    () => CheckIfServerSetUp(authenticationRepository: getIt()),
+    () => IsServerSetUp(authenticationRepository: getIt()),
   );
 
   // -- Data -- //

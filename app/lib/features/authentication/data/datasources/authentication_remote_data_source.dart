@@ -7,16 +7,15 @@ import 'package:location_history/core/failures/networking/unknown_request_failur
 /*
   To-Do:
     - [ ] Write unit tests
-    - [ ] Implement checkIfServerSetUp method
     - [ ] Standardize error handling and server calls
 */
 
 abstract class AuthenticationRemoteDataSource {
   const AuthenticationRemoteDataSource();
 
-  Future<void> checkServerReachability(Uri serverUrl);
+  Future<void> isServerReachable(Uri serverUrl);
 
-  Future<bool> checkIfServerSetUp(Uri serverUrl);
+  Future<bool> isServerSetUp(Uri serverUrl);
 }
 
 class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
@@ -25,7 +24,7 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
   final Dio dio;
 
   @override
-  Future<bool> checkIfServerSetUp(Uri serverUrl) async {
+  Future<bool> isServerSetUp(Uri serverUrl) async {
     const String isServerSetUpPath = "/functions/v1/is_set_up_complete";
     final Uri fullUrl = serverUrl.replace(path: isServerSetUpPath);
 
@@ -45,7 +44,7 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
   }
 
   @override
-  Future<void> checkServerReachability(Uri serverUrl) async {
+  Future<void> isServerReachable(Uri serverUrl) async {
     const String healthCheckPath = "/auth/v1/health";
     final Uri fullUrl = serverUrl.replace(path: healthCheckPath);
 

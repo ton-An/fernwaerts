@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location_history/core/failures/failure.dart';
-import 'package:location_history/features/authentication/domain/usecases/check_if_server_set_up.dart';
-import 'package:location_history/features/authentication/domain/usecases/check_server_reachability.dart';
+import 'package:location_history/features/authentication/domain/usecases/is_server_reachable.dart';
+import 'package:location_history/features/authentication/domain/usecases/is_server_set_up.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_states.dart';
 
 /* 
@@ -12,30 +12,32 @@ import 'package:location_history/features/authentication/presentation/cubits/aut
 
 class AuthenticationCubit extends Cubit<AuthenticationState> {
   AuthenticationCubit({
-    required this.checkServerReachability,
-    required this.checkIfServerSetUp,
+    required this.isServerReachable,
+    required this.isServerSetUp,
   }) : super(AuthenticationInitial());
 
-  final CheckServerReachability checkServerReachability;
-  final CheckIfServerSetUp checkIfServerSetUp;
+  final IsServerReachable isServerReachable;
+  final IsServerSetUp isServerSetUp;
 
   void toServerDetails() {
     emit(EnterServerDetails());
   }
 
   void toLogInInfo(String serverUrl) async {
+    emit(EnterAdminSignUpInfo());
     emit(EnterServerDetailsLoading());
 
-    final Either<Failure, None> reachabilityCheckEither =
-        await checkServerReachability(serverUrl: Uri.parse(serverUrl));
+    final Either<Failure, None> isServerReachableEither =
+        await isServerReachable(serverUrl: Uri.parse(serverUrl));
 
-    reachabilityCheckEither.fold(
+    isServerReachableEither.fold(
       (Failure failure) {
         emit(AuthenticationError(failure: failure));
       },
       (None none) async {
-        final Either<Failure, bool> isServerSetUpEither =
-            await checkIfServerSetUp(serverUrl: Uri.parse(serverUrl));
+        final Either<Failure, bool> isServerSetUpEither = await isServerSetUp(
+          serverUrl: Uri.parse(serverUrl),
+        );
 
         isServerSetUpEither.fold(
           (Failure failure) {

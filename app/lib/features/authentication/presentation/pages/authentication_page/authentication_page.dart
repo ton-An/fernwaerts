@@ -19,6 +19,11 @@ part '_sign_in_form.dart';
 part '_video_background.dart';
 part '_welcome.dart';
 
+/*
+  To-Do:
+    - [ ] Add loading animations (to the buttons)
+*/
+
 enum AuthenticationFormType { logIn, adminSignUp }
 
 class AuthenticationPage extends StatefulWidget {
