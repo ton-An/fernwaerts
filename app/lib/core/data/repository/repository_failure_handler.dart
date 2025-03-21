@@ -17,7 +17,7 @@ import 'package:location_history/core/failures/networking/unknown_request_failur
 /// {@template repository_failure_handler}
 /// __Repository Failure Handler__ converts exceptions occurring in the repository layer to [Failure]s
 /// {@endtemplate}
-class RepositoryFailureHandler {
+abstract class RepositoryFailureHandler {
   /// {@macro repository_failure_handler}
   const RepositoryFailureHandler();
 
@@ -37,6 +37,15 @@ class RepositoryFailureHandler {
   /// - [ConnectionFailure]
   /// - [UnknownRequestFailure]
   /// {@endtemplate}
+  Failure dioExceptionMapper(DioException exception);
+}
+
+/// {@macro repository_failure_handler}
+class RepositoryFailureHandlerImpl extends RepositoryFailureHandler {
+  /// {@macro repository_failure_handler}
+  const RepositoryFailureHandlerImpl();
+
+  @override
   Failure dioExceptionMapper(DioException exception) {
     switch (exception.type) {
       case DioExceptionType.connectionTimeout:

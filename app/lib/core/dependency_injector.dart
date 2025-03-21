@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:location_history/core/helpers/repository_failure_handler.dart';
+import 'package:location_history/core/data/repository/repository_failure_handler.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:location_history/features/authentication/data/repository_implementations/authentication_repository_impl.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
@@ -32,7 +32,9 @@ void registerThirdPartyDependencies() {
 
 void registerCoreDependencies() {
   // -- Data -- //
-  getIt.registerLazySingleton(() => RepositoryFailureHandler());
+  getIt.registerLazySingleton<RepositoryFailureHandler>(
+    () => RepositoryFailureHandlerImpl(),
+  );
 }
 
 void registerInAppNotificationDependencies() {
