@@ -2,7 +2,14 @@
   "[typescript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   },
-  "cSpell.words": ["monday", "SHORTWEEKDAYS", "supabase", "Supabase"],
+  "cSpell.words": [
+    "latlong",
+    "monday",
+    "SHORTWEEKDAYS",
+    "subosito",
+    "supabase",
+    "Supabase"
+  ],
   "deno.enablePaths": ["supabase/functions"],
   "deno.lint": true,
   "deno.unstable": [

@@ -1,4 +1,4 @@
-part of in_app_notification;
+part of "in_app_notification.dart";
 
 class _Decoration extends StatelessWidget {
   const _Decoration({required this.child});

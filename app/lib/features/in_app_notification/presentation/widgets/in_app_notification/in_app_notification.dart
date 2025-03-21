@@ -1,5 +1,3 @@
-library in_app_notification;
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location_history/core/failures/failure.dart';

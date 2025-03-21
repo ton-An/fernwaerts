@@ -1247,9 +1247,11 @@ packages:
   webfabrik_theme:
     dependency: "direct main"
     description:
-      path: "../../../webfabrik_theme"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: "666eef1b8ed246ceadb086fff29c897cc3c51617"
+      url: "https://github.com/ton-An/webfabrik_theme"
+    source: git
     version: "0.0.1"
   wkt_parser:
     dependency: transitive

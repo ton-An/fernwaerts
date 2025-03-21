@@ -1,4 +1,4 @@
-part of in_app_notification;
+part of "in_app_notification.dart";
 
 class _FadeWrapper extends StatefulWidget {
   const _FadeWrapper({required this.child});
