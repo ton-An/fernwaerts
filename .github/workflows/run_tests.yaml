@@ -30,14 +30,23 @@ jobs:
       - name: Restore packages
         run: flutter pub get
 
+      - name: Install junitreport
+        run: flutter pub global activate --source git https://github.com/ton-An/dart-junitreport
+
       - name: Analyze
         run: flutter analyze
 
       - name: Run tests
-        run: flutter test --coverage
+        run: flutter test --coverage --machine | tojunit -o junit.xml
 
-      - name: Upload coverage
+      - name: Upload Test Coverage
         uses: codecov/codecov-action@v5
         with:
           files: coverage/lcov.info
           verbose: true
+
+      - name: Upload Test Results
+        uses: codecov/test-results-action@v1
+        with:
+          files: junit.xml
+                
