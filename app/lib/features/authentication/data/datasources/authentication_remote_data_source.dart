@@ -10,8 +10,25 @@ import 'package:location_history/core/misc/url_path_constants.dart';
 abstract class AuthenticationRemoteDataSource {
   const AuthenticationRemoteDataSource();
 
+  /// Checks if the server is reachable.
+  ///
+  /// Parameters:
+  /// - [Uri] serverUrl: The URL of the server to check.
+  ///
+  /// Throws:
+  /// - {@macro server_remote_handler_exceptions}
   Future<void> isServerReachable({required Uri serverUrl});
 
+  /// Checks if the server is set up.
+  ///
+  /// Parameters:
+  /// - [Uri] serverUrl: The URL of the server to check.
+  ///
+  /// Returns:
+  /// - a [bool] indicating if the server is set up.
+  ///
+  /// Throws:
+  /// - {@macro server_remote_handler_exceptions}
   Future<bool> isServerSetUp({required Uri serverUrl});
 }
 

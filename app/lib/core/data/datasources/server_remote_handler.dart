@@ -16,9 +16,11 @@ abstract class ServerRemoteHandler {
   /// - [Map]?: response body (if any)
   ///
   /// Throws:
+  /// {@template server_remote_handler_exceptions}
   /// - [StatusCodeNotOkFailure]
   /// - [UnknownRequestFailure]
   /// - [DioException]
+  /// {@endtemplate}
   Future<Map<String, dynamic>?> get({required Uri url});
 }
 

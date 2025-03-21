@@ -11,8 +11,8 @@ abstract class AuthenticationRepository {
   /// Parameters:
   /// - [Uri] serverUrl: The URL of the server to check.
   ///
-  /// Returns:
-  /// - a [bool] indicating if the server is reachable.
+  /// Return:
+  /// - [None] if the server is reachable.
   ///
   /// Failures:
   /// - {@macro server_remote_handler_exceptions}
