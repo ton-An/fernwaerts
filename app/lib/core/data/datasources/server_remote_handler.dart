@@ -13,13 +13,13 @@ abstract class ServerRemoteHandler {
   /// - [String]: path on the server
   ///
   /// Returns:
-  /// - [Map<String, dynamic>?]: response body (if any)
+  /// - [Map]?: response body (if any)
   ///
   /// Throws:
   /// - [StatusCodeNotOkFailure]
   /// - [UnknownRequestFailure]
   /// - [DioException]
-  Future<Map<String, dynamic>> get({required Uri url});
+  Future<Map<String, dynamic>?> get({required Uri url});
 }
 
 class ServerRemoteHandlerImpl extends ServerRemoteHandler {
@@ -28,7 +28,7 @@ class ServerRemoteHandlerImpl extends ServerRemoteHandler {
   final Dio dio;
 
   @override
-  Future<Map<String, dynamic>> get({required Uri url}) async {
+  Future<Map<String, dynamic>?> get({required Uri url}) async {
     final Response response = await dio.getUri(url);
 
     if (response.statusCode == HttpStatus.ok) {
