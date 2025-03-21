@@ -30,7 +30,7 @@ void main() {
     });
     test("should check if the server is reachable", () async {
       // act
-      await authRemoteDataSourceImpl.isServerReachable(tServerUrl);
+      await authRemoteDataSourceImpl.isServerReachable(serverUrl: tServerUrl);
 
       // assert
       verify(
@@ -52,7 +52,9 @@ void main() {
       "should check if the server is set up and return the boolean value",
       () async {
         // act
-        final result = await authRemoteDataSourceImpl.isServerSetUp(tServerUrl);
+        final result = await authRemoteDataSourceImpl.isServerSetUp(
+          serverUrl: tServerUrl,
+        );
 
         // assert
         verify(

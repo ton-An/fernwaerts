@@ -10,9 +10,9 @@ import 'package:location_history/core/misc/url_path_constants.dart';
 abstract class AuthenticationRemoteDataSource {
   const AuthenticationRemoteDataSource();
 
-  Future<void> isServerReachable(Uri serverUrl);
+  Future<void> isServerReachable({required Uri serverUrl});
 
-  Future<bool> isServerSetUp(Uri serverUrl);
+  Future<bool> isServerSetUp({required Uri serverUrl});
 }
 
 class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
@@ -21,7 +21,7 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
   final ServerRemoteHandler serverRemoteHandler;
 
   @override
-  Future<bool> isServerSetUp(Uri serverUrl) async {
+  Future<bool> isServerSetUp({required Uri serverUrl}) async {
     final Uri fullUrl = serverUrl.replace(
       path: UrlPathConstants.isServerSetUpPath,
     );
@@ -34,7 +34,7 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
   }
 
   @override
-  Future<void> isServerReachable(Uri serverUrl) async {
+  Future<void> isServerReachable({required Uri serverUrl}) async {
     final Uri fullUrl = serverUrl.replace(
       path: UrlPathConstants.healthCheckPath,
     );

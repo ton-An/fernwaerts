@@ -37,7 +37,7 @@ abstract class RepositoryFailureHandler {
   /// - [ConnectionFailure]
   /// - [UnknownRequestFailure]
   /// {@endtemplate}
-  Failure dioExceptionMapper(DioException exception);
+  Failure dioExceptionMapper({required DioException dioException});
 }
 
 /// {@macro repository_failure_handler}
@@ -46,8 +46,8 @@ class RepositoryFailureHandlerImpl extends RepositoryFailureHandler {
   const RepositoryFailureHandlerImpl();
 
   @override
-  Failure dioExceptionMapper(DioException exception) {
-    switch (exception.type) {
+  Failure dioExceptionMapper({required DioException dioException}) {
+    switch (dioException.type) {
       case DioExceptionType.connectionTimeout:
         return const ConnectionTimeoutFailure();
       case DioExceptionType.sendTimeout:

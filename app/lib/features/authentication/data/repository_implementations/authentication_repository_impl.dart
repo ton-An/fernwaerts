@@ -24,13 +24,13 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   Future<Either<Failure, bool>> isServerSetUp({required Uri serverUrl}) async {
     try {
       final isSetupComplete = await authRemoteDataSource.isServerSetUp(
-        serverUrl,
+        serverUrl: serverUrl,
       );
 
       return Right(isSetupComplete);
     } on DioException catch (dioException) {
       final Failure failure = repositoryFailureHandler.dioExceptionMapper(
-        dioException,
+        dioException: dioException,
       );
 
       return Left(failure);
@@ -44,12 +44,12 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     required Uri serverUrl,
   }) async {
     try {
-      await authRemoteDataSource.isServerReachable(serverUrl);
+      await authRemoteDataSource.isServerReachable(serverUrl: serverUrl);
 
       return const Right(None());
     } on DioException catch (dioException) {
       final Failure failure = repositoryFailureHandler.dioExceptionMapper(
-        dioException,
+        dioException: dioException,
       );
 
       return Left(failure);

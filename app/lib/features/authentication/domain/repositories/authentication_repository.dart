@@ -15,7 +15,7 @@ abstract class AuthenticationRepository {
   /// - a [bool] indicating if the server is reachable.
   ///
   /// Failures:
-  /// - ...TBD...
+  /// - {@macro server_remote_handler_exceptions}
   Future<Either<Failure, None>> isServerReachable({required Uri serverUrl});
 
   /// Checks if the server is set up.
