@@ -1,8 +1,5 @@
-import 'dart:io';
-
-import 'package:dio/dio.dart';
-import 'package:location_history/core/failures/networking/status_code_not_ok_failure.dart';
-import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
+import 'package:location_history/core/data/datasources/server_remote_handler.dart';
+import 'package:location_history/core/misc/url_path_constants.dart';
 
 /*
   To-Do:
@@ -19,41 +16,29 @@ abstract class AuthenticationRemoteDataSource {
 }
 
 class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
-  const AuthRemoteDataSourceImpl({required this.dio});
+  const AuthRemoteDataSourceImpl({required this.serverRemoteHandler});
 
-  final Dio dio;
+  final ServerRemoteHandler serverRemoteHandler;
 
   @override
   Future<bool> isServerSetUp(Uri serverUrl) async {
-    const String isServerSetUpPath = "/functions/v1/is_set_up_complete";
-    final Uri fullUrl = serverUrl.replace(path: isServerSetUpPath);
+    final Uri fullUrl = serverUrl.replace(
+      path: UrlPathConstants.isServerSetUpPath,
+    );
 
-    final Response response = await dio.getUri(fullUrl);
+    final Map<String, dynamic>? responseData = await serverRemoteHandler.get(
+      url: fullUrl,
+    );
 
-    if (response.statusCode == HttpStatus.ok) {
-      final Map<String, dynamic> responseData = response.data;
-
-      final bool isSetupComplete = responseData["data"]['is_set_up_complete'];
-
-      return isSetupComplete;
-    } else if (response.statusCode != null &&
-        response.statusCode != HttpStatus.ok) {
-      throw StatusCodeNotOkFailure(statusCode: response.statusCode!);
-    }
-    throw UnknownRequestFailure();
+    return responseData?["data"]?["is_server_set_up"]!;
   }
 
   @override
   Future<void> isServerReachable(Uri serverUrl) async {
-    const String healthCheckPath = "/auth/v1/health";
-    final Uri fullUrl = serverUrl.replace(path: healthCheckPath);
+    final Uri fullUrl = serverUrl.replace(
+      path: UrlPathConstants.healthCheckPath,
+    );
 
-    final Response response = await dio.getUri(fullUrl);
-
-    if (response.statusCode != null && response.statusCode != HttpStatus.ok) {
-      throw StatusCodeNotOkFailure(statusCode: response.statusCode!);
-    } else if (response.statusCode == null) {
-      throw UnknownRequestFailure();
-    }
+    await serverRemoteHandler.get(url: fullUrl);
   }
 }

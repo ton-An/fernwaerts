@@ -29,3 +29,9 @@ final Response tNullStatusCodeResponse = Response(
   statusCode: null,
   requestOptions: RequestOptions(path: tServerCallPath),
 );
+
+final tNullResponseData = null;
+
+final tIsServerSetUpResponseData = {
+  "data": {"is_server_set_up": true},
+};
