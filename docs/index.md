@@ -31,3 +31,26 @@ features:
 ::: warning
 The project and the documentation are still in early stages, so expect some rough edges. Thanks for your patience 😘
 :::
+
+---
+<pre>
+
+</pre>
+# Team
+<script setup>
+import { VPTeamMembers } from 'vitepress/theme'
+
+const members = [
+  {
+    avatar: 'https://avatars.githubusercontent.com/u/25333824?v=4',
+    name: 'Anton Heuchert',
+    title: 'Developer/Creator',
+    sponsor: 'https://github.com/sponsors/ton-An',
+    links: [
+      { icon: 'github', link: 'https://github.com/ton-An' },
+    ]
+  },
+]
+</script>
+<VPTeamMembers size="small" :members="members" />
+
