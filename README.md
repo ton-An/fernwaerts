@@ -46,7 +46,7 @@ A privacy-focused Flutter application that tracks your location history. It's fu
 
 ## Getting Started (with the Server)
 
-Coming soon...
+Coming soon... (Some things need to be done first. Like adding row level security to the database)
 
 ## Documentation
 
