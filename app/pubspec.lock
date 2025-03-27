@@ -847,6 +847,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
+  pubspec_checker:
+    dependency: "direct dev"
+    description:
+      name: pubspec_checker
+      sha256: "1b3def67efacee85011fca631b6ec14a49b8a7c29814aac3c08bd067f8b52058"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   pubspec_parse:
     dependency: transitive
     description:
