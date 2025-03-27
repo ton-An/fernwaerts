@@ -61,7 +61,7 @@ The following packages are **mandatory**:
 Each commit message should follow this format:
 
 ```
-<type>(<scope>): <short summary>
+[project] <type>(<scope>): <short summary>
 
 <optional detailed description>
 
