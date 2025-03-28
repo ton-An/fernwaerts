@@ -1,5 +1,7 @@
+import 'package:http/http.dart';
 import 'package:location_history/core/data/datasources/server_remote_handler.dart';
-import 'package:location_history/core/misc/url_path_constants.dart';
+import 'package:location_history/core/data/datasources/supabase_handler.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 /*
   To-Do:
@@ -12,12 +14,12 @@ abstract class AuthenticationRemoteDataSource {
 
   /// Checks if the server is reachable.
   ///
-  /// Parameters:
-  /// - [Uri] serverUrl: The URL of the server to check.
-  ///
   /// Throws:
-  /// - {@macro server_remote_handler_exceptions}
-  Future<void> isServerReachable({required Uri serverUrl});
+  /// - [ClientException]
+  /// - [ArgumentError]
+  /// - [FormatException]
+  /// - [PostgrestException]
+  Future<void> isServerConnectionValid();
 
   /// Checks if the server is set up.
   ///
@@ -28,34 +30,55 @@ abstract class AuthenticationRemoteDataSource {
   /// - a [bool] indicating if the server is set up.
   ///
   /// Throws:
-  /// - {@macro server_remote_handler_exceptions}
-  Future<bool> isServerSetUp({required Uri serverUrl});
+  /// - [ClientException]
+  /// - [PostgrestException]
+  Future<bool> isServerSetUp();
+
+  /// Initializes the connection to the server
+  ///
+  /// Parameters:
+  /// - [String] serverUrl: The URL of the server to connect to.
+  Future<void> initializeServerConnection({required String serverUrl});
 }
 
 class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
-  const AuthRemoteDataSourceImpl({required this.serverRemoteHandler});
+  const AuthRemoteDataSourceImpl({
+    required this.serverRemoteHandler,
+    required this.supabaseHandler,
+  });
 
   final ServerRemoteHandler serverRemoteHandler;
+  final SupabaseHandler supabaseHandler;
 
   @override
-  Future<bool> isServerSetUp({required Uri serverUrl}) async {
-    final Uri fullUrl = serverUrl.replace(
-      path: UrlPathConstants.isServerSetUpPath,
-    );
+  Future<bool> isServerSetUp() async {
+    final SupabaseClient supabaseClient = supabaseHandler.getClient();
 
-    final Map<String, dynamic>? responseData = await serverRemoteHandler.get(
-      url: fullUrl,
-    );
+    final queryResult =
+        await supabaseClient
+            .from("public_settings")
+            .select()
+            .eq("name", "is_set_up")
+            .single();
 
-    return responseData?["data"]?["is_server_set_up"]!;
+    final bool isSetUp = queryResult["value"];
+
+    return isSetUp;
   }
 
   @override
-  Future<void> isServerReachable({required Uri serverUrl}) async {
-    final Uri fullUrl = serverUrl.replace(
-      path: UrlPathConstants.healthCheckPath,
-    );
+  Future<void> isServerConnectionValid() async {
+    final SupabaseClient supabaseClient = supabaseHandler.getClient();
 
-    await serverRemoteHandler.get(url: fullUrl);
+    await supabaseClient.from("public_settings").select().single();
+  }
+
+  @override
+  Future<void> initializeServerConnection({required String serverUrl}) async {
+    try {
+      await supabaseHandler.dispose();
+    } catch (_) {}
+
+    await supabaseHandler.initialize(serverUrl: serverUrl);
   }
 }

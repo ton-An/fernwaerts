@@ -26,7 +26,7 @@ class IsServerSetUp {
   final AuthenticationRepository authenticationRepository;
 
   /// {@macro is_server_set_up}
-  Future<Either<Failure, bool>> call({required Uri serverUrl}) async {
-    return await authenticationRepository.isServerSetUp(serverUrl: serverUrl);
+  Future<Either<Failure, bool>> call() async {
+    return await authenticationRepository.isServerSetUp();
   }
 }

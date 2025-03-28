@@ -1,7 +1,11 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'mocks.dart';
 
 final String tServerUrlString = "https://coolness_checks.com";
 final String tServerCallPath = "/is_ted_cool";
@@ -44,3 +48,21 @@ final DioException tBadResponseDioException = DioException.badResponse(
 );
 
 final UnknownRequestFailure tUnknownRequestFailure = UnknownRequestFailure();
+
+final Map<String, dynamic> tPublicSettingsMap = {
+  "name": "is_set_up",
+  "value": true,
+};
+
+final MockSupabase tMockSupabase = MockSupabase();
+
+final http.ClientException tTimeoutClientException = http.ClientException(
+  "Operation timed out",
+  tServerUrl,
+);
+
+final ArgumentError tArgumentError = ArgumentError();
+
+final FormatException tFormatException = FormatException();
+
+final PostgrestException tPostgresException = PostgrestException(message: "");

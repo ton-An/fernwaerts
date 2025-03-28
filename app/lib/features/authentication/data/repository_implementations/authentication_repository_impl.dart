@@ -1,14 +1,16 @@
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
+import 'package:http/http.dart';
 import 'package:location_history/core/data/repository/repository_failure_handler.dart';
 import 'package:location_history/core/failures/failure.dart';
+import 'package:location_history/core/failures/networking/connection_failure.dart';
+import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
+import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
-
+import 'package:supabase_flutter/supabase_flutter.dart';
 /*
   To-Do:
-    - [ ] Complete the Failure conversion
-    - [ ] Write unit tests
+    - [ ] Standardize timeout exception handling (also in unit tests)
 */
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
@@ -21,40 +23,53 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   final RepositoryFailureHandler repositoryFailureHandler;
 
   @override
-  Future<Either<Failure, bool>> isServerSetUp({required Uri serverUrl}) async {
+  Future<Either<Failure, bool>> isServerSetUp() async {
     try {
-      final isSetupComplete = await authRemoteDataSource.isServerSetUp(
-        serverUrl: serverUrl,
-      );
+      final isSetupComplete = await authRemoteDataSource.isServerSetUp();
 
       return Right(isSetupComplete);
-    } on DioException catch (dioException) {
-      final Failure failure = repositoryFailureHandler.dioExceptionMapper(
-        dioException: dioException,
-      );
+    } catch (exception) {
+      if (exception is ClientException) {
+        final isTimeout = exception.message.contains("Operation timed out");
 
-      return Left(failure);
-    } on Failure catch (failure) {
-      return Left(failure);
+        if (isTimeout) {
+          return Left(SendTimeoutFailure());
+        }
+      } else if (exception is PostgrestException) {
+        return Left(ConnectionFailure());
+      }
+      rethrow;
     }
   }
 
   @override
-  Future<Either<Failure, None>> isServerReachable({
-    required Uri serverUrl,
-  }) async {
+  Future<Either<Failure, None>> isServerConnectionValid() async {
     try {
-      await authRemoteDataSource.isServerReachable(serverUrl: serverUrl);
+      await authRemoteDataSource.isServerConnectionValid();
 
       return const Right(None());
-    } on DioException catch (dioException) {
-      final Failure failure = repositoryFailureHandler.dioExceptionMapper(
-        dioException: dioException,
-      );
+    } catch (exception) {
+      if (exception is ClientException) {
+        final isTimeout = exception.message.contains("Operation timed out");
 
-      return Left(failure);
-    } on Failure catch (failure) {
-      return Left(failure);
+        if (isTimeout) {
+          return Left(SendTimeoutFailure());
+        }
+      } else if (exception is ArgumentError || exception is FormatException) {
+        return Left(InvalidUrlFormatFailure());
+      } else if (exception is PostgrestException) {
+        return Left(ConnectionFailure());
+      }
+      rethrow;
     }
+  }
+
+  @override
+  Future<Either<Failure, None>> initializeServerConnection({
+    required String serverUrl,
+  }) async {
+    await authRemoteDataSource.initializeServerConnection(serverUrl: serverUrl);
+
+    return Right(None());
   }
 }

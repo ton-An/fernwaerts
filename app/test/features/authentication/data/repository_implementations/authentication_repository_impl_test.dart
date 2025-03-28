@@ -1,7 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:location_history/core/failures/failure.dart';
-import 'package:location_history/core/failures/networking/bad_response_failure.dart';
+import 'package:location_history/core/failures/networking/connection_failure.dart';
+import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
+import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/features/authentication/data/repository_implementations/authentication_repository_impl.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -30,9 +32,7 @@ void main() {
   group("isServerSetUp", () {
     setUp(() {
       when(
-        () => mockAuthRemoteDataSource.isServerSetUp(
-          serverUrl: any(named: "serverUrl"),
-        ),
+        () => mockAuthRemoteDataSource.isServerSetUp(),
       ).thenAnswer((_) async => true);
     });
 
@@ -40,117 +40,112 @@ void main() {
       "should check if the server is set up and return the result",
       () async {
         // act
-        final result = await authenticationRepositoryImpl.isServerSetUp(
-          serverUrl: tServerUrl,
-        );
+        final result = await authenticationRepositoryImpl.isServerSetUp();
 
         // assert
-        verify(
-          () => mockAuthRemoteDataSource.isServerSetUp(serverUrl: tServerUrl),
-        );
+        verify(() => mockAuthRemoteDataSource.isServerSetUp());
         expect(result, Right(true));
       },
     );
 
-    test("should convert DioExceptions to Failures", () async {
+    test("should convert ClientExceptions to SendTimeoutFailure", () async {
       // arrange
       when(
-        () => mockAuthRemoteDataSource.isServerSetUp(
-          serverUrl: any(named: "serverUrl"),
-        ),
-      ).thenThrow(tBadResponseDioException);
-      when(
-        () => mockRepositoryFailureHandler.dioExceptionMapper(
-          dioException: any(named: "dioException"),
-        ),
-      ).thenReturn(BadResponseFailure());
+        () => mockAuthRemoteDataSource.isServerSetUp(),
+      ).thenThrow(tTimeoutClientException);
 
       // act
-      final result = await authenticationRepositoryImpl.isServerSetUp(
-        serverUrl: tServerUrl,
-      );
+      final result = await authenticationRepositoryImpl.isServerSetUp();
 
       // assert
-      expect(result, Left<Failure, bool>(BadResponseFailure()));
+      expect(result, Left<Failure, bool>(SendTimeoutFailure()));
     });
 
-    test("should relay Failures", () async {
+    test("should convert PostgresException to ConnectionFailure", () async {
       // arrange
       when(
-        () => mockAuthRemoteDataSource.isServerSetUp(
-          serverUrl: any(named: "serverUrl"),
-        ),
-      ).thenThrow(tUnknownRequestFailure);
+        () => mockAuthRemoteDataSource.isServerSetUp(),
+      ).thenThrow(tPostgresException);
 
       // act
-      final result = await authenticationRepositoryImpl.isServerSetUp(
-        serverUrl: tServerUrl,
-      );
+      final result = await authenticationRepositoryImpl.isServerSetUp();
 
       // assert
-      expect(result, Left<Failure, bool>(tUnknownRequestFailure));
+      expect(result, Left<Failure, bool>(ConnectionFailure()));
     });
   });
 
-  group("isServerReachable", () {
+  group("isServerConnectionValid", () {
     setUp(() {
       when(
-        () => mockAuthRemoteDataSource.isServerReachable(
-          serverUrl: any(named: "serverUrl"),
-        ),
+        () => mockAuthRemoteDataSource.isServerConnectionValid(),
       ).thenAnswer((_) => Future.value());
     });
 
     test("should check if the server is reachable and return None", () async {
       // act
-      final result = await authenticationRepositoryImpl.isServerReachable(
-        serverUrl: tServerUrl,
-      );
+      final result =
+          await authenticationRepositoryImpl.isServerConnectionValid();
 
       // assert
-      verify(
-        () => mockAuthRemoteDataSource.isServerReachable(serverUrl: tServerUrl),
-      );
+      verify(() => mockAuthRemoteDataSource.isServerConnectionValid());
       expect(result, Right<Failure, None>(None()));
     });
 
-    test("should convert DioExceptions to Failures", () async {
+    test("should convert ClientExceptions to SendTimeoutFailure", () async {
       // arrange
       when(
-        () => mockAuthRemoteDataSource.isServerReachable(
-          serverUrl: any(named: "serverUrl"),
-        ),
-      ).thenThrow(tBadResponseDioException);
-      when(
-        () => mockRepositoryFailureHandler.dioExceptionMapper(
-          dioException: any(named: "dioException"),
-        ),
-      ).thenReturn(BadResponseFailure());
+        () => mockAuthRemoteDataSource.isServerConnectionValid(),
+      ).thenThrow(tTimeoutClientException);
 
       // act
-      final result = await authenticationRepositoryImpl.isServerReachable(
-        serverUrl: tServerUrl,
-      );
+      final result =
+          await authenticationRepositoryImpl.isServerConnectionValid();
 
       // assert
-      expect(result, Left<Failure, bool>(BadResponseFailure()));
+      expect(result, Left<Failure, bool>(SendTimeoutFailure()));
     });
 
-    test("should relay Failures", () async {
+    test("should convert ArgumentError to InvalidUrlFormatFailure", () async {
       // arrange
       when(
-        () => mockAuthRemoteDataSource.isServerReachable(
-          serverUrl: any(named: "serverUrl"),
-        ),
-      ).thenThrow(tUnknownRequestFailure);
+        () => mockAuthRemoteDataSource.isServerConnectionValid(),
+      ).thenThrow(tArgumentError);
 
       // act
-      final result = await authenticationRepositoryImpl.isServerReachable(
-        serverUrl: tServerUrl,
-      );
+      final result =
+          await authenticationRepositoryImpl.isServerConnectionValid();
 
       // assert
-      expect(result, Left<Failure, bool>(tUnknownRequestFailure));
+      expect(result, Left<Failure, bool>(InvalidUrlFormatFailure()));
+    });
+
+    test("should convert FormatException to InvalidUrlFormatFailure", () async {
+      // arrange
+      when(
+        () => mockAuthRemoteDataSource.isServerConnectionValid(),
+      ).thenThrow(tFormatException);
+
+      // act
+      final result =
+          await authenticationRepositoryImpl.isServerConnectionValid();
+
+      // assert
+      expect(result, Left<Failure, bool>(InvalidUrlFormatFailure()));
+    });
+
+    test("should convert PostgresException to ConnectionFailure", () async {
+      // arrange
+      when(
+        () => mockAuthRemoteDataSource.isServerConnectionValid(),
+      ).thenThrow(tPostgresException);
+
+      // act
+      final result =
+          await authenticationRepositoryImpl.isServerConnectionValid();
+
+      // assert
+      expect(result, Left<Failure, bool>(ConnectionFailure()));
     });
   });
 }

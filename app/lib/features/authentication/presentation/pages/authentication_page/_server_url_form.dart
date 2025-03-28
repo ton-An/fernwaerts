@@ -8,12 +8,12 @@ class _ServerUrlForm extends StatefulWidget {
 }
 
 class _ServerUrlFormState extends State<_ServerUrlForm> {
-  late TextEditingController _textEditingController;
+  late TextEditingController _urlEditController;
 
   @override
   void initState() {
     super.initState();
-    _textEditingController = TextEditingController();
+    _urlEditController = TextEditingController();
   }
 
   @override
@@ -27,13 +27,13 @@ class _ServerUrlFormState extends State<_ServerUrlForm> {
       textFields: [
         CustomCupertinoTextField(
           hint: AppLocalizations.of(context)!.serverUrl,
-          controller: _textEditingController,
+          controller: _urlEditController,
           onChanged: (_) {},
         ),
       ],
       onButtonPressed: () {
         context.read<AuthenticationCubit>().toLogInInfo(
-          _textEditingController.text,
+          _urlEditController.text,
         );
       },
     );

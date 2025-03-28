@@ -1,70 +1,133 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:location_history/core/data/datasources/server_remote_handler.dart';
-import 'package:location_history/core/misc/url_path_constants.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
+import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../fixtures.dart';
 import '../../../../mocks.dart';
 
 void main() {
   late AuthRemoteDataSourceImpl authRemoteDataSourceImpl;
-  late ServerRemoteHandler mockServerRemoteHandler;
+  late MockSupabaseHandler mockSupabaseHandler;
+  late MockServerRemoteHandler mockServerRemoteHandler;
+
+  late MockSupabaseHttpClient mockSupabaseHttpClient;
+  late SupabaseClient mockSupabaseClient;
 
   setUp(() {
+    mockSupabaseHandler = MockSupabaseHandler();
     mockServerRemoteHandler = MockServerRemoteHandler();
     authRemoteDataSourceImpl = AuthRemoteDataSourceImpl(
       serverRemoteHandler: mockServerRemoteHandler,
+      supabaseHandler: mockSupabaseHandler,
     );
+
+    mockSupabaseHttpClient = MockSupabaseHttpClient();
+    mockSupabaseClient = SupabaseClient(
+      "http://tedmosbyisnotajerk.com/",
+      "supabaseKey",
+      httpClient: mockSupabaseHttpClient,
+    );
+
+    when(() => mockSupabaseHandler.getClient()).thenReturn(mockSupabaseClient);
   });
 
   setUpAll(() {
     registerFallbackValue(tServerUrl);
   });
 
-  group('isServerReachable', () {
-    setUp(() {
-      when(
-        () => mockServerRemoteHandler.get(url: any(named: "url")),
-      ).thenAnswer((_) async => tNullResponseData);
-    });
-    test("should check if the server is reachable", () async {
-      // act
-      await authRemoteDataSourceImpl.isServerReachable(serverUrl: tServerUrl);
+  tearDown(() {
+    mockSupabaseHttpClient.reset();
+  });
 
-      // assert
-      verify(
-        () => mockServerRemoteHandler.get(
-          url: Uri.parse(tServerUrlString + UrlPathConstants.healthCheckPath),
-        ),
-      );
+  tearDownAll(() {
+    mockSupabaseHttpClient.close();
+  });
+
+  group('isServerConnectionValid', () {
+    setUp(() async {
+      await mockSupabaseClient
+          .from("public_settings")
+          .insert(tPublicSettingsMap);
+    });
+
+    test("should check if the connection to the server is valid", () async {
+      // act & assert
+      try {
+        await authRemoteDataSourceImpl.isServerConnectionValid();
+      } catch (e) {
+        fail("Select operation on 'public_settings' db table failed\n$e");
+      }
     });
   });
 
   group("isServerSetUp", () {
-    setUp(() {
-      when(
-        () => mockServerRemoteHandler.get(url: any(named: "url")),
-      ).thenAnswer((_) async => tIsServerSetUpResponseData);
+    setUp(() async {
+      await mockSupabaseClient
+          .from("public_settings")
+          .insert(tPublicSettingsMap);
     });
 
     test(
       "should check if the server is set up and return the boolean value",
       () async {
+        // act & assert
+        try {
+          final result = await authRemoteDataSourceImpl.isServerSetUp();
+
+          expect(result, true);
+        } catch (e) {
+          fail("Select operation on 'public_settings' db table failed\n$e");
+        }
+      },
+    );
+  });
+
+  group("initializeServerConnection", () {
+    setUp(() {
+      when(
+        () =>
+            mockSupabaseHandler.initialize(serverUrl: any(named: "serverUrl")),
+      ).thenAnswer((_) async => tMockSupabase);
+      when(
+        () => mockSupabaseHandler.dispose(),
+      ).thenAnswer((_) => Future.value());
+    });
+
+    test("should dispose the old server connection", () async {
+      // act
+      await authRemoteDataSourceImpl.initializeServerConnection(
+        serverUrl: tServerUrlString,
+      );
+
+      // assert
+      verify(() => mockSupabaseHandler.dispose());
+    });
+
+    test("should initialize the new server connection", () async {
+      // act
+      await authRemoteDataSourceImpl.initializeServerConnection(
+        serverUrl: tServerUrlString,
+      );
+
+      // assert
+      verify(() => mockSupabaseHandler.initialize(serverUrl: tServerUrlString));
+    });
+
+    test(
+      "should continue with initialization if dispose throws an exception (happens if there is no previous connection)",
+      () async {
+        when(() => mockSupabaseHandler.dispose()).thenThrow(Exception());
         // act
-        final result = await authRemoteDataSourceImpl.isServerSetUp(
-          serverUrl: tServerUrl,
+        await authRemoteDataSourceImpl.initializeServerConnection(
+          serverUrl: tServerUrlString,
         );
 
         // assert
         verify(
-          () => mockServerRemoteHandler.get(
-            url: Uri.parse(
-              tServerUrlString + UrlPathConstants.isServerSetUpPath,
-            ),
-          ),
+          () => mockSupabaseHandler.initialize(serverUrl: tServerUrlString),
         );
-        expect(result, true);
       },
     );
   });

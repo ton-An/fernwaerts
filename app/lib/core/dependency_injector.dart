@@ -1,11 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:location_history/core/data/datasources/server_remote_handler.dart';
+import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/data/repository/repository_failure_handler.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:location_history/features/authentication/data/repository_implementations/authentication_repository_impl.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
-import 'package:location_history/features/authentication/domain/usecases/is_server_reachable.dart';
+import 'package:location_history/features/authentication/domain/usecases/initialize_server_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_server_set_up.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_cubit.dart';
@@ -39,6 +40,7 @@ void registerCoreDependencies() {
   getIt.registerLazySingleton<ServerRemoteHandler>(
     () => ServerRemoteHandlerImpl(dio: getIt()),
   );
+  getIt.registerLazySingleton<SupabaseHandler>(() => SupabaseHandler());
 }
 
 void registerInAppNotificationDependencies() {
@@ -49,13 +51,15 @@ void registerInAppNotificationDependencies() {
 void registerAuthenticationDependencies() {
   // -- Presentation -- //
   getIt.registerFactory(
-    () =>
-        AuthenticationCubit(isServerReachable: getIt(), isServerSetUp: getIt()),
+    () => AuthenticationCubit(
+      initializeServerConnection: getIt(),
+      isServerSetUp: getIt(),
+    ),
   );
 
   // -- Domain -- //
   getIt.registerLazySingleton(
-    () => IsServerReachable(authenticationRepository: getIt()),
+    () => InitializeServerConnection(authenticationRepository: getIt()),
   );
   getIt.registerLazySingleton(
     () => IsServerSetUp(authenticationRepository: getIt()),
@@ -69,7 +73,10 @@ void registerAuthenticationDependencies() {
     ),
   );
   getIt.registerLazySingleton<AuthenticationRemoteDataSource>(
-    () => AuthRemoteDataSourceImpl(serverRemoteHandler: getIt()),
+    () => AuthRemoteDataSourceImpl(
+      serverRemoteHandler: getIt(),
+      supabaseHandler: getIt(),
+    ),
   );
 }
 
