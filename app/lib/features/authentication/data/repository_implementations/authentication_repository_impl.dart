@@ -81,4 +81,14 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
     return Right(None());
   }
+
+  @override
+  Future<Either<Failure, None>> signUpInitialAdmin({
+    required String username,
+    required String email,
+    required String password,
+  }) {
+    // TODO: implement signUpInitialAdmin
+    throw UnimplementedError();
+  }
 }

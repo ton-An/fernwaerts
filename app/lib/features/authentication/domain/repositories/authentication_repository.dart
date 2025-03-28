@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
 import 'package:location_history/core/failures/networking/host_lookup_failure.dart';
@@ -42,5 +43,16 @@ abstract class AuthenticationRepository {
   /// - [String] serverUrl: The URL of the server to connect to.
   Future<Either<Failure, None>> initializeServerConnection({
     required String serverUrl,
+  });
+
+  /// Signs up the initial admin user
+  ///
+  /// Failures:
+  /// - [WeakPasswordFailure]
+  /// {@macro converted_dio_exceptions}
+  Future<Either<Failure, None>> signUpInitialAdmin({
+    required String username,
+    required String email,
+    required String password,
   });
 }

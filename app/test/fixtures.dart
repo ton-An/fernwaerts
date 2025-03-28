@@ -66,3 +66,7 @@ final ArgumentError tArgumentError = ArgumentError();
 final FormatException tFormatException = FormatException();
 
 final PostgrestException tPostgresException = PostgrestException(message: "");
+
+final String tUsername = "Ted";
+final String tEmail = "ted@example.com";
+final String tPassword = "VeryStrongPassword";
