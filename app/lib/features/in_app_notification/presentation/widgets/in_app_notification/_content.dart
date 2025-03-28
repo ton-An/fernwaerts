@@ -28,11 +28,7 @@ class _Content extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               const TinyGap(),
-              Text(
-                failure.message,
-                style: theme.text.body,
-                overflow: TextOverflow.ellipsis,
-              ),
+              Text(failure.message, style: theme.text.body),
             ],
           ),
         ),
