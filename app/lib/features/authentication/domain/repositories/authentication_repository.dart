@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
+import 'package:location_history/core/failures/networking/host_lookup_failure.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 
@@ -18,6 +19,7 @@ abstract class AuthenticationRepository {
   ///
   /// Failures:
   /// - [SendTimeoutFailure]
+  /// - [HostLookupFailure]
   /// - [InvalidUrlFormatFailure]
   /// - [ConnectionFailure]
   Future<Either<Failure, None>> isServerConnectionValid();

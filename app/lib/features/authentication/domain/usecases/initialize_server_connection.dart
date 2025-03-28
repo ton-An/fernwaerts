@@ -1,14 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
+import 'package:location_history/core/failures/networking/host_lookup_failure.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
-
-/*
-  To-Do:
-    - [ ] Add Failures to docs
-*/
 
 /// {@template initialize_server_connection}
 /// Initializes the connection with the server
@@ -20,8 +16,9 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 /// - [None] if the server is reachable.
 ///
 /// Failures:
-/// - [InvalidUrlFormatFailure]
 /// - [SendTimeoutFailure]
+/// - [HostLookupFailure]
+/// - [InvalidUrlFormatFailure]
 /// - [ConnectionFailure]
 /// {@endtemplate}
 class InitializeServerConnection {

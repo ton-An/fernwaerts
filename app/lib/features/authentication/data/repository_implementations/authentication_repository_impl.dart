@@ -3,6 +3,7 @@ import 'package:http/http.dart';
 import 'package:location_history/core/data/repository/repository_failure_handler.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
+import 'package:location_history/core/failures/networking/host_lookup_failure.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
@@ -54,6 +55,14 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
         if (isTimeout) {
           return Left(SendTimeoutFailure());
+        }
+
+        final hasFailedHostLookup = exception.message.contains(
+          "Failed host lookup",
+        );
+
+        if (hasFailedHostLookup) {
+          return Left(HostLookupFailure());
         }
       } else if (exception is ArgumentError || exception is FormatException) {
         return Left(InvalidUrlFormatFailure());
