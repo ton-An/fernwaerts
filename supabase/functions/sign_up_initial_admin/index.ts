@@ -26,13 +26,9 @@ Deno.serve(async (req) => {
   const supabase = createClient(supabaseClient, supabaseKey);
 
   if (await isSetUp(supabase)) {
-    return new Response(
-      JSON.stringify({ error: "Server already set up" }),
-      {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      },
-    );
+    return new Response(null, {
+      status: 400,
+    });
   }
 
   const isValidPassword = validator.isStrongPassword(password, {
