@@ -34,6 +34,10 @@ class AdminSignUpSuccessful extends AuthenticationState {
   const AdminSignUpSuccessful();
 }
 
+class AdminSignUpLoading extends AuthenticationState {
+  const AdminSignUpLoading();
+}
+
 class AuthenticationError extends AuthenticationState {
   const AuthenticationError({required this.failure});
 

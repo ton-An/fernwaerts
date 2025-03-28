@@ -63,6 +63,10 @@ class ServerRemoteHandlerImpl extends ServerRemoteHandler {
     final Response response = await dioFunction();
 
     if (response.statusCode == HttpStatus.ok) {
+      if (response.data is String) {
+        return null;
+      }
+
       return response.data;
     } else if (response.statusCode != null &&
         response.statusCode != HttpStatus.ok) {

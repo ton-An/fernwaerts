@@ -110,9 +110,17 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
     required String email,
     required String password,
   }) async {
-    await serverRemoteHandler.post(
+    final Map<String, dynamic>? response = await serverRemoteHandler.post(
       url: Uri.parse(serverUrl + UrlPathConstants.signUpInitialAdmin),
       body: {"username": username, "email": email, "password": password},
     );
+
+    if (response == null) {
+      return;
+    }
+
+    if (response["error"]["code"] == "weak_password") {
+      throw WeakPasswordFailure();
+    }
   }
 }

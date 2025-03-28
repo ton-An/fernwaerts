@@ -45,7 +45,7 @@ Deno.serve(async (req) => {
         error: { "code": "weak_password" },
       }),
       {
-        status: 400,
+        status: 200,
         headers: { "Content-Type": "application/json" },
       },
     );

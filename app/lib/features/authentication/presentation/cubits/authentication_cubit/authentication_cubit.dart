@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_server_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_server_set_up.dart';
+import 'package:location_history/features/authentication/domain/usecases/sign_up_initial_admin.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_states.dart';
 
 /* 
@@ -14,10 +15,14 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   AuthenticationCubit({
     required this.initializeServerConnection,
     required this.isServerSetUp,
+    required this.signUpInitialAdmin,
   }) : super(AuthenticationInitial());
 
   final InitializeServerConnection initializeServerConnection;
   final IsServerSetUp isServerSetUp;
+  final SignUpInitialAdmin signUpInitialAdmin;
+
+  String serverUrl = "";
 
   void toServerDetails() {
     emit(EnterServerDetails());
@@ -41,6 +46,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
             emit(AuthenticationError(failure: failure));
           },
           (bool isServerSetUp) {
+            this.serverUrl = serverUrl;
+
             if (isServerSetUp) {
               emit(EnterLogInInfo());
             } else {
@@ -56,9 +63,26 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     String username,
     String email,
     String password,
-    String confirmPassword,
-  ) {
-    emit(AdminSignUpSuccessful());
+    String repeatedPassword,
+  ) async {
+    emit(AdminSignUpLoading());
+
+    final Either<Failure, None> signUpEither = await signUpInitialAdmin(
+      serverUrl: serverUrl,
+      username: username,
+      email: email,
+      password: password,
+      repeatedPassword: repeatedPassword,
+    );
+
+    signUpEither.fold(
+      (Failure failure) {
+        emit(AuthenticationError(failure: failure));
+      },
+      (None none) {
+        emit(AdminSignUpSuccessful());
+      },
+    );
   }
 
   void logIn(String username, String password) {
