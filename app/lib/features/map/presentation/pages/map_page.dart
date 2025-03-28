@@ -7,8 +7,8 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
 
-  static const String pageName = "map";
-  static const String route = "/$pageName";
+  static const String pageName = 'map';
+  static const String route = '/$pageName';
 
   @override
   State<MapPage> createState() => _MapPageState();

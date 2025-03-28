@@ -29,8 +29,8 @@ enum AuthenticationFormType { logIn, adminSignUp }
 class AuthenticationPage extends StatefulWidget {
   const AuthenticationPage({super.key});
 
-  static const String pageName = "authentication";
-  static const String route = "/$pageName";
+  static const String pageName = 'authentication';
+  static const String route = '/$pageName';
 
   @override
   State<AuthenticationPage> createState() => _AuthenticationPageState();

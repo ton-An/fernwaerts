@@ -22,7 +22,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   final IsServerSetUp isServerSetUp;
   final SignUpInitialAdmin signUpInitialAdmin;
 
-  String serverUrl = "";
+  String serverUrl = '';
 
   void toServerDetails() {
     emit(EnterServerDetails());

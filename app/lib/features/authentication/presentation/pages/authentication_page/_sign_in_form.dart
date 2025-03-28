@@ -22,7 +22,7 @@ class _SignInForm extends StatelessWidget {
         ),
       ],
       onButtonPressed: () {
-        context.read<AuthenticationCubit>().logIn("", "");
+        context.read<AuthenticationCubit>().logIn('', '');
       },
       onBackPressed: () {
         context.read<AuthenticationCubit>().toServerDetails();

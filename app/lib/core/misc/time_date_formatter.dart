@@ -14,6 +14,6 @@ class TimeDateFormatter {
     DateTime endTime,
     String languageCode,
   ) {
-    return "${DateFormat.Hm(languageCode).format(startTime)} - ${DateFormat.Hm(languageCode).format(endTime)}";
+    return '${DateFormat.Hm(languageCode).format(startTime)} - ${DateFormat.Hm(languageCode).format(endTime)}';
   }
 }

@@ -20,16 +20,16 @@ void main() {
 
     when(
       () => mockAuthenticationRepository.signUpInitialAdmin(
-        serverUrl: any(named: "serverUrl"),
-        username: any(named: "username"),
-        email: any(named: "email"),
-        password: any(named: "password"),
+        serverUrl: any(named: 'serverUrl'),
+        username: any(named: 'username'),
+        email: any(named: 'email'),
+        password: any(named: 'password'),
       ),
     ).thenAnswer((_) async => Right(None()));
   });
 
   test(
-    "should return a PasswordMismatchFailure if the passwords do not match",
+    'should return a PasswordMismatchFailure if the passwords do not match',
     () async {
       // act
       final result = await signUpInitialAdmin(
@@ -37,7 +37,7 @@ void main() {
         username: tUsername,
         email: tEmail,
         password: tPassword,
-        repeatedPassword: "mismatched password",
+        repeatedPassword: 'mismatched password',
       );
 
       // assert
@@ -45,7 +45,7 @@ void main() {
     },
   );
 
-  test("should sign up the initial admin user and return None", () async {
+  test('should sign up the initial admin user and return None', () async {
     // act
     final result = await signUpInitialAdmin(
       serverUrl: tServerUrlString,
@@ -60,14 +60,14 @@ void main() {
   });
 
   test(
-    "should relay Failures if any occur during the sign up process",
+    'should relay Failures if any occur during the sign up process',
     () async {
       when(
         () => mockAuthenticationRepository.signUpInitialAdmin(
-          serverUrl: any(named: "serverUrl"),
-          username: any(named: "username"),
-          email: any(named: "email"),
-          password: any(named: "password"),
+          serverUrl: any(named: 'serverUrl'),
+          username: any(named: 'username'),
+          email: any(named: 'email'),
+          password: any(named: 'password'),
         ),
       ).thenAnswer((_) async => Left(WeakPasswordFailure()));
 

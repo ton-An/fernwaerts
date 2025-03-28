@@ -7,16 +7,16 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'mocks.dart';
 
-final String tServerUrlString = "https://coolness_checks.com";
-final String tServerCallPath = "/is_ted_cool";
+final String tServerUrlString = 'https://coolness_checks.com';
+final String tServerCallPath = '/is_ted_cool';
 final Uri tServerUrl = Uri.parse(tServerUrlString + tServerCallPath);
 
-final Map<String, dynamic> tRequestBody = {"name": "Ted"};
+final Map<String, dynamic> tRequestBody = {'name': 'Ted'};
 
 final Map<String, dynamic> tOkResponseData = {
-  "data": {
-    "is_ted_cool": true,
-    "message": "I am disappointed that you would even ask a question like that",
+  'data': {
+    'is_ted_cool': true,
+    'message': 'I am disappointed that you would even ask a question like that',
   },
 };
 final Response tOkResponse = Response(
@@ -40,7 +40,7 @@ final Response tNullStatusCodeResponse = Response(
 final tNullResponseData = null;
 
 final tIsServerSetUpResponseData = {
-  "data": {"is_server_set_up": true},
+  'data': {'is_server_set_up': true},
 };
 
 final DioException tBadResponseDioException = DioException.badResponse(
@@ -52,14 +52,14 @@ final DioException tBadResponseDioException = DioException.badResponse(
 final UnknownRequestFailure tUnknownRequestFailure = UnknownRequestFailure();
 
 final Map<String, dynamic> tPublicSettingsMap = {
-  "name": "is_set_up",
-  "value": true,
+  'name': 'is_set_up',
+  'value': true,
 };
 
 final MockSupabase tMockSupabase = MockSupabase();
 
 final http.ClientException tTimeoutClientException = http.ClientException(
-  "Operation timed out",
+  'Operation timed out',
   tServerUrl,
 );
 
@@ -67,8 +67,8 @@ final ArgumentError tArgumentError = ArgumentError();
 
 final FormatException tFormatException = FormatException();
 
-final PostgrestException tPostgresException = PostgrestException(message: "");
+final PostgrestException tPostgresException = PostgrestException(message: '');
 
-final String tUsername = "Ted";
-final String tEmail = "ted@example.com";
-final String tPassword = "VeryStrongPassword";
+final String tUsername = 'Ted';
+final String tEmail = 'ted@example.com';
+final String tPassword = 'VeryStrongPassword';

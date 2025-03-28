@@ -77,12 +77,12 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
 
     final queryResult =
         await supabaseClient
-            .from("public_settings")
+            .from('public_settings')
             .select()
-            .eq("name", "is_set_up")
+            .eq('name', 'is_set_up')
             .single();
 
-    final bool isSetUp = queryResult["value"];
+    final bool isSetUp = queryResult['value'];
 
     return isSetUp;
   }
@@ -91,7 +91,7 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
   Future<void> isServerConnectionValid() async {
     final SupabaseClient supabaseClient = supabaseHandler.getClient();
 
-    await supabaseClient.from("public_settings").select().single();
+    await supabaseClient.from('public_settings').select().single();
   }
 
   @override
@@ -112,14 +112,14 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
   }) async {
     final Map<String, dynamic>? response = await serverRemoteHandler.post(
       url: Uri.parse(serverUrl + UrlPathConstants.signUpInitialAdmin),
-      body: {"username": username, "email": email, "password": password},
+      body: {'username': username, 'email': email, 'password': password},
     );
 
     if (response == null) {
       return;
     }
 
-    if (response["error"]["code"] == "weak_password") {
+    if (response['error']['code'] == 'weak_password') {
       throw WeakPasswordFailure();
     }
   }

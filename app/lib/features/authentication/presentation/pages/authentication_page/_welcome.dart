@@ -26,7 +26,7 @@ class _Welcome extends StatelessWidget {
             offset: const Offset(7, 7),
             child: Center(
               child: Image.asset(
-                "assets/images/app_icon_transparent.png",
+                'assets/images/app_icon_transparent.png',
                 width: 150,
               ),
             ),

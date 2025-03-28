@@ -85,7 +85,7 @@ class _CalendarHeader extends StatelessWidget {
     } else if (selectionTypeState is CalendarYearSelection) {
       return "${DateFormat("y", Localizations.localeOf(context).languageCode).format(decenniallyCalendarState.startYear)} - ${DateFormat("y", Localizations.localeOf(context).languageCode).format(decenniallyCalendarState.endYear)}";
     } else {
-      return "hoooops :)";
+      return 'hoooops :)';
     }
   }
 

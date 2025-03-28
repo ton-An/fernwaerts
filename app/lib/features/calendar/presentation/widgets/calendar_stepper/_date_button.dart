@@ -1,4 +1,4 @@
-part of "calendar_stepper.dart";
+part of 'calendar_stepper.dart';
 
 enum _LabelSize { small, medium, large }
 
@@ -129,7 +129,7 @@ class _DateButtonState extends State<_DateButton>
       _labelSize = _LabelSize.large;
 
       return DateFormat(
-        "d MMM y",
+        'd MMM y',
         Localizations.localeOf(context).languageCode,
       ).format(dateSelectionState.selectedDate);
     }
@@ -148,7 +148,7 @@ class _DateButtonState extends State<_DateButton>
               dateSelectionState.startDate != null) {
         _labelSize = _LabelSize.large;
         return DateFormat(
-          "d MMM y",
+          'd MMM y',
           Localizations.localeOf(context).languageCode,
         ).format(dateSelectionState.startDate ?? dateSelectionState.endDate!);
       }
@@ -168,7 +168,7 @@ class _DateButtonState extends State<_DateButton>
                     ).day) {
               _labelSize = _LabelSize.large;
               return DateFormat(
-                "MMMM y",
+                'MMMM y',
                 Localizations.localeOf(context).languageCode,
               ).format(dateSelectionState.startDate!);
             }
@@ -184,6 +184,6 @@ class _DateButtonState extends State<_DateButton>
         return "${DateFormat("d MMM yy", Localizations.localeOf(context).languageCode).format(dateSelectionState.startDate!)} - ${DateFormat("d MMM yy", Localizations.localeOf(context).languageCode).format(dateSelectionState.endDate!)}";
       }
     }
-    return "hooops :)";
+    return 'hooops :)';
   }
 }

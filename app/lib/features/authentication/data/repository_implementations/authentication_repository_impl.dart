@@ -32,7 +32,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return Right(isSetupComplete);
     } catch (exception) {
       if (exception is ClientException) {
-        final isTimeout = exception.message.contains("Operation timed out");
+        final isTimeout = exception.message.contains('Operation timed out');
 
         if (isTimeout) {
           return Left(SendTimeoutFailure());
@@ -52,14 +52,14 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return const Right(None());
     } catch (exception) {
       if (exception is ClientException) {
-        final isTimeout = exception.message.contains("Operation timed out");
+        final isTimeout = exception.message.contains('Operation timed out');
 
         if (isTimeout) {
           return Left(SendTimeoutFailure());
         }
 
         final hasFailedHostLookup = exception.message.contains(
-          "Failed host lookup",
+          'Failed host lookup',
         );
 
         if (hasFailedHostLookup) {

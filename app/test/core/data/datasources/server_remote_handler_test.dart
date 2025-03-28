@@ -27,13 +27,13 @@ void main() {
     );
   });
 
-  group("post()", () {
+  group('post()', () {
     _dioTests(
       toBeTestedFunction:
           () =>
               serverRemoteHandlerImpl.post(url: tServerUrl, body: tRequestBody),
       toBeMockedFunction:
-          () => mockDio.postUri(any(), data: any(named: "data")),
+          () => mockDio.postUri(any(), data: any(named: 'data')),
     );
   });
 }
@@ -46,7 +46,7 @@ void _dioTests({
     when(() => toBeMockedFunction()).thenAnswer((_) async => tOkResponse);
   });
 
-  test("should return the response body if the status code is 200", () async {
+  test('should return the response body if the status code is 200', () async {
     // act
     final result = await toBeTestedFunction();
 
@@ -55,7 +55,7 @@ void _dioTests({
   });
 
   test(
-    "should throw StatusCodeNotOkFailure if the status code is not 200",
+    'should throw StatusCodeNotOkFailure if the status code is not 200',
     () async {
       // arrange
       when(() => toBeMockedFunction()).thenAnswer((_) async => tBadResponse);
@@ -69,7 +69,7 @@ void _dioTests({
   );
 
   test(
-    "should throw UnknownRequestFailure if the status code is null",
+    'should throw UnknownRequestFailure if the status code is null',
     () async {
       // arrange
       when(

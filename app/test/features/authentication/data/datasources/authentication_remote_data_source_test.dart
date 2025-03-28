@@ -26,8 +26,8 @@ void main() {
 
     mockSupabaseHttpClient = MockSupabaseHttpClient();
     mockSupabaseClient = SupabaseClient(
-      "http://tedmosbyisnotajerk.com/",
-      "supabaseKey",
+      'http://tedmosbyisnotajerk.com/',
+      'supabaseKey',
       httpClient: mockSupabaseHttpClient,
     );
 
@@ -49,11 +49,11 @@ void main() {
   group('isServerConnectionValid()', () {
     setUp(() async {
       await mockSupabaseClient
-          .from("public_settings")
+          .from('public_settings')
           .insert(tPublicSettingsMap);
     });
 
-    test("should check if the connection to the server is valid", () async {
+    test('should check if the connection to the server is valid', () async {
       // act & assert
       try {
         await authRemoteDataSourceImpl.isServerConnectionValid();
@@ -63,15 +63,15 @@ void main() {
     });
   });
 
-  group("isServerSetUp()", () {
+  group('isServerSetUp()', () {
     setUp(() async {
       await mockSupabaseClient
-          .from("public_settings")
+          .from('public_settings')
           .insert(tPublicSettingsMap);
     });
 
     test(
-      "should check if the server is set up and return the boolean value",
+      'should check if the server is set up and return the boolean value',
       () async {
         // act & assert
         try {
@@ -85,18 +85,18 @@ void main() {
     );
   });
 
-  group("initializeServerConnection()", () {
+  group('initializeServerConnection()', () {
     setUp(() {
       when(
         () =>
-            mockSupabaseHandler.initialize(serverUrl: any(named: "serverUrl")),
+            mockSupabaseHandler.initialize(serverUrl: any(named: 'serverUrl')),
       ).thenAnswer((_) async => tMockSupabase);
       when(
         () => mockSupabaseHandler.dispose(),
       ).thenAnswer((_) => Future.value());
     });
 
-    test("should dispose the old server connection", () async {
+    test('should dispose the old server connection', () async {
       // act
       await authRemoteDataSourceImpl.initializeServerConnection(
         serverUrl: tServerUrlString,
@@ -106,7 +106,7 @@ void main() {
       verify(() => mockSupabaseHandler.dispose());
     });
 
-    test("should initialize the new server connection", () async {
+    test('should initialize the new server connection', () async {
       // act
       await authRemoteDataSourceImpl.initializeServerConnection(
         serverUrl: tServerUrlString,
@@ -117,7 +117,7 @@ void main() {
     });
 
     test(
-      "should continue with initialization if dispose throws an exception (happens if there is no previous connection)",
+      'should continue with initialization if dispose throws an exception (happens if there is no previous connection)',
       () async {
         when(() => mockSupabaseHandler.dispose()).thenThrow(Exception());
         // act
@@ -137,12 +137,12 @@ void main() {
     setUp(() {
       when(
         () => mockServerRemoteHandler.post(
-          url: any(named: "url"),
-          body: any(named: "body"),
+          url: any(named: 'url'),
+          body: any(named: 'body'),
         ),
       ).thenAnswer((_) async => tNullResponseData);
     });
-    test("should sign up the initial admin", () async {
+    test('should sign up the initial admin', () async {
       // act
       await authRemoteDataSourceImpl.signUpInitialAdmin(
         serverUrl: tServerUrlString,
@@ -157,7 +157,7 @@ void main() {
           url: Uri.parse(
             tServerUrlString + UrlPathConstants.signUpInitialAdmin,
           ),
-          body: {"username": tUsername, "email": tEmail, "password": tPassword},
+          body: {'username': tUsername, 'email': tEmail, 'password': tPassword},
         ),
       );
     });

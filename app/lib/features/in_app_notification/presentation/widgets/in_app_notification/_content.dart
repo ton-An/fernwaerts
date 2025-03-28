@@ -1,4 +1,4 @@
-part of "in_app_notification.dart";
+part of 'in_app_notification.dart';
 
 class _Content extends StatelessWidget {
   const _Content({required this.failure});

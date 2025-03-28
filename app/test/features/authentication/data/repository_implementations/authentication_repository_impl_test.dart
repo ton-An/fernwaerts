@@ -30,7 +30,7 @@ void main() {
     registerFallbackValue(tBadResponseDioException);
   });
 
-  group("isServerSetUp()", () {
+  group('isServerSetUp()', () {
     setUp(() {
       when(
         () => mockAuthRemoteDataSource.isServerSetUp(),
@@ -38,7 +38,7 @@ void main() {
     });
 
     test(
-      "should check if the server is set up and return the result",
+      'should check if the server is set up and return the result',
       () async {
         // act
         final result = await authenticationRepositoryImpl.isServerSetUp();
@@ -49,7 +49,7 @@ void main() {
       },
     );
 
-    test("should convert ClientExceptions to SendTimeoutFailure", () async {
+    test('should convert ClientExceptions to SendTimeoutFailure', () async {
       // arrange
       when(
         () => mockAuthRemoteDataSource.isServerSetUp(),
@@ -62,7 +62,7 @@ void main() {
       expect(result, Left<Failure, bool>(SendTimeoutFailure()));
     });
 
-    test("should convert PostgresException to ConnectionFailure", () async {
+    test('should convert PostgresException to ConnectionFailure', () async {
       // arrange
       when(
         () => mockAuthRemoteDataSource.isServerSetUp(),
@@ -76,14 +76,14 @@ void main() {
     });
   });
 
-  group("isServerConnectionValid()", () {
+  group('isServerConnectionValid()', () {
     setUp(() {
       when(
         () => mockAuthRemoteDataSource.isServerConnectionValid(),
       ).thenAnswer((_) => Future.value());
     });
 
-    test("should check if the server is reachable and return None", () async {
+    test('should check if the server is reachable and return None', () async {
       // act
       final result =
           await authenticationRepositoryImpl.isServerConnectionValid();
@@ -93,7 +93,7 @@ void main() {
       expect(result, Right<Failure, None>(None()));
     });
 
-    test("should convert ClientExceptions to SendTimeoutFailure", () async {
+    test('should convert ClientExceptions to SendTimeoutFailure', () async {
       // arrange
       when(
         () => mockAuthRemoteDataSource.isServerConnectionValid(),
@@ -107,7 +107,7 @@ void main() {
       expect(result, Left<Failure, bool>(SendTimeoutFailure()));
     });
 
-    test("should convert ArgumentError to InvalidUrlFormatFailure", () async {
+    test('should convert ArgumentError to InvalidUrlFormatFailure', () async {
       // arrange
       when(
         () => mockAuthRemoteDataSource.isServerConnectionValid(),
@@ -121,7 +121,7 @@ void main() {
       expect(result, Left<Failure, bool>(InvalidUrlFormatFailure()));
     });
 
-    test("should convert FormatException to InvalidUrlFormatFailure", () async {
+    test('should convert FormatException to InvalidUrlFormatFailure', () async {
       // arrange
       when(
         () => mockAuthRemoteDataSource.isServerConnectionValid(),
@@ -135,7 +135,7 @@ void main() {
       expect(result, Left<Failure, bool>(InvalidUrlFormatFailure()));
     });
 
-    test("should convert PostgresException to ConnectionFailure", () async {
+    test('should convert PostgresException to ConnectionFailure', () async {
       // arrange
       when(
         () => mockAuthRemoteDataSource.isServerConnectionValid(),
@@ -150,20 +150,20 @@ void main() {
     });
   });
 
-  group("signUpInitialAdmin()", () {
+  group('signUpInitialAdmin()', () {
     setUp(() {
       when(
         () => mockAuthRemoteDataSource.signUpInitialAdmin(
           serverUrl: tServerUrlString,
 
-          username: any(named: "username"),
-          email: any(named: "email"),
-          password: any(named: "password"),
+          username: any(named: 'username'),
+          email: any(named: 'email'),
+          password: any(named: 'password'),
         ),
       ).thenAnswer((_) => Future.value());
     });
 
-    test("should check if the server is reachable and return None", () async {
+    test('should check if the server is reachable and return None', () async {
       // act
       final result = await authenticationRepositoryImpl.signUpInitialAdmin(
         serverUrl: tServerUrlString,
@@ -185,19 +185,19 @@ void main() {
       expect(result, Right<Failure, None>(None()));
     });
 
-    test("should convert DioExceptions to Failures", () async {
+    test('should convert DioExceptions to Failures', () async {
       // arrange
       when(
         () => mockAuthRemoteDataSource.signUpInitialAdmin(
-          serverUrl: any(named: "serverUrl"),
-          username: any(named: "username"),
-          email: any(named: "email"),
-          password: any(named: "password"),
+          serverUrl: any(named: 'serverUrl'),
+          username: any(named: 'username'),
+          email: any(named: 'email'),
+          password: any(named: 'password'),
         ),
       ).thenThrow(tBadResponseDioException);
       when(
         () => mockRepositoryFailureHandler.dioExceptionMapper(
-          dioException: any(named: "dioException"),
+          dioException: any(named: 'dioException'),
         ),
       ).thenReturn(BadResponseFailure());
 
@@ -213,14 +213,14 @@ void main() {
       expect(result, Left<Failure, bool>(BadResponseFailure()));
     });
 
-    test("should relay Failures", () async {
+    test('should relay Failures', () async {
       // arrange
       when(
         () => mockAuthRemoteDataSource.signUpInitialAdmin(
-          serverUrl: any(named: "serverUrl"),
-          username: any(named: "username"),
-          email: any(named: "email"),
-          password: any(named: "password"),
+          serverUrl: any(named: 'serverUrl'),
+          username: any(named: 'username'),
+          email: any(named: 'email'),
+          password: any(named: 'password'),
         ),
       ).thenThrow(tUnknownRequestFailure);
 

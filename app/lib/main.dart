@@ -62,7 +62,7 @@ class MainApp extends StatelessWidget {
             (context, state, child) => InAppNotificationListener(child: child),
         routes: [
           GoRoute(
-            path: "/",
+            path: '/',
 
             /// This base route is necessary for the edges of the modal to be blurred
             /// when an [InAppNotification] is shown.

@@ -20,7 +20,7 @@ void main() {
 
     when(
       () => mockAuthenticationRepository.initializeServerConnection(
-        serverUrl: any(named: "serverUrl"),
+        serverUrl: any(named: 'serverUrl'),
       ),
     ).thenAnswer((_) async => Right(None()));
 
@@ -33,7 +33,7 @@ void main() {
     registerFallbackValue(tServerUrl);
   });
 
-  test("should initialize the connection to the server", () async {
+  test('should initialize the connection to the server', () async {
     // act
     await initializeServerConnection(serverUrl: tServerUrlString);
 
@@ -45,11 +45,11 @@ void main() {
     );
   });
 
-  test("should relay Failures of connection initialization", () async {
+  test('should relay Failures of connection initialization', () async {
     // arrange
     when(
       () => mockAuthenticationRepository.initializeServerConnection(
-        serverUrl: any(named: "serverUrl"),
+        serverUrl: any(named: 'serverUrl'),
       ),
     ).thenAnswer((_) async => Left(SendTimeoutFailure()));
 
@@ -62,7 +62,7 @@ void main() {
     expect(result, Left(SendTimeoutFailure()));
   });
 
-  test("should check if server connection is valid and return None", () async {
+  test('should check if server connection is valid and return None', () async {
     // act
     final result = await initializeServerConnection(
       serverUrl: tServerUrlString,
@@ -74,7 +74,7 @@ void main() {
   });
 
   test(
-    "should relay Failures if server is not reachable, for whatever reason",
+    'should relay Failures if server is not reachable, for whatever reason',
     () async {
       // arrange
       when(
