@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:location_history/core/misc/url_path_constants.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:mocktail/mocktail.dart';
@@ -130,5 +131,35 @@ void main() {
         );
       },
     );
+  });
+
+  group('signUpInitialAdmin', () {
+    setUp(() {
+      when(
+        () => mockServerRemoteHandler.post(
+          url: any(named: "url"),
+          body: any(named: "body"),
+        ),
+      ).thenAnswer((_) async => tNullResponseData);
+    });
+    test("should sign up the initial admin", () async {
+      // act
+      await authRemoteDataSourceImpl.signUpInitialAdmin(
+        serverUrl: tServerUrlString,
+        username: tUsername,
+        email: tEmail,
+        password: tPassword,
+      );
+
+      // assert
+      verify(
+        () => mockServerRemoteHandler.post(
+          url: Uri.parse(
+            tServerUrlString + UrlPathConstants.signUpInitialAdmin,
+          ),
+          body: {"username": tUsername, "email": tEmail, "password": tPassword},
+        ),
+      );
+    });
   });
 }

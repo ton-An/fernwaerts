@@ -11,6 +11,8 @@ final String tServerUrlString = "https://coolness_checks.com";
 final String tServerCallPath = "/is_ted_cool";
 final Uri tServerUrl = Uri.parse(tServerUrlString + tServerCallPath);
 
+final Map<String, dynamic> tRequestBody = {"name": "Ted"};
+
 final Map<String, dynamic> tOkResponseData = {
   "data": {
     "is_ted_cool": true,

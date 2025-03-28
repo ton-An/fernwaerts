@@ -45,6 +45,7 @@ abstract class AuthenticationRepository {
   /// Signs up the initial admin user
   ///
   /// Parameters:
+  /// - [String] serverUrl: The URL of the server to connect to
   /// - [String] username: The username of the admin user
   /// - [String] email: The email of the admin user
   /// - [String] password: The password of the admin user
@@ -54,6 +55,7 @@ abstract class AuthenticationRepository {
   /// - [UnknownRequestFailure]
   /// {@macro converted_dio_exceptions}
   Future<Either<Failure, None>> signUpInitialAdmin({
+    required String serverUrl,
     required String username,
     required String email,
     required String password,

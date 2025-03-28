@@ -85,12 +85,14 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
   @override
   Future<Either<Failure, None>> signUpInitialAdmin({
+    required String serverUrl,
     required String username,
     required String email,
     required String password,
   }) async {
     try {
       await authRemoteDataSource.signUpInitialAdmin(
+        serverUrl: serverUrl,
         username: username,
         email: email,
         password: password,

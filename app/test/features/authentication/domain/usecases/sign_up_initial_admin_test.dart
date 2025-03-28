@@ -20,6 +20,7 @@ void main() {
 
     when(
       () => mockAuthenticationRepository.signUpInitialAdmin(
+        serverUrl: any(named: "serverUrl"),
         username: any(named: "username"),
         email: any(named: "email"),
         password: any(named: "password"),
@@ -32,6 +33,7 @@ void main() {
     () async {
       // act
       final result = await signUpInitialAdmin(
+        serverUrl: tServerUrlString,
         username: tUsername,
         email: tEmail,
         password: tPassword,
@@ -46,6 +48,7 @@ void main() {
   test("should sign up the initial admin user and return None", () async {
     // act
     final result = await signUpInitialAdmin(
+      serverUrl: tServerUrlString,
       username: tUsername,
       email: tEmail,
       password: tPassword,
@@ -61,6 +64,7 @@ void main() {
     () async {
       when(
         () => mockAuthenticationRepository.signUpInitialAdmin(
+          serverUrl: any(named: "serverUrl"),
           username: any(named: "username"),
           email: any(named: "email"),
           password: any(named: "password"),
@@ -69,6 +73,7 @@ void main() {
 
       // act
       final result = await signUpInitialAdmin(
+        serverUrl: tServerUrlString,
         username: tUsername,
         email: tEmail,
         password: tPassword,

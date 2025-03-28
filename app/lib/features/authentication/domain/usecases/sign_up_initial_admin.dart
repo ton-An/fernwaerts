@@ -22,6 +22,7 @@ class SignUpInitialAdmin {
   final AuthenticationRepository authenticationRepository;
 
   Future<Either<Failure, None>> call({
+    required String serverUrl,
     required String username,
     required String email,
     required String password,
@@ -32,6 +33,7 @@ class SignUpInitialAdmin {
     }
 
     return authenticationRepository.signUpInitialAdmin(
+      serverUrl: serverUrl,
       username: username,
       email: email,
       password: password,

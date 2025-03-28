@@ -154,6 +154,8 @@ void main() {
     setUp(() {
       when(
         () => mockAuthRemoteDataSource.signUpInitialAdmin(
+          serverUrl: tServerUrlString,
+
           username: any(named: "username"),
           email: any(named: "email"),
           password: any(named: "password"),
@@ -164,6 +166,8 @@ void main() {
     test("should check if the server is reachable and return None", () async {
       // act
       final result = await authenticationRepositoryImpl.signUpInitialAdmin(
+        serverUrl: tServerUrlString,
+
         username: tUsername,
         email: tEmail,
         password: tPassword,
@@ -172,6 +176,7 @@ void main() {
       // assert
       verify(
         () => mockAuthRemoteDataSource.signUpInitialAdmin(
+          serverUrl: tServerUrlString,
           username: tUsername,
           email: tEmail,
           password: tPassword,
@@ -184,6 +189,7 @@ void main() {
       // arrange
       when(
         () => mockAuthRemoteDataSource.signUpInitialAdmin(
+          serverUrl: any(named: "serverUrl"),
           username: any(named: "username"),
           email: any(named: "email"),
           password: any(named: "password"),
@@ -197,6 +203,7 @@ void main() {
 
       // act
       final result = await authenticationRepositoryImpl.signUpInitialAdmin(
+        serverUrl: tServerUrlString,
         username: tUsername,
         email: tEmail,
         password: tPassword,
@@ -210,6 +217,7 @@ void main() {
       // arrange
       when(
         () => mockAuthRemoteDataSource.signUpInitialAdmin(
+          serverUrl: any(named: "serverUrl"),
           username: any(named: "username"),
           email: any(named: "email"),
           password: any(named: "password"),
@@ -218,6 +226,7 @@ void main() {
 
       // act
       final result = await authenticationRepositoryImpl.signUpInitialAdmin(
+        serverUrl: tServerUrlString,
         username: tUsername,
         email: tEmail,
         password: tPassword,

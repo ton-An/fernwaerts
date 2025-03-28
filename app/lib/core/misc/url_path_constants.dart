@@ -1,4 +1,4 @@
 class UrlPathConstants {
-  static const String healthCheckPath = "/auth/v1/health";
-  static const String isServerSetUpPath = "/functions/v1/is_set_up_complete";
+  static const String signUpInitialAdmin =
+      "/functions/v1/auth/sign_up_initial_admin";
 }

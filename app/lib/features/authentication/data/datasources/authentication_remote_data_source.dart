@@ -3,6 +3,7 @@ import 'package:http/http.dart';
 import 'package:location_history/core/data/datasources/server_remote_handler.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
+import 'package:location_history/core/misc/url_path_constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /*
@@ -44,6 +45,7 @@ abstract class AuthenticationRemoteDataSource {
   /// Signs up the initial admin user
   ///
   /// Parameters:
+  /// - [String] serverUrl: The URL of the server to connect to
   /// - [String] username: The username of the admin user
   /// - [String] email: The email of the admin user
   /// - [String] password: The password of the admin user
@@ -53,6 +55,7 @@ abstract class AuthenticationRemoteDataSource {
   /// - [UnknownRequestFailure]
   /// - [DioException]
   Future<void> signUpInitialAdmin({
+    required String serverUrl,
     required String username,
     required String email,
     required String password,
@@ -102,11 +105,14 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
 
   @override
   Future<void> signUpInitialAdmin({
+    required String serverUrl,
     required String username,
     required String email,
     required String password,
-  }) {
-    // TODO: implement signUpInitialAdmin
-    throw UnimplementedError();
+  }) async {
+    await serverRemoteHandler.post(
+      url: Uri.parse(serverUrl + UrlPathConstants.signUpInitialAdmin),
+      body: {"username": username, "email": email, "password": password},
+    );
   }
 }
