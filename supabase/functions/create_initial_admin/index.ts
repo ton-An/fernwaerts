@@ -1,5 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient, SupabaseClient } from "jsr:@supabase/supabase-js";
+import validator from "npm:validator";
 
 Deno.serve(async (req) => {
   if (req.method !== "POST") {
@@ -27,6 +28,26 @@ Deno.serve(async (req) => {
   if (await isSetUp(supabase)) {
     return new Response(
       JSON.stringify({ error: "Server already set up" }),
+      {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
+  }
+
+  const isValidPassword = validator.isStrongPassword(password, {
+    minLength: 8,
+    minLowercase: 1,
+    minUppercase: 1,
+    minNumbers: 1,
+    minSymbols: 1,
+  });
+
+  if (!isValidPassword) {
+    return new Response(
+      JSON.stringify({
+        error: { "code": "weak_password" },
+      }),
       {
         status: 400,
         headers: { "Content-Type": "application/json" },
