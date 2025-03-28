@@ -81,3 +81,4 @@ Each commit message should follow this format:
 - **ci**: CI/CD pipeline-related changes
 - **build**: Build system modifications
 - **revert**: Reverting a previous commit
+- **delete**: Deleting files/code/features
