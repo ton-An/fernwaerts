@@ -20,47 +20,69 @@ void main() {
     registerFallbackValue(tServerUrl);
   });
 
-  group('get()', () {
-    setUp(() {
-      when(() => mockDio.getUri(any())).thenAnswer((_) async => tOkResponse);
-    });
-
-    test("should return the response body if the status code is 200", () async {
-      // act
-      final result = await serverRemoteHandlerImpl.get(url: tServerUrl);
-
-      // assert
-      expect(result, tOkResponseData);
-    });
-
-    test(
-      "should throw StatusCodeNotOkFailure if the status code is not 200",
-      () async {
-        // arrange
-        when(() => mockDio.getUri(any())).thenAnswer((_) async => tBadResponse);
-
-        // act & assert
-        expect(
-          () => serverRemoteHandlerImpl.get(url: tServerUrl),
-          throwsA(isA<StatusCodeNotOkFailure>()),
-        );
-      },
+  group('get', () {
+    _dioTests(
+      toBeTestedFunction: () => serverRemoteHandlerImpl.get(url: tServerUrl),
+      toBeMockedFunction: () => mockDio.getUri(any()),
     );
+  });
 
-    test(
-      "should throw UnknownRequestFailure if the status code is null",
-      () async {
-        // arrange
-        when(
-          () => mockDio.getUri(any()),
-        ).thenAnswer((_) async => tNullStatusCodeResponse);
-
-        // act & assert
-        expect(
-          () => serverRemoteHandlerImpl.get(url: tServerUrl),
-          throwsA(isA<UnknownRequestFailure>()),
-        );
-      },
+  group("post", () {
+    _dioTests(
+      toBeTestedFunction:
+          () =>
+              serverRemoteHandlerImpl.post(url: tServerUrl, body: tRequestBody),
+      toBeMockedFunction:
+          () => mockDio.postUri(any(), data: any(named: "data")),
     );
   });
 }
+
+void _dioTests({
+  required FutureFunction toBeTestedFunction,
+  required FutureFunction toBeMockedFunction,
+}) {
+  setUp(() {
+    when(() => toBeMockedFunction()).thenAnswer((_) async => tOkResponse);
+  });
+
+  test("should return the response body if the status code is 200", () async {
+    // act
+    final result = await toBeTestedFunction();
+
+    // assert
+    expect(result, tOkResponseData);
+  });
+
+  test(
+    "should throw StatusCodeNotOkFailure if the status code is not 200",
+    () async {
+      // arrange
+      when(() => toBeMockedFunction()).thenAnswer((_) async => tBadResponse);
+
+      // act & assert
+      expect(
+        () async => await toBeTestedFunction(),
+        throwsA(isA<StatusCodeNotOkFailure>()),
+      );
+    },
+  );
+
+  test(
+    "should throw UnknownRequestFailure if the status code is null",
+    () async {
+      // arrange
+      when(
+        () => toBeMockedFunction(),
+      ).thenAnswer((_) async => tNullStatusCodeResponse);
+
+      // act & assert
+      expect(
+        () async => await toBeTestedFunction(),
+        throwsA(isA<UnknownRequestFailure>()),
+      );
+    },
+  );
+}
+
+typedef FutureFunction = Future Function();

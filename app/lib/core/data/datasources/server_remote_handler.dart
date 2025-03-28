@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:location_history/core/failures/networking/status_code_not_ok_failure.dart';
 import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
 
+typedef DioFunction = Future<Response> Function();
+
 abstract class ServerRemoteHandler {
   const ServerRemoteHandler();
 
@@ -22,6 +24,19 @@ abstract class ServerRemoteHandler {
   /// - [DioException]
   /// {@endtemplate}
   Future<Map<String, dynamic>?> get({required Uri url});
+
+  /// Sends a POST request to the server
+  ///
+  /// Parameters:
+  /// - [String]: path on server
+  /// - [Map]: request body
+  ///
+  /// Throws:
+  /// {@macro server_remote_handler_exceptions}
+  Future<Map<String, dynamic>?> post({
+    required Uri url,
+    required Map<String, dynamic> body,
+  });
 }
 
 class ServerRemoteHandlerImpl extends ServerRemoteHandler {
@@ -31,7 +46,21 @@ class ServerRemoteHandlerImpl extends ServerRemoteHandler {
 
   @override
   Future<Map<String, dynamic>?> get({required Uri url}) async {
-    final Response response = await dio.getUri(url);
+    return _dioCallHandler(dioFunction: () => dio.getUri(url));
+  }
+
+  @override
+  Future<Map<String, dynamic>?> post({
+    required Uri url,
+    required Map<String, dynamic> body,
+  }) async {
+    return _dioCallHandler(dioFunction: () => dio.postUri(url, data: body));
+  }
+
+  Future<Map<String, dynamic>?> _dioCallHandler({
+    required DioFunction dioFunction,
+  }) async {
+    final Response response = await dioFunction();
 
     if (response.statusCode == HttpStatus.ok) {
       return response.data;
