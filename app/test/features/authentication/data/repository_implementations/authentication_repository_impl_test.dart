@@ -30,7 +30,7 @@ void main() {
     registerFallbackValue(tBadResponseDioException);
   });
 
-  group("isServerSetUp", () {
+  group("isServerSetUp()", () {
     setUp(() {
       when(
         () => mockAuthRemoteDataSource.isServerSetUp(),
@@ -76,7 +76,7 @@ void main() {
     });
   });
 
-  group("isServerConnectionValid", () {
+  group("isServerConnectionValid()", () {
     setUp(() {
       when(
         () => mockAuthRemoteDataSource.isServerConnectionValid(),
@@ -150,7 +150,7 @@ void main() {
     });
   });
 
-  group("signUpInitialAdmin", () {
+  group("signUpInitialAdmin()", () {
     setUp(() {
       when(
         () => mockAuthRemoteDataSource.signUpInitialAdmin(

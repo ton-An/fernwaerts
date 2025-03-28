@@ -20,14 +20,14 @@ void main() {
     registerFallbackValue(tServerUrl);
   });
 
-  group('get', () {
+  group('get()', () {
     _dioTests(
       toBeTestedFunction: () => serverRemoteHandlerImpl.get(url: tServerUrl),
       toBeMockedFunction: () => mockDio.getUri(any()),
     );
   });
 
-  group("post", () {
+  group("post()", () {
     _dioTests(
       toBeTestedFunction:
           () =>

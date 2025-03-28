@@ -46,7 +46,7 @@ void main() {
     mockSupabaseHttpClient.close();
   });
 
-  group('isServerConnectionValid', () {
+  group('isServerConnectionValid()', () {
     setUp(() async {
       await mockSupabaseClient
           .from("public_settings")
@@ -63,7 +63,7 @@ void main() {
     });
   });
 
-  group("isServerSetUp", () {
+  group("isServerSetUp()", () {
     setUp(() async {
       await mockSupabaseClient
           .from("public_settings")
@@ -85,7 +85,7 @@ void main() {
     );
   });
 
-  group("initializeServerConnection", () {
+  group("initializeServerConnection()", () {
     setUp(() {
       when(
         () =>
@@ -133,7 +133,7 @@ void main() {
     );
   });
 
-  group('signUpInitialAdmin', () {
+  group('signUpInitialAdmin()', () {
     setUp(() {
       when(
         () => mockServerRemoteHandler.post(
