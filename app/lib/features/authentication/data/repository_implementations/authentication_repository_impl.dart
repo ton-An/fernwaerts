@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:http/http.dart';
 import 'package:location_history/core/data/repository/repository_failure_handler.dart';
 import 'package:location_history/core/failures/failure.dart';
@@ -87,8 +88,23 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     required String username,
     required String email,
     required String password,
-  }) {
-    // TODO: implement signUpInitialAdmin
-    throw UnimplementedError();
+  }) async {
+    try {
+      await authRemoteDataSource.signUpInitialAdmin(
+        username: username,
+        email: email,
+        password: password,
+      );
+
+      return const Right(None());
+    } on DioException catch (dioException) {
+      final Failure failure = repositoryFailureHandler.dioExceptionMapper(
+        dioException: dioException,
+      );
+
+      return Left(failure);
+    } on Failure catch (failure) {
+      return Left(failure);
+    }
   }
 }

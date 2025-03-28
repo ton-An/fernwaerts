@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:location_history/core/failures/failure.dart';
+import 'package:location_history/core/failures/networking/bad_response_failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
@@ -146,6 +147,84 @@ void main() {
 
       // assert
       expect(result, Left<Failure, bool>(ConnectionFailure()));
+    });
+  });
+
+  group("signUpInitialAdmin", () {
+    setUp(() {
+      when(
+        () => mockAuthRemoteDataSource.signUpInitialAdmin(
+          username: any(named: "username"),
+          email: any(named: "email"),
+          password: any(named: "password"),
+        ),
+      ).thenAnswer((_) => Future.value());
+    });
+
+    test("should check if the server is reachable and return None", () async {
+      // act
+      final result = await authenticationRepositoryImpl.signUpInitialAdmin(
+        username: tUsername,
+        email: tEmail,
+        password: tPassword,
+      );
+
+      // assert
+      verify(
+        () => mockAuthRemoteDataSource.signUpInitialAdmin(
+          username: tUsername,
+          email: tEmail,
+          password: tPassword,
+        ),
+      );
+      expect(result, Right<Failure, None>(None()));
+    });
+
+    test("should convert DioExceptions to Failures", () async {
+      // arrange
+      when(
+        () => mockAuthRemoteDataSource.signUpInitialAdmin(
+          username: any(named: "username"),
+          email: any(named: "email"),
+          password: any(named: "password"),
+        ),
+      ).thenThrow(tBadResponseDioException);
+      when(
+        () => mockRepositoryFailureHandler.dioExceptionMapper(
+          dioException: any(named: "dioException"),
+        ),
+      ).thenReturn(BadResponseFailure());
+
+      // act
+      final result = await authenticationRepositoryImpl.signUpInitialAdmin(
+        username: tUsername,
+        email: tEmail,
+        password: tPassword,
+      );
+
+      // assert
+      expect(result, Left<Failure, bool>(BadResponseFailure()));
+    });
+
+    test("should relay Failures", () async {
+      // arrange
+      when(
+        () => mockAuthRemoteDataSource.signUpInitialAdmin(
+          username: any(named: "username"),
+          email: any(named: "email"),
+          password: any(named: "password"),
+        ),
+      ).thenThrow(tUnknownRequestFailure);
+
+      // act
+      final result = await authenticationRepositoryImpl.signUpInitialAdmin(
+        username: tUsername,
+        email: tEmail,
+        password: tPassword,
+      );
+
+      // assert
+      expect(result, Left<Failure, bool>(tUnknownRequestFailure));
     });
   });
 }
