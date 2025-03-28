@@ -6,8 +6,16 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 
 /// Signs up the initial admin user
 ///
+/// Parameters:
+/// - [String] username: The username of the admin user
+/// - [String] email: The email of the admin user
+/// - [String] password: The password of the admin user
+/// - [String] repeatedPassword: The repeated password of the admin user to confirm it
+///
 /// Failures:
 /// - [WeakPasswordFailure]
+/// - [UnknownRequestFailure]
+/// {@macro converted_dio_exceptions}
 class SignUpInitialAdmin {
   const SignUpInitialAdmin({required this.authenticationRepository});
 

@@ -5,11 +5,8 @@ import 'package:location_history/core/failures/networking/connection_failure.dar
 import 'package:location_history/core/failures/networking/host_lookup_failure.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
+import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
 
-/*
-  To-Do:
-    - [ ] Add Failures to docs
-*/
 abstract class AuthenticationRepository {
   /// Checks if the server is reachable.
   ///
@@ -47,8 +44,14 @@ abstract class AuthenticationRepository {
 
   /// Signs up the initial admin user
   ///
+  /// Parameters:
+  /// - [String] username: The username of the admin user
+  /// - [String] email: The email of the admin user
+  /// - [String] password: The password of the admin user
+  ///
   /// Failures:
   /// - [WeakPasswordFailure]
+  /// - [UnknownRequestFailure]
   /// {@macro converted_dio_exceptions}
   Future<Either<Failure, None>> signUpInitialAdmin({
     required String username,
