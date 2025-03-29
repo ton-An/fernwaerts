@@ -308,7 +308,7 @@ void main() {
     setUp(() {
       when(
         () => mockAuthRemoteDataSource.signIn(
-          username: any(named: 'username'),
+          email: any(named: 'email'),
           password: any(named: 'password'),
         ),
       ).thenAnswer((_) => Future.value());
@@ -317,16 +317,14 @@ void main() {
     test('should sign in the user and return none', () async {
       // act
       final result = await authenticationRepositoryImpl.signIn(
-        username: tUsername,
+        email: tEmail,
         password: tPassword,
       );
 
       // assert
       verify(
-        () => mockAuthRemoteDataSource.signIn(
-          username: tUsername,
-          password: tPassword,
-        ),
+        () =>
+            mockAuthRemoteDataSource.signIn(email: tEmail, password: tPassword),
       );
       expect(result, const Right(None()));
     });
@@ -337,7 +335,7 @@ void main() {
         // arrange
         when(
           () => mockAuthRemoteDataSource.signIn(
-            username: any(named: 'username'),
+            email: any(named: 'email'),
             password: any(named: 'password'),
           ),
         ).thenThrow(tTimeoutClientException);
@@ -350,7 +348,7 @@ void main() {
 
         // act
         final result = await authenticationRepositoryImpl.signIn(
-          username: tUsername,
+          email: tEmail,
           password: tPassword,
         );
 

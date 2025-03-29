@@ -32,7 +32,7 @@ void main() {
     ).thenAnswer((_) async => Right(None()));
     when(
       () => mockSignIn(
-        username: any(named: 'username'),
+        email: any(named: 'email'),
         password: any(named: 'password'),
       ),
     ).thenAnswer((_) async => Right(None()));
@@ -113,14 +113,14 @@ void main() {
     );
 
     // assert
-    verify(() => mockSignIn(username: tUsername, password: tPassword));
+    verify(() => mockSignIn(email: tEmail, password: tPassword));
     expect(result, Right(None()));
   });
 
   test('should relay Failures from signing in', () async {
     when(
       () => mockSignIn(
-        username: any(named: 'username'),
+        email: any(named: 'email'),
         password: any(named: 'password'),
       ),
     ).thenAnswer((_) async => Left(SendTimeoutFailure()));

@@ -67,14 +67,14 @@ class SignUpInitialAdmin {
         );
 
     return signUpEither.fold(Left.new, (None none) {
-      return _signIn(username: username, password: password);
+      return _signIn(email: email, password: password);
     });
   }
 
   Future<Either<Failure, None>> _signIn({
-    required String username,
+    required String email,
     required String password,
   }) {
-    return signIn(username: username, password: password);
+    return signIn(email: email, password: password);
   }
 }

@@ -131,11 +131,11 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
   @override
   Future<Either<Failure, None>> signIn({
-    required String username,
+    required String email,
     required String password,
   }) async {
     try {
-      await authRemoteDataSource.signIn(username: username, password: password);
+      await authRemoteDataSource.signIn(email: email, password: password);
 
       return const Right(None());
     } on ClientException catch (clientException, stackTrace) {

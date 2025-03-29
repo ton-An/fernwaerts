@@ -8,10 +8,10 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 */
 
 /// {@template sign_in}
-/// Signs in a user with a given username and password
+/// Signs in a user with a given email and password
 ///
 /// Parameters:
-/// - [String] username
+/// - [String] email
 /// - [String] password
 ///
 /// Failures:
@@ -25,12 +25,9 @@ class SignIn {
 
   /// {@macro sign_in}
   Future<Either<Failure, None>> call({
-    required String username,
+    required String email,
     required String password,
   }) {
-    return authenticationRepository.signIn(
-      username: username,
-      password: password,
-    );
+    return authenticationRepository.signIn(email: email, password: password);
   }
 }

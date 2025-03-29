@@ -86,13 +86,13 @@ abstract class AuthenticationRepository {
   /// Signs in a user
   ///
   /// Parameters:
-  /// - [String] username
+  /// - [String] email
   /// - [String] password
   ///
   /// Failures:
   /// {@macro converted_client_exceptions}
   Future<Either<Failure, None>> signIn({
-    required String username,
+    required String email,
     required String password,
   });
 }

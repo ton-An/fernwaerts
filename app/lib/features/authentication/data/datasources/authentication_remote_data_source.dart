@@ -80,12 +80,12 @@ abstract class AuthenticationRemoteDataSource {
   /// Signs in a user
   ///
   /// Parameters:
-  /// - [String] username
+  /// - [String] email
   /// - [String] password
   ///
   /// Throws:
   /// - [ClientException]
-  Future<void> signIn({required String username, required String password});
+  Future<void> signIn({required String email, required String password});
 }
 
 class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
@@ -182,11 +182,11 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
   }
 
   @override
-  Future<void> signIn({required String username, required String password}) {
+  Future<void> signIn({required String email, required String password}) {
     final SupabaseClient supabaseClient = supabaseHandler.getClient();
 
     return supabaseClient.auth.signInWithPassword(
-      email: username,
+      email: email,
       password: password,
     );
   }
