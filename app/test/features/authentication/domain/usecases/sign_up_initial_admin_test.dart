@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:location_history/core/failures/authentication/password_mismatch_failure.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
+import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_up_initial_admin.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -26,6 +27,12 @@ void main() {
         password: any(named: 'password'),
       ),
     ).thenAnswer((_) async => Right(None()));
+    when(
+      () => mockAuthenticationRepository.signIn(
+        username: any(named: 'username'),
+        password: any(named: 'password'),
+      ),
+    ).thenAnswer((_) async => Right(None()));
   });
 
   test(
@@ -45,9 +52,9 @@ void main() {
     },
   );
 
-  test('should sign up the initial admin user and return None', () async {
+  test('should sign up the initial admin user', () async {
     // act
-    final result = await signUpInitialAdmin(
+    await signUpInitialAdmin(
       serverUrl: tServerUrlString,
       username: tUsername,
       email: tEmail,
@@ -56,7 +63,14 @@ void main() {
     );
 
     // assert
-    expect(result, Right(None()));
+    verify(
+      () => mockAuthenticationRepository.signUpInitialAdmin(
+        serverUrl: tServerUrlString,
+        username: tUsername,
+        email: tEmail,
+        password: tPassword,
+      ),
+    );
   });
 
   test(
@@ -84,4 +98,39 @@ void main() {
       expect(result, Left(WeakPasswordFailure()));
     },
   );
+
+  test('should sign in the newly created user and return None', () async {
+    // act
+    final result = await signUpInitialAdmin(
+      serverUrl: tServerUrlString,
+      username: tUsername,
+      email: tEmail,
+      password: tPassword,
+      repeatedPassword: tPassword,
+    );
+
+    // assert
+    expect(result, Right(None()));
+  });
+
+  test('should relay Failures from signing in', () async {
+    when(
+      () => mockAuthenticationRepository.signIn(
+        username: any(named: 'username'),
+        password: any(named: 'password'),
+      ),
+    ).thenAnswer((_) async => Left(SendTimeoutFailure()));
+
+    // act
+    final result = await signUpInitialAdmin(
+      serverUrl: tServerUrlString,
+      username: tUsername,
+      email: tEmail,
+      password: tPassword,
+      repeatedPassword: tPassword,
+    );
+
+    // assert
+    expect(result, Left(SendTimeoutFailure()));
+  });
 }

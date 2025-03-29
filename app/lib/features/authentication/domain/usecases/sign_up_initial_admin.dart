@@ -6,7 +6,7 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 
 /*
   To-Do:
-    - [ ] Add sign in
+    - [ ] Add possible Failures from sign in 
 */
 
 /// Signs up the initial admin user
@@ -19,7 +19,6 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 ///
 /// Failures:
 /// - [WeakPasswordFailure]
-/// - [UnknownRequestFailure]
 /// {@macro converted_dio_exceptions}
 class SignUpInitialAdmin {
   const SignUpInitialAdmin({required this.authenticationRepository});
@@ -37,10 +36,41 @@ class SignUpInitialAdmin {
       return Left(PasswordMismatchFailure());
     }
 
-    return authenticationRepository.signUpInitialAdmin(
+    return _signUpInitialAdmin(
       serverUrl: serverUrl,
       username: username,
       email: email,
+      password: password,
+      repeatedPassword: repeatedPassword,
+    );
+  }
+
+  Future<Either<Failure, None>> _signUpInitialAdmin({
+    required String serverUrl,
+    required String username,
+    required String email,
+    required String password,
+    required String repeatedPassword,
+  }) async {
+    final Either<Failure, None> signUpEither = await authenticationRepository
+        .signUpInitialAdmin(
+          serverUrl: serverUrl,
+          username: username,
+          email: email,
+          password: password,
+        );
+
+    return signUpEither.fold(Left.new, (None none) {
+      return _signIn(username: username, password: password);
+    });
+  }
+
+  Future<Either<Failure, None>> _signIn({
+    required String username,
+    required String password,
+  }) {
+    return authenticationRepository.signIn(
+      username: username,
       password: password,
     );
   }
