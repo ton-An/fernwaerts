@@ -118,8 +118,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
   @override
   Stream<AuthenticationState> authenticationStateStream() {
-    // TODO: implement authenticationStateStream
-    throw UnimplementedError();
+    return authRemoteDataSource.authenticationStateStream();
   }
 
   @override
