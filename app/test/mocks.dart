@@ -4,6 +4,7 @@ import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/data/repository/repository_failure_handler.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
+import 'package:location_history/features/authentication/domain/usecases/initialize_server_connection.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -36,3 +37,6 @@ class MockAuthRemoteDataSource extends Mock
 
 class MockAuthenticationRepository extends Mock
     implements AuthenticationRepository {}
+
+class MockInitializeServerConnection extends Mock
+    implements InitializeServerConnection {}
