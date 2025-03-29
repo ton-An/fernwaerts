@@ -70,6 +70,7 @@ async function createUserAccount(
   const { data } = await supabase.auth.admin.createUser({
     email,
     password,
+    email_confirm: true,
   });
 
   return data.user?.id;

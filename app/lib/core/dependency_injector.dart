@@ -8,8 +8,11 @@ import 'package:location_history/features/authentication/data/datasources/authen
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:location_history/features/authentication/data/repository_implementations/authentication_repository_impl.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
+import 'package:location_history/features/authentication/domain/usecases/has_server_connection_saved.dart';
+import 'package:location_history/features/authentication/domain/usecases/initialize_saved_server_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_server_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_server_set_up.dart';
+import 'package:location_history/features/authentication/domain/usecases/is_signed_in.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_up_initial_admin.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_cubit.dart';
@@ -60,6 +63,7 @@ void registerAuthenticationDependencies() {
       initializeServerConnection: getIt(),
       isServerSetUp: getIt(),
       signUpInitialAdmin: getIt(),
+      signInUsecase: getIt(),
     ),
   );
 
@@ -75,6 +79,18 @@ void registerAuthenticationDependencies() {
         SignUpInitialAdmin(authenticationRepository: getIt(), signIn: getIt()),
   );
   getIt.registerLazySingleton(() => SignIn(authenticationRepository: getIt()));
+  getIt.registerLazySingleton(
+    () => HasServerConnectionSaved(authenticationRepository: getIt()),
+  );
+  getIt.registerLazySingleton(
+    () => InitializeSavedServerConnection(
+      authenticationRepository: getIt(),
+      initializeServerConnection: getIt(),
+    ),
+  );
+  getIt.registerLazySingleton(
+    () => IsSignedIn(authenticationRepository: getIt()),
+  );
 
   // -- Data -- //
   getIt.registerLazySingleton<AuthenticationRepository>(

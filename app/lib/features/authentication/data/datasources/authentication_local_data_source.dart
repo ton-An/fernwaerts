@@ -20,9 +20,18 @@ abstract class AuthenticationLocalDataSource {
 
   /// Removes the saved server
   ///
-  /// Failures:
-  /// - [StorageWriteFailure]
+  /// Throws:
+  /// - [PlatformException]
   Future<void> removeSavedServer();
+
+  /// Saves the provided server url
+  ///
+  /// Parameters:
+  /// - [String] serverUrl
+  ///
+  /// Throws:
+  /// - [PlatformException]
+  Future<void> saveServerUrl({required String serverUrl});
 }
 
 class AuthLocalDataSourceImpl extends AuthenticationLocalDataSource {
@@ -42,5 +51,10 @@ class AuthLocalDataSourceImpl extends AuthenticationLocalDataSource {
   @override
   Future<void> removeSavedServer() async {
     await secureStorage.delete(key: _serverUrlKey);
+  }
+
+  @override
+  Future<void> saveServerUrl({required String serverUrl}) async {
+    await secureStorage.write(key: _serverUrlKey, value: serverUrl);
   }
 }

@@ -27,7 +27,25 @@ class SignIn {
   Future<Either<Failure, None>> call({
     required String email,
     required String password,
+    required String serverUrl,
   }) {
-    return authenticationRepository.signIn(email: email, password: password);
+    return _signIn(email: email, password: password, serverUrl: serverUrl);
+  }
+
+  Future<Either<Failure, None>> _signIn({
+    required String email,
+    required String password,
+    required String serverUrl,
+  }) async {
+    final Either<Failure, None> signInEither = await authenticationRepository
+        .signIn(email: email, password: password);
+
+    return signInEither.fold(Left.new, (None none) {
+      return _saveServerUrl(serverUrl: serverUrl);
+    });
+  }
+
+  Future<Either<Failure, None>> _saveServerUrl({required String serverUrl}) {
+    return authenticationRepository.saveServerUrl(serverUrl: serverUrl);
   }
 }

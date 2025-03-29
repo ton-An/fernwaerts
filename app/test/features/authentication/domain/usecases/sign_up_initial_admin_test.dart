@@ -34,6 +34,7 @@ void main() {
       () => mockSignIn(
         email: any(named: 'email'),
         password: any(named: 'password'),
+        serverUrl: any(named: 'serverUrl'),
       ),
     ).thenAnswer((_) async => Right(None()));
   });
@@ -113,7 +114,13 @@ void main() {
     );
 
     // assert
-    verify(() => mockSignIn(email: tEmail, password: tPassword));
+    verify(
+      () => mockSignIn(
+        email: tEmail,
+        password: tPassword,
+        serverUrl: tServerUrlString,
+      ),
+    );
     expect(result, Right(None()));
   });
 
@@ -122,6 +129,7 @@ void main() {
       () => mockSignIn(
         email: any(named: 'email'),
         password: any(named: 'password'),
+        serverUrl: any(named: 'serverUrl'),
       ),
     ).thenAnswer((_) async => Left(SendTimeoutFailure()));
 

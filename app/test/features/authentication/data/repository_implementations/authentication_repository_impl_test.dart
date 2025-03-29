@@ -397,4 +397,48 @@ void main() {
       },
     );
   });
+
+  group('saveServerUrl()', () {
+    setUp(() {
+      when(
+        () => mockAuthLocalDataSource.saveServerUrl(
+          serverUrl: any(named: 'serverUrl'),
+        ),
+      ).thenAnswer((_) => Future.value());
+    });
+
+    test('should save the server url and return None', () async {
+      // act
+      final result = await authenticationRepositoryImpl.saveServerUrl(
+        serverUrl: tServerUrlString,
+      );
+
+      // assert
+      verify(
+        () =>
+            mockAuthLocalDataSource.saveServerUrl(serverUrl: tServerUrlString),
+      );
+      expect(result, Right(None()));
+    });
+
+    test(
+      'should convert PlatformException to StorageWriteFailure and return it',
+      () async {
+        // arrange
+        when(
+          () => mockAuthLocalDataSource.saveServerUrl(
+            serverUrl: any(named: 'serverUrl'),
+          ),
+        ).thenThrow(tPlatformException);
+
+        // act
+        final result = await authenticationRepositoryImpl.saveServerUrl(
+          serverUrl: tServerUrlString,
+        );
+
+        // assert
+        expect(result, Left(StorageWriteFailure()));
+      },
+    );
+  });
 }

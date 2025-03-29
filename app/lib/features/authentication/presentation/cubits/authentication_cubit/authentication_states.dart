@@ -26,6 +26,10 @@ class EnterAdminSignUpInfo extends AuthenticationCubitState {
   const EnterAdminSignUpInfo();
 }
 
+class LogInLoading extends AuthenticationCubitState {
+  const LogInLoading();
+}
+
 class LogInSuccessful extends AuthenticationCubitState {
   const LogInSuccessful();
 }

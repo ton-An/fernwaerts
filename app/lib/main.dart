@@ -8,6 +8,7 @@ import 'package:location_history/core/dependency_injector.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_cubit.dart';
 import 'package:location_history/features/authentication/presentation/pages/authentication_page/authentication_page.dart';
+import 'package:location_history/features/authentication/presentation/pages/splash_page.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_expansion_cubit/calendar_expansion_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_cubit.dart';
@@ -55,7 +56,7 @@ class MainApp extends StatelessWidget {
   }
 
   final GoRouter router = GoRouter(
-    initialLocation: AuthenticationPage.route,
+    initialLocation: SplashPage.route,
     routes: <RouteBase>[
       ShellRoute(
         builder:
@@ -67,9 +68,14 @@ class MainApp extends StatelessWidget {
             /// This base route is necessary for the edges of the modal to be blurred
             /// when an [InAppNotification] is shown.
             pageBuilder:
-                (context, state) =>
-                    const CupertinoPage(child: ColoredBox(color: Colors.black)),
+                (context, state) => const NoTransitionPage(
+                  child: ColoredBox(color: Colors.white),
+                ),
             routes: [
+              GoRoute(
+                path: SplashPage.pageName,
+                builder: (context, state) => const SplashPage(),
+              ),
               GoRoute(
                 path: AuthenticationPage.pageName,
                 builder: (BuildContext context, GoRouterState state) {

@@ -5,6 +5,7 @@ import 'package:location_history/core/failures/networking/connection_failure.dar
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
 import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
+import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
 
 /*
@@ -104,4 +105,13 @@ abstract class AuthenticationRepository {
   /// Failures:
   /// - [StorageWriteFailure]
   Future<Either<Failure, None>> removeSavedServer();
+
+  /// Saves the provided server url
+  ///
+  /// Parameters:
+  /// - [String] serverUrl
+  ///
+  /// Failures:
+  /// - [StorageWriteFailure]
+  Future<Either<Failure, None>> saveServerUrl({required String serverUrl});
 }

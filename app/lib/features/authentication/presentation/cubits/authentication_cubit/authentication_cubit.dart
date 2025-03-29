@@ -3,12 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_server_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_server_set_up.dart';
+import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_up_initial_admin.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_states.dart';
 
 /* 
   To-Do:
     - [ ] Clean up toLogInInfo method (de-nest)
+    - [ ] Add loading indicators to widgets
+    - [ ] Look into simplifying states    
 */
 
 class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
@@ -16,11 +19,13 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
     required this.initializeServerConnection,
     required this.isServerSetUp,
     required this.signUpInitialAdmin,
+    required this.signInUsecase,
   }) : super(AuthenticationInitial());
 
   final InitializeServerConnection initializeServerConnection;
   final IsServerSetUp isServerSetUp;
   final SignUpInitialAdmin signUpInitialAdmin;
+  final SignIn signInUsecase;
 
   String serverUrl = '';
 
@@ -85,7 +90,22 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
     );
   }
 
-  void logIn(String username, String password) {
-    emit(LogInSuccessful());
+  void signIn(String email, String password) async {
+    emit(LogInLoading());
+
+    final Either<Failure, None> signInEither = await signInUsecase(
+      email: email,
+      password: password,
+      serverUrl: serverUrl,
+    );
+
+    signInEither.fold(
+      (Failure failure) {
+        emit(AuthenticationError(failure: failure));
+      },
+      (None none) {
+        emit(LogInSuccessful());
+      },
+    );
   }
 }

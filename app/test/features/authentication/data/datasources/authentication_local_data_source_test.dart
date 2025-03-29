@@ -46,4 +46,27 @@ void main() {
       verify(() => mockSecureStorage.delete(key: 'server_url'));
     });
   });
+
+  group('saveServerUrl()', () {
+    test('should save the server url', () async {
+      // arrange
+      when(
+        () => mockSecureStorage.write(
+          key: any(named: 'key'),
+          value: any(named: 'value'),
+        ),
+      ).thenAnswer((_) => Future.value());
+
+      // act
+      await authenticationLocalDataSource.saveServerUrl(
+        serverUrl: tServerUrlString,
+      );
+
+      // assert
+      verify(
+        () =>
+            mockSecureStorage.write(key: 'server_url', value: tServerUrlString),
+      );
+    });
+  });
 }

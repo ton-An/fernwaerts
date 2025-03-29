@@ -164,4 +164,17 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   Future<void> signOut() async {
     await authRemoteDataSource.signOut();
   }
+
+  @override
+  Future<Either<Failure, None>> saveServerUrl({
+    required String serverUrl,
+  }) async {
+    try {
+      await authLocalDataSource.saveServerUrl(serverUrl: serverUrl);
+
+      return Right(None());
+    } on PlatformException {
+      return Left(StorageWriteFailure());
+    }
+  }
 }
