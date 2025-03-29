@@ -9,7 +9,8 @@
     "SHORTWEEKDAYS",
     "subosito",
     "supabase",
-    "Supabase"
+    "Supabase",
+    "usecases"
   ],
   "deno.enablePaths": ["supabase/functions"],
   "deno.lint": true,
