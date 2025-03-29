@@ -7,6 +7,7 @@ import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
+import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
@@ -146,5 +147,21 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
       return Left(failure);
     }
+  }
+
+  @override
+  Future<Either<Failure, None>> removeSavedServer() async {
+    try {
+      await authLocalDataSource.removeSavedServer();
+
+      return Right(None());
+    } on PlatformException {
+      return Left(StorageWriteFailure());
+    }
+  }
+
+  @override
+  Future<void> signOut() async {
+    await authRemoteDataSource.signOut();
   }
 }

@@ -95,4 +95,13 @@ abstract class AuthenticationRepository {
     required String email,
     required String password,
   });
+
+  /// Signs out the current user
+  Future<void> signOut();
+
+  /// Removes the saved server
+  ///
+  /// Failures:
+  /// - [StorageWriteFailure]
+  Future<Either<Failure, None>> removeSavedServer();
 }

@@ -86,6 +86,9 @@ abstract class AuthenticationRemoteDataSource {
   /// Throws:
   /// - [ClientException]
   Future<void> signIn({required String email, required String password});
+
+  /// Signs out the current user
+  Future<void> signOut();
 }
 
 class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
@@ -189,5 +192,12 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
       email: email,
       password: password,
     );
+  }
+
+  @override
+  Future<void> signOut() async {
+    final SupabaseClient supabaseClient = supabaseHandler.getClient();
+
+    await supabaseClient.auth.signOut();
   }
 }

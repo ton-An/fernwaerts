@@ -17,6 +17,12 @@ abstract class AuthenticationLocalDataSource {
   /// Throws:
   /// - [PlatformException]
   Future<String?> getSavedServerUrl();
+
+  /// Removes the saved server
+  ///
+  /// Failures:
+  /// - [StorageWriteFailure]
+  Future<void> removeSavedServer();
 }
 
 class AuthLocalDataSourceImpl extends AuthenticationLocalDataSource {
@@ -24,10 +30,17 @@ class AuthLocalDataSourceImpl extends AuthenticationLocalDataSource {
 
   final FlutterSecureStorage secureStorage;
 
+  static const String _serverUrlKey = 'server_url';
+
   @override
   Future<String?> getSavedServerUrl() async {
-    final String? serverUrl = await secureStorage.read(key: 'server_url');
+    final String? serverUrl = await secureStorage.read(key: _serverUrlKey);
 
     return serverUrl;
+  }
+
+  @override
+  Future<void> removeSavedServer() async {
+    await secureStorage.delete(key: _serverUrlKey);
   }
 }

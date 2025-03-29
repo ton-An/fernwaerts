@@ -6,6 +6,7 @@ import 'package:location_history/core/failures/networking/connection_failure.dar
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
+import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/data/repository_implementations/authentication_repository_impl.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -314,7 +315,7 @@ void main() {
       ).thenAnswer((_) => Future.value());
     });
 
-    test('should sign in the user and return none', () async {
+    test('should sign in the user and return None', () async {
       // act
       final result = await authenticationRepositoryImpl.signIn(
         email: tEmail,
@@ -360,6 +361,39 @@ void main() {
           ),
         );
         expect(result, Left(SendTimeoutFailure()));
+      },
+    );
+  });
+
+  group('removeSavedServer()', () {
+    setUp(() {
+      when(
+        () => mockAuthLocalDataSource.removeSavedServer(),
+      ).thenAnswer((_) => Future.value());
+    });
+
+    test('should remove the saved server and return None', () async {
+      // act
+      final result = await authenticationRepositoryImpl.removeSavedServer();
+
+      // assert
+      verify(() => mockAuthLocalDataSource.removeSavedServer());
+      expect(result, Right(None()));
+    });
+
+    test(
+      'should convert PlatformException to StorageWriteFailure and return it',
+      () async {
+        // arrange
+        when(
+          () => mockAuthLocalDataSource.removeSavedServer(),
+        ).thenThrow(tPlatformException);
+
+        // act
+        final result = await authenticationRepositoryImpl.removeSavedServer();
+
+        // assert
+        expect(result, Left(StorageWriteFailure()));
       },
     );
   });

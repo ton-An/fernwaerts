@@ -31,4 +31,19 @@ void main() {
       expect(result, tServerUrlString);
     });
   });
+
+  group('removeSavedServer()', () {
+    test('should delete the saved server url', () async {
+      // arrange
+      when(
+        () => mockSecureStorage.delete(key: any(named: 'key')),
+      ).thenAnswer((_) => Future.value());
+
+      // act
+      await authenticationLocalDataSource.removeSavedServer();
+
+      // assert
+      verify(() => mockSecureStorage.delete(key: 'server_url'));
+    });
+  });
 }
