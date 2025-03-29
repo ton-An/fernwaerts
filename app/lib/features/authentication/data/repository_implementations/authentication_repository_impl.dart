@@ -8,8 +8,8 @@ import 'package:location_history/core/failures/networking/host_lookup_failure.da
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
+import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
-import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_states.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 /*
   To-Do:
@@ -112,7 +112,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Stream<AuthenticationCubitState> authenticationStateStream() {
+  Stream<AuthenticationState> authenticationStateStream() {
     // TODO: implement authenticationStateStream
     throw UnimplementedError();
   }
@@ -124,13 +124,13 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> hasServerConnection() {
+  Future<Either<Failure, bool>> hasServerConnectionSaved() {
     // TODO: implement hasServerConnection
     throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, String>> isSignedIn() {
+  Future<Either<Failure, bool>> isSignedIn() {
     // TODO: implement isSignedIn
     throw UnimplementedError();
   }

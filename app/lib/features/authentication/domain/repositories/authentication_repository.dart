@@ -71,7 +71,7 @@ abstract class AuthenticationRepository {
   ///
   /// Failures:
   /// - TBD
-  Future<Either<Failure, bool>> hasServerConnection();
+  Future<Either<Failure, bool>> hasServerConnectionSaved();
 
   /// Gets the saved server url
   ///
