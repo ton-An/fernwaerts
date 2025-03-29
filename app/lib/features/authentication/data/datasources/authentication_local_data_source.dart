@@ -9,14 +9,14 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 abstract class AuthenticationLocalDataSource {
   const AuthenticationLocalDataSource();
 
-  /// Checks if there is a saved server connection.
+  /// Gets the saved server URL.
   ///
   /// Returns:
-  /// - a [bool] indicating if there is a saved server connection.
+  /// - [String?] the saved server URL, or [null] if none is found.
   ///
   /// Throws:
   /// - [PlatformException]
-  Future<bool> hasServerConnectionSaved();
+  Future<String?> getSavedServerUrl();
 }
 
 class AuthLocalDataSourceImpl extends AuthenticationLocalDataSource {
@@ -25,13 +25,9 @@ class AuthLocalDataSourceImpl extends AuthenticationLocalDataSource {
   final FlutterSecureStorage secureStorage;
 
   @override
-  Future<bool> hasServerConnectionSaved() async {
+  Future<String?> getSavedServerUrl() async {
     final String? serverUrl = await secureStorage.read(key: 'server_url');
 
-    if (serverUrl != null) {
-      return true;
-    } else {
-      return false;
-    }
+    return serverUrl;
   }
 }

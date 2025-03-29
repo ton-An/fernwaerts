@@ -16,40 +16,19 @@ void main() {
     );
   });
 
-  group('hasServerConnectionSaved()', () {
-    test(
-      'should read the server url key from storage and return true if the server url key is found in storage',
-      () async {
-        // arrange
-        when(
-          () => mockSecureStorage.read(key: any(named: 'key')),
-        ).thenAnswer((_) async => tServerUrlString);
+  group('getSavedServerUrl()', () {
+    test('should read the server url key from storage and return it', () async {
+      // arrange
+      when(
+        () => mockSecureStorage.read(key: any(named: 'key')),
+      ).thenAnswer((_) async => tServerUrlString);
 
-        // act
-        final result =
-            await authenticationLocalDataSource.hasServerConnectionSaved();
+      // act
+      final result = await authenticationLocalDataSource.getSavedServerUrl();
 
-        // assert
-        verify(() => mockSecureStorage.read(key: 'server_url'));
-        expect(result, true);
-      },
-    );
-
-    test(
-      'should return false if the server url key is not found in storage',
-      () async {
-        // arrange
-        when(
-          () => mockSecureStorage.read(key: any(named: 'key')),
-        ).thenAnswer((_) async => null);
-
-        // act
-        final result =
-            await authenticationLocalDataSource.hasServerConnectionSaved();
-
-        // assert
-        expect(result, false);
-      },
-    );
+      // assert
+      verify(() => mockSecureStorage.read(key: 'server_url'));
+      expect(result, tServerUrlString);
+    });
   });
 }

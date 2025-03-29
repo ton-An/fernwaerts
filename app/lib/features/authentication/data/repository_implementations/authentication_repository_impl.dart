@@ -123,18 +123,12 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, String>> getSavedServerUrl() {
-    // TODO: implement getSavedServerUrl
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<Either<Failure, bool>> hasServerConnectionSaved() async {
+  Future<Either<Failure, String?>> getSavedServerUrl() async {
     try {
-      final bool hasServerConnectionSaved =
-          await authLocalDataSource.hasServerConnectionSaved();
+      final String? savedServerUrl =
+          await authLocalDataSource.getSavedServerUrl();
 
-      return Right(hasServerConnectionSaved);
+      return Right(savedServerUrl);
     } on PlatformException {
       return Left(StorageReadFailure());
     }

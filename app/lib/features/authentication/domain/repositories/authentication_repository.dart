@@ -6,6 +6,7 @@ import 'package:location_history/core/failures/networking/host_lookup_failure.da
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
+import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
 
 /*
@@ -67,17 +68,11 @@ abstract class AuthenticationRepository {
     required String password,
   });
 
-  /// Checks if the app has a server connection
-  ///
-  /// Failures:
-  /// - TBD
-  Future<Either<Failure, bool>> hasServerConnectionSaved();
-
   /// Gets the saved server url
   ///
   /// Failures:
-  /// - TBD
-  Future<Either<Failure, String>> getSavedServerUrl();
+  /// - [StorageReadFailure]
+  Future<Either<Failure, String?>> getSavedServerUrl();
 
   /// Checks if the user is signed in
   ///

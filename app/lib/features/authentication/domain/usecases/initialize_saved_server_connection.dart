@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_server_connection.dart';
@@ -25,10 +26,14 @@ class InitializeSavedServerConnection {
   }
 
   Future<Either<Failure, None>> _getSavedServerUrl() async {
-    final Either<Failure, String> savedUrlEither =
+    final Either<Failure, String?> savedUrlEither =
         await authenticationRepository.getSavedServerUrl();
 
-    return savedUrlEither.fold(Left.new, (String serverUrl) {
+    return savedUrlEither.fold(Left.new, (String? serverUrl) {
+      if (serverUrl == null) {
+        return const Left(NoSavedServerFailure());
+      }
+
       return _initializeServerConnection(serverUrl: serverUrl);
     });
   }

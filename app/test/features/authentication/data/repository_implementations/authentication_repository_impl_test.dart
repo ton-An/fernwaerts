@@ -241,35 +241,30 @@ void main() {
     });
   });
 
-  group('hasServerConnectionSaved()', () {
+  group('getSavedServerUrl()', () {
     setUp(() {
       when(
-        () => mockAuthLocalDataSource.hasServerConnectionSaved(),
-      ).thenAnswer((_) async => true);
+        () => mockAuthLocalDataSource.getSavedServerUrl(),
+      ).thenAnswer((_) async => tServerUrlString);
     });
 
-    test(
-      'should check if server connection is saved locally and return a bool',
-      () async {
-        // act
-        final result =
-            await authenticationRepositoryImpl.hasServerConnectionSaved();
+    test('should get the saved server url and return it', () async {
+      // act
+      final result = await authenticationRepositoryImpl.getSavedServerUrl();
 
-        // assert
-        expect(result, Right(true));
-      },
-    );
+      // assert
+      expect(result, Right(tServerUrlString));
+    });
 
     test(
       'should return a StorageReadFailure if a PlatformException is thrown',
       () async {
         when(
-          () => mockAuthLocalDataSource.hasServerConnectionSaved(),
+          () => mockAuthLocalDataSource.getSavedServerUrl(),
         ).thenThrow(tPlatformException);
 
         // act
-        final result =
-            await authenticationRepositoryImpl.hasServerConnectionSaved();
+        final result = await authenticationRepositoryImpl.getSavedServerUrl();
 
         // assert
         expect(result, Left(StorageReadFailure()));
