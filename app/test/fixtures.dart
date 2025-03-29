@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -68,6 +69,8 @@ final ArgumentError tArgumentError = ArgumentError();
 final FormatException tFormatException = FormatException();
 
 final PostgrestException tPostgresException = PostgrestException(message: '');
+
+final PlatformException tPlatformException = PlatformException(code: 'bad');
 
 final String tUsername = 'Ted';
 final String tEmail = 'ted@example.com';

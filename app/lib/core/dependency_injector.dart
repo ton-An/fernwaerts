@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:location_history/core/data/datasources/server_remote_handler.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/data/repository/repository_failure_handler.dart';
+import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:location_history/features/authentication/data/repository_implementations/authentication_repository_impl.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
@@ -31,6 +33,7 @@ void initGetIt() {
 void registerThirdPartyDependencies() {
   // -- Data -- //
   getIt.registerLazySingleton(() => Dio());
+  getIt.registerLazySingleton(() => FlutterSecureStorage());
 }
 
 void registerCoreDependencies() {
@@ -74,8 +77,12 @@ void registerAuthenticationDependencies() {
   getIt.registerLazySingleton<AuthenticationRepository>(
     () => AuthenticationRepositoryImpl(
       authRemoteDataSource: getIt(),
+      authLocalDataSource: getIt(),
       repositoryFailureHandler: getIt(),
     ),
+  );
+  getIt.registerLazySingleton<AuthenticationLocalDataSource>(
+    () => AuthLocalDataSourceImpl(secureStorage: getIt()),
   );
   getIt.registerLazySingleton<AuthenticationRemoteDataSource>(
     () => AuthRemoteDataSourceImpl(

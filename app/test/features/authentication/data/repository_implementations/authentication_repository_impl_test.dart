@@ -5,6 +5,7 @@ import 'package:location_history/core/failures/networking/bad_response_failure.d
 import 'package:location_history/core/failures/networking/connection_failure.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
+import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/features/authentication/data/repository_implementations/authentication_repository_impl.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -14,13 +15,16 @@ import '../../../../mocks.dart';
 void main() {
   late AuthenticationRepositoryImpl authenticationRepositoryImpl;
   late MockAuthRemoteDataSource mockAuthRemoteDataSource;
+  late MockAuthLocalDataSource mockAuthLocalDataSource;
   late MockRepositoryFailureHandler mockRepositoryFailureHandler;
 
   setUp(() {
     mockAuthRemoteDataSource = MockAuthRemoteDataSource();
+    mockAuthLocalDataSource = MockAuthLocalDataSource();
     mockRepositoryFailureHandler = MockRepositoryFailureHandler();
     authenticationRepositoryImpl = AuthenticationRepositoryImpl(
       authRemoteDataSource: mockAuthRemoteDataSource,
+      authLocalDataSource: mockAuthLocalDataSource,
       repositoryFailureHandler: mockRepositoryFailureHandler,
     );
   });
@@ -235,5 +239,41 @@ void main() {
       // assert
       expect(result, Left<Failure, bool>(tUnknownRequestFailure));
     });
+  });
+
+  group('hasServerConnectionSaved()', () {
+    setUp(() {
+      when(
+        () => mockAuthLocalDataSource.hasServerConnectionSaved(),
+      ).thenAnswer((_) async => true);
+    });
+
+    test(
+      'should check if server connection is saved locally and return a bool',
+      () async {
+        // act
+        final result =
+            await authenticationRepositoryImpl.hasServerConnectionSaved();
+
+        // assert
+        expect(result, Right(true));
+      },
+    );
+
+    test(
+      'should return a StorageReadFailure if a PlatformException is thrown',
+      () async {
+        when(
+          () => mockAuthLocalDataSource.hasServerConnectionSaved(),
+        ).thenThrow(tPlatformException);
+
+        // act
+        final result =
+            await authenticationRepositoryImpl.hasServerConnectionSaved();
+
+        // assert
+        expect(result, Left(StorageReadFailure()));
+      },
+    );
   });
 }

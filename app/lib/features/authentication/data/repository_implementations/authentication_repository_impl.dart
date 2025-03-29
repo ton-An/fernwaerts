@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:location_history/core/data/repository/repository_failure_handler.dart';
 import 'package:location_history/core/failures/failure.dart';
@@ -7,6 +8,8 @@ import 'package:location_history/core/failures/networking/connection_failure.dar
 import 'package:location_history/core/failures/networking/host_lookup_failure.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
+import 'package:location_history/core/failures/storage/storage_read_failure.dart';
+import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
@@ -19,10 +22,12 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
   const AuthenticationRepositoryImpl({
     required this.authRemoteDataSource,
+    required this.authLocalDataSource,
     required this.repositoryFailureHandler,
   });
 
   final AuthenticationRemoteDataSource authRemoteDataSource;
+  final AuthenticationLocalDataSource authLocalDataSource;
   final RepositoryFailureHandler repositoryFailureHandler;
 
   @override
@@ -124,9 +129,15 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> hasServerConnectionSaved() {
-    // TODO: implement hasServerConnection
-    throw UnimplementedError();
+  Future<Either<Failure, bool>> hasServerConnectionSaved() async {
+    try {
+      final bool hasServerConnectionSaved =
+          await authLocalDataSource.hasServerConnectionSaved();
+
+      return Right(hasServerConnectionSaved);
+    } on PlatformException {
+      return Left(StorageReadFailure());
+    }
   }
 
   @override

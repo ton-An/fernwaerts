@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:location_history/core/data/datasources/server_remote_handler.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/data/repository/repository_failure_handler.dart';
+import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_server_connection.dart';
@@ -23,6 +25,8 @@ class MockPostgrestFilterBuilder<T> extends Mock
 class MockPostgrestTransformBuilder<T> extends Mock
     implements PostgrestTransformBuilder<T> {}
 
+class MockFlutterSecureStorage extends Mock implements FlutterSecureStorage {}
+
 // -- Core -- //
 class MockServerRemoteHandler extends Mock implements ServerRemoteHandler {}
 
@@ -32,6 +36,9 @@ class MockRepositoryFailureHandler extends Mock
 class MockSupabaseHandler extends Mock implements SupabaseHandler {}
 
 // -- Authentication
+class MockAuthLocalDataSource extends Mock
+    implements AuthenticationLocalDataSource {}
+
 class MockAuthRemoteDataSource extends Mock
     implements AuthenticationRemoteDataSource {}
 
