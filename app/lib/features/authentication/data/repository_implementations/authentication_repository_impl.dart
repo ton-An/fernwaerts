@@ -9,6 +9,7 @@ import 'package:location_history/core/failures/networking/invalid_server_url_fai
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
+import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_states.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 /*
   To-Do:
@@ -108,5 +109,29 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     } on Failure catch (failure) {
       return Left(failure);
     }
+  }
+
+  @override
+  Stream<AuthenticationCubitState> authenticationStateStream() {
+    // TODO: implement authenticationStateStream
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, String>> getSavedServerUrl() {
+    // TODO: implement getSavedServerUrl
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, bool>> hasServerConnection() {
+    // TODO: implement hasServerConnection
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, String>> isSignedIn() {
+    // TODO: implement isSignedIn
+    throw UnimplementedError();
   }
 }

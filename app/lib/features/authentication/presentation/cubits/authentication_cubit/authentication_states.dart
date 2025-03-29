@@ -2,43 +2,43 @@ import 'package:location_history/core/failures/failure.dart';
 
 // part 'authentication_states.freezed.dart';
 
-abstract class AuthenticationState {
-  const AuthenticationState();
+abstract class AuthenticationCubitState {
+  const AuthenticationCubitState();
 }
 
-class AuthenticationInitial extends AuthenticationState {
+class AuthenticationInitial extends AuthenticationCubitState {
   const AuthenticationInitial();
 }
 
-class EnterServerDetails extends AuthenticationState {
+class EnterServerDetails extends AuthenticationCubitState {
   const EnterServerDetails();
 }
 
-class EnterServerDetailsLoading extends AuthenticationState {
+class EnterServerDetailsLoading extends AuthenticationCubitState {
   const EnterServerDetailsLoading();
 }
 
-class EnterLogInInfo extends AuthenticationState {
+class EnterLogInInfo extends AuthenticationCubitState {
   const EnterLogInInfo();
 }
 
-class EnterAdminSignUpInfo extends AuthenticationState {
+class EnterAdminSignUpInfo extends AuthenticationCubitState {
   const EnterAdminSignUpInfo();
 }
 
-class LogInSuccessful extends AuthenticationState {
+class LogInSuccessful extends AuthenticationCubitState {
   const LogInSuccessful();
 }
 
-class AdminSignUpSuccessful extends AuthenticationState {
+class AdminSignUpSuccessful extends AuthenticationCubitState {
   const AdminSignUpSuccessful();
 }
 
-class AdminSignUpLoading extends AuthenticationState {
+class AdminSignUpLoading extends AuthenticationCubitState {
   const AdminSignUpLoading();
 }
 
-class AuthenticationError extends AuthenticationState {
+class AuthenticationError extends AuthenticationCubitState {
   const AuthenticationError({required this.failure});
 
   final Failure failure;

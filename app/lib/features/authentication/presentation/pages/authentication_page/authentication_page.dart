@@ -59,7 +59,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   @override
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
-    return BlocListener<AuthenticationCubit, AuthenticationState>(
+    return BlocListener<AuthenticationCubit, AuthenticationCubitState>(
       listener: (context, state) {
         if (state is EnterServerDetails) {
           _animateToPage(1);

@@ -6,6 +6,12 @@ import 'package:location_history/core/failures/networking/host_lookup_failure.da
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
+import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_states.dart';
+
+/*
+  To-Do:
+    - [ ] Add TBD Failures
+*/
 
 abstract class AuthenticationRepository {
   /// Checks if the server is reachable.
@@ -60,4 +66,31 @@ abstract class AuthenticationRepository {
     required String email,
     required String password,
   });
+
+  /// Checks if the app has a server connection
+  ///
+  /// Failures:
+  /// - TBD
+  Future<Either<Failure, bool>> hasServerConnection();
+
+  /// Gets the saved server url
+  ///
+  /// Failures:
+  /// - TBD
+  Future<Either<Failure, String>> getSavedServerUrl();
+
+  /// Checks if the user is signed in
+  ///
+  /// Failures:
+  /// - TBD
+  Future<Either<Failure, String>> isSignedIn();
+
+  /// Notifies when the authentication state changes
+  ///
+  /// Emits:
+  /// - An [AuthenticationCubitState]
+  ///
+  /// Failures:
+  /// - TBD
+  Stream<AuthenticationCubitState> authenticationStateStream();
 }

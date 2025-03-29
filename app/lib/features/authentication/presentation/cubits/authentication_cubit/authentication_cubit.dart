@@ -11,7 +11,7 @@ import 'package:location_history/features/authentication/presentation/cubits/aut
     - [ ] Clean up toLogInInfo method (de-nest)
 */
 
-class AuthenticationCubit extends Cubit<AuthenticationState> {
+class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
   AuthenticationCubit({
     required this.initializeServerConnection,
     required this.isServerSetUp,
