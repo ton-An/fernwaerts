@@ -23,7 +23,7 @@ class IsSignedIn {
   final AuthenticationRepository authenticationRepository;
 
   /// {@macro is_signed_in}
-  Future<Either<Failure, bool>> call() async {
-    return await authenticationRepository.isSignedIn();
+  Future<Either<Failure, bool>> call() {
+    return authenticationRepository.isSignedIn();
   }
 }
