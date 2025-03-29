@@ -6,7 +6,7 @@ import 'package:location_history/core/failures/networking/host_lookup_failure.da
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
-import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_states.dart';
+import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
 
 /*
   To-Do:
@@ -88,11 +88,8 @@ abstract class AuthenticationRepository {
   /// Notifies when the authentication state changes
   ///
   /// Emits:
-  /// - An [AuthenticationCubitState]
-  ///
-  /// Failures:
-  /// - TBD
-  Stream<AuthenticationCubitState> authenticationStateStream();
+  /// - An [AuthenticationState]
+  Stream<AuthenticationState> authenticationStateStream();
 
   /// Signs in a user
   ///
