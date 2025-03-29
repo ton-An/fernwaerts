@@ -188,4 +188,9 @@ void main() {
       expect(result, false);
     });
   });
+
+  group('authenticationStateStream()', () {
+    // ToDo: uncomment this test when the mock_supabase_http_client package supports mocking auth
+    // test('should convert AuthState to AuthenticationState and yield it', () {});
+  });
 }

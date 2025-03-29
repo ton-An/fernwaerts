@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:http/http.dart';
 import 'package:location_history/core/data/datasources/server_remote_handler.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/misc/url_path_constants.dart';
+import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /*
@@ -66,6 +69,12 @@ abstract class AuthenticationRemoteDataSource {
   /// Returns:
   /// - a [bool] indicating if the user is signed in
   bool isSignedIn();
+
+  /// Notifies when the authentication state changes
+  ///
+  /// Emits:
+  /// - An [AuthenticationState]
+  Stream<AuthenticationState> authenticationStateStream();
 }
 
 class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
@@ -141,5 +150,23 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
     }
 
     return false;
+  }
+
+  @override
+  Stream<AuthenticationState> authenticationStateStream() async* {
+    final SupabaseClient supabaseClient = supabaseHandler.getClient();
+
+    final Stream<AuthState> authStateSubscription =
+        supabaseClient.auth.onAuthStateChange;
+
+    await for (AuthState authState in authStateSubscription) {
+      if (authState.event == AuthChangeEvent.signedIn) {
+        yield SignedInState();
+      }
+
+      if (authState.event == AuthChangeEvent.signedOut) {
+        yield SignedOutState();
+      }
+    }
   }
 }
