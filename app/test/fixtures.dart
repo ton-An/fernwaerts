@@ -64,6 +64,13 @@ final http.ClientException tTimeoutClientException = http.ClientException(
   tServerUrl,
 );
 
+final StackTrace tStackTrace = StackTrace.empty;
+
+final http.ClientException tUnknownClientException = http.ClientException(
+  'Really weird error',
+  tServerUrl,
+);
+
 final ArgumentError tArgumentError = ArgumentError();
 
 final FormatException tFormatException = FormatException();

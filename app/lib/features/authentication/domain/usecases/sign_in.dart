@@ -15,7 +15,7 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 /// - [String] password
 ///
 /// Failures:
-/// - TBD
+/// {@macro converted_client_exceptions}
 /// {@endtemplate}
 class SignIn {
   /// {@macro sign_in}

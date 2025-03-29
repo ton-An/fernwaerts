@@ -12,11 +12,14 @@ import '../../../../mocks.dart';
 void main() {
   late SignUpInitialAdmin signUpInitialAdmin;
   late MockAuthenticationRepository mockAuthenticationRepository;
+  late MockSignIn mockSignIn;
 
   setUp(() {
     mockAuthenticationRepository = MockAuthenticationRepository();
+    mockSignIn = MockSignIn();
     signUpInitialAdmin = SignUpInitialAdmin(
       authenticationRepository: mockAuthenticationRepository,
+      signIn: mockSignIn,
     );
 
     when(
@@ -28,7 +31,7 @@ void main() {
       ),
     ).thenAnswer((_) async => Right(None()));
     when(
-      () => mockAuthenticationRepository.signIn(
+      () => mockSignIn(
         username: any(named: 'username'),
         password: any(named: 'password'),
       ),
@@ -110,12 +113,13 @@ void main() {
     );
 
     // assert
+    verify(() => mockSignIn(username: tUsername, password: tPassword));
     expect(result, Right(None()));
   });
 
   test('should relay Failures from signing in', () async {
     when(
-      () => mockAuthenticationRepository.signIn(
+      () => mockSignIn(
         username: any(named: 'username'),
         password: any(named: 'password'),
       ),

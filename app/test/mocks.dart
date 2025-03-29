@@ -7,6 +7,7 @@ import 'package:location_history/features/authentication/data/datasources/authen
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_server_connection.dart';
+import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -47,3 +48,5 @@ class MockAuthenticationRepository extends Mock
 
 class MockInitializeServerConnection extends Mock
     implements InitializeServerConnection {}
+
+class MockSignIn extends Mock implements SignIn {}

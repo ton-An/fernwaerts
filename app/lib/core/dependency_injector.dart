@@ -10,6 +10,7 @@ import 'package:location_history/features/authentication/data/repository_impleme
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_server_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_server_set_up.dart';
+import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_up_initial_admin.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_cubit.dart';
@@ -70,8 +71,10 @@ void registerAuthenticationDependencies() {
     () => IsServerSetUp(authenticationRepository: getIt()),
   );
   getIt.registerLazySingleton(
-    () => SignUpInitialAdmin(authenticationRepository: getIt()),
+    () =>
+        SignUpInitialAdmin(authenticationRepository: getIt(), signIn: getIt()),
   );
+  getIt.registerLazySingleton(() => SignIn(authenticationRepository: getIt()));
 
   // -- Data -- //
   getIt.registerLazySingleton<AuthenticationRepository>(

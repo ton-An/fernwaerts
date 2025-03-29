@@ -1,9 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
-import 'package:location_history/core/failures/networking/host_lookup_failure.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
-import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 
 /// {@template initialize_server_connection}
@@ -16,8 +14,7 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 /// - [None] if the server is reachable.
 ///
 /// Failures:
-/// - [SendTimeoutFailure]
-/// - [HostLookupFailure]
+/// {@macro converted_client_exceptions}
 /// - [InvalidUrlFormatFailure]
 /// - [ConnectionFailure]
 /// {@endtemplate}

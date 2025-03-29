@@ -32,6 +32,8 @@ void main() {
   setUpAll(() {
     registerFallbackValue(tServerUrl);
     registerFallbackValue(tBadResponseDioException);
+    registerFallbackValue(tTimeoutClientException);
+    registerFallbackValue(tStackTrace);
   });
 
   group('isServerSetUp()', () {
@@ -53,18 +55,33 @@ void main() {
       },
     );
 
-    test('should convert ClientExceptions to SendTimeoutFailure', () async {
-      // arrange
-      when(
-        () => mockAuthRemoteDataSource.isServerSetUp(),
-      ).thenThrow(tTimeoutClientException);
+    test(
+      'should convert ClientExceptions to Failures and return them',
+      () async {
+        // arrange
+        when(
+          () => mockAuthRemoteDataSource.isServerSetUp(),
+        ).thenThrow(tTimeoutClientException);
+        when(
+          () => mockRepositoryFailureHandler.clientExceptionConverter(
+            clientException: any(named: 'clientException'),
+            stackTrace: any(named: 'stackTrace'),
+          ),
+        ).thenReturn(SendTimeoutFailure());
 
-      // act
-      final result = await authenticationRepositoryImpl.isServerSetUp();
+        // act
+        final result = await authenticationRepositoryImpl.isServerSetUp();
 
-      // assert
-      expect(result, Left<Failure, bool>(SendTimeoutFailure()));
-    });
+        // assert
+        verify(
+          () => mockRepositoryFailureHandler.clientExceptionConverter(
+            clientException: tTimeoutClientException,
+            stackTrace: any(named: 'stackTrace'),
+          ),
+        );
+        expect(result, Left(SendTimeoutFailure()));
+      },
+    );
 
     test('should convert PostgresException to ConnectionFailure', () async {
       // arrange
@@ -97,19 +114,34 @@ void main() {
       expect(result, Right<Failure, None>(None()));
     });
 
-    test('should convert ClientExceptions to SendTimeoutFailure', () async {
-      // arrange
-      when(
-        () => mockAuthRemoteDataSource.isServerConnectionValid(),
-      ).thenThrow(tTimeoutClientException);
+    test(
+      'should convert ClientExceptions to Failures and return them',
+      () async {
+        // arrange
+        when(
+          () => mockAuthRemoteDataSource.isServerConnectionValid(),
+        ).thenThrow(tTimeoutClientException);
+        when(
+          () => mockRepositoryFailureHandler.clientExceptionConverter(
+            clientException: any(named: 'clientException'),
+            stackTrace: any(named: 'stackTrace'),
+          ),
+        ).thenReturn(SendTimeoutFailure());
 
-      // act
-      final result =
-          await authenticationRepositoryImpl.isServerConnectionValid();
+        // act
+        final result =
+            await authenticationRepositoryImpl.isServerConnectionValid();
 
-      // assert
-      expect(result, Left<Failure, bool>(SendTimeoutFailure()));
-    });
+        // assert
+        verify(
+          () => mockRepositoryFailureHandler.clientExceptionConverter(
+            clientException: tTimeoutClientException,
+            stackTrace: any(named: 'stackTrace'),
+          ),
+        );
+        expect(result, Left(SendTimeoutFailure()));
+      },
+    );
 
     test('should convert ArgumentError to InvalidUrlFormatFailure', () async {
       // arrange
@@ -268,6 +300,68 @@ void main() {
 
         // assert
         expect(result, Left(StorageReadFailure()));
+      },
+    );
+  });
+
+  group('signIn()', () {
+    setUp(() {
+      when(
+        () => mockAuthRemoteDataSource.signIn(
+          username: any(named: 'username'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) => Future.value());
+    });
+
+    test('should sign in the user and return none', () async {
+      // act
+      final result = await authenticationRepositoryImpl.signIn(
+        username: tUsername,
+        password: tPassword,
+      );
+
+      // assert
+      verify(
+        () => mockAuthRemoteDataSource.signIn(
+          username: tUsername,
+          password: tPassword,
+        ),
+      );
+      expect(result, const Right(None()));
+    });
+
+    test(
+      'should convert ClientExceptions to Failures and return them',
+      () async {
+        // arrange
+        when(
+          () => mockAuthRemoteDataSource.signIn(
+            username: any(named: 'username'),
+            password: any(named: 'password'),
+          ),
+        ).thenThrow(tTimeoutClientException);
+        when(
+          () => mockRepositoryFailureHandler.clientExceptionConverter(
+            clientException: any(named: 'clientException'),
+            stackTrace: any(named: 'stackTrace'),
+          ),
+        ).thenReturn(SendTimeoutFailure());
+
+        // act
+        final result = await authenticationRepositoryImpl.signIn(
+          username: tUsername,
+          password: tPassword,
+        );
+
+        // assert
+        verify(
+          () => mockRepositoryFailureHandler.clientExceptionConverter(
+            clientException: tTimeoutClientException,
+            stackTrace: any(named: 'stackTrace'),
+          ),
+        );
+        expect(result, Left(SendTimeoutFailure()));
       },
     );
   });

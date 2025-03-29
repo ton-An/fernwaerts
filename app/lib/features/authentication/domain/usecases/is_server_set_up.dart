@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
-import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 
 /*
@@ -19,7 +18,7 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 /// - a [bool] indicating if the server is set up.
 ///
 /// Failures:
-/// - [SendTimeoutFailure]
+/// {@macro converted_client_exceptions}
 /// - [ConnectionFailure]
 /// {@endtemplate}
 class IsServerSetUp {

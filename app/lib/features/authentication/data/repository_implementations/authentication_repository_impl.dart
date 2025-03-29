@@ -5,9 +5,7 @@ import 'package:http/http.dart';
 import 'package:location_history/core/data/repository/repository_failure_handler.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
-import 'package:location_history/core/failures/networking/host_lookup_failure.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
-import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
@@ -17,6 +15,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 /*
   To-Do:
     - [ ] Standardize timeout exception handling (also in unit tests)
+    - [ ] Standardize error handling of supabase errors
 */
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
@@ -36,17 +35,15 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       final isSetupComplete = await authRemoteDataSource.isServerSetUp();
 
       return Right(isSetupComplete);
-    } catch (exception) {
-      if (exception is ClientException) {
-        final isTimeout = exception.message.contains('Operation timed out');
+    } on ClientException catch (exception, stackTrace) {
+      final Failure failure = repositoryFailureHandler.clientExceptionConverter(
+        clientException: exception,
+        stackTrace: stackTrace,
+      );
 
-        if (isTimeout) {
-          return Left(SendTimeoutFailure());
-        }
-      } else if (exception is PostgrestException) {
-        return Left(ConnectionFailure());
-      }
-      rethrow;
+      return Left(failure);
+    } on PostgrestException {
+      return Left(ConnectionFailure());
     }
   }
 
@@ -56,21 +53,15 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       await authRemoteDataSource.isServerConnectionValid();
 
       return const Right(None());
-    } catch (exception) {
+    } catch (exception, stackTrace) {
       if (exception is ClientException) {
-        final isTimeout = exception.message.contains('Operation timed out');
+        final Failure failure = repositoryFailureHandler
+            .clientExceptionConverter(
+              clientException: exception,
+              stackTrace: stackTrace,
+            );
 
-        if (isTimeout) {
-          return Left(SendTimeoutFailure());
-        }
-
-        final hasFailedHostLookup = exception.message.contains(
-          'Failed host lookup',
-        );
-
-        if (hasFailedHostLookup) {
-          return Left(HostLookupFailure());
-        }
+        return Left(failure);
       } else if (exception is ArgumentError || exception is FormatException) {
         return Left(InvalidUrlFormatFailure());
       } else if (exception is PostgrestException) {
@@ -142,8 +133,18 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   Future<Either<Failure, None>> signIn({
     required String username,
     required String password,
-  }) {
-    // TODO: implement signIn
-    throw UnimplementedError();
+  }) async {
+    try {
+      await authRemoteDataSource.signIn(username: username, password: password);
+
+      return const Right(None());
+    } on ClientException catch (clientException, stackTrace) {
+      final Failure failure = repositoryFailureHandler.clientExceptionConverter(
+        clientException: clientException,
+        stackTrace: stackTrace,
+      );
+
+      return Left(failure);
+    }
   }
 }

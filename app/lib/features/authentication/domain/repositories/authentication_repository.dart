@@ -2,9 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
-import 'package:location_history/core/failures/networking/host_lookup_failure.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
-import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
@@ -23,8 +21,7 @@ abstract class AuthenticationRepository {
   /// - [None] if the server is reachable.
   ///
   /// Failures:
-  /// - [SendTimeoutFailure]
-  /// - [HostLookupFailure]
+  /// {@macro converted_client_exceptions}
   /// - [InvalidUrlFormatFailure]
   /// - [ConnectionFailure]
   Future<Either<Failure, None>> isServerConnectionValid();
@@ -37,7 +34,7 @@ abstract class AuthenticationRepository {
   /// - a [bool] indicating if the server is set up.
   ///
   /// Failures:
-  /// - [SendTimeoutFailure]
+  /// {@macro converted_client_exceptions}
   /// - [ConnectionFailure]
   Future<Either<Failure, bool>> isServerSetUp();
 
@@ -93,7 +90,7 @@ abstract class AuthenticationRepository {
   /// - [String] password
   ///
   /// Failures:
-  /// - TBD
+  /// {@macro converted_client_exceptions}
   Future<Either<Failure, None>> signIn({
     required String username,
     required String password,

@@ -5,6 +5,7 @@ import 'package:http/http.dart';
 import 'package:location_history/core/data/datasources/server_remote_handler.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
+import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
 import 'package:location_history/core/misc/url_path_constants.dart';
 import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -55,7 +56,7 @@ abstract class AuthenticationRemoteDataSource {
   ///
   /// Throws:
   /// - [WeakPasswordFailure]
-  /// - [UnknownRequestFailure]
+  /// - [UnknownRequestFailure
   /// - [DioException]
   Future<void> signUpInitialAdmin({
     required String serverUrl,
@@ -75,6 +76,16 @@ abstract class AuthenticationRemoteDataSource {
   /// Emits:
   /// - An [AuthenticationState]
   Stream<AuthenticationState> authenticationStateStream();
+
+  /// Signs in a user
+  ///
+  /// Parameters:
+  /// - [String] username
+  /// - [String] password
+  ///
+  /// Throws:
+  /// - [ClientException]
+  Future<void> signIn({required String username, required String password});
 }
 
 class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
@@ -168,5 +179,15 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
         yield SignedOutState();
       }
     }
+  }
+
+  @override
+  Future<void> signIn({required String username, required String password}) {
+    final SupabaseClient supabaseClient = supabaseHandler.getClient();
+
+    return supabaseClient.auth.signInWithPassword(
+      email: username,
+      password: password,
+    );
   }
 }

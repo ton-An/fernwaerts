@@ -3,6 +3,7 @@ import 'package:location_history/core/failures/authentication/password_mismatch_
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
+import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
 
 /*
   To-Do:
@@ -20,10 +21,15 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 /// Failures:
 /// - [WeakPasswordFailure]
 /// {@macro converted_dio_exceptions}
+/// {@macro converted_client_exceptions}
 class SignUpInitialAdmin {
-  const SignUpInitialAdmin({required this.authenticationRepository});
+  const SignUpInitialAdmin({
+    required this.authenticationRepository,
+    required this.signIn,
+  });
 
   final AuthenticationRepository authenticationRepository;
+  final SignIn signIn;
 
   Future<Either<Failure, None>> call({
     required String serverUrl,
@@ -69,9 +75,6 @@ class SignUpInitialAdmin {
     required String username,
     required String password,
   }) {
-    return authenticationRepository.signIn(
-      username: username,
-      password: password,
-    );
+    return signIn(username: username, password: password);
   }
 }
