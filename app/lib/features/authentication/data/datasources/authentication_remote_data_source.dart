@@ -60,6 +60,12 @@ abstract class AuthenticationRemoteDataSource {
     required String email,
     required String password,
   });
+
+  /// Checks if the user is signed in
+  ///
+  /// Returns:
+  /// - a [bool] indicating if the user is signed in
+  bool isSignedIn();
 }
 
 class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
@@ -122,5 +128,18 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
     if (response['error']['code'] == 'weak_password') {
       throw WeakPasswordFailure();
     }
+  }
+
+  @override
+  bool isSignedIn() {
+    final SupabaseClient supabaseClient = supabaseHandler.getClient();
+
+    final Session? currentSession = supabaseClient.auth.currentSession;
+
+    if (currentSession != null) {
+      return true;
+    }
+
+    return false;
   }
 }

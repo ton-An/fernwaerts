@@ -142,6 +142,7 @@ void main() {
         ),
       ).thenAnswer((_) async => tNullResponseData);
     });
+
     test('should sign up the initial admin', () async {
       // act
       await authRemoteDataSourceImpl.signUpInitialAdmin(
@@ -160,6 +161,31 @@ void main() {
           body: {'username': tUsername, 'email': tEmail, 'password': tPassword},
         ),
       );
+    });
+  });
+
+  group('isSignedIn()', () {
+    // ToDo: uncomment this test when the mock_supabase_http_client package supports mocking auth
+    //   test('should return true if there is a current session', () async {
+    //     // arrange
+    //     await mockSupabaseClient.auth.signInWithPassword(
+    //       email: tEmail,
+    //       password: tPassword,
+    //     );
+
+    //     // act
+    //     final result = authRemoteDataSourceImpl.isSignedIn();
+
+    //     // assert
+    //     expect(result, true);
+    //   });
+
+    test('should return false if the current session is null', () {
+      // act
+      final result = authRemoteDataSourceImpl.isSignedIn();
+
+      // assert
+      expect(result, false);
     });
   });
 }

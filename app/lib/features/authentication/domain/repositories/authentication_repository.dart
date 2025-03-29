@@ -83,7 +83,7 @@ abstract class AuthenticationRepository {
   ///
   /// Returns:
   /// - a [bool] indicating if the user is signed in
-  Future<bool> isSignedIn();
+  bool isSignedIn();
 
   /// Notifies when the authentication state changes
   ///

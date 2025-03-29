@@ -130,9 +130,8 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<bool> isSignedIn() {
-    // TODO: implement isSignedIn
-    throw UnimplementedError();
+  bool isSignedIn() {
+    return authRemoteDataSource.isSignedIn();
   }
 
   @override
