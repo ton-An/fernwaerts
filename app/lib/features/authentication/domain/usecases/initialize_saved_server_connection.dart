@@ -1,6 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
+import 'package:location_history/core/failures/networking/connection_failure.dart';
+import 'package:location_history/core/failures/networking/host_lookup_failure.dart';
+import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
+import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
+import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_server_connection.dart';
 
@@ -8,7 +13,12 @@ import 'package:location_history/features/authentication/domain/usecases/initial
 /// Initializes the server connection saved by the app
 ///
 /// Failures:
-/// - TBD
+/// - [StorageReadFailure]
+/// - [NoSavedServerFailure]
+/// - [SendTimeoutFailure]
+/// - [HostLookupFailure]
+/// - [InvalidUrlFormatFailure]
+/// - [ConnectionFailure]
 /// {@endtemplate}
 class InitializeSavedServerConnection {
   /// {@macro initialize_saved_server_connection}
