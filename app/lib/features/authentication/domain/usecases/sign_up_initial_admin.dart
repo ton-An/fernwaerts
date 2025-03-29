@@ -4,6 +4,11 @@ import 'package:location_history/core/failures/authentication/weak_password_fail
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 
+/*
+  To-Do:
+    - [ ] Add sign in
+*/
+
 /// Signs up the initial admin user
 ///
 /// Parameters:
