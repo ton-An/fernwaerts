@@ -83,7 +83,7 @@ abstract class AuthenticationRepository {
   ///
   /// Failures:
   /// - TBD
-  Future<Either<Failure, String>> isSignedIn();
+  Future<Either<Failure, bool>> isSignedIn();
 
   /// Notifies when the authentication state changes
   ///
