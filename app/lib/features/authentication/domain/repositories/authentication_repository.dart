@@ -93,4 +93,17 @@ abstract class AuthenticationRepository {
   /// Failures:
   /// - TBD
   Stream<AuthenticationCubitState> authenticationStateStream();
+
+  /// Signs in a user
+  ///
+  /// Parameters:
+  /// - [String] username
+  /// - [String] password
+  ///
+  /// Failures:
+  /// - TBD
+  Future<Either<Failure, None>> signIn({
+    required String username,
+    required String password,
+  });
 }

@@ -134,4 +134,13 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     // TODO: implement isSignedIn
     throw UnimplementedError();
   }
+
+  @override
+  Future<Either<Failure, None>> signIn({
+    required String username,
+    required String password,
+  }) {
+    // TODO: implement signIn
+    throw UnimplementedError();
+  }
 }
