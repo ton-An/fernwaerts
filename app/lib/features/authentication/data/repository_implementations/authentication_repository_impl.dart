@@ -130,7 +130,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> isSignedIn() {
+  Future<bool> isSignedIn() {
     // TODO: implement isSignedIn
     throw UnimplementedError();
   }

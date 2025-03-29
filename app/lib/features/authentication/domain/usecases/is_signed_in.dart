@@ -1,5 +1,3 @@
-import 'package:dartz/dartz.dart';
-import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 
 /// {@template is_signed_in}
@@ -15,7 +13,7 @@ class IsSignedIn {
   final AuthenticationRepository authenticationRepository;
 
   /// {@macro is_signed_in}
-  Future<Either<Failure, bool>> call() {
+  Future<bool> call() {
     return authenticationRepository.isSignedIn();
   }
 }
