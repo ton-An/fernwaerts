@@ -1,6 +1,6 @@
-import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart';
 import 'package:location_history/core/data/repository/repository_failure_handler.dart';
 import 'package:location_history/core/failures/failure.dart';

@@ -1,4 +1,4 @@
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';

@@ -1,5 +1,5 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_server_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_server_set_up.dart';

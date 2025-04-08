@@ -1,6 +1,6 @@
-import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fpdart/fpdart.dart' as fpdart;
 import 'package:go_router/go_router.dart';
 import 'package:location_history/core/dependency_injector.dart';
 import 'package:location_history/core/failures/failure.dart';
@@ -47,7 +47,7 @@ class _SplashPageState extends State<SplashPage> {
 
     bool isSignedIn = false;
 
-    final dartz.Either<Failure, bool> hasServerConnectionSavedEither =
+    final fpdart.Either<Failure, bool> hasServerConnectionSavedEither =
         await hasServerConnectionSaved();
 
     hasServerConnectionSavedEither.fold(
@@ -57,7 +57,7 @@ class _SplashPageState extends State<SplashPage> {
       },
       (bool hasServerConnectionSaved) async {
         if (hasServerConnectionSaved) {
-          final dartz.Either<Failure, dartz.None> initServerConnectionEither =
+          final fpdart.Either<Failure, fpdart.None> initServerConnectionEither =
               await initializeSavedServerConnection();
 
           initServerConnectionEither.fold(
@@ -67,7 +67,7 @@ class _SplashPageState extends State<SplashPage> {
               );
               context.go(AuthenticationPage.route);
             },
-            (dartz.None none) async {
+            (fpdart.None none) async {
               context.go(MapPage.route);
             },
           );

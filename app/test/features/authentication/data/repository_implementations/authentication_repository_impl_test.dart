@@ -1,5 +1,5 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/bad_response_failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
