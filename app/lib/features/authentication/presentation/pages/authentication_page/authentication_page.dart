@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:go_router/go_router.dart';
@@ -22,6 +23,7 @@ part '_welcome.dart';
 /*
   To-Do:
     - [ ] Add loading animations (to the buttons)
+    - [ ] Add apple-apple-site-association to fully enable autofill on iOS
 */
 
 enum AuthenticationFormType { logIn, adminSignUp }
@@ -80,6 +82,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         }
 
         if (state is LogInSuccessful || state is AdminSignUpSuccessful) {
+          TextInput.finishAutofillContext();
           context.go(MapPage.route);
         }
 
