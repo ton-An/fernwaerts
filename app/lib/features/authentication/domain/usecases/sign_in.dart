@@ -16,6 +16,7 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 ///
 /// Failures:
 /// {@macro converted_client_exceptions}
+/// - [InvalidCredentialsFailure]
 /// {@endtemplate}
 class SignIn {
   /// {@macro sign_in}

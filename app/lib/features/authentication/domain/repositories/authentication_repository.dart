@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:location_history/core/failures/authentication/invalid_credentials_failure.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
@@ -92,6 +93,7 @@ abstract class AuthenticationRepository {
   ///
   /// Failures:
   /// {@macro converted_client_exceptions}
+  /// - [InvalidCredentialsFailure]
   Future<Either<Failure, None>> signIn({
     required String email,
     required String password,

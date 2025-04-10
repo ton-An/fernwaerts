@@ -85,6 +85,7 @@ abstract class AuthenticationRemoteDataSource {
   ///
   /// Throws:
   /// - [ClientException]
+  /// - [AuthException]
   Future<void> signIn({required String email, required String password});
 
   /// Signs out the current user

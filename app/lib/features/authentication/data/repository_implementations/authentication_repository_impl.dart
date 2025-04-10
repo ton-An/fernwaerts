@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart';
 import 'package:location_history/core/data/repository/repository_failure_handler.dart';
+import 'package:location_history/core/failures/authentication/invalid_credentials_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
@@ -139,6 +140,14 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       await authRemoteDataSource.signIn(email: email, password: password);
 
       return const Right(None());
+    } on AuthException catch (authException) {
+      final String? errorCode = authException.code;
+      if (errorCode == 'invalid_credentials' ||
+          errorCode == 'validation_failed') {
+        return Left(InvalidCredentialsFailure());
+      }
+
+      rethrow;
     } on ClientException catch (clientException, stackTrace) {
       final Failure failure = repositoryFailureHandler.clientExceptionConverter(
         clientException: clientException,
