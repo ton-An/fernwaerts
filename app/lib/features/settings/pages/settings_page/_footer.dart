@@ -25,12 +25,12 @@ class _Footer extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pop();
+              context.pop();
             },
             child: SmallIconButton(
               icon: CupertinoIcons.back,
               onPressed: () {
-                Navigator.of(context).pop();
+                context.pop();
               },
             ),
           ),

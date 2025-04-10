@@ -1273,7 +1273,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "45626a7cea48332fb148d48123ac6092099a8036"
+      resolved-ref: "66dc0409ee865801d93dd223abd56e927eda0738"
       url: "https://github.com/ton-An/webfabrik_theme"
     source: git
     version: "0.0.1"

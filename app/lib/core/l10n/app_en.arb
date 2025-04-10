@@ -22,6 +22,7 @@
     "serverUrl": "Server Url",
     "signIn": "Sign In",
     "signInDescription": "Enter your username and password",
+    "signOut": "Sign Out",
     "username": "Username",
     "email": "E-Mail",
     "password": "Password",    

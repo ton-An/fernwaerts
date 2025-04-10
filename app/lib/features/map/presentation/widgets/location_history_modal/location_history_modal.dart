@@ -1,6 +1,7 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/core/misc/mock_location_history_items.dart';
 import 'package:location_history/core/misc/number_formatter.dart';

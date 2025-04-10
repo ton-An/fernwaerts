@@ -231,6 +231,12 @@ abstract class AppLocalizations {
   /// **'Enter your username and password'**
   String get signInDescription;
 
+  /// No description provided for @signOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Out'**
+  String get signOut;
+
   /// No description provided for @username.
   ///
   /// In en, this message translates to:

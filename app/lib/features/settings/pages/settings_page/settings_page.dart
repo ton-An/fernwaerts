@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
+import 'package:location_history/core/dependency_injector.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
+import 'package:location_history/features/authentication/domain/usecases/sign_out.dart';
+import 'package:location_history/features/authentication/presentation/pages/authentication_page/authentication_page.dart';
 import 'package:location_history/features/map/presentation/pages/map_page.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
@@ -7,6 +11,11 @@ part '_footer.dart';
 part '_page_container.dart';
 part '_section_title.dart';
 part '_sub_page_link.dart';
+
+/*
+  To-Do:
+    - [ ] Find right style for list items and buttons
+*/
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -36,12 +45,14 @@ class SettingsPage extends StatelessWidget {
                   _SubPageLink(),
                   _SubPageLink(),
                   _SubPageLink(),
-                  _SectionTitle(title: AppLocalizations.of(context)!.account),
-                  _SubPageLink(),
-                  _SubPageLink(),
-                  _SectionTitle(title: AppLocalizations.of(context)!.admin),
-                  _SubPageLink(),
-                  _SubPageLink(),
+                  XXMediumGap(),
+                  CustomCupertinoTextButton(
+                    text: AppLocalizations.of(context)!.signOut,
+                    textColor: theme.colors.backgroundContrast,
+                    color: theme.colors.primaryTranslucent,
+                    onPressed: () => _signOut(context),
+                  ),
+                  LargeGap(),
                 ],
               ),
             ),
@@ -50,5 +61,10 @@ class SettingsPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _signOut(BuildContext context) {
+    getIt<SignOut>().call();
+    context.go(AuthenticationPage.route);
   }
 }

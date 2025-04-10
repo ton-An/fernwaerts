@@ -32,25 +32,13 @@ class _Header extends StatelessWidget {
               SmallIconButton(
                 icon: CupertinoIcons.settings,
                 onPressed: () {
-                  _showSettings(context);
+                  context.go(SettingsPage.route);
                 },
               ),
             ],
           ),
         ],
       ),
-    );
-  }
-
-  void _showSettings(BuildContext context) {
-    showGeneralDialog(
-      context: context,
-      barrierColor: Colors.transparent,
-      barrierDismissible: false,
-      transitionDuration: const Duration(milliseconds: 140),
-      pageBuilder: (context, animation, secondaryAnimation) {
-        return const SettingsPage();
-      },
     );
   }
 }

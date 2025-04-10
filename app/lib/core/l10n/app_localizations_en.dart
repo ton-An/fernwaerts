@@ -78,6 +78,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get signInDescription => 'Enter your username and password';
 
   @override
+  String get signOut => 'Sign Out';
+
+  @override
   String get username => 'Username';
 
   @override

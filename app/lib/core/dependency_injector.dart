@@ -14,6 +14,7 @@ import 'package:location_history/features/authentication/domain/usecases/initial
 import 'package:location_history/features/authentication/domain/usecases/is_server_set_up.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_signed_in.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
+import 'package:location_history/features/authentication/domain/usecases/sign_out.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_up_initial_admin.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_cubit.dart';
 import 'package:location_history/features/authentication/presentation/cubits/splash_cubit/splash_cubit.dart';
@@ -86,6 +87,7 @@ void registerAuthenticationDependencies() {
         SignUpInitialAdmin(authenticationRepository: getIt(), signIn: getIt()),
   );
   getIt.registerLazySingleton(() => SignIn(authenticationRepository: getIt()));
+  getIt.registerLazySingleton(() => SignOut(authenticationRepository: getIt()));
   getIt.registerLazySingleton(
     () => HasServerConnectionSaved(authenticationRepository: getIt()),
   );
