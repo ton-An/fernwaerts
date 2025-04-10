@@ -348,7 +348,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "37fa947314a747c1fa16d1aad36f88bbf89e9867"
+      resolved-ref: e77b7c6ea14aa85f33ad582292d48bbf4bf87bed
       url: "https://github.com/ton-An/flutter_carousel_widget"
     source: git
     version: "3.1.0"

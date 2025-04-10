@@ -16,6 +16,7 @@ import 'package:location_history/features/authentication/domain/usecases/is_sign
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_up_initial_admin.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_cubit.dart';
+import 'package:location_history/features/authentication/presentation/cubits/splash_cubit/splash_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_expansion_cubit/calendar_expansion_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_cubit.dart';
@@ -64,6 +65,12 @@ void registerAuthenticationDependencies() {
       isServerSetUp: getIt(),
       signUpInitialAdmin: getIt(),
       signInUsecase: getIt(),
+    ),
+  );
+  getIt.registerFactory(
+    () => SplashCubit(
+      initSavedServerConnection: getIt(),
+      isSignedInUsecase: getIt(),
     ),
   );
 

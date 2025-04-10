@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:location_history/core/dependency_injector.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_cubit.dart';
+import 'package:location_history/features/authentication/presentation/cubits/splash_cubit/splash_cubit.dart';
 import 'package:location_history/features/authentication/presentation/pages/authentication_page/authentication_page.dart';
 import 'package:location_history/features/authentication/presentation/pages/splash_page.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_cubit.dart';
@@ -74,7 +75,11 @@ class MainApp extends StatelessWidget {
             routes: [
               GoRoute(
                 path: SplashPage.pageName,
-                builder: (context, state) => const SplashPage(),
+                builder:
+                    (context, state) => BlocProvider(
+                      create: (context) => getIt<SplashCubit>(),
+                      child: const SplashPage(),
+                    ),
               ),
               GoRoute(
                 path: AuthenticationPage.pageName,
