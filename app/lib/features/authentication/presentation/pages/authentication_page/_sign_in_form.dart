@@ -35,6 +35,7 @@ class _SignInFormState extends State<_SignInForm> {
         CustomCupertinoTextField(
           hint: AppLocalizations.of(context)!.password,
           controller: _passwordController,
+          obscureText: true,
           onChanged: (_) {},
         ),
       ],

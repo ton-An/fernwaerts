@@ -44,11 +44,13 @@ class _AdminSignUpFormState extends State<_AdminSignUpForm> {
         CustomCupertinoTextField(
           hint: AppLocalizations.of(context)!.password,
           controller: _passwordController,
+          obscureText: true,
           onChanged: (_) {},
         ),
         CustomCupertinoTextField(
           hint: AppLocalizations.of(context)!.confirmPassword,
           controller: _confirmPasswordController,
+          obscureText: true,
           onChanged: (_) {},
         ),
       ],
