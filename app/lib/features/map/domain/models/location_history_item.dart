@@ -1,11 +1,7 @@
 abstract class LocationHistoryItem {
-  LocationHistoryItem({
-    required this.id,
-    required this.startTime,
-    required this.endTime,
-  });
+  const LocationHistoryItem();
 
-  final String id;
-  final DateTime startTime;
-  final DateTime endTime;
+  String get id;
+  DateTime get startTime;
+  DateTime get endTime;
 }

@@ -8,7 +8,7 @@ part 'place.freezed.dart';
 enum PlaceType { groceryStore, restaurant, park, museum, other }
 
 @freezed
-class Place extends LocationHistoryItem with _$Place {
+sealed class Place extends LocationHistoryItem with _$Place {
   const factory Place({
     required String id,
     required DateTime startTime,
@@ -18,4 +18,6 @@ class Place extends LocationHistoryItem with _$Place {
     required Coordinate coordinate,
     required Address address,
   }) = _Place;
+
+  const Place._();
 }

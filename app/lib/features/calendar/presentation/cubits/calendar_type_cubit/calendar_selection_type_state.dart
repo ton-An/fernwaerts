@@ -7,31 +7,41 @@ abstract class CalendarSelectionTypeState {
 }
 
 @freezed
-class CalendarDaySelection extends CalendarSelectionTypeState
+sealed class CalendarDaySelection extends CalendarSelectionTypeState
     with _$CalendarDaySelection {
   const factory CalendarDaySelection() = _CalendarDaySelection;
+
+  const CalendarDaySelection._();
 }
 
 @freezed
-class CalendarRangeSelection extends CalendarSelectionTypeState
+sealed class CalendarRangeSelection extends CalendarSelectionTypeState
     with _$CalendarRangeSelection {
   const factory CalendarRangeSelection() = _CalendarRangeSelection;
+
+  const CalendarRangeSelection._();
 }
 
 @freezed
-class CalendarWeekSelection extends CalendarSelectionTypeState
+sealed class CalendarWeekSelection extends CalendarSelectionTypeState
     with _$CalendarWeekSelection {
   const factory CalendarWeekSelection() = _CalendarWeekSelection;
+
+  const CalendarWeekSelection._();
 }
 
 @freezed
-class CalendarMonthSelection extends CalendarSelectionTypeState
+sealed class CalendarMonthSelection extends CalendarSelectionTypeState
     with _$CalendarMonthSelection {
   const factory CalendarMonthSelection() = _CalendarMonthSelection;
+
+  const CalendarMonthSelection._();
 }
 
 @freezed
-class CalendarYearSelection extends CalendarSelectionTypeState
+sealed class CalendarYearSelection extends CalendarSelectionTypeState
     with _$CalendarYearSelection {
   const factory CalendarYearSelection() = _CalendarYearSelection;
+
+  const CalendarYearSelection._();
 }

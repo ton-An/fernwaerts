@@ -7,7 +7,7 @@ part 'activity.freezed.dart';
 enum ActivityType { running, cycling, walking, driving }
 
 @freezed
-class Activity extends LocationHistoryItem with _$Activity {
+sealed class Activity extends LocationHistoryItem with _$Activity {
   const factory Activity({
     required String id,
     required DateTime startTime,
@@ -17,4 +17,6 @@ class Activity extends LocationHistoryItem with _$Activity {
     required Coordinate endCoordinate,
     required double distance,
   }) = _Activity;
+
+  const Activity._();
 }

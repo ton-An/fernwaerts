@@ -7,12 +7,17 @@ abstract class CalendarExpansionState {
 }
 
 @freezed
-class CalendarExpanded extends CalendarExpansionState with _$CalendarExpanded {
+sealed class CalendarExpanded extends CalendarExpansionState
+    with _$CalendarExpanded {
   const factory CalendarExpanded() = _CalendarExpanded;
+
+  const CalendarExpanded._();
 }
 
 @freezed
-class CalendarCollapsed extends CalendarExpansionState
+sealed class CalendarCollapsed extends CalendarExpansionState
     with _$CalendarCollapsed {
   const factory CalendarCollapsed() = _CalendarCollapsed;
+
+  const CalendarCollapsed._();
 }
