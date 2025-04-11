@@ -51,9 +51,7 @@ dependencies:
   flutter_secure_storage: ^4.2.1
   url_launcher: ^6.3.1
   package_info_plus: ^8.3.0
-    # git:
-    #   url: https://github.com/nixrajput/flutter_carousel_widget
-    #   ref: ba5eedbbf85cb361be1f2dedf961db85483de236
+
 
 dev_dependencies:
   flutter_test:
