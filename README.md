@@ -65,7 +65,7 @@ This project follows the Clean Architecture pattern with three primary layers:
 I welcome contributions. A contributor guide will be added soon.
 
 ## License
-
+This project is dual-licensed:
 - **MIT License** for general use, modification, and distribution.
 - **Proprietary License** that reserves the exclusive right to publish on the **Google Play Store** and **Apple App Store** to the original author (Anton Heuchert).
 
