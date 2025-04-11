@@ -18,13 +18,13 @@ class _PlaceListItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _PlaceIcon(type: place.type),
-        XXSmallGap(),
+        const XXSmallGap(),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(place.name, style: theme.text.headline),
-              XTinyGap(),
+              const XTinyGap(),
               Text(timeFrame, style: theme.text.body),
             ],
           ),

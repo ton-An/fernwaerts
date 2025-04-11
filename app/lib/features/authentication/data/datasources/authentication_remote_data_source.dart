@@ -150,7 +150,7 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
     }
 
     if (response['error']['code'] == 'weak_password') {
-      throw WeakPasswordFailure();
+      throw const WeakPasswordFailure();
     }
   }
 

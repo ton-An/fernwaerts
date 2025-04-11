@@ -95,7 +95,7 @@ class RepositoryFailureHandlerImpl extends RepositoryFailureHandler {
     final isTimeout = clientException.message.contains('Operation timed out');
 
     if (isTimeout) {
-      return SendTimeoutFailure();
+      return const SendTimeoutFailure();
     }
 
     final hasFailedHostLookup = clientException.message.contains(
@@ -103,7 +103,7 @@ class RepositoryFailureHandlerImpl extends RepositoryFailureHandler {
     );
 
     if (hasFailedHostLookup) {
-      return HostLookupFailure();
+      return const HostLookupFailure();
     }
 
     Error.throwWithStackTrace(clientException, stackTrace);

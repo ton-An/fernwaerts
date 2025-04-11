@@ -30,7 +30,7 @@ void main() {
 
       // assert
       verify(() => mockAuthenticationRepository.getSavedServerUrl());
-      expect(result, Right(true));
+      expect(result, const Right(true));
     },
   );
 
@@ -40,13 +40,13 @@ void main() {
       // arrange
       when(
         () => mockAuthenticationRepository.getSavedServerUrl(),
-      ).thenAnswer((_) async => Right(null));
+      ).thenAnswer((_) async => const Right(null));
 
       // act
       final result = await hasServerConnectionSaved();
 
       // assert
-      expect(result, Right(false));
+      expect(result, const Right(false));
     },
   );
 
@@ -54,12 +54,12 @@ void main() {
     // arrange
     when(
       () => mockAuthenticationRepository.getSavedServerUrl(),
-    ).thenAnswer((_) async => Left(StorageReadFailure()));
+    ).thenAnswer((_) async => const Left(StorageReadFailure()));
 
     // act
     final result = await hasServerConnectionSaved();
 
     // assert
-    expect(result, Left(StorageReadFailure()));
+    expect(result, const Left(StorageReadFailure()));
   });
 }

@@ -20,7 +20,7 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
     required this.isServerSetUp,
     required this.signUpInitialAdmin,
     required this.signInUsecase,
-  }) : super(AuthenticationInitial());
+  }) : super(const AuthenticationInitial());
 
   final InitializeServerConnection initializeServerConnection;
   final IsServerSetUp isServerSetUp;
@@ -30,11 +30,11 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
   String serverUrl = '';
 
   void toServerDetails() {
-    emit(EnterServerDetails());
+    emit(const EnterServerDetails());
   }
 
   void toLogInInfo(String serverUrl) async {
-    emit(EnterServerDetailsLoading());
+    emit(const EnterServerDetailsLoading());
 
     final Either<Failure, None> isServerReachableEither =
         await initializeServerConnection(serverUrl: serverUrl);
@@ -54,9 +54,9 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
             this.serverUrl = serverUrl;
 
             if (isServerSetUp) {
-              emit(EnterLogInInfo());
+              emit(const EnterLogInInfo());
             } else {
-              emit(EnterAdminSignUpInfo());
+              emit(const EnterAdminSignUpInfo());
             }
           },
         );
@@ -70,7 +70,7 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
     String password,
     String repeatedPassword,
   ) async {
-    emit(AdminSignUpLoading());
+    emit(const AdminSignUpLoading());
 
     final Either<Failure, None> signUpEither = await signUpInitialAdmin(
       serverUrl: serverUrl,
@@ -85,13 +85,13 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
         emit(AuthenticationError(failure: failure));
       },
       (None none) {
-        emit(AdminSignUpSuccessful());
+        emit(const AdminSignUpSuccessful());
       },
     );
   }
 
   void signIn(String email, String password) async {
-    emit(LogInLoading());
+    emit(const LogInLoading());
 
     final Either<Failure, None> signInEither = await signInUsecase(
       email: email,
@@ -104,7 +104,7 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
         emit(AuthenticationError(failure: failure));
       },
       (None none) {
-        emit(LogInSuccessful());
+        emit(const LogInSuccessful());
       },
     );
   }

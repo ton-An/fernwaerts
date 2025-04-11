@@ -51,7 +51,7 @@ class _CalendarState extends State<Calendar> {
         return _CalendarContainer(
           child: Column(
             children: [
-              _CalendarHeader(),
+              const _CalendarHeader(),
               ExpandableCarousel.builder(
                 itemCount: _carouselItemCount,
                 itemBuilder: (context, index, realIndex) {
@@ -84,10 +84,10 @@ class _CalendarState extends State<Calendar> {
                   },
                 ),
               ),
-              XXSmallGap(),
+              const XXSmallGap(),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: theme.spacing.medium),
-                child: _CalendarTypeSelector(),
+                child: const _CalendarTypeSelector(),
               ),
             ],
           ),

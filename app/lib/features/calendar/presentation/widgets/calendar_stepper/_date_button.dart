@@ -83,7 +83,7 @@ class _DateButtonState extends State<_DateButton>
                         ),
                         SizedBox(width: theme.spacing.xSmall),
                         AnimatedRotation(
-                          duration: Duration(milliseconds: 200),
+                          duration: const Duration(milliseconds: 200),
                           turns: expansionState is CalendarCollapsed ? 0 : .5,
                           child: Icon(
                             CupertinoIcons.arrow_down_circle_fill,

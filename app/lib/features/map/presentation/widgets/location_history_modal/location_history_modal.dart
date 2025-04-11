@@ -73,7 +73,7 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
                   padding: EdgeInsets.symmetric(
                     horizontal: theme.spacing.medium,
                   ),
-                  child: Column(
+                  child: const Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       MediumGap(),

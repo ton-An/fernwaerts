@@ -21,12 +21,12 @@ void main() {
         email: any(named: 'email'),
         password: any(named: 'password'),
       ),
-    ).thenAnswer((_) async => Right(None()));
+    ).thenAnswer((_) async => const Right(None()));
     when(
       () => mockAuthenticationRepository.saveServerUrl(
         serverUrl: any(named: 'serverUrl'),
       ),
-    ).thenAnswer((_) async => Right(None()));
+    ).thenAnswer((_) async => const Right(None()));
   });
 
   test('should sign in the user', () async {
@@ -53,7 +53,7 @@ void main() {
         email: any(named: 'email'),
         password: any(named: 'password'),
       ),
-    ).thenAnswer((_) async => Left(SendTimeoutFailure()));
+    ).thenAnswer((_) async => const Left(SendTimeoutFailure()));
 
     // act
     final result = await signIn(
@@ -63,7 +63,7 @@ void main() {
     );
 
     // assert
-    expect(result, Left(SendTimeoutFailure()));
+    expect(result, const Left(SendTimeoutFailure()));
   });
 
   test('should save the server url and return None', () async {
@@ -80,7 +80,7 @@ void main() {
         serverUrl: tServerUrlString,
       ),
     );
-    expect(result, Right(None()));
+    expect(result, const Right(None()));
   });
 
   test('should relay Failures saving the server url', () async {
@@ -89,7 +89,7 @@ void main() {
       () => mockAuthenticationRepository.saveServerUrl(
         serverUrl: any(named: 'serverUrl'),
       ),
-    ).thenAnswer((_) async => Left(StorageWriteFailure()));
+    ).thenAnswer((_) async => const Left(StorageWriteFailure()));
 
     // act
     final result = await signIn(
@@ -99,6 +99,6 @@ void main() {
     );
 
     // assert
-    expect(result, Left(StorageWriteFailure()));
+    expect(result, const Left(StorageWriteFailure()));
   });
 }

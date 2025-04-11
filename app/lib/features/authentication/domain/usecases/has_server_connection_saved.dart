@@ -34,10 +34,10 @@ class HasServerConnectionSaved {
 
     return savedServerUrlEither.fold(Left.new, (String? savedServerUrl) {
       if (savedServerUrl != null) {
-        return Right(true);
+        return const Right(true);
       }
 
-      return Right(false);
+      return const Right(false);
     });
   }
 }

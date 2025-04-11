@@ -31,19 +31,19 @@ class _Welcome extends StatelessWidget {
               ),
             ),
           ),
-          XMediumGap(),
+          const XMediumGap(),
           Text(
             AppLocalizations.of(context)!.appName,
             textAlign: TextAlign.center,
             style: theme.text.largeTitle.copyWith(fontWeight: FontWeight.w600),
           ),
-          SmallGap(),
+          const SmallGap(),
           Text(
             AppLocalizations.of(context)!.appDescription,
             textAlign: TextAlign.center,
             style: theme.text.body.copyWith(height: 1.45),
           ),
-          XXMediumGap(),
+          const XXMediumGap(),
           CustomCupertinoTextButton(
             text: AppLocalizations.of(context)!.getStarted,
             onPressed: () {

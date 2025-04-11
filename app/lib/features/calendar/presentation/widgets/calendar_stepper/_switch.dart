@@ -53,7 +53,7 @@ class _SwitchState extends State<_Switch> with SingleTickerProviderStateMixin {
         });
       },
       child: SizedOverflowBox(
-        size: Size(CalendarStepper.height, CalendarStepper.height),
+        size: const Size(CalendarStepper.height, CalendarStepper.height),
         child: Container(
           width: CalendarStepper.height + 30,
           height: CalendarStepper.height,

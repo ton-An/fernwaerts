@@ -122,14 +122,14 @@ class MainApp extends StatelessWidget {
                             (context) => getIt<CalendarDateSelectionCubit>(),
                       ),
                     ],
-                    child: MapPage(),
+                    child: const MapPage(),
                   );
                 },
                 routes: [
                   GoRoute(
                     path: SettingsPage.pageName,
                     pageBuilder: (context, state) {
-                      return DialogPage(builder: (context) => SettingsPage());
+                      return DialogPage(builder: (context) => const SettingsPage());
                     },
                   ),
                 ],

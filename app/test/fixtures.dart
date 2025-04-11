@@ -50,7 +50,7 @@ final DioException tBadResponseDioException = DioException.badResponse(
   response: Response(requestOptions: RequestOptions()),
 );
 
-final UnknownRequestFailure tUnknownRequestFailure = UnknownRequestFailure();
+final UnknownRequestFailure tUnknownRequestFailure = const UnknownRequestFailure();
 
 final Map<String, dynamic> tPublicSettingsMap = {
   'name': 'is_set_up',
@@ -73,9 +73,9 @@ final http.ClientException tUnknownClientException = http.ClientException(
 
 final ArgumentError tArgumentError = ArgumentError();
 
-final FormatException tFormatException = FormatException();
+final FormatException tFormatException = const FormatException();
 
-final PostgrestException tPostgresException = PostgrestException(message: '');
+final PostgrestException tPostgresException = const PostgrestException(message: '');
 
 final PlatformException tPlatformException = PlatformException(code: 'bad');
 

@@ -48,11 +48,11 @@ class AuthenticationForm extends StatelessWidget {
               alignment: Alignment.topLeft,
               child: SmallIconButton(
                 icon: CupertinoIcons.back,
-                alignmentOffset: Offset(-1, 0),
+                alignmentOffset: const Offset(-1, 0),
                 onPressed: onBackPressed ?? () {},
               ),
             ),
-            XTinyGap(),
+            const XTinyGap(),
           ],
           Icon(
             icon,
@@ -71,7 +71,7 @@ class AuthenticationForm extends StatelessWidget {
                     MediaQuery.of(context).viewInsets.bottom == 0 ? null : 0,
                 child: Column(
                   children: [
-                    MediumGap(),
+                    const MediumGap(),
                     Text(
                       label,
                       textAlign: TextAlign.center,
@@ -79,7 +79,7 @@ class AuthenticationForm extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    SmallGap(),
+                    const SmallGap(),
                     Text(
                       description,
                       textAlign: TextAlign.center,
@@ -99,12 +99,12 @@ class AuthenticationForm extends StatelessWidget {
               ),
             ),
           ),
-          XMediumGap(),
+          const XMediumGap(),
           for (final textField in textFields) ...[
             textField,
-            if (textFields.last != textField) MediumGap(),
+            if (textFields.last != textField) const MediumGap(),
           ],
-          XXMediumGap(),
+          const XXMediumGap(),
           CustomCupertinoTextButton(
             text: buttonText,
             onPressed: onButtonPressed,

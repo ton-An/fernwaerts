@@ -45,7 +45,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
       return Left(failure);
     } on PostgrestException {
-      return Left(ConnectionFailure());
+      return const Left(ConnectionFailure());
     }
   }
 
@@ -65,9 +65,9 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
         return Left(failure);
       } else if (exception is ArgumentError || exception is FormatException) {
-        return Left(InvalidUrlFormatFailure());
+        return const Left(InvalidUrlFormatFailure());
       } else if (exception is PostgrestException) {
-        return Left(ConnectionFailure());
+        return const Left(ConnectionFailure());
       }
       rethrow;
     }
@@ -79,7 +79,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }) async {
     await authRemoteDataSource.initializeServerConnection(serverUrl: serverUrl);
 
-    return Right(None());
+    return const Right(None());
   }
 
   @override
@@ -122,7 +122,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
       return Right(savedServerUrl);
     } on PlatformException {
-      return Left(StorageReadFailure());
+      return const Left(StorageReadFailure());
     }
   }
 
@@ -144,7 +144,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       final String? errorCode = authException.code;
       if (errorCode == 'invalid_credentials' ||
           errorCode == 'validation_failed') {
-        return Left(InvalidCredentialsFailure());
+        return const Left(InvalidCredentialsFailure());
       }
 
       rethrow;
@@ -163,9 +163,9 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     try {
       await authLocalDataSource.removeSavedServer();
 
-      return Right(None());
+      return const Right(None());
     } on PlatformException {
-      return Left(StorageWriteFailure());
+      return const Left(StorageWriteFailure());
     }
   }
 
@@ -181,9 +181,9 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     try {
       await authLocalDataSource.saveServerUrl(serverUrl: serverUrl);
 
-      return Right(None());
+      return const Right(None());
     } on PlatformException {
-      return Left(StorageWriteFailure());
+      return const Left(StorageWriteFailure());
     }
   }
 }

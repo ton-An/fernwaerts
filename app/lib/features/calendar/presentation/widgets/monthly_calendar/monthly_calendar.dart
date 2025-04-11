@@ -25,7 +25,7 @@ class MonthlyCalendar extends StatelessWidget {
   Widget build(BuildContext context) {
     return CalendarViewContainer(
       child: Column(
-        children: [_WeekdaysHeader(), _DaysGrid(monthOffset: monthOffset)],
+        children: [const _WeekdaysHeader(), _DaysGrid(monthOffset: monthOffset)],
       ),
     );
   }

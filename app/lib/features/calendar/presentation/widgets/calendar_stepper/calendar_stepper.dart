@@ -42,7 +42,7 @@ class CalendarStepper extends StatelessWidget {
                       );
                     },
                   ),
-                  Elevated(
+                  const Elevated(
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: height),
                       child: _DateButton(),

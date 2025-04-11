@@ -9,7 +9,7 @@ class _LocationList extends StatelessWidget {
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
     return EdgeFade(
-      bottomOptions: EdgeFadeOptions(enabled: false),
+      bottomOptions: const EdgeFadeOptions(enabled: false),
       child: ListView.builder(
         padding: EdgeInsets.all(theme.spacing.xMedium),
         shrinkWrap: true,

@@ -32,7 +32,7 @@ class SettingsPage extends StatelessWidget {
         children: [
           Expanded(
             child: EdgeFade(
-              topOptions: EdgeFadeOptions(enabled: false),
+              topOptions: const EdgeFadeOptions(enabled: false),
               child: ListView(
                 padding: EdgeInsets.only(
                   left: theme.spacing.medium,
@@ -42,22 +42,22 @@ class SettingsPage extends StatelessWidget {
                 ),
                 children: [
                   _SectionTitle(title: AppLocalizations.of(context)!.general),
-                  _SubPageLink(),
-                  _SubPageLink(),
-                  _SubPageLink(),
-                  XXMediumGap(),
+                  const _SubPageLink(),
+                  const _SubPageLink(),
+                  const _SubPageLink(),
+                  const XXMediumGap(),
                   CustomCupertinoTextButton(
                     text: AppLocalizations.of(context)!.signOut,
                     textColor: theme.colors.backgroundContrast,
                     color: theme.colors.primaryTranslucent,
                     onPressed: () => _signOut(context),
                   ),
-                  LargeGap(),
+                  const LargeGap(),
                 ],
               ),
             ),
           ),
-          _Footer(),
+          const _Footer(),
         ],
       ),
     );

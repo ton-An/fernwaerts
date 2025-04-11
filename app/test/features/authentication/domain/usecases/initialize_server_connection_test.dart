@@ -22,11 +22,11 @@ void main() {
       () => mockAuthenticationRepository.initializeServerConnection(
         serverUrl: any(named: 'serverUrl'),
       ),
-    ).thenAnswer((_) async => Right(None()));
+    ).thenAnswer((_) async => const Right(None()));
 
     when(
       () => mockAuthenticationRepository.isServerConnectionValid(),
-    ).thenAnswer((_) async => Right(None()));
+    ).thenAnswer((_) async => const Right(None()));
   });
 
   setUpAll(() {
@@ -51,7 +51,7 @@ void main() {
       () => mockAuthenticationRepository.initializeServerConnection(
         serverUrl: any(named: 'serverUrl'),
       ),
-    ).thenAnswer((_) async => Left(SendTimeoutFailure()));
+    ).thenAnswer((_) async => const Left(SendTimeoutFailure()));
 
     // act
     final result = await initializeServerConnection(
@@ -59,7 +59,7 @@ void main() {
     );
 
     // assert
-    expect(result, Left(SendTimeoutFailure()));
+    expect(result, const Left(SendTimeoutFailure()));
   });
 
   test('should check if server connection is valid and return None', () async {
@@ -70,7 +70,7 @@ void main() {
 
     // assert
     verify(() => mockAuthenticationRepository.isServerConnectionValid());
-    expect(result, Right(None()));
+    expect(result, const Right(None()));
   });
 
   test(
@@ -79,7 +79,7 @@ void main() {
       // arrange
       when(
         () => mockAuthenticationRepository.isServerConnectionValid(),
-      ).thenAnswer((_) async => Left(InvalidUrlFormatFailure()));
+      ).thenAnswer((_) async => const Left(InvalidUrlFormatFailure()));
 
       // act
       final result = await initializeServerConnection(
@@ -87,7 +87,7 @@ void main() {
       );
 
       // assert
-      expect(result, Left(InvalidUrlFormatFailure()));
+      expect(result, const Left(InvalidUrlFormatFailure()));
     },
   );
 }

@@ -52,7 +52,7 @@ void main() {
 
         // assert
         verify(() => mockAuthRemoteDataSource.isServerSetUp());
-        expect(result, Right(true));
+        expect(result, const Right(true));
       },
     );
 
@@ -68,7 +68,7 @@ void main() {
             clientException: any(named: 'clientException'),
             stackTrace: any(named: 'stackTrace'),
           ),
-        ).thenReturn(SendTimeoutFailure());
+        ).thenReturn(const SendTimeoutFailure());
 
         // act
         final result = await authenticationRepositoryImpl.isServerSetUp();
@@ -80,7 +80,7 @@ void main() {
             stackTrace: any(named: 'stackTrace'),
           ),
         );
-        expect(result, Left(SendTimeoutFailure()));
+        expect(result, const Left(SendTimeoutFailure()));
       },
     );
 
@@ -94,7 +94,7 @@ void main() {
       final result = await authenticationRepositoryImpl.isServerSetUp();
 
       // assert
-      expect(result, Left<Failure, bool>(ConnectionFailure()));
+      expect(result, const Left<Failure, bool>(ConnectionFailure()));
     });
   });
 
@@ -112,7 +112,7 @@ void main() {
 
       // assert
       verify(() => mockAuthRemoteDataSource.isServerConnectionValid());
-      expect(result, Right<Failure, None>(None()));
+      expect(result, const Right<Failure, None>(None()));
     });
 
     test(
@@ -127,7 +127,7 @@ void main() {
             clientException: any(named: 'clientException'),
             stackTrace: any(named: 'stackTrace'),
           ),
-        ).thenReturn(SendTimeoutFailure());
+        ).thenReturn(const SendTimeoutFailure());
 
         // act
         final result =
@@ -140,7 +140,7 @@ void main() {
             stackTrace: any(named: 'stackTrace'),
           ),
         );
-        expect(result, Left(SendTimeoutFailure()));
+        expect(result, const Left(SendTimeoutFailure()));
       },
     );
 
@@ -155,7 +155,7 @@ void main() {
           await authenticationRepositoryImpl.isServerConnectionValid();
 
       // assert
-      expect(result, Left<Failure, bool>(InvalidUrlFormatFailure()));
+      expect(result, const Left<Failure, bool>(InvalidUrlFormatFailure()));
     });
 
     test('should convert FormatException to InvalidUrlFormatFailure', () async {
@@ -169,7 +169,7 @@ void main() {
           await authenticationRepositoryImpl.isServerConnectionValid();
 
       // assert
-      expect(result, Left<Failure, bool>(InvalidUrlFormatFailure()));
+      expect(result, const Left<Failure, bool>(InvalidUrlFormatFailure()));
     });
 
     test('should convert PostgresException to ConnectionFailure', () async {
@@ -183,7 +183,7 @@ void main() {
           await authenticationRepositoryImpl.isServerConnectionValid();
 
       // assert
-      expect(result, Left<Failure, bool>(ConnectionFailure()));
+      expect(result, const Left<Failure, bool>(ConnectionFailure()));
     });
   });
 
@@ -219,7 +219,7 @@ void main() {
           password: tPassword,
         ),
       );
-      expect(result, Right<Failure, None>(None()));
+      expect(result, const Right<Failure, None>(None()));
     });
 
     test('should convert DioExceptions to Failures', () async {
@@ -236,7 +236,7 @@ void main() {
         () => mockRepositoryFailureHandler.dioExceptionMapper(
           dioException: any(named: 'dioException'),
         ),
-      ).thenReturn(BadResponseFailure());
+      ).thenReturn(const BadResponseFailure());
 
       // act
       final result = await authenticationRepositoryImpl.signUpInitialAdmin(
@@ -247,7 +247,7 @@ void main() {
       );
 
       // assert
-      expect(result, Left<Failure, bool>(BadResponseFailure()));
+      expect(result, const Left<Failure, bool>(BadResponseFailure()));
     });
 
     test('should relay Failures', () async {
@@ -300,7 +300,7 @@ void main() {
         final result = await authenticationRepositoryImpl.getSavedServerUrl();
 
         // assert
-        expect(result, Left(StorageReadFailure()));
+        expect(result, const Left(StorageReadFailure()));
       },
     );
   });
@@ -345,7 +345,7 @@ void main() {
             clientException: any(named: 'clientException'),
             stackTrace: any(named: 'stackTrace'),
           ),
-        ).thenReturn(SendTimeoutFailure());
+        ).thenReturn(const SendTimeoutFailure());
 
         // act
         final result = await authenticationRepositoryImpl.signIn(
@@ -360,7 +360,7 @@ void main() {
             stackTrace: any(named: 'stackTrace'),
           ),
         );
-        expect(result, Left(SendTimeoutFailure()));
+        expect(result, const Left(SendTimeoutFailure()));
       },
     );
   });
@@ -378,7 +378,7 @@ void main() {
 
       // assert
       verify(() => mockAuthLocalDataSource.removeSavedServer());
-      expect(result, Right(None()));
+      expect(result, const Right(None()));
     });
 
     test(
@@ -393,7 +393,7 @@ void main() {
         final result = await authenticationRepositoryImpl.removeSavedServer();
 
         // assert
-        expect(result, Left(StorageWriteFailure()));
+        expect(result, const Left(StorageWriteFailure()));
       },
     );
   });
@@ -418,7 +418,7 @@ void main() {
         () =>
             mockAuthLocalDataSource.saveServerUrl(serverUrl: tServerUrlString),
       );
-      expect(result, Right(None()));
+      expect(result, const Right(None()));
     });
 
     test(
@@ -437,7 +437,7 @@ void main() {
         );
 
         // assert
-        expect(result, Left(StorageWriteFailure()));
+        expect(result, const Left(StorageWriteFailure()));
       },
     );
   });

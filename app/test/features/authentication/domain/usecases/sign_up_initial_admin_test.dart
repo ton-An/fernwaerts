@@ -29,14 +29,14 @@ void main() {
         email: any(named: 'email'),
         password: any(named: 'password'),
       ),
-    ).thenAnswer((_) async => Right(None()));
+    ).thenAnswer((_) async => const Right(None()));
     when(
       () => mockSignIn(
         email: any(named: 'email'),
         password: any(named: 'password'),
         serverUrl: any(named: 'serverUrl'),
       ),
-    ).thenAnswer((_) async => Right(None()));
+    ).thenAnswer((_) async => const Right(None()));
   });
 
   test(
@@ -52,7 +52,7 @@ void main() {
       );
 
       // assert
-      expect(result, Left(PasswordMismatchFailure()));
+      expect(result, const Left(PasswordMismatchFailure()));
     },
   );
 
@@ -87,7 +87,7 @@ void main() {
           email: any(named: 'email'),
           password: any(named: 'password'),
         ),
-      ).thenAnswer((_) async => Left(WeakPasswordFailure()));
+      ).thenAnswer((_) async => const Left(WeakPasswordFailure()));
 
       // act
       final result = await signUpInitialAdmin(
@@ -99,7 +99,7 @@ void main() {
       );
 
       // assert
-      expect(result, Left(WeakPasswordFailure()));
+      expect(result, const Left(WeakPasswordFailure()));
     },
   );
 
@@ -121,7 +121,7 @@ void main() {
         serverUrl: tServerUrlString,
       ),
     );
-    expect(result, Right(None()));
+    expect(result, const Right(None()));
   });
 
   test('should relay Failures from signing in', () async {
@@ -131,7 +131,7 @@ void main() {
         password: any(named: 'password'),
         serverUrl: any(named: 'serverUrl'),
       ),
-    ).thenAnswer((_) async => Left(SendTimeoutFailure()));
+    ).thenAnswer((_) async => const Left(SendTimeoutFailure()));
 
     // act
     final result = await signUpInitialAdmin(
@@ -143,6 +143,6 @@ void main() {
     );
 
     // assert
-    expect(result, Left(SendTimeoutFailure()));
+    expect(result, const Left(SendTimeoutFailure()));
   });
 }

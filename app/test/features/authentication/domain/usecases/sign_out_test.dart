@@ -19,7 +19,7 @@ void main() {
     ).thenAnswer((_) => Future.value());
     when(
       () => mockAuthenticationRepository.removeSavedServer(),
-    ).thenAnswer((_) => Future.value(Right(None())));
+    ).thenAnswer((_) => Future.value(const Right(None())));
   });
 
   /// should sign out the user
@@ -32,7 +32,7 @@ void main() {
 
     // assert
     verify(() => mockAuthenticationRepository.signOut());
-    expect(result, Right(None()));
+    expect(result, const Right(None()));
   });
 
   test('should remove the saved server and return None', () async {
@@ -41,19 +41,19 @@ void main() {
 
     // assert
     verify(() => mockAuthenticationRepository.removeSavedServer());
-    expect(result, Right(None()));
+    expect(result, const Right(None()));
   });
 
   test('should relay Failures from removing the saved server', () async {
     // arrange
     when(
       () => mockAuthenticationRepository.removeSavedServer(),
-    ).thenAnswer((_) => Future.value(Left(StorageWriteFailure())));
+    ).thenAnswer((_) => Future.value(const Left(StorageWriteFailure())));
 
     // act
     final result = await signOut();
 
     // assert
-    expect(result, Left(StorageWriteFailure()));
+    expect(result, const Left(StorageWriteFailure()));
   });
 }

@@ -39,18 +39,18 @@ void initGetIt() {
 void registerThirdPartyDependencies() {
   // -- Data -- //
   getIt.registerLazySingleton(() => Dio());
-  getIt.registerLazySingleton(() => FlutterSecureStorage());
+  getIt.registerLazySingleton(() => const FlutterSecureStorage());
 }
 
 void registerCoreDependencies() {
   // -- Data -- //
   getIt.registerLazySingleton<RepositoryFailureHandler>(
-    () => RepositoryFailureHandlerImpl(),
+    () => const RepositoryFailureHandlerImpl(),
   );
   getIt.registerLazySingleton<ServerRemoteHandler>(
     () => ServerRemoteHandlerImpl(dio: getIt()),
   );
-  getIt.registerLazySingleton<SupabaseHandler>(() => SupabaseHandler());
+  getIt.registerLazySingleton<SupabaseHandler>(() => const SupabaseHandler());
 }
 
 void registerInAppNotificationDependencies() {

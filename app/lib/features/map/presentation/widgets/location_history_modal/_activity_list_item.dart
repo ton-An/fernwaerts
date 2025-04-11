@@ -41,9 +41,9 @@ class _ActivityListItem extends StatelessWidget {
     return Row(
       children: [
         SizedBox(width: theme.spacing.xMedium - theme.spacing.tiny),
-        _DottedHistoryLine(),
-        XLargeGap(),
-        _VerticalListItemDivider(),
+        const _DottedHistoryLine(),
+        const XLargeGap(),
+        const _VerticalListItemDivider(),
         Expanded(
           child: Row(
             children: [
@@ -60,9 +60,9 @@ class _ActivityListItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(distance, style: theme.text.body),
-                      XSmallGap(),
+                      const XSmallGap(),
                       const Dot(),
-                      XSmallGap(),
+                      const XSmallGap(),
                       Text(
                         duration,
                         style: theme.text.body.copyWith(
@@ -71,7 +71,7 @@ class _ActivityListItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                  TinyGap(),
+                  const TinyGap(),
                   Text(timeFrame, style: theme.text.body),
                 ],
               ),

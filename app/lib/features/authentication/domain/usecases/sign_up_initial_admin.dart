@@ -39,7 +39,7 @@ class SignUpInitialAdmin {
     required String repeatedPassword,
   }) async {
     if (password != repeatedPassword) {
-      return Left(PasswordMismatchFailure());
+      return const Left(PasswordMismatchFailure());
     }
 
     return _signUpInitialAdmin(

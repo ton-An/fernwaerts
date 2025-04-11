@@ -43,7 +43,7 @@ class _CalendarCompositeState extends State<CalendarComposite>
     _translateAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
-      reverseDuration: Duration(milliseconds: 580),
+      reverseDuration: const Duration(milliseconds: 580),
     );
 
     _translateAnimationController.addListener(() {
@@ -53,7 +53,7 @@ class _CalendarCompositeState extends State<CalendarComposite>
     _fadeAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 400),
-      reverseDuration: Duration(milliseconds: 200),
+      reverseDuration: const Duration(milliseconds: 200),
     );
 
     _fadeAnimationController.addListener(() {
@@ -156,12 +156,12 @@ class _CalendarCompositeState extends State<CalendarComposite>
                 itemSpacing: WebfabrikTheme.of(context).spacing.medium,
                 calendarOffset: _translateAnimation.value,
                 children: [
-                  CalendarStepper(),
+                  const CalendarStepper(),
                   if (!(_translateAnimationController.status ==
                           AnimationStatus.dismissed &&
                       _fadeAnimationController.status ==
                           AnimationStatus.dismissed))
-                    Opacity(opacity: _fadeAnimation.value, child: Calendar()),
+                    Opacity(opacity: _fadeAnimation.value, child: const Calendar()),
                 ],
               ),
             );

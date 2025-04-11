@@ -72,6 +72,6 @@ class ServerRemoteHandlerImpl extends ServerRemoteHandler {
         response.statusCode != HttpStatus.ok) {
       throw StatusCodeNotOkFailure(statusCode: response.statusCode!);
     }
-    throw UnknownRequestFailure();
+    throw const UnknownRequestFailure();
   }
 }

@@ -11,23 +11,23 @@ class _CalendarTypeSelector extends StatelessWidget {
           items: [
             CustomSegmentedControlItem(
               label: AppLocalizations.of(context)!.range,
-              value: CalendarRangeSelection(),
+              value: const CalendarRangeSelection(),
             ),
             CustomSegmentedControlItem(
               label: AppLocalizations.of(context)!.day,
-              value: CalendarDaySelection(),
+              value: const CalendarDaySelection(),
             ),
             CustomSegmentedControlItem(
               label: AppLocalizations.of(context)!.week,
-              value: CalendarWeekSelection(),
+              value: const CalendarWeekSelection(),
             ),
             CustomSegmentedControlItem(
               label: AppLocalizations.of(context)!.month,
-              value: CalendarMonthSelection(),
+              value: const CalendarMonthSelection(),
             ),
             CustomSegmentedControlItem(
               label: AppLocalizations.of(context)!.year,
-              value: CalendarYearSelection(),
+              value: const CalendarYearSelection(),
             ),
           ],
           selectedValue: state,

@@ -178,7 +178,7 @@ class CalendarDateSelectionCubit extends Cubit<CalendarDateSelectionState> {
     final DateTime startOfWeek = selectedDate.subtract(
       Duration(days: selectedDate.weekday - 1),
     );
-    final DateTime endOfWeek = startOfWeek.add(Duration(days: 6));
+    final DateTime endOfWeek = startOfWeek.add(const Duration(days: 6));
 
     emit(CalendarWeekSelected(startDate: startOfWeek, endDate: endOfWeek));
   }
@@ -191,7 +191,7 @@ class CalendarDateSelectionCubit extends Cubit<CalendarDateSelectionState> {
     final DateTime endOfMonth = DateTime(
       selectedDate.year,
       selectedDate.month + 1,
-    ).subtract(Duration(days: 1));
+    ).subtract(const Duration(days: 1));
 
     emit(CalendarMonthSelected(startDate: startOfMonth, endDate: endOfMonth));
   }
@@ -200,7 +200,7 @@ class CalendarDateSelectionCubit extends Cubit<CalendarDateSelectionState> {
     final DateTime startOfYear = DateTime(selectedDate.year);
     final DateTime endOfYear = DateTime(
       selectedDate.year + 1,
-    ).subtract(Duration(days: 1));
+    ).subtract(const Duration(days: 1));
 
     emit(CalendarYearSelected(startDate: startOfYear, endDate: endOfYear));
   }

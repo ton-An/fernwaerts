@@ -19,7 +19,7 @@ class _SubPageLink extends StatelessWidget {
               SmallIconButton(
                 icon: CupertinoIcons.forward,
                 onPressed: () {},
-                alignmentOffset: Offset(1, 0),
+                alignmentOffset: const Offset(1, 0),
               ),
             ],
           ),

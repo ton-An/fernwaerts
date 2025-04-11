@@ -10,13 +10,13 @@ class SplashCubit extends Cubit<SplashState> {
   SplashCubit({
     required this.initSavedServerConnection,
     required this.isSignedInUsecase,
-  }) : super(SplashLoading());
+  }) : super(const SplashLoading());
 
   final InitializeSavedServerConnection initSavedServerConnection;
   final IsSignedIn isSignedInUsecase;
 
   void initAndCheckAuth() async {
-    emit(SplashLoading());
+    emit(const SplashLoading());
 
     final Either<Failure, None> initServerConnectionEither =
         await initSavedServerConnection();
@@ -24,7 +24,7 @@ class SplashCubit extends Cubit<SplashState> {
     initServerConnectionEither.fold(
       (Failure failure) {
         if (failure is NoSavedServerFailure) {
-          emit(SplashAuthenticationRequired());
+          emit(const SplashAuthenticationRequired());
         } else {
           emit(SplashFailure(failure: failure));
         }
@@ -35,9 +35,9 @@ class SplashCubit extends Cubit<SplashState> {
         bool isSignedIn = isSignedInUsecase();
 
         if (isSignedIn) {
-          emit(SplashAuthenticationComplete());
+          emit(const SplashAuthenticationComplete());
         } else {
-          emit(SplashAuthenticationRequired());
+          emit(const SplashAuthenticationRequired());
         }
       },
     );

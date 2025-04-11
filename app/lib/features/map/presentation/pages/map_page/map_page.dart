@@ -36,7 +36,7 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Positioned.fill(child: MapWidget()),
+        const Positioned.fill(child: MapWidget()),
         Column(
           children: [
             SafeArea(
@@ -45,7 +45,7 @@ class _MapPageState extends State<MapPage> {
                 padding: EdgeInsets.symmetric(
                   horizontal: WebfabrikTheme.of(context).spacing.medium,
                 ),
-                child: CalendarComposite(),
+                child: const CalendarComposite(),
               ),
             ),
             Expanded(
@@ -68,7 +68,7 @@ class _MapPageState extends State<MapPage> {
                           draggableScrollableController:
                               _draggableScrollableController,
                         ),
-                        XSmallGap(),
+                        const XSmallGap(),
                         Expanded(
                           child: LocationHistoryModal(
                             scrollController: scrollController,

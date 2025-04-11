@@ -12,7 +12,7 @@ class _WeekdaysHeader extends StatelessWidget {
 
     return Row(
       children: [
-        Expanded(child: SizedBox()),
+        const Expanded(child: SizedBox()),
         for (int i = 0; i < weekdays.length; i++)
           Expanded(
             child: AspectRatio(

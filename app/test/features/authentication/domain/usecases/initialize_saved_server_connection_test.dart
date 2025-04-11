@@ -26,7 +26,7 @@ void main() {
     ).thenAnswer((_) async => Right(tServerUrlString));
     when(
       () => mockInitializeServerConnection(serverUrl: any(named: 'serverUrl')),
-    ).thenAnswer((_) async => Right(None()));
+    ).thenAnswer((_) async => const Right(None()));
   });
 
   test('should get the saved server url', () async {
@@ -41,13 +41,13 @@ void main() {
     // arrange
     when(
       () => mockAuthenticationRepository.getSavedServerUrl(),
-    ).thenAnswer((_) async => Left(StorageReadFailure()));
+    ).thenAnswer((_) async => const Left(StorageReadFailure()));
 
     // act
     final result = await initializeSavedServerConnection();
 
     // assert
-    expect(result, Left(StorageReadFailure()));
+    expect(result, const Left(StorageReadFailure()));
   });
 
   test('should initialize the server and return None', () async {
@@ -56,19 +56,19 @@ void main() {
 
     // assert
     verify(() => mockInitializeServerConnection(serverUrl: tServerUrlString));
-    expect(result, Right(None()));
+    expect(result, const Right(None()));
   });
 
   test('should relay Failures from initializing the server', () async {
     // arrange
     when(
       () => mockInitializeServerConnection(serverUrl: any(named: 'serverUrl')),
-    ).thenAnswer((_) async => Left(SendTimeoutFailure()));
+    ).thenAnswer((_) async => const Left(SendTimeoutFailure()));
 
     // act
     final result = await initializeSavedServerConnection();
 
     // assert
-    expect(result, Left(SendTimeoutFailure()));
+    expect(result, const Left(SendTimeoutFailure()));
   });
 }

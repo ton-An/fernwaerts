@@ -53,7 +53,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   void _animateToPage(int pageIndex) {
     _carouselController.animateToPage(
       pageIndex,
-      duration: Duration(milliseconds: 420),
+      duration: const Duration(milliseconds: 420),
       curve: Curves.easeInOut,
     );
   }
@@ -94,7 +94,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       },
       child: Stack(
         children: [
-          Positioned.fill(child: _VideoBackground()),
+          const Positioned.fill(child: _VideoBackground()),
           Align(
             alignment: Alignment.bottomCenter,
             child: ClipRRect(
@@ -107,12 +107,12 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                   color: theme.colors.translucentBackground,
                   child: ExpandableCarousel(
                     items: [
-                      _Welcome(),
-                      _ServerUrlForm(),
+                      const _Welcome(),
+                      const _ServerUrlForm(),
                       if (_formType == AuthenticationFormType.adminSignUp)
-                        _AdminSignUpForm()
+                        const _AdminSignUpForm()
                       else
-                        _SignInForm(),
+                        const _SignInForm(),
                     ],
                     options: ExpandableCarouselOptions(
                       controller: _carouselController,
@@ -121,7 +121,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                       showIndicator: false,
                       padEnds: false,
                       disableCenter: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       autoPlayCurve: Curves.easeOut,
                     ),
                   ),

@@ -36,7 +36,7 @@ class _DaysGrid extends StatelessWidget {
 
             return GridView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: totalDays + rowCount,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: crossAxisCount,
@@ -221,7 +221,7 @@ class _DaysGrid extends StatelessWidget {
           isFirstRow
               ? null
               : _getDayCellType(
-                dayDate.subtract(Duration(days: _daysInWeek)),
+                dayDate.subtract(const Duration(days: _daysInWeek)),
                 calendarDateSelectionState,
                 focusedMonth,
                 isFirstDayCellInRow,
@@ -231,7 +231,7 @@ class _DaysGrid extends StatelessWidget {
           isLastRow
               ? null
               : _getDayCellType(
-                dayDate.add(Duration(days: _daysInWeek)),
+                dayDate.add(const Duration(days: _daysInWeek)),
                 calendarDateSelectionState,
                 focusedMonth,
                 isFirstDayCellInRow,
