@@ -66,7 +66,11 @@ I welcome contributions. A contributor guide will be added soon.
 
 ## License
 
-This project is licensed under the MIT License.
+- **MIT License** for general use, modification, and distribution.
+- **Proprietary License** that reserves the exclusive right to publish on the **Google Play Store** and **Apple App Store** to the original author (Anton Heuchert).
 
+Publishing to any other store, such as **AltStore**, **Aptoide**, or similar alternative platforms, is explicitly allowed under the MIT License.
+
+By using this software, you agree to comply with both licenses. See `LICENSE` and `LICENSE.store` for full details.
 
 **Your Journey, Your Data – Open, Private, Yours.**
