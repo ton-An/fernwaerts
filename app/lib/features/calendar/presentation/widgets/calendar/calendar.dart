@@ -79,7 +79,7 @@ class _CalendarState extends State<Calendar> {
                         );
                         _carouselController.jumpToPage(_carouselCenter);
                         _lastOffsetFromCenter = 0;
-                      } else if (offsetFromCenter == 0) {}
+                      }
                     }
                   },
                 ),
