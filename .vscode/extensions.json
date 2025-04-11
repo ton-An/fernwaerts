@@ -1,3 +1,12 @@
 {
-  "recommendations": ["denoland.vscode-deno"]
+  "recommendations": [
+    "denoland.vscode-deno",
+    "Nash.awesome-flutter-snippets",
+    "streetsidesoftware.code-spell-checker",
+    "Dart-Code.dart-code",
+    "usernamehw.errorlens",
+    "Dart-Code.flutter",
+    "Supabase.vscode-supabase-extension",
+    "Gruntfuggly.todo-tree"
+  ]
 }
