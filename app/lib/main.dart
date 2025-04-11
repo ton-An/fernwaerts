@@ -129,7 +129,9 @@ class MainApp extends StatelessWidget {
                   GoRoute(
                     path: SettingsPage.pageName,
                     pageBuilder: (context, state) {
-                      return DialogPage(builder: (context) => const SettingsPage());
+                      return DialogPage(
+                        builder: (context) => const SettingsPage(),
+                      );
                     },
                   ),
                 ],
