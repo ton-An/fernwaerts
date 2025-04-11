@@ -4,7 +4,7 @@ import 'package:location_history/core/dependency_injector.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_out.dart';
 import 'package:location_history/features/authentication/presentation/pages/authentication_page/authentication_page.dart';
-import 'package:location_history/features/map/presentation/pages/map_page.dart';
+import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_footer.dart';

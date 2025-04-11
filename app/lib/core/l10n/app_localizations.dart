@@ -278,6 +278,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You are accessing a fresh install.\nPlease create an admin account.'**
   String get adminSignUpDescription;
+
+  /// No description provided for @openStreetMapAttribution.
+  ///
+  /// In en, this message translates to:
+  /// **'© OpenStreetMap'**
+  String get openStreetMapAttribution;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

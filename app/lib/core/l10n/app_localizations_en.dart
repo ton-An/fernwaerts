@@ -100,4 +100,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get adminSignUpDescription => 'You are accessing a fresh install.\nPlease create an admin account.';
+
+  @override
+  String get openStreetMapAttribution => '© OpenStreetMap';
 }

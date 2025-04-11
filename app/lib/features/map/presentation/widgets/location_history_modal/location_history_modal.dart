@@ -33,7 +33,7 @@ class LocationHistoryModal extends StatefulWidget {
 
   static const double largeModalHeight = 1;
   static const double mediumModalHeight = .6;
-  static const double smallModalHeight = .2;
+  static const double smallModalHeight = .3;
 
   @override
   State<LocationHistoryModal> createState() => _LocationHistoryModalState();
