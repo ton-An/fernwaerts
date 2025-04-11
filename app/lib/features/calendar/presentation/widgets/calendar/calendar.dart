@@ -46,8 +46,7 @@ class _CalendarState extends State<Calendar> {
   @override
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
-    return BlocConsumer<CalendarSelectionTypeCubit, CalendarSelectionTypeState>(
-      listener: (context, selectionTypeState) {},
+    return BlocBuilder<CalendarSelectionTypeCubit, CalendarSelectionTypeState>(
       builder: (context, selectionTypeState) {
         return _CalendarContainer(
           child: Column(
