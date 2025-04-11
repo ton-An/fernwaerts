@@ -6,7 +6,7 @@ import 'package:location_history/features/calendar/presentation/cubits/calendar_
 
 class CalendarDateSelectionCubit extends Cubit<CalendarDateSelectionState> {
   CalendarDateSelectionCubit()
-    : super(CalendarDaySelected(selectedDate: DateTime.now()));
+    : super(CalendarDaySelected(selectedDate: DTU.startOfDay(DateTime.now())));
 
   bool hasMovedRange = false;
 

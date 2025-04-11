@@ -1,9 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:in_date_utils/in_date_utils.dart';
 import 'package:location_history/features/calendar/presentation/cubits/monthly_calendar_cubit/monthly_calendar_state.dart';
 
 class MonthlyCalendarCubit extends Cubit<MonthlyCalendarState> {
   MonthlyCalendarCubit()
-    : super(MonthlyCalendarState(focusedMonth: DateTime.now()));
+    : super(MonthlyCalendarState(focusedMonth: DTU.startOfDay(DateTime.now())));
 
   void showPreviousMonth() {
     emit(
