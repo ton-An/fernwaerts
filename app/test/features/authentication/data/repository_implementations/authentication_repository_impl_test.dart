@@ -270,7 +270,7 @@ void main() {
       );
 
       // assert
-      expect(result, Left<Failure, bool>(tUnknownRequestFailure));
+      expect(result, const Left<Failure, bool>(tUnknownRequestFailure));
     });
   });
 
@@ -286,7 +286,7 @@ void main() {
       final result = await authenticationRepositoryImpl.getSavedServerUrl();
 
       // assert
-      expect(result, Right(tServerUrlString));
+      expect(result, const Right(tServerUrlString));
     });
 
     test(

@@ -54,7 +54,7 @@ class _MapPageState extends State<MapPage> {
                 minChildSize: LocationHistoryModal.smallModalHeight,
                 maxChildSize: LocationHistoryModal.largeModalHeight,
                 snap: true,
-                snapSizes: [
+                snapSizes: const [
                   LocationHistoryModal.smallModalHeight,
                   LocationHistoryModal.largeModalHeight,
                 ],

@@ -37,13 +37,14 @@ class _LayoutRenderObject extends RenderBox
     with
         ContainerRenderObjectMixin<RenderBox, VerticalListParentData>,
         RenderBoxContainerDefaultsMixin<RenderBox, VerticalListParentData> {
-  double itemSpacing;
-  double calendarOffset;
-
   _LayoutRenderObject({
     required this.itemSpacing,
     required this.calendarOffset,
   });
+
+  double itemSpacing;
+  double calendarOffset;
+
   @override
   void setupParentData(RenderObject child) {
     if (child.parentData is! VerticalListParentData) {

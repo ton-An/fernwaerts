@@ -8,10 +8,10 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 /// - An [AuthenticationState]
 /// {@endtemplate}
 class AuthenticationStateStream {
-  final AuthenticationRepository authenticationRepository;
-
   /// {@macro authentication_state_stream}
   const AuthenticationStateStream({required this.authenticationRepository});
+
+  final AuthenticationRepository authenticationRepository;
 
   /// {@macro authentication_state_stream}
   Stream<AuthenticationState> call({required String serverUrl}) {

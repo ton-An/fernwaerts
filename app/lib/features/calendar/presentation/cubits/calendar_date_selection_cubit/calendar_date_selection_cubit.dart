@@ -14,7 +14,7 @@ class CalendarDateSelectionCubit extends Cubit<CalendarDateSelectionState> {
     hasMovedRange = false;
   }
 
-  void moveRange(bool isForward) {
+  void moveRange({required bool isForward}) {
     hasMovedRange = true;
     if (state is CalendarDaySelected) {
       _moveDaySelection((state as CalendarDaySelected).selectedDate, isForward);
@@ -122,7 +122,7 @@ class CalendarDateSelectionCubit extends Cubit<CalendarDateSelectionState> {
   }
 
   void _moveDaySelection(DateTime selectedDate, bool isForward) {
-    final Duration durationOfDay = const Duration(days: 1);
+    const Duration durationOfDay = Duration(days: 1);
     final DateTime movedDate =
         isForward
             ? selectedDate.add(durationOfDay)

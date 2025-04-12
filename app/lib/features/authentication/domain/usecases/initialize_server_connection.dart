@@ -19,10 +19,10 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 /// - [ConnectionFailure]
 /// {@endtemplate}
 class InitializeServerConnection {
-  final AuthenticationRepository authenticationRepository;
-
   /// {@macro initialize_server_connection}
   const InitializeServerConnection({required this.authenticationRepository});
+
+  final AuthenticationRepository authenticationRepository;
 
   /// {@macro initialize_server_connection}
   Future<Either<Failure, None>> call({required String serverUrl}) async {

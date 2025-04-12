@@ -38,7 +38,7 @@ class CalendarStepper extends StatelessWidget {
                     icon: Icons.arrow_back_ios_new_rounded,
                     onPressed: () {
                       context.read<CalendarDateSelectionCubit>().moveRange(
-                        false,
+                        isForward: false,
                       );
                     },
                   ),
@@ -52,7 +52,7 @@ class CalendarStepper extends StatelessWidget {
                     icon: Icons.arrow_forward_ios_rounded,
                     onPressed: () {
                       context.read<CalendarDateSelectionCubit>().moveRange(
-                        true,
+                        isForward: true,
                       );
                     },
                   ),

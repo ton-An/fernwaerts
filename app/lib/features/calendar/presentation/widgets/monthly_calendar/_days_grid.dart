@@ -32,13 +32,13 @@ class _DaysGrid extends StatelessWidget {
             endOffset = endOffset == 7 ? 0 : endOffset;
             final int totalDays = daysInMonth + startOffset + endOffset;
             final int rowCount = (totalDays / _daysInWeek).ceil();
-            final int crossAxisCount = _daysInWeek + 1;
+            const int crossAxisCount = _daysInWeek + 1;
 
             return GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: totalDays + rowCount,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: crossAxisCount,
               ),
               itemBuilder: (BuildContext context, int index) {

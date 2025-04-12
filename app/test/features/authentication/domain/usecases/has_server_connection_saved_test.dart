@@ -19,7 +19,7 @@ void main() {
 
     when(
       () => mockAuthenticationRepository.getSavedServerUrl(),
-    ).thenAnswer((_) async => Right(tServerUrlString));
+    ).thenAnswer((_) async => const Right(tServerUrlString));
   });
 
   test(

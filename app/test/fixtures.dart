@@ -8,8 +8,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'mocks.dart';
 
-final String tServerUrlString = 'https://coolness_checks.com';
-final String tServerCallPath = '/is_ted_cool';
+const String tServerUrlString = 'https://coolness_checks.com';
+const String tServerCallPath = '/is_ted_cool';
 final Uri tServerUrl = Uri.parse(tServerUrlString + tServerCallPath);
 
 final Map<String, dynamic> tRequestBody = {'name': 'Ted'};
@@ -38,7 +38,7 @@ final Response tNullStatusCodeResponse = Response(
   requestOptions: RequestOptions(path: tServerCallPath),
 );
 
-final tNullResponseData = null;
+const tNullResponseData = null;
 
 final tIsServerSetUpResponseData = {
   'data': {'is_server_set_up': true},
@@ -50,7 +50,7 @@ final DioException tBadResponseDioException = DioException.badResponse(
   response: Response(requestOptions: RequestOptions()),
 );
 
-final UnknownRequestFailure tUnknownRequestFailure = const UnknownRequestFailure();
+const UnknownRequestFailure tUnknownRequestFailure = UnknownRequestFailure();
 
 final Map<String, dynamic> tPublicSettingsMap = {
   'name': 'is_set_up',
@@ -64,7 +64,7 @@ final http.ClientException tTimeoutClientException = http.ClientException(
   tServerUrl,
 );
 
-final StackTrace tStackTrace = StackTrace.empty;
+const StackTrace tStackTrace = StackTrace.empty;
 
 final http.ClientException tUnknownClientException = http.ClientException(
   'Really weird error',
@@ -73,12 +73,12 @@ final http.ClientException tUnknownClientException = http.ClientException(
 
 final ArgumentError tArgumentError = ArgumentError();
 
-final FormatException tFormatException = const FormatException();
+const FormatException tFormatException = FormatException();
 
-final PostgrestException tPostgresException = const PostgrestException(message: '');
+const PostgrestException tPostgresException = PostgrestException(message: '');
 
 final PlatformException tPlatformException = PlatformException(code: 'bad');
 
-final String tUsername = 'Ted';
-final String tEmail = 'ted@example.com';
-final String tPassword = 'VeryStrongPassword';
+const String tUsername = 'Ted';
+const String tEmail = 'ted@example.com';
+const String tPassword = 'VeryStrongPassword';

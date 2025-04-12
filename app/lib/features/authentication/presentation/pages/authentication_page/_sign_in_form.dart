@@ -30,7 +30,7 @@ class _SignInFormState extends State<_SignInForm> {
         CustomCupertinoTextField(
           hint: AppLocalizations.of(context)!.email,
           controller: _emailController,
-          autofillHints: [AutofillHints.email],
+          autofillHints: const [AutofillHints.email],
           keyboardType: TextInputType.emailAddress,
           onChanged: (_) {},
         ),
@@ -38,7 +38,7 @@ class _SignInFormState extends State<_SignInForm> {
           hint: AppLocalizations.of(context)!.password,
           controller: _passwordController,
           obscureText: true,
-          autofillHints: [AutofillHints.password],
+          autofillHints: const [AutofillHints.password],
           onChanged: (_) {},
         ),
       ],
