@@ -21,9 +21,9 @@ class _Welcome extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SimpleShadow(
-            sigma: 20,
+            sigma: 4,
             opacity: .3,
-            offset: const Offset(7, 7),
+            offset: const Offset(-4, 4),
             child: Center(
               child: Image.asset(
                 'assets/images/app_icons/app_icon_transparent.png',
