@@ -85,14 +85,16 @@ class MainApp extends StatelessWidget {
               ),
               GoRoute(
                 path: AuthenticationPage.pageName,
-                builder: (BuildContext context, GoRouterState state) {
-                  return MultiBlocProvider(
-                    providers: [
-                      BlocProvider(
-                        create: (context) => getIt<AuthenticationCubit>(),
-                      ),
-                    ],
-                    child: const AuthenticationPage(),
+                pageBuilder: (BuildContext context, GoRouterState state) {
+                  return NoTransitionPage(
+                    child: MultiBlocProvider(
+                      providers: [
+                        BlocProvider(
+                          create: (context) => getIt<AuthenticationCubit>(),
+                        ),
+                      ],
+                      child: const AuthenticationPage(),
+                    ),
                   );
                 },
               ),
