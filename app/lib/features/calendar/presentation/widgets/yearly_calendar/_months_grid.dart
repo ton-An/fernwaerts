@@ -26,6 +26,7 @@ class _MonthsGrid extends StatelessWidget {
                 crossAxisCount: 2,
                 childAspectRatio: 3,
               ),
+              padding: EdgeInsets.zero,
               itemBuilder: (context, index) {
                 final DateTime monthDate = DateTime(
                   focusedYear.year,

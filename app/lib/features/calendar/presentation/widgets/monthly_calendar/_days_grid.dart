@@ -41,6 +41,7 @@ class _DaysGrid extends StatelessWidget {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: crossAxisCount,
               ),
+              padding: EdgeInsets.zero,
               itemBuilder: (BuildContext context, int index) {
                 final int rowNumber = index ~/ crossAxisCount;
 

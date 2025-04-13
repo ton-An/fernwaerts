@@ -26,6 +26,7 @@ class _YearsGrid extends StatelessWidget {
                 crossAxisCount: 2,
                 childAspectRatio: 3,
               ),
+              padding: EdgeInsets.zero,
               itemBuilder: (context, index) {
                 final DateTime yearDate = DTU.addYears(
                   focusedDecadeStart,
