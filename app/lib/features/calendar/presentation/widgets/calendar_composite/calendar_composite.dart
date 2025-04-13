@@ -161,7 +161,10 @@ class _CalendarCompositeState extends State<CalendarComposite>
                           AnimationStatus.dismissed &&
                       _fadeAnimationController.status ==
                           AnimationStatus.dismissed))
-                    Opacity(opacity: _fadeAnimation.value, child: const Calendar()),
+                    Opacity(
+                      opacity: _fadeAnimation.value,
+                      child: const Calendar(),
+                    ),
                 ],
               ),
             );
