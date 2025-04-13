@@ -106,31 +106,34 @@ class MainApp extends StatelessWidget {
               ),
               GoRoute(
                 path: MapPage.pageName,
-                builder: (BuildContext context, GoRouterState state) {
-                  return MultiBlocProvider(
-                    providers: [
-                      BlocProvider(
-                        create: (context) => getIt<CalendarExpansionCubit>(),
-                      ),
-                      BlocProvider(
-                        create:
-                            (context) => getIt<CalendarSelectionTypeCubit>(),
-                      ),
-                      BlocProvider(
-                        create: (context) => getIt<MonthlyCalendarCubit>(),
-                      ),
-                      BlocProvider(
-                        create: (context) => getIt<YearlyCalendarCubit>(),
-                      ),
-                      BlocProvider(
-                        create: (context) => getIt<DecenniallyCalendarCubit>(),
-                      ),
-                      BlocProvider(
-                        create:
-                            (context) => getIt<CalendarDateSelectionCubit>(),
-                      ),
-                    ],
-                    child: const MapPage(),
+                pageBuilder: (BuildContext context, GoRouterState state) {
+                  return NoTransitionPage(
+                    child: MultiBlocProvider(
+                      providers: [
+                        BlocProvider(
+                          create: (context) => getIt<CalendarExpansionCubit>(),
+                        ),
+                        BlocProvider(
+                          create:
+                              (context) => getIt<CalendarSelectionTypeCubit>(),
+                        ),
+                        BlocProvider(
+                          create: (context) => getIt<MonthlyCalendarCubit>(),
+                        ),
+                        BlocProvider(
+                          create: (context) => getIt<YearlyCalendarCubit>(),
+                        ),
+                        BlocProvider(
+                          create:
+                              (context) => getIt<DecenniallyCalendarCubit>(),
+                        ),
+                        BlocProvider(
+                          create:
+                              (context) => getIt<CalendarDateSelectionCubit>(),
+                        ),
+                      ],
+                      child: const MapPage(),
+                    ),
                   );
                 },
                 routes: [
