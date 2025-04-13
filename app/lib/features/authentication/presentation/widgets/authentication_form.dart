@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:super_keyboard/super_keyboard.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 class AuthenticationForm extends StatelessWidget {
@@ -38,88 +39,85 @@ class AuthenticationForm extends StatelessWidget {
             MediaQuery.of(context).viewPadding.bottom +
             MediaQuery.of(context).viewInsets.bottom,
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (showBackButton) ...[
-            Align(
-              alignment: Alignment.topLeft,
-              child: SmallIconButton(
-                icon: CupertinoIcons.back,
-                alignmentOffset: const Offset(-1, 0),
-                onPressed: onBackPressed ?? () {},
+      child: SuperKeyboardBuilder(
+        builder: (context, keyboardState) {
+          final isKeyboardVisible =
+              keyboardState == KeyboardState.open ||
+              keyboardState == KeyboardState.opening;
+
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (showBackButton) ...[
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: SmallIconButton(
+                    icon: CupertinoIcons.back,
+                    alignmentOffset: const Offset(-1, 0),
+                    onPressed: onBackPressed ?? () {},
+                  ),
+                ),
+                const XTinyGap(),
+              ],
+              Icon(
+                icon,
+                color: theme.colors.primary.withValues(alpha: .6),
+                size: 82,
               ),
-            ),
-            const XTinyGap(),
-          ],
-          Icon(
-            icon,
-            color: theme.colors.primary.withValues(alpha: .6),
-            size: 82,
-          ),
-          AnimatedOpacity(
-            opacity: MediaQuery.of(context).viewInsets.bottom == 0 ? 1 : 0,
-            duration: const Duration(milliseconds: 600),
-            curve: Curves.easeInOut,
-            child: AnimatedSize(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOut,
-              child: SizedBox(
-                height:
-                    MediaQuery.of(context).viewInsets.bottom == 0 ? null : 0,
-                child: Column(
-                  children: [
-                    const MediumGap(),
-                    Text(
-                      label,
-                      textAlign: TextAlign.center,
-                      style: theme.text.largeTitle.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SmallGap(),
-                    Text(
-                      description,
-                      textAlign: TextAlign.center,
-                      style: theme.text.body.copyWith(height: 1.45),
-                    ),
-                    if (hint != null)
-                      Text(
-                        hint!,
-                        textAlign: TextAlign.center,
-                        style: theme.text.body.copyWith(
-                          height: 1.45,
-                          color: theme.colors.text.withValues(alpha: .5),
+              AnimatedOpacity(
+                opacity: isKeyboardVisible ? 0 : 1,
+                duration: const Duration(milliseconds: 600),
+                curve: Curves.easeInOut,
+                child: AnimatedSize(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeOut,
+                  child: SizedBox(
+                    height: isKeyboardVisible ? 0 : null,
+                    child: Column(
+                      children: [
+                        const MediumGap(),
+                        Text(
+                          label,
+                          textAlign: TextAlign.center,
+                          style: theme.text.largeTitle.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                  ],
+                        const SmallGap(),
+                        Text(
+                          description,
+                          textAlign: TextAlign.center,
+                          style: theme.text.body.copyWith(height: 1.45),
+                        ),
+                        if (hint != null)
+                          Text(
+                            hint!,
+                            textAlign: TextAlign.center,
+                            style: theme.text.body.copyWith(
+                              height: 1.45,
+                              color: theme.colors.text.withValues(alpha: .5),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          const XMediumGap(),
-          for (final textField in textFields) ...[
-            textField,
-            if (textFields.last != textField) const MediumGap(),
-          ],
-          const XXMediumGap(),
-          CustomCupertinoTextButton(
-            text: buttonText,
-            onPressed: onButtonPressed,
-          ),
-          AnimatedSize(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
-            child: SizedBox(
-              height:
-                  MediaQuery.of(context).viewInsets.bottom == 0
-                      ? theme.spacing.medium
-                      : 0,
-            ),
-          ),
-        ],
+              const XMediumGap(),
+              for (final textField in textFields) ...[
+                textField,
+                if (textFields.last != textField) const MediumGap(),
+              ],
+              const XXMediumGap(),
+              CustomCupertinoTextButton(
+                text: buttonText,
+                onPressed: onButtonPressed,
+              ),
+            ],
+          );
+        },
       ),
     );
   }

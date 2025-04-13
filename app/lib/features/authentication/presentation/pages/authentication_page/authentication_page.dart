@@ -123,6 +123,9 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                       disableCenter: true,
                       physics: const NeverScrollableScrollPhysics(),
                       autoPlayCurve: Curves.easeOut,
+                      autoPlayAnimationDuration: const Duration(
+                        milliseconds: 240,
+                      ),
                     ),
                   ),
                 ),
