@@ -25,7 +25,7 @@ import 'package:location_history/features/settings/pages/settings_page/settings_
 /* 
   General To-Dos:
     - [ ] Standardize animation durations
-    - [ ] Delete cached data on sign out
+    - [ ] Delete cached data on sign out and potentially when auth check on splash screen fails
 */
 
 void main() {

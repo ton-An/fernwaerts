@@ -9,8 +9,8 @@ import 'package:location_history/features/authentication/data/datasources/authen
 import 'package:location_history/features/authentication/data/repository_implementations/authentication_repository_impl.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/has_server_connection_saved.dart';
+import 'package:location_history/features/authentication/domain/usecases/initialize_new_server_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_saved_server_connection.dart';
-import 'package:location_history/features/authentication/domain/usecases/initialize_server_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_server_set_up.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_signed_in.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
@@ -77,7 +77,7 @@ void registerAuthenticationDependencies() {
 
   // -- Domain -- //
   getIt.registerLazySingleton(
-    () => InitializeServerConnection(authenticationRepository: getIt()),
+    () => InitializeNewServerConnection(authenticationRepository: getIt()),
   );
   getIt.registerLazySingleton(
     () => IsServerSetUp(authenticationRepository: getIt()),
@@ -92,10 +92,7 @@ void registerAuthenticationDependencies() {
     () => HasServerConnectionSaved(authenticationRepository: getIt()),
   );
   getIt.registerLazySingleton(
-    () => InitializeSavedServerConnection(
-      authenticationRepository: getIt(),
-      initializeServerConnection: getIt(),
-    ),
+    () => InitializeSavedServerConnection(authenticationRepository: getIt()),
   );
   getIt.registerLazySingleton(
     () => IsSignedIn(authenticationRepository: getIt()),

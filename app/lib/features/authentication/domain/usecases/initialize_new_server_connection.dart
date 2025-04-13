@@ -4,23 +4,23 @@ import 'package:location_history/core/failures/networking/connection_failure.dar
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 
-/// {@template initialize_server_connection}
-/// Initializes the connection with the server
+/// {@template initialize_new_server_connection}
+/// Initializes a new connection with a server
 ///
 /// Parameters:
-/// - [Uri] serverUrl: The URL of the server to check.
+/// - [Uri] serverUrl: The URL of the server
 ///
 /// Return:
-/// - [None] if the server is reachable.
+/// - [None] if the server is reachable
 ///
 /// Failures:
 /// {@macro converted_client_exceptions}
 /// - [InvalidUrlFormatFailure]
 /// - [ConnectionFailure]
 /// {@endtemplate}
-class InitializeServerConnection {
+class InitializeNewServerConnection {
   /// {@macro initialize_server_connection}
-  const InitializeServerConnection({required this.authenticationRepository});
+  const InitializeNewServerConnection({required this.authenticationRepository});
 
   final AuthenticationRepository authenticationRepository;
 

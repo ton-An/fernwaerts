@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
-import 'package:location_history/features/authentication/domain/usecases/initialize_server_connection.dart';
+import 'package:location_history/features/authentication/domain/usecases/initialize_new_server_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_server_set_up.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_up_initial_admin.dart';
@@ -22,7 +22,7 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
     required this.signInUsecase,
   }) : super(const AuthenticationInitial());
 
-  final InitializeServerConnection initializeServerConnection;
+  final InitializeNewServerConnection initializeServerConnection;
   final IsServerSetUp isServerSetUp;
   final SignUpInitialAdmin signUpInitialAdmin;
   final SignIn signInUsecase;

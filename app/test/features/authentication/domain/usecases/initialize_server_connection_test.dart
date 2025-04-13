@@ -2,19 +2,19 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
-import 'package:location_history/features/authentication/domain/usecases/initialize_server_connection.dart';
+import 'package:location_history/features/authentication/domain/usecases/initialize_new_server_connection.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../fixtures.dart';
 import '../../../../mocks.dart';
 
 void main() {
-  late InitializeServerConnection initializeServerConnection;
+  late InitializeNewServerConnection initializeServerConnection;
   late MockAuthenticationRepository mockAuthenticationRepository;
 
   setUp(() {
     mockAuthenticationRepository = MockAuthenticationRepository();
-    initializeServerConnection = InitializeServerConnection(
+    initializeServerConnection = InitializeNewServerConnection(
       authenticationRepository: mockAuthenticationRepository,
     );
 
