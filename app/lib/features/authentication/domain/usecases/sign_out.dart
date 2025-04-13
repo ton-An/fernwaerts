@@ -5,6 +5,7 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 /*
   To-Do:
     - [ ] Add Failures to docs
+    - [ ] Hanlde exception on sign out without internet
 */
 
 /// {@template sign_out}
