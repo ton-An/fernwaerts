@@ -11,21 +11,20 @@ import '../../../../mocks.dart';
 void main() {
   late InitializeSavedServerConnection initializeSavedServerConnection;
   late MockAuthenticationRepository mockAuthenticationRepository;
-  late MockInitializeServerConnection mockInitializeServerConnection;
 
   setUp(() {
     mockAuthenticationRepository = MockAuthenticationRepository();
-    mockInitializeServerConnection = MockInitializeServerConnection();
     initializeSavedServerConnection = InitializeSavedServerConnection(
       authenticationRepository: mockAuthenticationRepository,
-      initializeServerConnection: mockInitializeServerConnection,
     );
 
     when(
       () => mockAuthenticationRepository.getSavedServerUrl(),
     ).thenAnswer((_) async => const Right(tServerUrlString));
     when(
-      () => mockInitializeServerConnection(serverUrl: any(named: 'serverUrl')),
+      () => mockAuthenticationRepository.initializeServerConnection(
+        serverUrl: any(named: 'serverUrl'),
+      ),
     ).thenAnswer((_) async => const Right(None()));
   });
 
@@ -55,14 +54,20 @@ void main() {
     final result = await initializeSavedServerConnection();
 
     // assert
-    verify(() => mockInitializeServerConnection(serverUrl: tServerUrlString));
+    verify(
+      () => mockAuthenticationRepository.initializeServerConnection(
+        serverUrl: tServerUrlString,
+      ),
+    );
     expect(result, const Right(None()));
   });
 
   test('should relay Failures from initializing the server', () async {
     // arrange
     when(
-      () => mockInitializeServerConnection(serverUrl: any(named: 'serverUrl')),
+      () => mockAuthenticationRepository.initializeServerConnection(
+        serverUrl: any(named: 'serverUrl'),
+      ),
     ).thenAnswer((_) async => const Left(SendTimeoutFailure()));
 
     // act
