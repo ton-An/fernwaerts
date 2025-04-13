@@ -115,6 +115,13 @@ class AuthenticationForm extends StatelessWidget {
                 text: buttonText,
                 onPressed: onButtonPressed,
               ),
+              AnimatedSize(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeOut,
+                child: SizedBox(
+                  height: isKeyboardVisible ? 0 : theme.spacing.medium,
+                ),
+              ),
             ],
           );
         },
