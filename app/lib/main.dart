@@ -22,6 +22,11 @@ import 'package:location_history/features/in_app_notification/presentation/widge
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
 import 'package:location_history/features/settings/pages/settings_page/settings_page.dart';
 
+/* 
+  General To-Dos:
+    - [ ] Standardize animation durations
+*/
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
