@@ -1,7 +1,7 @@
 name: location_history
 description: "A Privacy-Focused Location Tracker"
 publish_to: "none"
-version: 0.1.0
+version: 0.0.1
 
 environment:
   sdk: ^3.7.0
