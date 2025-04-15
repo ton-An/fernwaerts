@@ -3,7 +3,7 @@
 layout: home
 
 hero:
-  name: Location History
+  name: Fernwärts
   text: Privacy-Focused Location Tracker
   tagline: Your Journey, Your Data – Open, Private, Yours.
   image: 

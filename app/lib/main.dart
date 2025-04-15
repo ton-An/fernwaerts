@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,6 +23,7 @@ import 'package:location_history/features/in_app_notification/presentation/cubit
 import 'package:location_history/features/in_app_notification/presentation/widgets/in_app_notification_listener.dart';
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
 import 'package:location_history/features/settings/pages/settings_page/settings_page.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 /* 
   General To-Dos:
@@ -43,23 +46,39 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => getIt<InAppNotificationCubit>()),
-      ],
-      child: CupertinoApp.router(
-        onGenerateTitle:
-            (BuildContext context) => AppLocalizations.of(context)!.appName,
-        routerConfig: router,
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
+    return WebfabrikTheme(
+      data: WebfabrikThemeData(
+        colors: WebfabrikColorThemeData(
+          primary: Color.fromARGB(255, 83, 196, 108),
+          primaryTranslucent: Color.fromARGB(
+            255,
+            83,
+            196,
+            108,
+          ).withValues(alpha: .3),
+        ),
+        misc: WebfabrikMiscThemeData(
+          blurFilter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+        ),
+      ),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => getIt<InAppNotificationCubit>()),
         ],
-        supportedLocales: const [
-          Locale('en'), // English
-        ],
+        child: CupertinoApp.router(
+          onGenerateTitle:
+              (BuildContext context) => AppLocalizations.of(context)!.appName,
+          routerConfig: router,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en'), // English
+          ],
+        ),
       ),
     );
   }

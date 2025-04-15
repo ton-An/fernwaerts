@@ -2,14 +2,14 @@ import { defineConfig } from "vitepress";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "Location History",
-  description: "Documentation for the open source Location History app",
-  base: "/location_history",
+  title: "Fernwärts",
+  description: "Documentation for the open source Fernwärts app",
+  base: "/fernwaerts",
   head: [
     ["link", {
       rel: "icon",
       type: "image/x-icon",
-      href: "/location_history/assets/favicon.ico",
+      href: "/fernwaerts/assets/favicon.ico",
     }],
   ],
   themeConfig: {
@@ -32,7 +32,7 @@ export default defineConfig({
     ],
 
     socialLinks: [
-      { icon: "github", link: "https://github.com/ton-An/location_history" },
+      { icon: "github", link: "https://github.com/ton-An/fernwaerts" },
     ],
   },
 });

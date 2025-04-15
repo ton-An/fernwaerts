@@ -9,10 +9,10 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appName => 'Location History';
+  String get appName => 'Fernwärts';
 
   @override
-  String get appDescription => 'A simple app to track your location history.\nIt is fully open source, self hosted and free to use.';
+  String get appDescription => 'A simple app to track your location history.\nIt is open source, self hosted and a blast to use.';
 
   @override
   String get range => 'Range';

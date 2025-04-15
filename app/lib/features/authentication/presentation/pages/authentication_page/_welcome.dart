@@ -21,12 +21,12 @@ class _Welcome extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SimpleShadow(
-            sigma: 4,
+            sigma: 6,
             opacity: .3,
             offset: const Offset(-4, 4),
             child: Center(
               child: Image.asset(
-                'assets/images/app_icons/app_icon_transparent.png',
+                'assets/images/app_icons/app_icon_transparent_new.png',
                 width: 150,
               ),
             ),

@@ -1,7 +1,7 @@
-# Location History 📍
-[![codecov](https://codecov.io/gh/ton-An/location_history/graph/badge.svg?token=X5F77OEGXS)](https://codecov.io/gh/ton-An/location_history)
+# Fernwärts 📍
+[![codecov](https://codecov.io/gh/ton-An/fernwaerts/graph/badge.svg?token=X5F77OEGXS)](https://codecov.io/gh/ton-An/fernwaerts)
 
-A privacy-focused Flutter application that tracks your location history. It's fully open source, self-hosted, and free to use.
+A privacy-focused Flutter application that tracks your location history. It is open source, self hosted and a blast to use.
 
 |   |   |   |
 |---|---|---|
@@ -26,12 +26,12 @@ A privacy-focused Flutter application that tracks your location history. It's fu
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/ton-An/location_history.git
+   git clone https://github.com/ton-An/fernwaerts.git
    ```
 
 2. Navigate to the app directory:
    ```bash
-   cd location_history/app
+   cd fernwaerts/app
    ```
 
 3. Install dependencies:
@@ -50,7 +50,7 @@ Coming soon... (Some things need to be done first. Like adding row level securit
 
 ## Documentation
 
-Comprehensive documentation is available at our [documentation site](https://ton-an.github.io/location_history/). (In very early stages)
+Comprehensive documentation is available at our [documentation site](https://ton-an.github.io/fernwaerts/). (In very early stages)
 
 ## Project Structure
 

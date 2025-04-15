@@ -40,7 +40,7 @@ class _VideoBackgroundState extends State<_VideoBackground>
 
     _videoController =
         VideoPlayerController.asset(
-            'assets/videos/earth2.mp4',
+            'assets/videos/forest_aerial.mp4',
             videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
           )
           ..setVolume(0)
@@ -50,7 +50,7 @@ class _VideoBackgroundState extends State<_VideoBackground>
           });
     _videoController2 =
         VideoPlayerController.asset(
-            'assets/videos/earth2.mp4',
+            'assets/videos/forest_aerial.mp4',
             videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
           )
           ..setVolume(0)
