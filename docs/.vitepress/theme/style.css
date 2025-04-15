@@ -1,4 +1,7 @@
 /**
+  To-Do:
+    - [ ] Add branding properly
+
  * Customize default theme styling by overriding CSS variables:
  * https://github.com/vuejs/vitepress/blob/main/src/client/theme-default/styles/vars.css
  */
@@ -68,6 +71,22 @@
   --vp-c-danger-2: var(--vp-c-red-2);
   --vp-c-danger-3: var(--vp-c-red-3);
   --vp-c-danger-soft: var(--vp-c-red-soft);
+}
+
+/**
+ * Component: Navigation Bar
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --vp-nav-bg-color: #ffffff9c;
+}
+
+.VPNavBar {
+  backdrop-filter: blur(40px);
+}
+
+.DocSearch-Button {
+  background-color: #b9b9b929;
 }
 
 /**
