@@ -81,6 +81,10 @@
   --vp-nav-bg-color: #ffffff9c;
 }
 
+.dark {
+  --vp-nav-bg-color: #2222229c;
+}
+
 .VPNavBar {
   backdrop-filter: blur(40px);
 }
