@@ -49,8 +49,8 @@ class MainApp extends StatelessWidget {
     return WebfabrikTheme(
       data: WebfabrikThemeData(
         colors: WebfabrikColorThemeData(
-          primary: Color.fromARGB(255, 83, 196, 108),
-          primaryTranslucent: Color.fromARGB(
+          primary: const Color.fromARGB(255, 83, 196, 108),
+          primaryTranslucent: const Color.fromARGB(
             255,
             83,
             196,
