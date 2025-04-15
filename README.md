@@ -4,7 +4,7 @@
 <p align="center">
   <img style="width: 150px" src="docs/public/assets/app_icon_transparent_new.png" />
 </p>
-<h1 style="text-align:center">Fernwärts</h1>
+<h1 align="center">Fernwärts</h1>
 
 [![codecov](https://codecov.io/gh/ton-An/fernwaerts/graph/badge.svg?token=X5F77OEGXS)](https://codecov.io/gh/ton-An/fernwaerts)
 
