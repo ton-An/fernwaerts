@@ -8,8 +8,8 @@ export default defineConfig({
   head: [
     ["link", {
       rel: "icon",
-      type: "image/x-icon",
-      href: "/fernwaerts/assets/favicon.ico",
+      type: "image/png",
+      href: "/fernwaerts/assets/favicon.png",
     }],
   ],
   themeConfig: {
