@@ -25,7 +25,7 @@ features:
     details: Automatically categorize your visits by place, city, and country—creating a meaningful timeline of your travels.
   - icon: 🌐
     title: Open Codebase*
-    details: This app has an open codebase. You’re welcome to contribute to its development! :) <br><br><span style="color:var(--vp-c-text-3)">* Due to the dual license model, the app is (by the OSI definition) not open source</span>
+    details: This app has an open codebase. You’re welcome to contribute to its development! :) <br><br><span style="color:var(--vp-c-text-3)">* Due to the dual license model, this app is (by the OSI definition) not open source</span>
 ---
 
 ::: warning
