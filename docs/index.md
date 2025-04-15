@@ -7,7 +7,7 @@ hero:
   text: Privacy-Focused Location Tracker
   tagline: Your Journey, Your Data – Open, Private, Yours.
   image: 
-    src: /assets/app_icon_transparent.png
+    src: /assets/app_icon_transparent_new.png
   actions:
     - theme: brand
       text: Markdown Examples
@@ -24,8 +24,8 @@ features:
     title: Smart Location Insights
     details: Automatically categorize your visits by place, city, and country—creating a meaningful timeline of your travels.
   - icon: 🌐
-    title: Open Source
-    details: This app is open-source. You’re welcome to contribute to its development! :)
+    title: Open Codebase*
+    details: This app has an open codebase. You’re welcome to contribute to its development! :) <br><br><span style="color:var(--vp-c-text-3)">* Due to the dual license model, the app is (by the OSI definition) not open source</span>
 ---
 
 ::: warning
@@ -53,4 +53,3 @@ const members = [
 ]
 </script>
 <VPTeamMembers size="small" :members="members" />
-

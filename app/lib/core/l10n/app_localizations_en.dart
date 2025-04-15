@@ -12,7 +12,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appName => 'Fernwärts';
 
   @override
-  String get appDescription => 'A simple app to track your location history.\nIt is open source, self hosted and a blast to use.';
+  String get appDescription => 'A simple app to track your location history.\nIt has an open codebase, is self hosted and a blast to use.';
 
   @override
   String get range => 'Range';

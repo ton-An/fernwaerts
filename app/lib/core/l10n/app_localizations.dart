@@ -102,7 +102,7 @@ abstract class AppLocalizations {
   /// No description provided for @appDescription.
   ///
   /// In en, this message translates to:
-  /// **'A simple app to track your location history.\nIt is open source, self hosted and a blast to use.'**
+  /// **'A simple app to track your location history.\nIt has an open codebase, is self hosted and a blast to use.'**
   String get appDescription;
 
   /// No description provided for @range.

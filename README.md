@@ -1,7 +1,7 @@
 # Fernwärts 📍
 [![codecov](https://codecov.io/gh/ton-An/fernwaerts/graph/badge.svg?token=X5F77OEGXS)](https://codecov.io/gh/ton-An/fernwaerts)
 
-A privacy-focused Flutter application that tracks your location history. It is open source, self hosted and a blast to use.
+A privacy-focused Flutter application that tracks your location history. It has an open codebase, is self hosted and a blast to use..
 
 |   |   |   |
 |---|---|---|

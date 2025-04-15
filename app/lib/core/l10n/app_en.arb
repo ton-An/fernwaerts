@@ -1,6 +1,6 @@
 {
     "appName": "Fernwärts",
-    "appDescription": "A simple app to track your location history.\nIt is open source, self hosted and a blast to use.",
+    "appDescription": "A simple app to track your location history.\nIt has an open codebase, is self hosted and a blast to use.",
     "range": "Range",
     "day": "Day",
     "week": "Week",
