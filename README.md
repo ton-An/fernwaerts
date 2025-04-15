@@ -1,11 +1,23 @@
-# Fernwärts 📍
+
+
+
+<p align="center">
+  <img style="width: 150px" src="docs/public/assets/app_icon_transparent_new.png" />
+</p>
+<h1 style="text-align:center">Fernwärts</h1>
+
 [![codecov](https://codecov.io/gh/ton-An/fernwaerts/graph/badge.svg?token=X5F77OEGXS)](https://codecov.io/gh/ton-An/fernwaerts)
+
+<br>
 
 A privacy-focused Flutter application that tracks your location history. It has an open codebase, is self hosted and a blast to use.
 
-|   |   |   |
-|---|---|---|
-![](/docs/public/assets/screenshots/home.png)  |  ![](/docs/public/assets/screenshots/map.png) |  ![](/docs/public/assets/screenshots/map_modal.png)
+
+<p float="left">
+  <img src="docs/public/assets/screenshots/home.png" width="32%" />
+  <img src="docs/public/assets/screenshots/map.png" width="32%" />
+  <img src="docs/public/assets/screenshots/map_modal.png" width="32%" />
+</p>
 
 ## Features
 
