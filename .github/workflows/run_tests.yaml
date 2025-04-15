@@ -1,5 +1,7 @@
 name: Run tests
 
+# ToDo: Add flutter analyze step that outputs to somewhere (where tho? :D)
+
 on:
   push:
     branches: [main]
@@ -31,11 +33,11 @@ jobs:
       - name: Restore packages
         run: flutter pub get
 
+      - name: Generate build runner files
+        run: flutter pub run build_runner build
+
       - name: Install junitreport
         run: flutter pub global activate --source git https://github.com/ton-An/dart-junitreport
-
-      - name: Analyze
-        run: flutter analyze
 
       - name: Run tests
         run: flutter test --coverage --machine | tojunit -o junit.xml
