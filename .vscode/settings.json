@@ -12,12 +12,14 @@
     "monday",
     "pubspec",
     "SHORTWEEKDAYS",
+    "sqflite",
     "sqlite",
     "subosito",
     "supabase",
     "Supabase",
     "tojunit",
-    "usecases"
+    "usecases",
+    "uuid"
   ],
   "deno.enablePaths": ["supabase/functions"],
   "deno.lint": true,
