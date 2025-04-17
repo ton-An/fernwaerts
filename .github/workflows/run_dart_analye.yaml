@@ -1,0 +1,27 @@
+name: Run dart analysis
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - app/**
+
+  pull_request:
+    branches: [main]
+    paths:
+      - app/**
+      
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+      - uses: invertase/github-action-dart-analyzer@v3
+        with:
+          fatal-infos: false
+          fatal-warnings: false
+
+          working-directory: ./app/
