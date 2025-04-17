@@ -16,6 +16,9 @@ on:
 jobs:
   analyze:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./app
     steps:
       - uses: actions/checkout@v4
 
@@ -34,5 +37,3 @@ jobs:
         with:
           fatal-infos: false
           fatal-warnings: false
-
-          working-directory: ./app/
