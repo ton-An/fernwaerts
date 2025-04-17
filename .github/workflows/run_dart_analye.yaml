@@ -18,7 +18,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: dart-lang/setup-dart@v1
+
+      - name: Install and set Flutter version
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          
+      - name: Restore packages
+        run: flutter pub get
+
+      - name: Generate build runner files
+        run: flutter pub run build_runner build
+              
       - uses: invertase/github-action-dart-analyzer@v3
         with:
           fatal-infos: false
