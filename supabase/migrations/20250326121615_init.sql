@@ -17,7 +17,7 @@ select
     (
       select
         auth.uid ()
-    ) = user_id
+    ) = id
   );
 
 -- USER ROLES
