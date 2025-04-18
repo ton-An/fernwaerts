@@ -11,6 +11,15 @@ create table
 
 alter table public.users enable row level security;
 
+create policy "Enable read access for user himself" on public.users for
+select
+  to public using (
+    (
+      select
+        auth.uid ()
+    ) = user_id
+  );
+
 -- USER ROLES
 create table
   public.user_roles (
@@ -32,7 +41,9 @@ create table
 
 alter table public.public_settings enable row level security;
 
-alter policy "Enable read access for all users" on "public"."public_settings" to public using (true);
+create policy "Enable read access for all users" on public.public_settings for
+select
+  to public using (true);
 
 insert into
   public.public_settings (name, value)
