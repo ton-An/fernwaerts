@@ -1,0 +1,9 @@
+FROM alpine
+
+# Set working directory
+WORKDIR /supabase-vendor
+
+# Copy supabase vendor config files
+COPY supabase-vendor /supabase-vendor
+
+CMD ["tail", "-f", "/dev/null"]
