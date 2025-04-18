@@ -1,0 +1,45 @@
+{
+  "models": [
+    {
+      "model": "AUTODETECT",
+      "title": "Autodetect",
+      "provider": "ollama"
+    }
+  ],
+  "tabAutocompleteModel": {
+    "model": "codellama:13b-code-q4_K_M",
+    "title": "codellama:13b-code",
+    "provider": "ollama",
+    "completionOptions": {
+      "keepAlive": 1200
+    }
+  },
+  "tabAutocompleteOptions": {
+    "debounceDelay": 0
+  },
+  "embeddingsProvider": {
+    "provider": "ollama",
+    "model": "nomic-embed-text:latest"
+  },
+  "contextProviders": [],
+  "slashCommands": [],
+  "data": [],
+  "docs": [
+    {
+      "title": "Flutter Docs",
+      "startUrl": "https://docs.flutter.dev/"
+    },
+    {
+      "title": "Dart Docs",
+      "startUrl": "https://dart.dev/docs"
+    },
+    {
+      "title": "Brick Docs",
+      "startUrl": "https://getdutchie.github.io/brick"
+    },
+    {
+      "title": "Supabase Docs",
+      "startUrl": "https://supabase.com/docs"
+    }
+  ]
+}

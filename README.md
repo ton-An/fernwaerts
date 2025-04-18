@@ -58,6 +58,26 @@ A privacy-focused Flutter application that tracks your location history. It has 
 
 Coming soon... (Some things need to be done first. Like adding row level security to the database)
 
+## Optional Setup
+### Setting up Continue (for local LLMs)
+If you’d like to use `Continue` for AI-assisted coding, you can optionally configure it for this project.
+
+#### Prerequisites
+
+- Ollama
+- VSCode
+
+1. **Install Continue**:
+   - Install the [Continue VSCode extension](https://marketplace.visualstudio.com/items?itemName=Continue.continue).
+
+2. **Pull the recommended models** 
+   - `ollama pull codellama:13b-code-q4_K_M && ollama pull nomic-embed-text:latest`
+   - These are the models I have had the best results with. Depending on your PCs performance, there might be better options (my machine is a MacBook Pro M3 Max 128GB)
+
+3. **Configure Continue to use this project's continue config**:
+   - Ensure that you are using the deprecated JSON config globally. Otherwise this project's config (.continuerc.json) doesn't apply 
+   - The configuration includes the recommended models and documentation
+
 ## Documentation
 
 Comprehensive documentation is available at our [documentation site](https://ton-an.github.io/fernwaerts/). (In very early stages)
