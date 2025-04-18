@@ -2,6 +2,7 @@
 create or replace function public.user_roles_hook(event jsonb)
 returns jsonb
 language plpgsql
+set search_path = ''
 stable
 as $$
   declare
