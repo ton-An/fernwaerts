@@ -1,3 +1,4 @@
+-- ToDo: Maybe harden the data api by dropping the public schema and creating our own (see: https://supabase.com/docs/guides/database/hardening-data-api)
 -- Custom types
 create type public.app_role as enum ('admin', 'user');
 
