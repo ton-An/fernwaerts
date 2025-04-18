@@ -30,8 +30,16 @@
       "startUrl": "https://docs.flutter.dev/"
     },
     {
+      "title": "Flutter API Docs",
+      "startUrl": "https://api.flutter.dev/"
+    },
+    {
       "title": "Dart Docs",
       "startUrl": "https://dart.dev/docs"
+    },
+    {
+      "title": "Dart API Docs",
+      "startUrl": "https://api.dart.dev/"
     },
     {
       "title": "webfabrik_theme",
