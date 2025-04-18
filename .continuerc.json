@@ -34,12 +34,160 @@
       "startUrl": "https://dart.dev/docs"
     },
     {
+      "title": "webfabrik_theme",
+      "startUrl": "https://pub.dev/documentation/webfabrik_theme/latest/"
+    },
+    {
       "title": "Brick Docs",
       "startUrl": "https://getdutchie.github.io/brick"
     },
     {
+      "title": "brick_offline_first_with_supabase",
+      "startUrl": "https://pub.dev/documentation/brick_offline_first_with_supabase/latest/"
+    },
+    {
+      "title": "brick_sqlite",
+      "startUrl": "https://pub.dev/documentation/brick_sqlite/latest/"
+    },
+    {
+      "title": "brick_supabase",
+      "startUrl": "https://pub.dev/documentation/brick_supabase/latest/"
+    },
+    {
+      "title": "brick_offline_first_with_supabase_build",
+      "startUrl": "https://pub.dev/documentation/brick_offline_first_with_supabase_build/latest/"
+    },
+    {
       "title": "Supabase Docs",
       "startUrl": "https://supabase.com/docs"
+    },
+    {
+      "title": "supabase_flutter",
+      "startUrl": "https://pub.dev/documentation/supabase_flutter/latest/"
+    },
+    {
+      "title": "mock_supabase_http_client",
+      "startUrl": "https://pub.dev/documentation/mock_supabase_http_client/latest/"
+    },
+    {
+      "title": "flutter_bloc",
+      "startUrl": "https://pub.dev/documentation/flutter_bloc/latest/"
+    },
+    {
+      "title": "get_it",
+      "startUrl": "https://pub.dev/documentation/get_it/latest/"
+    },
+    {
+      "title": "go_router",
+      "startUrl": "https://pub.dev/documentation/go_router/latest/"
+    },
+    {
+      "title": "fpdart",
+      "startUrl": "https://pub.dev/documentation/fpdart/latest/"
+    },
+    {
+      "title": "freezed_annotation",
+      "startUrl": "https://pub.dev/documentation/freezed_annotation/latest/"
+    },
+    {
+      "title": "json_annotation",
+      "startUrl": "https://pub.dev/documentation/json_annotation/latest/"
+    },
+    {
+      "title": "equatable",
+      "startUrl": "https://pub.dev/documentation/equatable/latest/"
+    },
+    {
+      "title": "webfabrik_theme",
+      "startUrl": "https://pub.dev/documentation/webfabrik_theme/latest/"
+    },
+    {
+      "title": "elevated_flex",
+      "startUrl": "https://pub.dev/documentation/elevated_flex/latest/"
+    },
+    {
+      "title": "flutter_carousel_widget",
+      "startUrl": "https://pub.dev/documentation/flutter_carousel_widget/latest/"
+    },
+    {
+      "title": "gap",
+      "startUrl": "https://pub.dev/documentation/gap/latest/"
+    },
+    {
+      "title": "dotted_line",
+      "startUrl": "https://pub.dev/documentation/dotted_line/latest/"
+    },
+    {
+      "title": "simple_shadow",
+      "startUrl": "https://pub.dev/documentation/simple_shadow/latest/"
+    },
+    {
+      "title": "flutter_map",
+      "startUrl": "https://pub.dev/documentation/flutter_map/latest/"
+    },
+    {
+      "title": "latlong2",
+      "startUrl": "https://pub.dev/documentation/latlong2/latest/"
+    },
+    {
+      "title": "dio",
+      "startUrl": "https://pub.dev/documentation/dio/latest/"
+    },
+    {
+      "title": "http",
+      "startUrl": "https://pub.dev/documentation/http/latest/"
+    },
+    {
+      "title": "flutter_secure_storage",
+      "startUrl": "https://pub.dev/documentation/flutter_secure_storage/latest/"
+    },
+    {
+      "title": "sqflite",
+      "startUrl": "https://pub.dev/documentation/sqflite/latest/"
+    },
+    {
+      "title": "video_player",
+      "startUrl": "https://pub.dev/documentation/video_player/latest/"
+    },
+    {
+      "title": "in_date_utils",
+      "startUrl": "https://pub.dev/documentation/in_date_utils/latest/"
+    },
+    {
+      "title": "url_launcher",
+      "startUrl": "https://pub.dev/documentation/url_launcher/latest/"
+    },
+    {
+      "title": "package_info_plus",
+      "startUrl": "https://pub.dev/documentation/package_info_plus/latest/"
+    },
+    {
+      "title": "uuid",
+      "startUrl": "https://pub.dev/documentation/uuid/latest/"
+    },
+    {
+      "title": "super_keyboard",
+      "startUrl": "https://pub.dev/documentation/super_keyboard/latest/"
+    },
+    {
+      "title": "mocktail",
+      "startUrl": "https://pub.dev/documentation/mocktail/latest/"
+    },
+    {
+      "title": "flutter_lints",
+      "startUrl": "https://pub.dev/documentation/flutter_lints/latest/"
+    },
+    {
+      "title": "build_runner",
+      "startUrl": "https://pub.dev/documentation/build_runner/latest/"
+    },
+    {
+      "title": "freezed",
+      "startUrl": "https://pub.dev/documentation/freezed/latest/"
+    },
+    {
+      "title": "json_serializable",
+      "startUrl": "https://pub.dev/documentation/json_serializable/latest/"
     }
   ]
 }
