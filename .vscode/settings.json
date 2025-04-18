@@ -41,5 +41,6 @@
   "deno.enable": true,
   "[sql]": {
     "editor.defaultFormatter": "inferrinizzard.prettier-sql-vscode"
-  }
+  },
+  "Prettier-SQL.keywordCase": "lower"
 }
