@@ -38,5 +38,8 @@
     "http",
     "net"
   ],
-  "deno.enable": true
+  "deno.enable": true,
+  "[sql]": {
+    "editor.defaultFormatter": "inferrinizzard.prettier-sql-vscode"
+  }
 }
