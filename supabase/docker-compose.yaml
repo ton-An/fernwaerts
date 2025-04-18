@@ -5,12 +5,12 @@
 #   Destroy:            docker compose -f docker-compose.yml -f ./dev/docker-compose.dev.yml down -v --remove-orphans
 #   Reset everything:  ./reset.sh
 
-name: supabase
+name: Fernwaerts
 
 services:
-  fernwaerts-migrator:
+  migrator:
     privileged: true # required to run the daemon
-    image: fernwaerts:dev
+    image: fernwaerts-migrator:dev
     environment:
       API_PORT: ${KONG_HTTP_PORT}
       SUPABASE_DB_URL: postgresql://postgres:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
