@@ -1519,11 +1519,10 @@ packages:
   webfabrik_theme:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "66dc0409ee865801d93dd223abd56e927eda0738"
-      url: "https://github.com/ton-An/webfabrik_theme"
-    source: git
+      name: webfabrik_theme
+      sha256: c8ae1fbaaf80de889dae2df9baa6e514e0d9e72b282ea109dfc6c4204613d633
+      url: "https://pub.dev"
+    source: hosted
     version: "0.0.1"
   win32:
     dependency: transitive
