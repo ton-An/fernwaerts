@@ -32,6 +32,8 @@ create table
 
 alter table public.user_roles enable row level security;
 
+create index ix_user_roles_user_id on public.user_roles (user_id);
+
 -- Public Settings
 create table
   public.public_settings (
