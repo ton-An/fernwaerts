@@ -42,5 +42,8 @@
   "[sql]": {
     "editor.defaultFormatter": "inferrinizzard.prettier-sql-vscode"
   },
-  "Prettier-SQL.keywordCase": "lower"
+  "Prettier-SQL.keywordCase": "lower",
+  "continue.pauseCodebaseIndexOnStart": true,
+  "continue.pauseTabAutocompleteOnBattery": true,
+  "continue.telemetryEnabled": false
 }
