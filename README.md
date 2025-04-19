@@ -38,7 +38,7 @@ Comprehensive documentation is available at our [documentation site](https://ton
 
 ## Contributing
 
-I welcome contributions. A contributor guide will be added soon.
+I welcome contributions. The contribution guide is available [here](CONTRIBUTING.md).
 
 ## License
 This project is dual-licensed:
