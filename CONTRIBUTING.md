@@ -3,30 +3,30 @@
 Thank you for your interest in contributing to Fernwärts! This guide will help you understand how to contribute effectively to the project.
 
 ## Table of Contents
-- [Getting Started 🚀](#getting-started-🚀)
-- [Setting Up Your Development Environment ⚙️](#setting-up-your-development-environment-⚙️)
-  - [App Setup 📱](#app-setup-📱)
+- [Getting Started 🚀](#getting-started-)
+- [Setting Up Your Development Environment ⚙️](#setting-up-your-development-environment-)
+  - [App Setup 📱](#app-setup-)
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
     - [App Flavors](#app-flavors)
       - [Available Flavors](#available-flavors)
       - [Running with a Specific Flavor](#running-with-a-specific-flavor)
-  - [Server Setup 🖥️](#server-setup-🖥️)
+  - [Server Setup 🖥️](#server-setup-)
     - [Prerequisites](#prerequisites-1)
     - [Run the Server Locally](#run-the-server-locally)
     - [Build the Migration Containers](#build-the-migration-containers)
-  - [Optional AI-assisted Coding Setup 🤖](#optional-setup-continue-for-ai-assisted-coding-🤖)
+  - [Optional AI-assisted Coding Setup 🤖](#optional-setup-continue-for-ai-assisted-coding-)
 - [Project Architecture 🏗️](#project-architecture-🏗️)
   - [Architecture Layers](#architecture-layers)
   - [Data Flow](#data-flow)
-- [Code Style Guidelines 📝](#code-style-guidelines-📝)
+- [Code Style Guidelines 📝](#code-style-guidelines-)
   - [Architecture Principles](#architecture-principles)
   - [Naming Conventions](#naming-conventions)
   - [Widget Structure](#widget-structure)
-- [Pull Request Process 🔄](#pull-request-process-🔄)
+- [Pull Request Process 🔄](#pull-request-process-)
   - [Commit Message Format](#commit-message-format)
   - [Commit Types](#commit-types)
-- [Testing Guidelines 🧪](#testing-guidelines-🧪)
+- [Testing Guidelines 🧪](#testing-guidelines-)
 
 ## Getting Started 🚀
 
