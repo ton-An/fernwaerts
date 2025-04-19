@@ -23,6 +23,8 @@ Thank you for your interest in contributing to Fernwärts! This guide will help 
   - [Architecture Principles](#architecture-principles)
   - [Naming Conventions](#naming-conventions)
   - [Widget Structure](#widget-structure)
+- [How to Open a Good Issue 📋](#how-to-open-a-good-issue-)
+- [First-time Contributor Checklist ✅](#first-time-contributor-checklist-)
 - [Pull Request Process 🔄](#pull-request-process-)
   - [Commit Message Format](#commit-message-format)
   - [Commit Types](#commit-types)
@@ -212,6 +214,51 @@ calendar/
   _header.dart
   _day_cell.dart
 ```
+
+## How to Open a Good Issue 📋
+
+A good issue makes it easier for the maintainers to understand and address the problem or enhancement. Follow these guidelines when opening a new issue:
+
+### For Bug Reports 🐛
+
+1. **Use a Clear Title**: Briefly describe the issue.
+2. **Environment Details**: 
+   - App version/flavor
+   - Device model/OS version
+   - Flutter version
+   
+3. **Detailed Description**:
+   - What happened
+   - What you expected to happen
+   - Steps to reproduce
+   
+4. **Visual Evidence**: If applicable, add screenshots or videos.
+5. **Related Issues/PRs**: Link to any related issues or pull requests.
+6. **Use Templates**: Always use the provided issue templates when available.
+
+### For Feature Requests 💡
+
+1. **Use a Clear Title**: Summarize the proposed feature.
+2. **Problem Statement**: Describe what problem this feature would solve.
+3. **Proposed Solution**: Outline your idea for implementation.
+4. **Alternatives Considered**: Mention any alternative approaches.
+5. **User Impact**: Explain how this feature would benefit users.
+6. **Mockups**: If possible, include visual mockups or designs.
+
+## First-time Contributor Checklist ✅
+
+Welcome to the Fernwärts project! Here's a checklist to help you make your first contribution:
+
+1. **Read the Documentation**: Make sure you've read this CONTRIBUTING.md file and the project README.
+2. **Set Up Your Environment**: Follow the [Setup Instructions](#setting-up-your-development-environment-%EF%B8%8F).
+3. **Find a Good First Issue**: Look for issues labeled `good first issue` or `help wanted`.
+4. **Ask Questions**: Don't hesitate to ask for clarification in the issue comments.
+5. **Follow Coding Standards**: Ensure your code follows our [Code Style Guidelines](#code-style-guidelines-).
+6. **Test Your Changes**: Run appropriate tests for your changes.
+7. **Use Proper Commit Messages**: Follow our [Commit Message Format](#commit-message-format).
+8. **Submit a Pull Request**: Make sure your PR description explains the changes and references the issue it addresses.
+9. **Respond to Feedback**: Be open to feedback and make requested changes promptly.
+10. **Celebrate**: Your contribution matters, no matter how small! 🎉
 
 ## Pull Request Process 🔄
 
