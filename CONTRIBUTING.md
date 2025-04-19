@@ -30,9 +30,13 @@ Thank you for your interest in contributing to Fernwärts! This guide will help 
   - [Commit Types](#commit-types)
 - [Testing Guidelines 🧪](#testing-guidelines-)
 
+---
+
 ## Getting Started 🚀
 
 Before contributing, please familiarize yourself with the project structure and documentation.
+
+---
 
 ## Setting Up Your Development Environment ⚙️
 
@@ -96,6 +100,8 @@ flutter run --flavor Staging       # For staging testing
 flutter run --flavor Production    # For production testing
 ```
 
+---
+
 ### Server Setup 🖥️
 
 #### Prerequisites
@@ -143,6 +149,8 @@ flutter run --flavor Production    # For production testing
    docker build -t fernwaerts-migrator:dev . && docker build -f Dockerfile.vendor -t fernwaerts-supabase-vendor-migrator:dev .
    ```
 
+---
+
 ### Optional Setup: Continue for AI-assisted Coding 🤖
 
 If you'd like to use `Continue` for AI-powered coding assistance:
@@ -159,6 +167,8 @@ If you'd like to use `Continue` for AI-powered coding assistance:
    ollama pull codellama:13b-code-q4_K_M 
    ollama pull nomic-embed-text:latest
    ```
+
+---
 
 ## Project Architecture 🏗️
 
@@ -190,6 +200,8 @@ The project is divided into three main layers:
 4. **Repositories** communicate with **Data Sources**
 5. **Data Sources** call APIs or access local storage
 
+---
+
 ## Code Style Guidelines 📝
 
 ### Architecture Principles
@@ -214,6 +226,8 @@ calendar/
   _header.dart
   _day_cell.dart
 ```
+
+---
 
 ## How to Open a Good Issue 📋
 
@@ -245,6 +259,8 @@ A good issue makes it easier for the maintainers to understand and address the p
 5. **User Impact**: Explain how this feature would benefit users.
 6. **Mockups**: If possible, include visual mockups or designs.
 
+---
+
 ## First-time Contributor Checklist ✅
 
 Welcome to the Fernwärts project! Here's a checklist to help you make your first contribution:
@@ -259,6 +275,8 @@ Welcome to the Fernwärts project! Here's a checklist to help you make your firs
 8. **Submit a Pull Request**: Make sure your PR description explains the changes and references the issue it addresses.
 9. **Respond to Feedback**: Be open to feedback and make requested changes promptly.
 10. **Celebrate**: Your contribution matters, no matter how small! 🎉
+
+---
 
 ## Pull Request Process 🔄
 
@@ -291,6 +309,8 @@ Welcome to the Fernwärts project! Here's a checklist to help you make your firs
 - **build**: Build system modifications
 - **revert**: Reverting a previous commit
 - **delete**: Deleting files/code/features
+
+---
 
 ## Testing Guidelines 🧪
 
