@@ -7,17 +7,18 @@ WORKDIR /supabase
 RUN npm i supabase --save-dev
 
 # Copy supabase config files
-COPY ./migrations/ /supabase/migrations/
+COPY ./migrations/ migrations/
 
-COPY ./migration_config.toml /supabase/config.toml
+# Copy config.toml
+COPY ./migration_config.toml config.toml
 
-#"echo $POSTGRES_HOST:$POSTGRES_PORT",
-#CMD ["sh", "-c",  "/usr/local/bin/wait-for-it.sh $SUPABASE_DB_URL -- npx supabase start || npx supabase db reset || npx supabase db push --include-seed --db-url $SUPABASE_DB_URL"]
-#CMD ["sh", "-c", "npx supabase start || npx supabase db reset || npx supabase db push --include-seed --db-url $SUPABASE_DB_URL"]
+# Copy edge functions
+COPY ./functions/ functions/
 
 CMD ["sh", "-c", "npx supabase start & \
-  echo $API_PORT; \
+  ls; \
+  cp -r functions/* /functions/; \
   until [ \"$(curl -s -o /dev/null -w '%{http_code}' http://host.docker.internal:$API_PORT)\" = \"401\" ]; do echo 'Waiting for web service...'; sleep 1; done && echo 'Web service is up!'; \
   npx supabase db reset; \
   npx supabase db push --db-url $SUPABASE_DB_URL; \
-  npx supabase stop"]
+  npx supabase stop;"]
