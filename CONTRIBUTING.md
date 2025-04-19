@@ -15,7 +15,7 @@ Thank you for your interest in contributing to Fernwärts! This guide will help 
     - [Prerequisites](#prerequisites-1)
     - [Run the Server Locally](#run-the-server-locally)
     - [Build the Migration Containers](#build-the-migration-containers)
-  - [Optional AI-assisted Coding Setup 🤖](#optional-setup-continue-for-ai-assisted-coding-)
+  - [Optional Setup: Continue for AI-assisted Coding with Local LLMs 🤖](#optional-setup-continue-for-ai-assisted-coding-with-local-llms-)
 - [Project Architecture 🏗️](#project-architecture-%EF%B8%8F)
   - [Architecture Layers](#architecture-layers)
   - [Data Flow](#data-flow)
@@ -151,12 +151,12 @@ flutter run --flavor Production    # For production testing
 
 ---
 
-### Optional Setup: Continue for AI-assisted Coding 🤖
+### Optional Setup: Continue for AI-assisted Coding with Local LLMs 🤖
 
-If you'd like to use `Continue` for AI-powered coding assistance:
+If you'd like to use `Continue` for AI-powered coding assistance with local LLMs:
 
 #### Prerequisites
-- [Ollama](https://ollama.ai/)
+- [Ollama](https://ollama.ai/) (for running local LLMs)
 - VS Code
 
 1. **Install Continue**:
