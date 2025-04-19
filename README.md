@@ -24,59 +24,13 @@ A privacy-focused Flutter application that tracks your location history. It has 
 - **Activity Recognition**: Identifies walking, cycling, running, and driving
 - **Multi-platform**: Available for iOS, Android, macOS, Linux, and Web
 
-## Getting Started (with the App)
+## Downloading the App
 
-### Prerequisites
-
-- Flutter SDK (latest stable version)
-- Dart SDK
-- An IDE (VS Code, Android Studio, etc.)
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/ton-An/fernwaerts.git
-   ```
-
-2. Navigate to the app directory:
-   ```bash
-   cd fernwaerts/app
-   ```
-
-3. Install dependencies:
-   ```bash
-   flutter pub get
-   ```
-
-4. Run the app:
-   ```bash
-   flutter run
-   ```
+Coming very soon!
 
 ## Getting Started (with the Server)
 
-Coming soon... (Some things need to be done first. Like adding row level security to the database)
-
-## Optional Setup
-### Setting up Continue (for local LLMs)
-If you’d like to use `Continue` for AI-assisted coding, you can optionally configure it for this project.
-
-#### Prerequisites
-
-- Ollama
-- VSCode
-
-1. **Install Continue**:
-   - Install the [Continue VSCode extension](https://marketplace.visualstudio.com/items?itemName=Continue.continue).
-
-2. **Pull the recommended models** 
-   - `ollama pull codellama:13b-code-q4_K_M && ollama pull nomic-embed-text:latest`
-   - These are the models I have had the best results with. Depending on your PCs performance, there might be better options (my machine is a MacBook Pro M3 Max 128GB)
-
-3. **Configure Continue to use this project's continue config**:
-   - Ensure that you are using the deprecated JSON config globally. Otherwise this project's config (.continuerc.json) doesn't apply 
-   - The configuration includes the recommended models and documentation
+Coming very soon!
 
 ## Documentation
 
