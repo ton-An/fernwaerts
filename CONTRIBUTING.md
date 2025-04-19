@@ -16,7 +16,7 @@ Thank you for your interest in contributing to Fernwärts! This guide will help 
     - [Run the Server Locally](#run-the-server-locally)
     - [Build the Migration Containers](#build-the-migration-containers)
   - [Optional AI-assisted Coding Setup 🤖](#optional-setup-continue-for-ai-assisted-coding-)
-- [Project Architecture 🏗️](#project-architecture-🏗️)
+- [Project Architecture 🏗️](#project-architecture-)
   - [Architecture Layers](#architecture-layers)
   - [Data Flow](#data-flow)
 - [Code Style Guidelines 📝](#code-style-guidelines-)
