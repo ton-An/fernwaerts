@@ -182,7 +182,8 @@ The project is divided into three main layers:
    - **Models**: Core data structures used across the application
 
 3. **Presentation Layer**:
-   - **UI Components**: Flutter widgets
+   - **Widgets**: Flutter widgets
+   - **Pages**: Pages
    - **State Management**: Cubits (using flutter_bloc)
 
 ### Data Flow
