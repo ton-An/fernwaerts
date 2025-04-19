@@ -9,8 +9,16 @@ Thank you for your interest in contributing to Fernwärts! This guide will help 
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
     - [App Flavors](#app-flavors)
+      - [Understanding App Flavors](#understanding-app-flavors)
+      - [What are flavors?](#what-are-flavors)
+      - [Available Flavors](#available-flavors)
+      - [Running with a Specific Flavor](#running-with-a-specific-flavor)
   - [Server](#server)
+    - [Prerequisites](#prerequisites-1)
+    - [Run the Server Locally](#run-the-server-locally)
+    - [Build the Migration Containers](#build-the-migration-containers)
   - [Optional Setup: Continue for AI-assisted Coding](#optional-setup-continue-for-ai-assisted-coding)
+    - [Prerequisites](#prerequisites-2)
 - [Project Architecture](#project-architecture)
   - [Architecture Layers](#architecture-layers)
   - [Data Flow](#data-flow)
@@ -20,6 +28,7 @@ Thank you for your interest in contributing to Fernwärts! This guide will help 
   - [Widget Structure](#widget-structure)
   - [Required Packages](#required-packages)
 - [Pull Request Process](#pull-request-process)
+  - [Commit Message Format](#commit-message-format)
   - [Commit Types](#commit-types)
 - [Testing Guidelines](#testing-guidelines)
 
@@ -99,6 +108,8 @@ flutter run --flavor Production    # For production testing
 - Supabase CLI
 - Git
 
+### Run the Server Locally
+
 1. Navigate to the supabase directory:
    ```bash
    cd fernwaerts/supabase
@@ -109,16 +120,15 @@ flutter run --flavor Production    # For production testing
    supabase start
    ```
 
-2. Apply migrations:
+3. Apply migrations:
    ```bash
    supabase db reset
    ```
 
-2. Serve edge functions:
+4. Serve edge functions:
    ```bash
    supabase functions serve
    ```
-
 
 ### Build the Migration Containers
 
@@ -226,6 +236,8 @@ The following packages are mandatory for the project:
 2. Write and run tests for new functionality
 3. Update documentation as necessary
 4. Follow the commit message convention:
+
+### Commit Message Format
 
 ```
 [project] <type>(<scope>): <short summary>
