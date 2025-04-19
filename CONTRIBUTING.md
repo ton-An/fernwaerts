@@ -66,7 +66,12 @@ Before contributing, please familiarize yourself with the project structure and 
    flutter pub get
    ```
 
-4. Run the app:
+4. Generate code with build_runner:
+   ```bash
+   flutter pub run build_runner build --delete-conflicting-outputs
+   ```
+
+5. Run the app:
    ```bash
    flutter run --flavor Development
    ```
