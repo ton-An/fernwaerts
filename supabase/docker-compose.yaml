@@ -5,7 +5,7 @@ name: Fernwaerts
 services:
   supabase-vendor-migrator:
     container_name: fernwaerts-supabase-vendor-migrator
-    image: fernwaerts-supabase-vendor-migrator:dev
+    image: antonswebfabrik/fernwaerts-supabase-vendor-migrator:dev
     volumes:
       - ${FERNWAERTS_FOLDER}/supabase_vendor:/supabase_vendor
     restart: "no"
@@ -13,7 +13,7 @@ services:
   migrator:
     privileged: true # required to run the daemon
     container_name: fernwaerts-migrator
-    image: fernwaerts-migrator:dev
+    image: antonswebfabrik/fernwaerts-migrator:dev
     environment:
       API_PORT: ${KONG_HTTP_PORT}
       SUPABASE_DB_URL: postgresql://postgres:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
