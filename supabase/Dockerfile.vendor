@@ -1,9 +1,9 @@
 FROM alpine
 
 # Set working directory
-WORKDIR /supabase
+WORKDIR /vendor
 
 # Copy supabase vendor config files
-COPY ./supabase_vendor/ vendor/
+COPY ./supabase_vendor/ .
 
-CMD ["sh", "-c", "cp -rf vendor/* /supabase_vendor"]
+CMD ["sh", "-c", "cp -rf . /supabase_vendor && chmod -R a+rX /supabase_vendor"]
