@@ -93,6 +93,33 @@ flutter run --flavor Production    # For production testing
 
 ## Server
 
+### Prerequisites
+
+- Docker Desktop
+- Supabase CLI
+- Git
+
+1. Navigate to the supabase directory:
+   ```bash
+   cd fernwaerts/supabase
+   ```
+
+2. Start the local Supabase development environment:
+   ```bash
+   supabase start
+   ```
+
+2. Apply migrations:
+   ```bash
+   supabase db reset
+   ```
+
+2. Serve edge functions:
+   ```bash
+   supabase functions serve
+   ```
+
+
 ### Build the Migration Containers
 
 1. Clone the repository:
