@@ -1,44 +1,44 @@
-# Contributing to Fernwärts
+# Contributing to Fernwärts 🌍
 
 Thank you for your interest in contributing to Fernwärts! This guide will help you understand how to contribute effectively to the project.
 
 ## Table of Contents
 - [Getting Started](#getting-started)
 - [Setting Up Your Development Environment](#setting-up-your-development-environment)
-  - [App](#app)
+  - [App Setup](#app-)
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
     - [App Flavors](#app-flavors)
       - [Understanding App Flavors](#understanding-app-flavors)
-      - [What are flavors?](#what-are-flavors)
       - [Available Flavors](#available-flavors)
       - [Running with a Specific Flavor](#running-with-a-specific-flavor)
-  - [Server](#server)
+  - [Server Setup](#server-)
     - [Prerequisites](#prerequisites-1)
     - [Run the Server Locally](#run-the-server-locally)
     - [Build the Migration Containers](#build-the-migration-containers)
-  - [Optional Setup: Continue for AI-assisted Coding](#optional-setup-continue-for-ai-assisted-coding)
-    - [Prerequisites](#prerequisites-2)
-- [Project Architecture](#project-architecture)
+  - [Optional AI-assisted Coding Setup](#optional-setup-continue-for-ai-assisted-coding-)
+- [Project Architecture](#project-architecture-)
   - [Architecture Layers](#architecture-layers)
+    - [Data Layer](#architecture-layers)
+    - [Domain Layer](#architecture-layers)
+    - [Presentation Layer](#architecture-layers)
   - [Data Flow](#data-flow)
-- [Code Style Guidelines](#code-style-guidelines)
+- [Code Style Guidelines](#code-style-guidelines-)
   - [Architecture Principles](#architecture-principles)
   - [Naming Conventions](#naming-conventions)
   - [Widget Structure](#widget-structure)
-  - [Required Packages](#required-packages)
-- [Pull Request Process](#pull-request-process)
+- [Pull Request Process](#pull-request-process-)
   - [Commit Message Format](#commit-message-format)
   - [Commit Types](#commit-types)
-- [Testing Guidelines](#testing-guidelines)
+- [Testing Guidelines](#testing-guidelines-)
 
-## Getting Started
+## Getting Started 🚀
 
 Before contributing, please familiarize yourself with the project structure and documentation.
 
-## Setting Up Your Development Environment
+## Setting Up Your Development Environment ⚙️
 
-### App
+### App Setup 📱
 
 #### Prerequisites
 
@@ -70,45 +70,49 @@ Before contributing, please familiarize yourself with the project structure and 
    ```
 
 #### App Flavors
+
 ##### Understanding App Flavors
 
 The app uses three different "flavors" (build variants):
 
 ##### What are flavors?
+
 Flavors allow you to create different versions of your app from the same codebase. Each flavor can have its own configuration, such as app name, icon, and API endpoints.
 
 ##### Available Flavors
-1. **Development**
+
+1. **Development** 🛠️
    - Purpose: For local development and testing
    - Package name: Different from production (to allow installation alongside production app)
    - Use when: Writing and testing code on your local machine
 
-2. **Staging**
+2. **Staging** 🧪
    - Purpose: For beta testing and pre-release validation
    - Used for: TestFlight/Play Store beta releases before going to production
    - Use when: Testing the app in a production-like environment before final release
 
-3. **Production**
+3. **Production** 🚀
    - Purpose: The public release version
    - Used for: App Store and Play Store releases
    - Use when: Building the final version for end users
 
 ##### Running with a Specific Flavor
+
 ```bash
 flutter run --flavor Development   # For development
 flutter run --flavor Staging       # For staging testing
 flutter run --flavor Production    # For production testing
 ```
 
-## Server
+### Server Setup 🖥️
 
-### Prerequisites
+#### Prerequisites
 
 - Docker Desktop
 - Supabase CLI
 - Git
 
-### Run the Server Locally
+#### Run the Server Locally
 
 1. Navigate to the supabase directory:
    ```bash
@@ -130,7 +134,7 @@ flutter run --flavor Production    # For production testing
    supabase functions serve
    ```
 
-### Build the Migration Containers
+#### Build the Migration Containers
 
 1. Clone the repository:
    ```bash
@@ -147,11 +151,11 @@ flutter run --flavor Production    # For production testing
    docker build -t fernwaerts-migrator:dev . && docker build -f Dockerfile.vendor -t fernwaerts-supabase-vendor-migrator:dev .
    ```
 
-## Optional Setup: Continue for AI-assisted Coding
+### Optional Setup: Continue for AI-assisted Coding 🤖
 
 If you'd like to use `Continue` for AI-powered coding assistance:
 
-### Prerequisites
+#### Prerequisites
 - [Ollama](https://ollama.ai/)
 - VS Code
 
@@ -164,7 +168,7 @@ If you'd like to use `Continue` for AI-powered coding assistance:
    ollama pull nomic-embed-text:latest
    ```
 
-## Project Architecture
+## Project Architecture 🏗️
 
 Fernwärts follows the **Clean Architecture** pattern to ensure modularity, maintainability, and testability.
 
@@ -172,16 +176,16 @@ Fernwärts follows the **Clean Architecture** pattern to ensure modularity, main
 
 The project is divided into three main layers:
 
-1. **Data Layer**:
+1. **Data Layer** 💾
    - **Repositories**: Decide between local and remote data sources and convert exceptions to Failures
    - **Data Sources**: Handle API communication, local storage, etc.
 
-2. **Domain Layer**:
+2. **Domain Layer** ⚙️
    - **Use Cases**: Contain business logic
    - **Repository Contracts**: Define interfaces for repositories
    - **Models**: Core data structures used across the application
 
-3. **Presentation Layer**:
+3. **Presentation Layer** 🎨
    - **Widgets**: Flutter widgets
    - **Pages**: Pages
    - **State Management**: Cubits (using flutter_bloc)
@@ -194,7 +198,7 @@ The project is divided into three main layers:
 4. **Repositories** communicate with **Data Sources**
 5. **Data Sources** call APIs or access local storage
 
-## Code Style Guidelines
+## Code Style Guidelines 📝
 
 ### Architecture Principles
 
@@ -219,8 +223,7 @@ calendar/
   _day_cell.dart
 ```
 
-
-## Pull Request Process
+## Pull Request Process 🔄
 
 1. Ensure your code follows our style guidelines and doesn't have linter warnings
 2. Write and run tests for new functionality
@@ -252,13 +255,15 @@ calendar/
 - **revert**: Reverting a previous commit
 - **delete**: Deleting files/code/features
 
-## Testing Guidelines
+## Testing Guidelines 🧪
 
 We use the following testing strategy:
 - **Unit Tests**: For business logic and use cases
 
 > 💡 In the future, there will also be Widget and Integration tests
 
-
-Run tests with: `flutter test`
+Run tests with: 
+```bash
+flutter test
+```
 
