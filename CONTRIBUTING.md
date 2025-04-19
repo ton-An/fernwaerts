@@ -15,7 +15,7 @@ Thank you for your interest in contributing to Fernwärts! This guide will help 
     - [Prerequisites](#prerequisites-1)
     - [Run the Server Locally](#run-the-server-locally)
     - [Build the Migration Containers](#build-the-migration-containers)
-  - [Optional Setup: Continue for AI-assisted Coding with Local LLMs 🤖](#optional-setup-continue-for-ai-assisted-coding-with-local-llms-)
+  - [Optional AI-assisted Coding Setup 🤖](#optional-setup-continue-for-ai-assisted-coding-with-local-llms-)
 - [Project Architecture 🏗️](#project-architecture-%EF%B8%8F)
   - [Architecture Layers](#architecture-layers)
   - [Data Flow](#data-flow)
@@ -315,9 +315,9 @@ Welcome to the Fernwärts project! Here's a checklist to help you make your firs
 ## Testing Guidelines 🧪
 
 We use the following testing strategy:
-- **Unit Tests**: For business logic and use cases
+- **Unit Tests**: For domain and data layer
 
-> 💡 In the future, there will also be Widget and Integration tests
+> 💡 In the future, there will also be Widget and Integration tests + maybe Unit Tests for Blocs
 
 Run tests with: 
 ```bash
