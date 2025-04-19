@@ -7,6 +7,7 @@
     "usernamehw.errorlens",
     "Dart-Code.flutter",
     "Supabase.vscode-supabase-extension",
-    "Gruntfuggly.todo-tree"
+    "Gruntfuggly.todo-tree",
+    "tamasfe.even-better-toml"
   ]
 }
