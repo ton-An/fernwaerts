@@ -14,7 +14,7 @@
     <img src="https://codecov.io/gh/ton-An/fernwaerts/branch/main/graph/badge.svg?token=X5F77OEGXS"/>
   </a>
   <a href="LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-blue.svg" />
+    <img src="https://img.shields.io/badge/License-MIT-blue.svg" />
   </a>
   <a href="LICENSE.store">
     <img src="https://img.shields.io/badge/License-Store%20Restricted-red" />
