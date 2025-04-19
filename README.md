@@ -55,7 +55,7 @@ Coming soon for **iOS** and **Android**. Star the repo to stay updated :)
 
 ---
 
-### ⚙️ Getting Started
+### ⚙️ Getting Started with the Server
 
 While we work on a dedicated setup page, devs can jump right in using the [Contributing Guide](CONTRIBUTING.md).
 
