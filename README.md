@@ -36,14 +36,6 @@ Coming very soon!
 
 Comprehensive documentation is available at our [documentation site](https://ton-an.github.io/fernwaerts/). (In very early stages)
 
-## Project Structure
-
-This project follows the Clean Architecture pattern with three primary layers:
-
-- **Data Layer**: Contains repositories and data sources (local and remote)
-- **Domain Layer**: Houses business logic through use cases
-- **Presentation Layer**: Manages UI components and state using Cubits
-
 ## Contributing
 
 I welcome contributions. A contributor guide will be added soon.
