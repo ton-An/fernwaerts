@@ -3,34 +3,30 @@
 Thank you for your interest in contributing to Fernwärts! This guide will help you understand how to contribute effectively to the project.
 
 ## Table of Contents
-- [Getting Started](#getting-started)
-- [Setting Up Your Development Environment](#setting-up-your-development-environment)
-  - [App Setup](#app-)
+- [Getting Started 🚀](#getting-started-🚀)
+- [Setting Up Your Development Environment ⚙️](#setting-up-your-development-environment-⚙️)
+  - [App Setup 📱](#app-setup-📱)
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
     - [App Flavors](#app-flavors)
-      - [Understanding App Flavors](#understanding-app-flavors)
       - [Available Flavors](#available-flavors)
       - [Running with a Specific Flavor](#running-with-a-specific-flavor)
-  - [Server Setup](#server-)
+  - [Server Setup 🖥️](#server-setup-🖥️)
     - [Prerequisites](#prerequisites-1)
     - [Run the Server Locally](#run-the-server-locally)
     - [Build the Migration Containers](#build-the-migration-containers)
-  - [Optional AI-assisted Coding Setup](#optional-setup-continue-for-ai-assisted-coding-)
-- [Project Architecture](#project-architecture-)
+  - [Optional AI-assisted Coding Setup 🤖](#optional-setup-continue-for-ai-assisted-coding-🤖)
+- [Project Architecture 🏗️](#project-architecture-🏗️)
   - [Architecture Layers](#architecture-layers)
-    - [Data Layer](#architecture-layers)
-    - [Domain Layer](#architecture-layers)
-    - [Presentation Layer](#architecture-layers)
   - [Data Flow](#data-flow)
-- [Code Style Guidelines](#code-style-guidelines-)
+- [Code Style Guidelines 📝](#code-style-guidelines-📝)
   - [Architecture Principles](#architecture-principles)
   - [Naming Conventions](#naming-conventions)
   - [Widget Structure](#widget-structure)
-- [Pull Request Process](#pull-request-process-)
+- [Pull Request Process 🔄](#pull-request-process-🔄)
   - [Commit Message Format](#commit-message-format)
   - [Commit Types](#commit-types)
-- [Testing Guidelines](#testing-guidelines-)
+- [Testing Guidelines 🧪](#testing-guidelines-🧪)
 
 ## Getting Started 🚀
 
@@ -70,12 +66,6 @@ Before contributing, please familiarize yourself with the project structure and 
    ```
 
 #### App Flavors
-
-##### Understanding App Flavors
-
-The app uses three different "flavors" (build variants):
-
-##### What are flavors?
 
 Flavors allow you to create different versions of your app from the same codebase. Each flavor can have its own configuration, such as app name, icon, and API endpoints.
 
