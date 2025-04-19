@@ -208,8 +208,6 @@ The project is divided into three main layers:
 - **Classes**: PascalCase (`SignInCubit`, `AuthenticationRepository`)
 - **Methods**: camelCase (`getTokenBundle()`, `signInUser()`)
 - **Variables**: camelCase (`authenticationRepository`)
-- **Constants**: `k` prefix (`kTokenBundleKey`)
-- **Private Members**: `_` prefix (`_saveTokens()`)
 
 ### Widget Structure
 
@@ -221,19 +219,10 @@ calendar/
   _day_cell.dart
 ```
 
-### Required Packages
-
-The following packages are mandatory for the project:
-- `freezed` (for immutable models and unions)
-- `get_it` (for dependency injection)
-- `flutter_bloc` (for state management using Cubits)
-- `go_router` (for routing management)
-- `dartz` (for functional programming and error handling)
-- `mocktail` (for testing and mocking dependencies)
 
 ## Pull Request Process
 
-1. Ensure your code follows our style guidelines
+1. Ensure your code follows our style guidelines and doesn't have linter warnings
 2. Write and run tests for new functionality
 3. Update documentation as necessary
 4. Follow the commit message convention:
@@ -267,8 +256,9 @@ The following packages are mandatory for the project:
 
 We use the following testing strategy:
 - **Unit Tests**: For business logic and use cases
-- **Widget Tests**: For UI components
-- **Integration Tests**: For feature workflows
+
+> 💡 In the future, there will also be Widget and Integration tests
+
 
 Run tests with: `flutter test`
 
