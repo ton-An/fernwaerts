@@ -78,7 +78,7 @@ Before contributing, please familiarize yourself with the project structure and 
 
 #### App Flavors
 
-Flavors allow you to create different versions of your app from the same codebase. Each flavor can have its own configuration, such as app name, icon, and API endpoints.
+Flavors let you build and install multiple versions of Fernwärts side by side, and tell them apart. The flavors differ in app name, icon, and package name (Development flavor).
 
 ##### Available Flavors
 
