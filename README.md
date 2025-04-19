@@ -87,7 +87,7 @@ This project uses a **dual license**:
 - **MIT License** — for open-source use, modification, and distribution.
 - **Proprietary License** — only the original author (Anton Heuchert) may publish the app on the Google Play Store or Apple App Store.
 
-🆓 Publishing to AltStore, Aptoide, or similar *is allowed* under MIT.  
+🆓 Publishing to AltStore, Aptoide, or similar is explicitly allowed under MIT.  
 📜 See [`LICENSE`](LICENSE) and [`LICENSE.store`](LICENSE.store) for full details.
 
 ---
