@@ -398,8 +398,20 @@ services:
     image: supabase/postgres:15.8.1.060
     restart: unless-stopped
     volumes:
-      - ${FERNWAERTS_FOLDER}/supabase_vendor/db/migrations:/docker-entrypoint-initdb.d/migrations:Z
-      - ${FERNWAERTS_FOLDER}/supabase_vendor/db/init-scripts:/docker-entrypoint-initdb.d/init-scripts:Z
+      # ToDo: I would rather cp the vendor files on startup. Have had some permission issues tho, so it's gonna stay like this for now
+      - ${FERNWAERTS_FOLDER}/supabase_vendor/db/migrations/realtime.sql:/docker-entrypoint-initdb.d/migrations/99-realtime.sql:Z
+      # Must be superuser to create event trigger
+      - ${FERNWAERTS_FOLDER}/supabase_vendor/db/init-scripts/webhooks.sql:/docker-entrypoint-initdb.d/init-scripts/98-webhooks.sql:Z
+      # Must be superuser to alter reserved role
+      - ${FERNWAERTS_FOLDER}/supabase_vendor/db/init-scripts/roles.sql:/docker-entrypoint-initdb.d/init-scripts/99-roles.sql:Z
+      # Initialize the database settings with JWT_SECRET and JWT_EXP
+      - ${FERNWAERTS_FOLDER}/supabase_vendor/db/init-scripts/jwt.sql:/docker-entrypoint-initdb.d/init-scripts/99-jwt.sql:Z
+      # Changes required for internal supabase data such as _analytics
+      - ${FERNWAERTS_FOLDER}/supabase_vendor/db/migrations/_supabase.sql:/docker-entrypoint-initdb.d/migrations/97-_supabase.sql:Z
+      # Changes required for Analytics support
+      - ${FERNWAERTS_FOLDER}/supabase_vendor/db/migrations/logs.sql:/docker-entrypoint-initdb.d/migrations/99-logs.sql:Z
+      # Changes required for Pooler support
+      - ${FERNWAERTS_FOLDER}/supabase_vendor/db/migrations/pooler.sql:/docker-entrypoint-initdb.d/migrations/99-pooler.sql:Z
       # PGDATA directory is persisted between restarts
       - ${FERNWAERTS_FOLDER}/db/data:/var/lib/postgresql/data:Z
       # Use named volume to persist pgsodium decryption key between restarts
