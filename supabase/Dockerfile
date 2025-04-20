@@ -16,7 +16,6 @@ COPY ./migration_config.toml config.toml
 COPY ./functions/ functions/
 
 CMD ["sh", "-c", "npx supabase start & \
-  ls; \
   cp -r functions/* /functions/; \
   until [ \"$(curl -s -o /dev/null -w '%{http_code}' http://host.docker.internal:$API_PORT)\" = \"401\" ]; do echo 'Waiting for web service...'; sleep 1; done && echo 'Web service is up!'; \
   npx supabase db reset; \
