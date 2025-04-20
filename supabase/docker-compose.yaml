@@ -14,6 +14,8 @@ services:
     privileged: true # required to run the daemon
     container_name: fernwaerts-migrator
     image: antonswebfabrik/fernwaerts-migrator:dev
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       API_PORT: ${KONG_HTTP_PORT}
       SUPABASE_DB_URL: postgresql://postgres:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
