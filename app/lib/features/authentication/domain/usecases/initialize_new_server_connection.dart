@@ -2,6 +2,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
+import 'package:location_history/core/failures/networking/likely_configuration_failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 
 /// {@template initialize_new_server_connection}
@@ -17,6 +18,7 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 /// {@macro converted_client_exceptions}
 /// - [InvalidUrlFormatFailure]
 /// - [ConnectionFailure]
+/// - [LikelyConfigurationIssueFailure]
 /// {@endtemplate}
 class InitializeNewServerConnection {
   /// {@macro initialize_server_connection}

@@ -4,6 +4,7 @@ import 'package:location_history/core/failures/authentication/weak_password_fail
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
+import 'package:location_history/core/failures/networking/likely_configuration_failure.dart';
 import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
@@ -26,6 +27,7 @@ abstract class AuthenticationRepository {
   /// {@macro converted_client_exceptions}
   /// - [InvalidUrlFormatFailure]
   /// - [ConnectionFailure]
+  /// - [LikelyConfigurationIssueFailure]
   Future<Either<Failure, None>> isServerConnectionValid();
 
   /// Checks if the server is set up.
