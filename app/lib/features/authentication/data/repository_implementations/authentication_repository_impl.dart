@@ -7,6 +7,7 @@ import 'package:location_history/core/failures/authentication/invalid_credential
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
+import 'package:location_history/core/failures/networking/likely_configuration_failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
@@ -68,6 +69,8 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         return const Left(InvalidUrlFormatFailure());
       } else if (exception is PostgrestException) {
         return const Left(ConnectionFailure());
+      } else if (exception.runtimeType.toString() == "_TypeError") {
+        return const Left(LikelyConfigurationIssueFailure());
       }
       rethrow;
     }
