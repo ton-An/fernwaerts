@@ -19,27 +19,31 @@ void main() {
     );
 
     when(
-      () => mockAuthenticationRepository.getSavedServerUrl(),
-    ).thenAnswer((_) async => const Right(tServerUrlString));
+      () => mockAuthenticationRepository.getSavedServerInfo(),
+    ).thenAnswer((_) async => const Right(tServerInfo));
     when(
       () => mockAuthenticationRepository.initializeServerConnection(
-        serverUrl: any(named: 'serverUrl'),
+        serverInfo: any(named: 'serverInfo'),
       ),
     ).thenAnswer((_) async => const Right(None()));
   });
 
-  test('should get the saved server url', () async {
+  setUpAll(() {
+    registerFallbackValue(tServerInfo);
+  });
+
+  test('should get the saved server info', () async {
     // act
     await initializeSavedServerConnection();
 
     // assert
-    verify(() => mockAuthenticationRepository.getSavedServerUrl());
+    verify(() => mockAuthenticationRepository.getSavedServerInfo());
   });
 
-  test('should relay Failures from getting saved server url', () async {
+  test('should relay Failures from getting saved server info', () async {
     // arrange
     when(
-      () => mockAuthenticationRepository.getSavedServerUrl(),
+      () => mockAuthenticationRepository.getSavedServerInfo(),
     ).thenAnswer((_) async => const Left(StorageReadFailure()));
 
     // act
@@ -56,7 +60,7 @@ void main() {
     // assert
     verify(
       () => mockAuthenticationRepository.initializeServerConnection(
-        serverUrl: tServerUrlString,
+        serverInfo: tServerInfo,
       ),
     );
     expect(result, const Right(None()));
@@ -66,7 +70,7 @@ void main() {
     // arrange
     when(
       () => mockAuthenticationRepository.initializeServerConnection(
-        serverUrl: any(named: 'serverUrl'),
+        serverInfo: any(named: 'serverInfo'),
       ),
     ).thenAnswer((_) async => const Left(SendTimeoutFailure()));
 

@@ -4,12 +4,19 @@ import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
+import 'package:location_history/features/authentication/domain/models/server_info.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'mocks.dart';
 
 const String tServerUrlString = 'https://coolness_checks.com';
 const String tServerCallPath = '/is_ted_cool';
+const String tAnonKey = 'psssttttt';
+const ServerInfo tServerInfo = ServerInfo(
+  url: tServerUrlString,
+  anonKey: tAnonKey,
+);
+
 final Uri tServerUrl = Uri.parse(tServerUrlString + tServerCallPath);
 
 final Map<String, dynamic> tRequestBody = {'name': 'Ted'};
@@ -42,6 +49,10 @@ const tNullResponseData = null;
 
 final tIsServerSetUpResponseData = {
   'data': {'is_server_set_up': true},
+};
+
+final tGetAnonKeyResponseData = {
+  'data': {'anon_key': tAnonKey},
 };
 
 final DioException tBadResponseDioException = DioException.badResponse(

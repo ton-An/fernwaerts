@@ -5,18 +5,21 @@
 
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
+import 'package:location_history/features/authentication/domain/models/server_info.dart';
 
 abstract class AuthenticationLocalDataSource {
   const AuthenticationLocalDataSource();
 
-  /// Gets the saved server URL.
+  /// Gets the saved server Info
   ///
   /// Returns:
-  /// - [String?] the saved server URL, or [null] if none is found.
+  /// - [ServerInfo] the saved server info
   ///
   /// Throws:
   /// - [PlatformException]
-  Future<String?> getSavedServerUrl();
+  /// - [NoSavedServerFailure]
+  Future<ServerInfo> getSavedServerInfo();
 
   /// Removes the saved server
   ///
@@ -24,14 +27,14 @@ abstract class AuthenticationLocalDataSource {
   /// - [PlatformException]
   Future<void> removeSavedServer();
 
-  /// Saves the provided server url
+  /// Saves the provided server info
   ///
   /// Parameters:
-  /// - [String] serverUrl
+  /// - [ServerInfo] serverInfo
   ///
   /// Throws:
   /// - [PlatformException]
-  Future<void> saveServerUrl({required String serverUrl});
+  Future<void> saveServerInfo({required ServerInfo serverInfo});
 }
 
 class AuthLocalDataSourceImpl extends AuthenticationLocalDataSource {
@@ -40,21 +43,31 @@ class AuthLocalDataSourceImpl extends AuthenticationLocalDataSource {
   final FlutterSecureStorage secureStorage;
 
   static const String _serverUrlKey = 'server_url';
+  static const String _anonKey = 'anon_key';
 
   @override
-  Future<String?> getSavedServerUrl() async {
+  Future<ServerInfo> getSavedServerInfo() async {
     final String? serverUrl = await secureStorage.read(key: _serverUrlKey);
+    final String? anonKey = await secureStorage.read(key: _anonKey);
 
-    return serverUrl;
+    if (serverUrl == null || anonKey == null) {
+      throw const NoSavedServerFailure();
+    }
+
+    final ServerInfo serverInfo = ServerInfo(url: serverUrl, anonKey: anonKey);
+
+    return serverInfo;
   }
 
   @override
   Future<void> removeSavedServer() async {
     await secureStorage.delete(key: _serverUrlKey);
+    await secureStorage.delete(key: _anonKey);
   }
 
   @override
-  Future<void> saveServerUrl({required String serverUrl}) async {
-    await secureStorage.write(key: _serverUrlKey, value: serverUrl);
+  Future<void> saveServerInfo({required ServerInfo serverInfo}) async {
+    await secureStorage.write(key: _serverUrlKey, value: serverInfo.url);
+    await secureStorage.write(key: _anonKey, value: serverInfo.anonKey);
   }
 }

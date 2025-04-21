@@ -1,5 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
+import 'package:location_history/features/authentication/domain/models/server_info.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 
 /*
@@ -28,25 +29,27 @@ class SignIn {
   Future<Either<Failure, None>> call({
     required String email,
     required String password,
-    required String serverUrl,
+    required ServerInfo serverInfo,
   }) {
-    return _signIn(email: email, password: password, serverUrl: serverUrl);
+    return _signIn(email: email, password: password, serverInfo: serverInfo);
   }
 
   Future<Either<Failure, None>> _signIn({
     required String email,
     required String password,
-    required String serverUrl,
+    required ServerInfo serverInfo,
   }) async {
     final Either<Failure, None> signInEither = await authenticationRepository
         .signIn(email: email, password: password);
 
     return signInEither.fold(Left.new, (None none) {
-      return _saveServerUrl(serverUrl: serverUrl);
+      return _saveServerInfo(serverInfo: serverInfo);
     });
   }
 
-  Future<Either<Failure, None>> _saveServerUrl({required String serverUrl}) {
-    return authenticationRepository.saveServerUrl(serverUrl: serverUrl);
+  Future<Either<Failure, None>> _saveServerInfo({
+    required ServerInfo serverInfo,
+  }) {
+    return authenticationRepository.saveServerInfo(serverInfo: serverInfo);
   }
 }

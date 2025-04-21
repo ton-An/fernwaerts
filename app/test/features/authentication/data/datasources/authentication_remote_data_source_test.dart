@@ -36,6 +36,7 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(tServerUrl);
+    registerFallbackValue(tServerInfo);
   });
 
   tearDown(() {
@@ -47,19 +48,24 @@ void main() {
   });
 
   group('isServerConnectionValid()', () {
-    setUp(() async {
-      await mockSupabaseClient
-          .from('public_settings')
-          .insert(tPublicSettingsMap);
+    setUp(() {
+      when(
+        () => mockServerRemoteHandler.get(url: any(named: 'url')),
+      ).thenAnswer((_) async => tGetAnonKeyResponseData);
     });
 
     test('should check if the connection to the server is valid', () async {
-      // act & assert
-      try {
-        await authRemoteDataSourceImpl.isServerConnectionValid();
-      } catch (e) {
-        fail("Select operation on 'public_settings' db table failed\n$e");
-      }
+      // act
+      await authRemoteDataSourceImpl.isServerConnectionValid(
+        serverUrl: tServerUrlString,
+      );
+
+      // assert
+      verify(
+        () => mockServerRemoteHandler.get(
+          url: Uri.parse(tServerUrlString + UrlPathConstants.health),
+        ),
+      );
     });
   });
 
@@ -88,8 +94,9 @@ void main() {
   group('initializeServerConnection()', () {
     setUp(() {
       when(
-        () =>
-            mockSupabaseHandler.initialize(serverUrl: any(named: 'serverUrl')),
+        () => mockSupabaseHandler.initialize(
+          serverInfo: any(named: 'serverInfo'),
+        ),
       ).thenAnswer((_) async => tMockSupabase);
       when(
         () => mockSupabaseHandler.dispose(),
@@ -99,7 +106,7 @@ void main() {
     test('should dispose the old server connection', () async {
       // act
       await authRemoteDataSourceImpl.initializeServerConnection(
-        serverUrl: tServerUrlString,
+        serverInfo: tServerInfo,
       );
 
       // assert
@@ -109,11 +116,11 @@ void main() {
     test('should initialize the new server connection', () async {
       // act
       await authRemoteDataSourceImpl.initializeServerConnection(
-        serverUrl: tServerUrlString,
+        serverInfo: tServerInfo,
       );
 
       // assert
-      verify(() => mockSupabaseHandler.initialize(serverUrl: tServerUrlString));
+      verify(() => mockSupabaseHandler.initialize(serverInfo: tServerInfo));
     });
 
     test(
@@ -122,13 +129,11 @@ void main() {
         when(() => mockSupabaseHandler.dispose()).thenThrow(Exception());
         // act
         await authRemoteDataSourceImpl.initializeServerConnection(
-          serverUrl: tServerUrlString,
+          serverInfo: tServerInfo,
         );
 
         // assert
-        verify(
-          () => mockSupabaseHandler.initialize(serverUrl: tServerUrlString),
-        );
+        verify(() => mockSupabaseHandler.initialize(serverInfo: tServerInfo));
       },
     );
   });
@@ -197,5 +202,27 @@ void main() {
   group('signOut()', () {
     // ToDo: uncomment this test when the mock_supabase_http_client package supports mocking auth
     // test('should sign out the user', () {});
+  });
+
+  group('getAnonKeyFromServer()', () {
+    setUp(() {
+      when(
+        () => mockServerRemoteHandler.get(url: any(named: 'url')),
+      ).thenAnswer((_) async => tGetAnonKeyResponseData);
+    });
+
+    test('should get the anon key from the server', () async {
+      // act
+      await authRemoteDataSourceImpl.getAnonKeyFromServer(
+        serverUrl: tServerUrlString,
+      );
+
+      // assert
+      verify(
+        () => mockServerRemoteHandler.get(
+          url: Uri.parse(tServerUrlString + UrlPathConstants.getAnonKey),
+        ),
+      );
+    });
   });
 }

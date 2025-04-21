@@ -32,11 +32,15 @@ void main() {
     ).thenAnswer((_) async => const Right(None()));
     when(
       () => mockSignIn(
+        serverInfo: any(named: 'serverInfo'),
         email: any(named: 'email'),
         password: any(named: 'password'),
-        serverUrl: any(named: 'serverUrl'),
       ),
     ).thenAnswer((_) async => const Right(None()));
+  });
+
+  setUpAll(() {
+    registerFallbackValue(tServerInfo);
   });
 
   test(
@@ -44,7 +48,7 @@ void main() {
     () async {
       // act
       final result = await signUpInitialAdmin(
-        serverUrl: tServerUrlString,
+        serverInfo: tServerInfo,
         username: tUsername,
         email: tEmail,
         password: tPassword,
@@ -59,7 +63,7 @@ void main() {
   test('should sign up the initial admin user', () async {
     // act
     await signUpInitialAdmin(
-      serverUrl: tServerUrlString,
+      serverInfo: tServerInfo,
       username: tUsername,
       email: tEmail,
       password: tPassword,
@@ -91,7 +95,7 @@ void main() {
 
       // act
       final result = await signUpInitialAdmin(
-        serverUrl: tServerUrlString,
+        serverInfo: tServerInfo,
         username: tUsername,
         email: tEmail,
         password: tPassword,
@@ -106,7 +110,7 @@ void main() {
   test('should sign in the newly created user and return None', () async {
     // act
     final result = await signUpInitialAdmin(
-      serverUrl: tServerUrlString,
+      serverInfo: tServerInfo,
       username: tUsername,
       email: tEmail,
       password: tPassword,
@@ -116,9 +120,9 @@ void main() {
     // assert
     verify(
       () => mockSignIn(
+        serverInfo: tServerInfo,
         email: tEmail,
         password: tPassword,
-        serverUrl: tServerUrlString,
       ),
     );
     expect(result, const Right(None()));
@@ -127,15 +131,15 @@ void main() {
   test('should relay Failures from signing in', () async {
     when(
       () => mockSignIn(
+        serverInfo: tServerInfo,
         email: any(named: 'email'),
         password: any(named: 'password'),
-        serverUrl: any(named: 'serverUrl'),
       ),
     ).thenAnswer((_) async => const Left(SendTimeoutFailure()));
 
     // act
     final result = await signUpInitialAdmin(
-      serverUrl: tServerUrlString,
+      serverInfo: tServerInfo,
       username: tUsername,
       email: tEmail,
       password: tPassword,

@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/features/authentication/domain/usecases/has_server_connection_saved.dart';
 import 'package:mocktail/mocktail.dart';
@@ -18,29 +19,29 @@ void main() {
     );
 
     when(
-      () => mockAuthenticationRepository.getSavedServerUrl(),
-    ).thenAnswer((_) async => const Right(tServerUrlString));
+      () => mockAuthenticationRepository.getSavedServerInfo(),
+    ).thenAnswer((_) async => const Right(tServerInfo));
   });
 
   test(
-    'should get the saved server url and return true if the url is not null',
+    'should get the saved server info and return true if the url is not null',
     () async {
       // act
       final result = await hasServerConnectionSaved();
 
       // assert
-      verify(() => mockAuthenticationRepository.getSavedServerUrl());
+      verify(() => mockAuthenticationRepository.getSavedServerInfo());
       expect(result, const Right(true));
     },
   );
 
   test(
-    'should get the saved server url and return false if the url is null',
+    'should get the saved server info and return false if a NoSavedServerFailure is returned',
     () async {
       // arrange
       when(
-        () => mockAuthenticationRepository.getSavedServerUrl(),
-      ).thenAnswer((_) async => const Right(null));
+        () => mockAuthenticationRepository.getSavedServerInfo(),
+      ).thenAnswer((_) async => const Left(NoSavedServerFailure()));
 
       // act
       final result = await hasServerConnectionSaved();
@@ -50,10 +51,10 @@ void main() {
     },
   );
 
-  test('should relay Failures from getting the saved server url', () async {
+  test('should relay Failures from getting the saved server info', () async {
     // arrange
     when(
-      () => mockAuthenticationRepository.getSavedServerUrl(),
+      () => mockAuthenticationRepository.getSavedServerInfo(),
     ).thenAnswer((_) async => const Left(StorageReadFailure()));
 
     // act

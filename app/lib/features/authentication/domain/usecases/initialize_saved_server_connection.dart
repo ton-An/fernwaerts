@@ -4,6 +4,7 @@ import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
+import 'package:location_history/features/authentication/domain/models/server_info.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 
 /// {@template initialize_saved_server_connection}
@@ -26,27 +27,23 @@ class InitializeSavedServerConnection {
 
   /// {@macro initialize_saved_server_connection}
   Future<Either<Failure, None>> call() {
-    return _getSavedServerUrl();
+    return _getSavedServerInfo();
   }
 
-  Future<Either<Failure, None>> _getSavedServerUrl() async {
-    final Either<Failure, String?> savedUrlEither =
-        await authenticationRepository.getSavedServerUrl();
+  Future<Either<Failure, None>> _getSavedServerInfo() async {
+    final Either<Failure, ServerInfo> savedUrlEither =
+        await authenticationRepository.getSavedServerInfo();
 
-    return savedUrlEither.fold(Left.new, (String? serverUrl) {
-      if (serverUrl == null) {
-        return const Left(NoSavedServerFailure());
-      }
-
-      return _initializeServerConnection(serverUrl: serverUrl);
+    return savedUrlEither.fold(Left.new, (ServerInfo serverInfo) {
+      return _initializeServerConnection(serverInfo: serverInfo);
     });
   }
 
   Future<Either<Failure, None>> _initializeServerConnection({
-    required String serverUrl,
+    required ServerInfo serverInfo,
   }) {
     return authenticationRepository.initializeServerConnection(
-      serverUrl: serverUrl,
+      serverInfo: serverInfo,
     );
   }
 }

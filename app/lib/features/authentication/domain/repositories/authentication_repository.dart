@@ -1,14 +1,13 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/authentication/invalid_credentials_failure.dart';
+import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
-import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
-import 'package:location_history/core/failures/networking/likely_configuration_failure.dart';
-import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
+import 'package:location_history/features/authentication/domain/models/server_info.dart';
 
 /*
   To-Do:
@@ -18,17 +17,17 @@ import 'package:location_history/features/authentication/domain/models/authentic
 abstract class AuthenticationRepository {
   /// Checks if the server is reachable.
   ///
-  /// The server needs to be initialized before this method is called.
+  /// Parameters:
+  /// - [String] serverUrl: The URL of the server to connect to
   ///
   /// Return:
   /// - [None] if the server is reachable.
   ///
   /// Failures:
-  /// {@macro converted_client_exceptions}
-  /// - [InvalidUrlFormatFailure]
-  /// - [ConnectionFailure]
-  /// - [LikelyConfigurationIssueFailure]
-  Future<Either<Failure, None>> isServerConnectionValid();
+  /// {@macro converted_dio_exceptions}
+  Future<Either<Failure, None>> isServerConnectionValid({
+    required String serverUrl,
+  });
 
   /// Checks if the server is set up.
   ///
@@ -45,22 +44,21 @@ abstract class AuthenticationRepository {
   /// Initializes the connection to the server
   ///
   /// Parameters:
-  /// - [String] serverUrl: The URL of the server to connect to.
+  /// - [ServerInfo] serverInfo: The URL of the server to connect to.
   Future<Either<Failure, None>> initializeServerConnection({
-    required String serverUrl,
+    required ServerInfo serverInfo,
   });
 
   /// Signs up the initial admin user
   ///
   /// Parameters:
-  /// - [String] serverUrl: The URL of the server to connect to
+  /// - [ServerInfo] serverInfo: The URL of the server to connect to
   /// - [String] username: The username of the admin user
   /// - [String] email: The email of the admin user
   /// - [String] password: The password of the admin user
   ///
   /// Failures:
   /// - [WeakPasswordFailure]
-  /// - [UnknownRequestFailure]
   /// {@macro converted_dio_exceptions}
   Future<Either<Failure, None>> signUpInitialAdmin({
     required String serverUrl,
@@ -69,11 +67,12 @@ abstract class AuthenticationRepository {
     required String password,
   });
 
-  /// Gets the saved server url
+  /// Gets the saved server info
   ///
   /// Failures:
   /// - [StorageReadFailure]
-  Future<Either<Failure, String?>> getSavedServerUrl();
+  /// - [NoSavedServerFailure]
+  Future<Either<Failure, ServerInfo>> getSavedServerInfo();
 
   /// Checks if the user is signed in
   ///
@@ -110,12 +109,28 @@ abstract class AuthenticationRepository {
   /// - [StorageWriteFailure]
   Future<Either<Failure, None>> removeSavedServer();
 
-  /// Saves the provided server url
+  /// Saves the provided server info
+  ///
+  /// Parameters:
+  /// - [ServerInfo] serverInfo
+  ///
+  /// Failures:
+  /// - [StorageWriteFailure]
+  Future<Either<Failure, None>> saveServerInfo({
+    required ServerInfo serverInfo,
+  });
+
+  /// Gets the Supabase anon key from the server
   ///
   /// Parameters:
   /// - [String] serverUrl
   ///
+  /// Returns:
+  /// - a [String] containing the Supabase anon key
+  ///
   /// Failures:
-  /// - [StorageWriteFailure]
-  Future<Either<Failure, None>> saveServerUrl({required String serverUrl});
+  /// {@macro converted_dio_exceptions}
+  Future<Either<Failure, String>> getAnonKeyFromServer({
+    required String serverUrl,
+  });
 }

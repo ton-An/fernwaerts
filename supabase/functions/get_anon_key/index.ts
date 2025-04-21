@@ -17,7 +17,8 @@ Deno.serve(async (req) => {
     throw new Error("Missing Supabase environment variables");
   }
 
-  return new Response(JSON.stringify({ "data": { "anonKey": anonKey } }), {
+  return new Response(JSON.stringify({ "data": { "anon_key": anonKey } }), {
     status: 200,
+    headers: { "Content-Type": "application/json" },
   });
 });

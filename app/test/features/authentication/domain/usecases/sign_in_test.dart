@@ -23,19 +23,19 @@ void main() {
       ),
     ).thenAnswer((_) async => const Right(None()));
     when(
-      () => mockAuthenticationRepository.saveServerUrl(
-        serverUrl: any(named: 'serverUrl'),
+      () => mockAuthenticationRepository.saveServerInfo(
+        serverInfo: any(named: 'serverInfo'),
       ),
     ).thenAnswer((_) async => const Right(None()));
   });
 
+  setUpAll(() {
+    registerFallbackValue(tServerInfo);
+  });
+
   test('should sign in the user', () async {
     // act
-    await signIn(
-      email: tEmail,
-      password: tPassword,
-      serverUrl: tServerUrlString,
-    );
+    await signIn(serverInfo: tServerInfo, email: tEmail, password: tPassword);
 
     // assert
     verify(
@@ -57,45 +57,44 @@ void main() {
 
     // act
     final result = await signIn(
+      serverInfo: tServerInfo,
       email: tEmail,
       password: tPassword,
-      serverUrl: tServerUrlString,
     );
 
     // assert
     expect(result, const Left(SendTimeoutFailure()));
   });
 
-  test('should save the server url and return None', () async {
+  test('should save the server info and return None', () async {
     // act
     final result = await signIn(
+      serverInfo: tServerInfo,
       email: tEmail,
       password: tPassword,
-      serverUrl: tServerUrlString,
     );
 
     // assert
     verify(
-      () => mockAuthenticationRepository.saveServerUrl(
-        serverUrl: tServerUrlString,
-      ),
+      () =>
+          mockAuthenticationRepository.saveServerInfo(serverInfo: tServerInfo),
     );
     expect(result, const Right(None()));
   });
 
-  test('should relay Failures saving the server url', () async {
+  test('should relay Failures saving the server info', () async {
     // arrange
     when(
-      () => mockAuthenticationRepository.saveServerUrl(
-        serverUrl: any(named: 'serverUrl'),
+      () => mockAuthenticationRepository.saveServerInfo(
+        serverInfo: any(named: 'serverInfo'),
       ),
     ).thenAnswer((_) async => const Left(StorageWriteFailure()));
 
     // act
     final result = await signIn(
+      serverInfo: tServerInfo,
       email: tEmail,
       password: tPassword,
-      serverUrl: tServerUrlString,
     );
 
     // assert

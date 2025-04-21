@@ -1,4 +1,5 @@
 import 'package:location_history/core/data/datasources/supabase_offline_first.dart';
+import 'package:location_history/features/authentication/domain/models/server_info.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseHandler {
@@ -6,10 +7,10 @@ class SupabaseHandler {
 
   SupabaseClient getClient() => Supabase.instance.client;
 
-  Future<void> initialize({required String serverUrl}) async {
+  Future<void> initialize({required ServerInfo serverInfo}) async {
     await SupabaseOfflineFirst.initializeSupabaseAndConfigure(
-      supabaseUrl: serverUrl,
-      supabaseAnonKey: '',
+      supabaseUrl: serverInfo.url,
+      supabaseAnonKey: serverInfo.anonKey,
     );
 
     await SupabaseOfflineFirst().initialize();

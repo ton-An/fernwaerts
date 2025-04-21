@@ -1,6 +1,8 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
+import 'package:location_history/features/authentication/domain/models/server_info.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 
 /*
@@ -29,15 +31,20 @@ class HasServerConnectionSaved {
   }
 
   Future<Either<Failure, bool>> _hasServerConnectionSaved() async {
-    final Either<Failure, String?> savedServerUrlEither =
-        await authenticationRepository.getSavedServerUrl();
+    final Either<Failure, ServerInfo> savedServerInfoEither =
+        await authenticationRepository.getSavedServerInfo();
 
-    return savedServerUrlEither.fold(Left.new, (String? savedServerUrl) {
-      if (savedServerUrl != null) {
+    return savedServerInfoEither.fold(
+      (Failure failure) {
+        if (failure is NoSavedServerFailure) {
+          return const Right(false);
+        }
+
+        return Left(failure);
+      },
+      (ServerInfo savedServerInfo) {
         return const Right(true);
-      }
-
-      return const Right(false);
-    });
+      },
+    );
   }
 }

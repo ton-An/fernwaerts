@@ -2,6 +2,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/authentication/password_mismatch_failure.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
+import 'package:location_history/features/authentication/domain/models/server_info.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
 
@@ -32,7 +33,7 @@ class SignUpInitialAdmin {
   final SignIn signIn;
 
   Future<Either<Failure, None>> call({
-    required String serverUrl,
+    required ServerInfo serverInfo,
     required String username,
     required String email,
     required String password,
@@ -43,16 +44,16 @@ class SignUpInitialAdmin {
     }
 
     return _signUpInitialAdmin(
-      serverUrl: serverUrl,
       username: username,
       email: email,
       password: password,
       repeatedPassword: repeatedPassword,
+      serverInfo: serverInfo,
     );
   }
 
   Future<Either<Failure, None>> _signUpInitialAdmin({
-    required String serverUrl,
+    required ServerInfo serverInfo,
     required String username,
     required String email,
     required String password,
@@ -60,22 +61,22 @@ class SignUpInitialAdmin {
   }) async {
     final Either<Failure, None> signUpEither = await authenticationRepository
         .signUpInitialAdmin(
-          serverUrl: serverUrl,
+          serverUrl: serverInfo.url,
           username: username,
           email: email,
           password: password,
         );
 
     return signUpEither.fold(Left.new, (None none) {
-      return _signIn(email: email, password: password, serverUrl: serverUrl);
+      return _signIn(email: email, password: password, serverInfo: serverInfo);
     });
   }
 
   Future<Either<Failure, None>> _signIn({
+    required ServerInfo serverInfo,
     required String email,
     required String password,
-    required String serverUrl,
   }) {
-    return signIn(email: email, password: password, serverUrl: serverUrl);
+    return signIn(email: email, password: password, serverInfo: serverInfo);
   }
 }

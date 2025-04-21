@@ -11,9 +11,6 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 /// {@template is_server_set_up}
 /// Checks if the server is set up. This is used to determine if the initial setup needs to be run.
 ///
-/// Parameters:
-/// - [Uri] serverUrl: The URL of the server to check.
-///
 /// Returns:
 /// - a [bool] indicating if the server is set up.
 ///

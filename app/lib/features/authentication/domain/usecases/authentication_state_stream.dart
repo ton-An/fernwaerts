@@ -14,7 +14,7 @@ class AuthenticationStateStream {
   final AuthenticationRepository authenticationRepository;
 
   /// {@macro authentication_state_stream}
-  Stream<AuthenticationState> call({required String serverUrl}) {
+  Stream<AuthenticationState> call() {
     return authenticationRepository.authenticationStateStream();
   }
 }

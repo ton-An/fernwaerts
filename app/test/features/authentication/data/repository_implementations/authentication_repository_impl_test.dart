@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/bad_response_failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
-import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
@@ -32,6 +32,7 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(tServerUrl);
+    registerFallbackValue(tServerInfo);
     registerFallbackValue(tBadResponseDioException);
     registerFallbackValue(tTimeoutClientException);
     registerFallbackValue(tStackTrace);
@@ -101,89 +102,64 @@ void main() {
   group('isServerConnectionValid()', () {
     setUp(() {
       when(
-        () => mockAuthRemoteDataSource.isServerConnectionValid(),
+        () => mockAuthRemoteDataSource.isServerConnectionValid(
+          serverUrl: any(named: 'serverUrl'),
+        ),
       ).thenAnswer((_) => Future.value());
     });
 
     test('should check if the server is reachable and return None', () async {
       // act
-      final result =
-          await authenticationRepositoryImpl.isServerConnectionValid();
+      final result = await authenticationRepositoryImpl.isServerConnectionValid(
+        serverUrl: tServerUrlString,
+      );
 
       // assert
-      verify(() => mockAuthRemoteDataSource.isServerConnectionValid());
+      verify(
+        () => mockAuthRemoteDataSource.isServerConnectionValid(
+          serverUrl: any(named: 'serverUrl'),
+        ),
+      );
       expect(result, const Right<Failure, None>(None()));
     });
 
-    test(
-      'should convert ClientExceptions to Failures and return them',
-      () async {
-        // arrange
-        when(
-          () => mockAuthRemoteDataSource.isServerConnectionValid(),
-        ).thenThrow(tTimeoutClientException);
-        when(
-          () => mockRepositoryFailureHandler.clientExceptionConverter(
-            clientException: any(named: 'clientException'),
-            stackTrace: any(named: 'stackTrace'),
-          ),
-        ).thenReturn(const SendTimeoutFailure());
-
-        // act
-        final result =
-            await authenticationRepositoryImpl.isServerConnectionValid();
-
-        // assert
-        verify(
-          () => mockRepositoryFailureHandler.clientExceptionConverter(
-            clientException: tTimeoutClientException,
-            stackTrace: any(named: 'stackTrace'),
-          ),
-        );
-        expect(result, const Left(SendTimeoutFailure()));
-      },
-    );
-
-    test('should convert ArgumentError to InvalidUrlFormatFailure', () async {
+    test('should convert DioExceptions to Failures', () async {
       // arrange
       when(
-        () => mockAuthRemoteDataSource.isServerConnectionValid(),
-      ).thenThrow(tArgumentError);
+        () => mockAuthRemoteDataSource.isServerConnectionValid(
+          serverUrl: any(named: 'serverUrl'),
+        ),
+      ).thenThrow(tBadResponseDioException);
+      when(
+        () => mockRepositoryFailureHandler.dioExceptionMapper(
+          dioException: any(named: 'dioException'),
+        ),
+      ).thenReturn(const BadResponseFailure());
 
       // act
-      final result =
-          await authenticationRepositoryImpl.isServerConnectionValid();
+      final result = await authenticationRepositoryImpl.isServerConnectionValid(
+        serverUrl: tServerUrlString,
+      );
 
       // assert
-      expect(result, const Left<Failure, bool>(InvalidUrlFormatFailure()));
+      expect(result, const Left<Failure, bool>(BadResponseFailure()));
     });
 
-    test('should convert FormatException to InvalidUrlFormatFailure', () async {
+    test('should relay Failures', () async {
       // arrange
       when(
-        () => mockAuthRemoteDataSource.isServerConnectionValid(),
-      ).thenThrow(tFormatException);
+        () => mockAuthRemoteDataSource.isServerConnectionValid(
+          serverUrl: any(named: 'serverUrl'),
+        ),
+      ).thenThrow(tUnknownRequestFailure);
 
       // act
-      final result =
-          await authenticationRepositoryImpl.isServerConnectionValid();
+      final result = await authenticationRepositoryImpl.isServerConnectionValid(
+        serverUrl: tServerUrlString,
+      );
 
       // assert
-      expect(result, const Left<Failure, bool>(InvalidUrlFormatFailure()));
-    });
-
-    test('should convert PostgresException to ConnectionFailure', () async {
-      // arrange
-      when(
-        () => mockAuthRemoteDataSource.isServerConnectionValid(),
-      ).thenThrow(tPostgresException);
-
-      // act
-      final result =
-          await authenticationRepositoryImpl.isServerConnectionValid();
-
-      // assert
-      expect(result, const Left<Failure, bool>(ConnectionFailure()));
+      expect(result, const Left<Failure, bool>(tUnknownRequestFailure));
     });
   });
 
@@ -274,35 +250,48 @@ void main() {
     });
   });
 
-  group('getSavedServerUrl()', () {
+  group('getSavedServerInfo()', () {
     setUp(() {
       when(
-        () => mockAuthLocalDataSource.getSavedServerUrl(),
-      ).thenAnswer((_) async => tServerUrlString);
+        () => mockAuthLocalDataSource.getSavedServerInfo(),
+      ).thenAnswer((_) async => tServerInfo);
     });
 
-    test('should get the saved server url and return it', () async {
+    test('should get the saved server info and return it', () async {
       // act
-      final result = await authenticationRepositoryImpl.getSavedServerUrl();
+      final result = await authenticationRepositoryImpl.getSavedServerInfo();
 
       // assert
-      expect(result, const Right(tServerUrlString));
+      expect(result, const Right(tServerInfo));
     });
 
     test(
       'should return a StorageReadFailure if a PlatformException is thrown',
       () async {
         when(
-          () => mockAuthLocalDataSource.getSavedServerUrl(),
+          () => mockAuthLocalDataSource.getSavedServerInfo(),
         ).thenThrow(tPlatformException);
 
         // act
-        final result = await authenticationRepositoryImpl.getSavedServerUrl();
+        final result = await authenticationRepositoryImpl.getSavedServerInfo();
 
         // assert
         expect(result, const Left(StorageReadFailure()));
       },
     );
+
+    test('should relay Failures', () async {
+      // arrange
+      when(
+        () => mockAuthLocalDataSource.getSavedServerInfo(),
+      ).thenThrow(const NoSavedServerFailure());
+
+      // act
+      final result = await authenticationRepositoryImpl.getSavedServerInfo();
+
+      // assert
+      expect(result, const Left<Failure, bool>(NoSavedServerFailure()));
+    });
   });
 
   group('signIn()', () {
@@ -398,25 +387,24 @@ void main() {
     );
   });
 
-  group('saveServerUrl()', () {
+  group('saveServerInfo()', () {
     setUp(() {
       when(
-        () => mockAuthLocalDataSource.saveServerUrl(
-          serverUrl: any(named: 'serverUrl'),
+        () => mockAuthLocalDataSource.saveServerInfo(
+          serverInfo: any(named: 'serverInfo'),
         ),
       ).thenAnswer((_) => Future.value());
     });
 
-    test('should save the server url and return None', () async {
+    test('should save the server info and return None', () async {
       // act
-      final result = await authenticationRepositoryImpl.saveServerUrl(
-        serverUrl: tServerUrlString,
+      final result = await authenticationRepositoryImpl.saveServerInfo(
+        serverInfo: tServerInfo,
       );
 
       // assert
       verify(
-        () =>
-            mockAuthLocalDataSource.saveServerUrl(serverUrl: tServerUrlString),
+        () => mockAuthLocalDataSource.saveServerInfo(serverInfo: tServerInfo),
       );
       expect(result, const Right(None()));
     });
@@ -426,19 +414,83 @@ void main() {
       () async {
         // arrange
         when(
-          () => mockAuthLocalDataSource.saveServerUrl(
-            serverUrl: any(named: 'serverUrl'),
+          () => mockAuthLocalDataSource.saveServerInfo(
+            serverInfo: any(named: 'serverInfo'),
           ),
         ).thenThrow(tPlatformException);
 
         // act
-        final result = await authenticationRepositoryImpl.saveServerUrl(
-          serverUrl: tServerUrlString,
+        final result = await authenticationRepositoryImpl.saveServerInfo(
+          serverInfo: tServerInfo,
         );
 
         // assert
         expect(result, const Left(StorageWriteFailure()));
       },
     );
+  });
+
+  group('isServerConnectionValid()', () {
+    setUp(() {
+      when(
+        () => mockAuthRemoteDataSource.getAnonKeyFromServer(
+          serverUrl: any(named: 'serverUrl'),
+        ),
+      ).thenAnswer((_) async => tAnonKey);
+    });
+
+    test('should get the anon key from the server and return it', () async {
+      // act
+      final result = await authenticationRepositoryImpl.getAnonKeyFromServer(
+        serverUrl: tServerUrlString,
+      );
+
+      // assert
+      verify(
+        () => mockAuthRemoteDataSource.getAnonKeyFromServer(
+          serverUrl: tServerUrlString,
+        ),
+      );
+      expect(result, const Right<Failure, String>(tAnonKey));
+    });
+
+    test('should convert DioExceptions to Failures', () async {
+      // arrange
+      when(
+        () => mockAuthRemoteDataSource.getAnonKeyFromServer(
+          serverUrl: tServerUrlString,
+        ),
+      ).thenThrow(tBadResponseDioException);
+      when(
+        () => mockRepositoryFailureHandler.dioExceptionMapper(
+          dioException: any(named: 'dioException'),
+        ),
+      ).thenReturn(const BadResponseFailure());
+
+      // act
+      final result = await authenticationRepositoryImpl.getAnonKeyFromServer(
+        serverUrl: tServerUrlString,
+      );
+
+      // assert
+      expect(result, const Left<Failure, bool>(BadResponseFailure()));
+    });
+
+    test('should relay Failures', () async {
+      // arrange
+      when(
+        () => mockAuthRemoteDataSource.getAnonKeyFromServer(
+          serverUrl: any(named: 'serverUrl'),
+        ),
+      ).thenThrow(tUnknownRequestFailure);
+
+      // act
+      final result = await authenticationRepositoryImpl.getAnonKeyFromServer(
+        serverUrl: tServerUrlString,
+      );
+
+      // assert
+      expect(result, const Left<Failure, bool>(tUnknownRequestFailure));
+    });
   });
 }

@@ -1,13 +1,12 @@
 import 'dart:async';
 
-import 'package:dio/dio.dart';
 import 'package:http/http.dart';
 import 'package:location_history/core/data/datasources/server_remote_handler.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
-import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
 import 'package:location_history/core/misc/url_path_constants.dart';
 import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
+import 'package:location_history/features/authentication/domain/models/server_info.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /*
@@ -20,17 +19,14 @@ abstract class AuthenticationRemoteDataSource {
 
   /// Checks if the server is reachable.
   ///
+  /// Parameters:
+  /// - [String] serverUrl: The URL of the server to connect to
+  ///
   /// Throws:
-  /// - [ClientException]
-  /// - [ArgumentError]
-  /// - [FormatException]
-  /// - [PostgrestException]
-  Future<void> isServerConnectionValid();
+  /// {@macro server_remote_handler_exceptions}
+  Future<void> isServerConnectionValid({required String serverUrl});
 
   /// Checks if the server is set up.
-  ///
-  /// Parameters:
-  /// - [Uri] serverUrl: The URL of the server to check.
   ///
   /// Returns:
   /// - a [bool] indicating if the server is set up.
@@ -43,8 +39,8 @@ abstract class AuthenticationRemoteDataSource {
   /// Initializes the connection to the server
   ///
   /// Parameters:
-  /// - [String] serverUrl: The URL of the server to connect to.
-  Future<void> initializeServerConnection({required String serverUrl});
+  /// - [ServerInfo] serverInfo: The info of the server to connect to
+  Future<void> initializeServerConnection({required ServerInfo serverInfo});
 
   /// Signs up the initial admin user
   ///
@@ -56,8 +52,7 @@ abstract class AuthenticationRemoteDataSource {
   ///
   /// Throws:
   /// - [WeakPasswordFailure]
-  /// - [UnknownRequestFailure
-  /// - [DioException]
+  /// {@macro server_remote_handler_exceptions}
   Future<void> signUpInitialAdmin({
     required String serverUrl,
     required String username,
@@ -90,6 +85,18 @@ abstract class AuthenticationRemoteDataSource {
 
   /// Signs out the current user
   Future<void> signOut();
+
+  /// Gets the server's Supabase anon key
+  ///
+  /// Parameters:
+  /// - [String] serverUrl: The URL of the server to connect to
+  ///
+  /// Returns:
+  /// - a [String] containing the Supabase anon key
+  ///
+  /// Throws:
+  /// {@macro server_remote_handler_exceptions}
+  Future<String> getAnonKeyFromServer({required String serverUrl});
 }
 
 class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
@@ -118,19 +125,21 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
   }
 
   @override
-  Future<void> isServerConnectionValid() async {
-    final SupabaseClient supabaseClient = supabaseHandler.getClient();
-
-    await supabaseClient.from('public_settings').select().single();
+  Future<void> isServerConnectionValid({required String serverUrl}) async {
+    await serverRemoteHandler.get(
+      url: Uri.parse(serverUrl + UrlPathConstants.health),
+    );
   }
 
   @override
-  Future<void> initializeServerConnection({required String serverUrl}) async {
+  Future<void> initializeServerConnection({
+    required ServerInfo serverInfo,
+  }) async {
     try {
       await supabaseHandler.dispose();
     } catch (_) {}
 
-    await supabaseHandler.initialize(serverUrl: serverUrl);
+    await supabaseHandler.initialize(serverInfo: serverInfo);
   }
 
   @override
@@ -200,5 +209,16 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
     final SupabaseClient supabaseClient = supabaseHandler.getClient();
 
     await supabaseClient.auth.signOut();
+  }
+
+  @override
+  Future<String> getAnonKeyFromServer({required String serverUrl}) async {
+    final Map<String, dynamic>? response = await serverRemoteHandler.get(
+      url: Uri.parse(serverUrl + UrlPathConstants.getAnonKey),
+    );
+
+    final String anonKey = response!['data']['anon_key'];
+
+    return anonKey;
   }
 }

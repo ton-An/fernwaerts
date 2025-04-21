@@ -6,13 +6,12 @@ import 'package:location_history/core/data/repository/repository_failure_handler
 import 'package:location_history/core/failures/authentication/invalid_credentials_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
-import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
-import 'package:location_history/core/failures/networking/likely_configuration_failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
+import 'package:location_history/features/authentication/domain/models/server_info.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 /*
@@ -51,36 +50,31 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, None>> isServerConnectionValid() async {
+  Future<Either<Failure, None>> isServerConnectionValid({
+    required String serverUrl,
+  }) async {
     try {
-      await authRemoteDataSource.isServerConnectionValid();
+      await authRemoteDataSource.isServerConnectionValid(serverUrl: serverUrl);
 
       return const Right(None());
-    } catch (exception, stackTrace) {
-      if (exception is ClientException) {
-        final Failure failure = repositoryFailureHandler
-            .clientExceptionConverter(
-              clientException: exception,
-              stackTrace: stackTrace,
-            );
+    } on DioException catch (dioException) {
+      final Failure failure = repositoryFailureHandler.dioExceptionMapper(
+        dioException: dioException,
+      );
 
-        return Left(failure);
-      } else if (exception is ArgumentError || exception is FormatException) {
-        return const Left(InvalidUrlFormatFailure());
-      } else if (exception is PostgrestException) {
-        return const Left(ConnectionFailure());
-      } else if (exception.runtimeType.toString() == "_TypeError") {
-        return const Left(LikelyConfigurationIssueFailure());
-      }
-      rethrow;
+      return Left(failure);
+    } on Failure catch (failure) {
+      return Left(failure);
     }
   }
 
   @override
   Future<Either<Failure, None>> initializeServerConnection({
-    required String serverUrl,
+    required ServerInfo serverInfo,
   }) async {
-    await authRemoteDataSource.initializeServerConnection(serverUrl: serverUrl);
+    await authRemoteDataSource.initializeServerConnection(
+      serverInfo: serverInfo,
+    );
 
     return const Right(None());
   }
@@ -118,14 +112,16 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, String?>> getSavedServerUrl() async {
+  Future<Either<Failure, ServerInfo>> getSavedServerInfo() async {
     try {
-      final String? savedServerUrl =
-          await authLocalDataSource.getSavedServerUrl();
+      final ServerInfo savedServerInfo =
+          await authLocalDataSource.getSavedServerInfo();
 
-      return Right(savedServerUrl);
+      return Right(savedServerInfo);
     } on PlatformException {
       return const Left(StorageReadFailure());
+    } on Failure catch (failure) {
+      return Left(failure);
     }
   }
 
@@ -178,15 +174,36 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, None>> saveServerUrl({
-    required String serverUrl,
+  Future<Either<Failure, None>> saveServerInfo({
+    required ServerInfo serverInfo,
   }) async {
     try {
-      await authLocalDataSource.saveServerUrl(serverUrl: serverUrl);
+      await authLocalDataSource.saveServerInfo(serverInfo: serverInfo);
 
       return const Right(None());
     } on PlatformException {
       return const Left(StorageWriteFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> getAnonKeyFromServer({
+    required String serverUrl,
+  }) async {
+    try {
+      final String anonKey = await authRemoteDataSource.getAnonKeyFromServer(
+        serverUrl: serverUrl,
+      );
+
+      return Right(anonKey);
+    } on DioException catch (dioException) {
+      final Failure failure = repositoryFailureHandler.dioExceptionMapper(
+        dioException: dioException,
+      );
+
+      return Left(failure);
+    } on Failure catch (failure) {
+      return Left(failure);
     }
   }
 }
