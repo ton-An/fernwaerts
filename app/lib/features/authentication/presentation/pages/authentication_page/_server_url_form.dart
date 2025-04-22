@@ -18,22 +18,27 @@ class _ServerUrlFormState extends State<_ServerUrlForm> {
 
   @override
   Widget build(BuildContext context) {
-    return AuthenticationForm(
-      icon: CupertinoIcons.globe,
-      label: AppLocalizations.of(context)!.serverDetails,
-      description: AppLocalizations.of(context)!.serverDetailsDescription,
-      hint: AppLocalizations.of(context)!.serverDetailsHint,
-      buttonText: AppLocalizations.of(context)!.continueButton,
-      textFields: [
-        CustomCupertinoTextField(
-          hint: AppLocalizations.of(context)!.serverUrl,
-          controller: _urlEditController,
-          onChanged: (_) {},
-        ),
-      ],
-      onButtonPressed: () {
-        context.read<AuthenticationCubit>().toLogInInfo(
-          _urlEditController.text,
+    return BlocBuilder<AuthenticationCubit, AuthenticationCubitState>(
+      builder: (context, state) {
+        return AuthenticationForm(
+          icon: CupertinoIcons.globe,
+          label: AppLocalizations.of(context)!.serverDetails,
+          description: AppLocalizations.of(context)!.serverDetailsDescription,
+          hint: AppLocalizations.of(context)!.serverDetailsHint,
+          buttonText: AppLocalizations.of(context)!.continueButton,
+          textFields: [
+            CustomCupertinoTextField(
+              hint: AppLocalizations.of(context)!.serverUrl,
+              controller: _urlEditController,
+              onChanged: (_) {},
+            ),
+          ],
+          onButtonPressed: () {
+            context.read<AuthenticationCubit>().toLogInInfo(
+              _urlEditController.text,
+            );
+          },
+          isLoading: state is EnterServerDetailsLoading,
         );
       },
     );

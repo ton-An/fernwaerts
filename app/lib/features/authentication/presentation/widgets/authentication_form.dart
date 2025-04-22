@@ -11,6 +11,7 @@ class AuthenticationForm extends StatelessWidget {
     required this.buttonText,
     required this.textFields,
     required this.onButtonPressed,
+    required this.isLoading,
     this.showBackButton = false,
     this.onBackPressed,
     this.hint,
@@ -22,6 +23,7 @@ class AuthenticationForm extends StatelessWidget {
   final String? hint;
   final String buttonText;
   final List<CustomCupertinoTextField> textFields;
+  final bool isLoading;
   final VoidCallback onButtonPressed;
   final bool showBackButton;
   final VoidCallback? onBackPressed;
@@ -114,6 +116,7 @@ class AuthenticationForm extends StatelessWidget {
               CustomCupertinoTextButton(
                 text: buttonText,
                 onPressed: onButtonPressed,
+                isLoading: isLoading,
               ),
               AnimatedSize(
                 duration: const Duration(milliseconds: 300),

@@ -34,7 +34,8 @@ dependencies:
   equatable: ^2.0.7
 
   # UI & Design
-  webfabrik_theme: ^0.0.1
+  webfabrik_theme:
+    git: https://github.com/ton-An/webfabrik_theme
   elevated_flex:
     git: https://github.com/ton-An/elevated_flex
   flutter_carousel_widget:

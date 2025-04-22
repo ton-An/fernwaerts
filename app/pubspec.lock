@@ -1521,10 +1521,11 @@ packages:
   webfabrik_theme:
     dependency: "direct main"
     description:
-      name: webfabrik_theme
-      sha256: c8ae1fbaaf80de889dae2df9baa6e514e0d9e72b282ea109dfc6c4204613d633
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: HEAD
+      resolved-ref: "41135eff022a98ec34b844c88cae03f2fa9ed3d3"
+      url: "https://github.com/ton-An/webfabrik_theme"
+    source: git
     version: "0.0.1"
   win32:
     dependency: transitive

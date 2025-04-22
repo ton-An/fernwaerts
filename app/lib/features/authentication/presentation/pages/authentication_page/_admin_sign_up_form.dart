@@ -24,51 +24,56 @@ class _AdminSignUpFormState extends State<_AdminSignUpForm> {
 
   @override
   Widget build(BuildContext context) {
-    return AuthenticationForm(
-      showBackButton: true,
-      icon: CupertinoIcons.person_fill,
-      label: AppLocalizations.of(context)!.createAdmin,
-      description: AppLocalizations.of(context)!.adminSignUpDescription,
-      buttonText: AppLocalizations.of(context)!.createAdmin,
-      textFields: [
-        CustomCupertinoTextField(
-          hint: AppLocalizations.of(context)!.username,
-          controller: _usernameController,
-          autofillHints: const [AutofillHints.newUsername],
-          onChanged: (_) {},
-        ),
-        CustomCupertinoTextField(
-          hint: AppLocalizations.of(context)!.email,
-          controller: _emailController,
-          autofillHints: const [AutofillHints.email],
-          keyboardType: TextInputType.emailAddress,
-          onChanged: (_) {},
-        ),
-        CustomCupertinoTextField(
-          hint: AppLocalizations.of(context)!.password,
-          controller: _passwordController,
-          autofillHints: const [AutofillHints.newPassword],
-          obscureText: true,
-          onChanged: (_) {},
-        ),
-        CustomCupertinoTextField(
-          hint: AppLocalizations.of(context)!.confirmPassword,
-          controller: _confirmPasswordController,
-          autofillHints: const [AutofillHints.newPassword],
-          obscureText: true,
-          onChanged: (_) {},
-        ),
-      ],
-      onButtonPressed: () {
-        context.read<AuthenticationCubit>().signUpAdmin(
-          _usernameController.text,
-          _emailController.text,
-          _passwordController.text,
-          _confirmPasswordController.text,
+    return BlocBuilder<AuthenticationCubit, AuthenticationCubitState>(
+      builder: (context, state) {
+        return AuthenticationForm(
+          showBackButton: true,
+          icon: CupertinoIcons.person_fill,
+          label: AppLocalizations.of(context)!.createAdmin,
+          description: AppLocalizations.of(context)!.adminSignUpDescription,
+          buttonText: AppLocalizations.of(context)!.createAdmin,
+          textFields: [
+            CustomCupertinoTextField(
+              hint: AppLocalizations.of(context)!.username,
+              controller: _usernameController,
+              autofillHints: const [AutofillHints.newUsername],
+              onChanged: (_) {},
+            ),
+            CustomCupertinoTextField(
+              hint: AppLocalizations.of(context)!.email,
+              controller: _emailController,
+              autofillHints: const [AutofillHints.email],
+              keyboardType: TextInputType.emailAddress,
+              onChanged: (_) {},
+            ),
+            CustomCupertinoTextField(
+              hint: AppLocalizations.of(context)!.password,
+              controller: _passwordController,
+              autofillHints: const [AutofillHints.newPassword],
+              obscureText: true,
+              onChanged: (_) {},
+            ),
+            CustomCupertinoTextField(
+              hint: AppLocalizations.of(context)!.confirmPassword,
+              controller: _confirmPasswordController,
+              autofillHints: const [AutofillHints.newPassword],
+              obscureText: true,
+              onChanged: (_) {},
+            ),
+          ],
+          onButtonPressed: () {
+            context.read<AuthenticationCubit>().signUpAdmin(
+              _usernameController.text,
+              _emailController.text,
+              _passwordController.text,
+              _confirmPasswordController.text,
+            );
+          },
+          onBackPressed: () {
+            context.read<AuthenticationCubit>().toServerDetails();
+          },
+          isLoading: state is AdminSignUpLoading,
         );
-      },
-      onBackPressed: () {
-        context.read<AuthenticationCubit>().toServerDetails();
       },
     );
   }
