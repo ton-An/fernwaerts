@@ -77,7 +77,7 @@ async function createUserAccount(
 }
 
 async function isSetUp(supabase: SupabaseClient): Promise<boolean> {
-  const { data } = await supabase.from("public_settings")
+  const { data } = await supabase.from("public_info")
     .select().eq(
       "name",
       "is_set_up",
@@ -110,7 +110,7 @@ async function makeUserAdmin(
 }
 
 async function markSetupAsComplete(supabase: SupabaseClient) {
-  await supabase.from("public_settings").update({
+  await supabase.from("public_info").update({
     value: true,
   }).eq(
     "name",

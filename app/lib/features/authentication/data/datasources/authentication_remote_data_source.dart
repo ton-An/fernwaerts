@@ -114,7 +114,7 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
 
     final queryResult =
         await supabaseClient
-            .from('public_settings')
+            .from('public_info')
             .select()
             .eq('name', 'is_set_up')
             .single();

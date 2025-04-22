@@ -71,9 +71,7 @@ void main() {
 
   group('isServerSetUp()', () {
     setUp(() async {
-      await mockSupabaseClient
-          .from('public_settings')
-          .insert(tPublicSettingsMap);
+      await mockSupabaseClient.from('public_info').insert(tPublicSettingsMap);
     });
 
     test(
@@ -85,7 +83,7 @@ void main() {
 
           expect(result, true);
         } catch (e) {
-          fail("Select operation on 'public_settings' db table failed\n$e");
+          fail("Select operation on 'public_info' db table failed\n$e");
         }
       },
     );
