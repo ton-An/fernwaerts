@@ -44,8 +44,10 @@ dependencies:
   simple_shadow: ^0.3.1
 
   # Maps & Location
-  flutter_map: ^8.0.0
-  latlong2: ^0.9.1
+  maplibre:
+    git:
+      url: https://github.com/josxha/flutter-maplibre
+      ref: ios
 
   # Networking
   dio: ^5.8.0+1

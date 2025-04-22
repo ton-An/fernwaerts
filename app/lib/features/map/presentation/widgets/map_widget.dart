@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:maplibre/maplibre.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 class MapWidget extends StatefulWidget {
   const MapWidget({super.key});
@@ -28,19 +28,58 @@ class _MapWidgetState extends State<MapWidget> {
     });
   }
 
+  final _points = <Point>[
+    Point(coordinates: Position(9.17, 47.68)),
+    Point(coordinates: Position(9.17, 48)),
+    Point(coordinates: Position(9, 48)),
+    Point(coordinates: Position(9.5, 48)),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return FlutterMap(
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
+
+    return MapLibreMap(
+      acceptLicense: true,
       options: const MapOptions(
-        initialCenter: LatLng(51.509364, -0.128928),
-        initialZoom: 9.2,
+        initStyle:
+            'https://raw.githubusercontent.com/ton-An/tilekiln-shortbread-demo/refs/heads/main/colorful.json',
       ),
-      children: [
-        TileLayer(
-          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          userAgentPackageName: appPackageName ?? 'unknown',
+      layers: [
+        CircleLayer(
+          points: _points,
+          radius: 5,
+          blur: .6,
+          strokeWidth: 4,
+          color: theme.colors.primary,
+          strokeColor: theme.colors.primaryTranslucent,
         ),
       ],
     );
+
+    // return FlutterMap(
+    //   options: const MapOptions(
+    //     initialCenter: LatLng(51.509364, -0.128928),
+    //     initialZoom: 9.2,
+    //   ),
+    //   children: [
+    //     TileLayer(
+    //       urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+    //       userAgentPackageName: appPackageName ?? 'unknown',
+    //     ),
+    //     CircleLayer(
+    //       circles: [
+    //         CircleMarker(
+    //           point: LatLng(51.509364, -0.128928),
+    //           radius: 10,
+    //           color: theme.colors.primary,
+    //           borderStrokeWidth: 25,
+    //           borderColor: theme.colors.primaryTranslucent,
+    //         ),
+    //       ],
+    //     ),
+    //   ],
+    // );
   }
 }
+// 
