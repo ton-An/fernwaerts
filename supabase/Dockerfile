@@ -6,6 +6,9 @@ WORKDIR /supabase
 # Install Supabase CLI
 RUN npm i supabase --save-dev
 
+# Update Supabase CLI
+RUN npm update supabase --save-dev
+
 # Copy supabase config files
 COPY ./migrations/ migrations/
 
