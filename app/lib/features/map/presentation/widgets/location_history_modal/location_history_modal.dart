@@ -21,6 +21,11 @@ part '_place_icon.dart';
 part '_place_list_item.dart';
 part '_vertical_list_item_divider.dart';
 
+/* To-Do:
+    - [ ] Factor in velocity of drag to determine if a drag was significant
+    - [ ] Fix onPointerUp sometimes not being called (might only be an issue in simulators)
+*/
+
 class LocationHistoryModal extends StatefulWidget {
   const LocationHistoryModal({
     super.key,
@@ -41,14 +46,7 @@ class LocationHistoryModal extends StatefulWidget {
 
 class _LocationHistoryModalState extends State<LocationHistoryModal> {
   double _dragStart = 0;
-
-  double _getModalHeight(bool hasDraggedUp) {
-    if (hasDraggedUp) {
-      return LocationHistoryModal.largeModalHeight;
-    } else {
-      return LocationHistoryModal.smallModalHeight;
-    }
-  }
+  double _dragPosition = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -64,11 +62,13 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
           color: theme.colors.translucentBackground,
           child: Column(
             children: [
-              GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                onVerticalDragEnd: _verticalDragEnd,
-                onVerticalDragUpdate: _verticalDragUpdate,
-                onVerticalDragStart: _verticalDragStart,
+              Listener(
+                onPointerDown: (event) => _verticalDragStart(event.position.dy),
+                onPointerUp: (_) => _verticalDragEnd(),
+                onPointerMove: (event) {
+                  _verticalDragUpdate(event.delta.dy, event.position.dy);
+                },
+                onPointerCancel: (_) => _verticalDragEnd(),
                 child: Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: theme.spacing.medium,
@@ -94,28 +94,57 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
     );
   }
 
-  void _verticalDragStart(DragStartDetails details) {
-    _dragStart = details.globalPosition.dy;
+  void _verticalDragStart(double dragStartPosition) {
+    _dragStart = dragStartPosition;
   }
 
-  void _verticalDragUpdate(DragUpdateDetails details) {
+  void _verticalDragUpdate(double dragDelta, double dragPosition) {
     double currentExtent = widget.draggableScrollableController.size;
 
-    double newExtent = (currentExtent -
-            details.primaryDelta! / MediaQuery.of(context).size.height)
-        .clamp(
+    double newExtent =
+        (currentExtent - dragDelta / MediaQuery.of(context).size.height).clamp(
           LocationHistoryModal.smallModalHeight,
           LocationHistoryModal.largeModalHeight,
         );
     widget.draggableScrollableController.jumpTo(newExtent);
+    _dragPosition = dragPosition;
   }
 
-  void _verticalDragEnd(DragEndDetails details) {
-    final double dragEnd = details.globalPosition.dy;
+  void _verticalDragEnd() {
+    final VerticalDirection dragDirection =
+        _dragStart > _dragPosition
+            ? VerticalDirection.up
+            : VerticalDirection.down;
+    final bool isDragSignificant = (_dragStart - _dragPosition).abs() > 70;
+
+    final VerticalDirection dragDirectionToAnimate =
+        isDragSignificant ? dragDirection : dragDirection.flip();
+
     widget.draggableScrollableController.animateTo(
-      _getModalHeight(_dragStart > dragEnd),
+      _getModalHeight(dragDirectionToAnimate),
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
     );
+  }
+
+  double _getModalHeight(VerticalDirection dragDirection) {
+    if (dragDirection == VerticalDirection.up) {
+      return LocationHistoryModal.largeModalHeight;
+    } else {
+      return LocationHistoryModal.smallModalHeight;
+    }
+  }
+}
+
+enum VerticalDirection {
+  up,
+  down;
+
+  VerticalDirection flip() {
+    if (this == VerticalDirection.up) {
+      return VerticalDirection.down;
+    } else {
+      return VerticalDirection.up;
+    }
   }
 }
