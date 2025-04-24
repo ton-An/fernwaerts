@@ -1,4 +1,6 @@
 PODS:
+  - background_locator_2 (0.0.1):
+    - Flutter
   - Flutter (1.0.0)
   - flutter_secure_storage (6.0.0):
     - Flutter
@@ -8,12 +10,15 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - background_locator_2 (from `.symlinks/plugins/background_locator_2/ios`)
   - Flutter (from `Flutter`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - objective_c (from `.symlinks/plugins/objective_c/ios`)
   - super_keyboard (from `.symlinks/plugins/super_keyboard/ios`)
 
 EXTERNAL SOURCES:
+  background_locator_2:
+    :path: ".symlinks/plugins/background_locator_2/ios"
   Flutter:
     :path: Flutter
   flutter_secure_storage:
@@ -24,6 +29,7 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/super_keyboard/ios"
 
 SPEC CHECKSUMS:
+  background_locator_2: bee147151ed151802ee8f1cc02f55ee14f77a2e3
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_secure_storage: 1ed9476fba7e7a782b22888f956cce43e2c62f13
   objective_c: 89e720c30d716b036faf9c9684022048eee1eee2
