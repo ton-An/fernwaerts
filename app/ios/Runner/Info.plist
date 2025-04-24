@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
-		<key>ITSAppUsesNonExemptEncryption</key>
-		<false/>
 		<key>CADisableMinimumFrameDurationOnPhone</key>
 		<true/>
 		<key>CFBundleDevelopmentRegion</key>
@@ -26,10 +24,16 @@
 		<string>????</string>
 		<key>CFBundleVersion</key>
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
+		<key>ITSAppUsesNonExemptEncryption</key>
+		<false/>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>location</string>
+		</array>
 		<key>UILaunchStoryboardName</key>
 		<string>LaunchScreen</string>
 		<key>UIMainStoryboardFile</key>
@@ -47,5 +51,11 @@
 			<string>UIInterfaceOrientationLandscapeLeft</string>
 			<string>UIInterfaceOrientationLandscapeRight</string>
 		</array>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>This app uses your location to create a personal timeline of places you've visited, even when the app is in the background.</string>
+		<key>NSLocationAlwaysUsageDescription</key>
+		<string>Your location is always needed to accurately track your movement history and identify significant location changes.</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>This app uses your location while it's open to build a timeline of places you visit.</string>
 	</dict>
 </plist>
