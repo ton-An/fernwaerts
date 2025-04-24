@@ -73,6 +73,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.12.0"
+  background_locator_3:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: cb0ee86d47f1a4145205d63e71f8b4aef93cf531
+      url: "https://github.com/ton-An/background_locator_3"
+    source: git
+    version: "2.0.6"
   bloc:
     dependency: transitive
     description:

@@ -49,6 +49,9 @@ dependencies:
     git:
       url: https://github.com/josxha/flutter-maplibre
       ref: ios
+  background_locator_3:
+    git:
+      url: https://github.com/ton-An/background_locator_3
 
   # Networking
   dio: ^5.8.0+1
