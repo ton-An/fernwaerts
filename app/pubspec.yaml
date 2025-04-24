@@ -92,7 +92,6 @@ dev_dependencies:
   json_serializable: ^6.7.1
   brick_offline_first_with_supabase_build: ^2.0.0
 
-  
   # App Icon File Generation
   flutter_launcher_icons: "^0.14.3"
 
