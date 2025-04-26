@@ -1,17 +1,18 @@
 {
   "models": [
     {
-      "model": "AUTODETECT",
-      "title": "Autodetect",
-      "provider": "ollama"
+      "model": "deepseek-coder-v2-lite-base-mlx",
+      "title": "Deepseek Coder",
+      "provider": "lmstudio"
     }
   ],
   "tabAutocompleteModel": {
-    "model": "codellama:13b-code-q4_K_M",
-    "title": "codellama:13b-code",
-    "provider": "ollama",
+    "model": "deepseek-coder-v2-lite-base-mlx",
+    "title": "Deepseek Coder ",
+    "provider": "lmstudio",
     "completionOptions": {
-      "keepAlive": 1200
+      "keepAlive": 1200,
+      "num_predict": 500
     }
   },
   "tabAutocompleteOptions": {
