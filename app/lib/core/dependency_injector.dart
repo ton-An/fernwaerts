@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_activity_recognition/flutter_activity_recognition.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:location_history/core/data/datasources/server_remote_handler.dart';
@@ -6,8 +7,11 @@ import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/data/repository/repository_failure_handler.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
+import 'package:location_history/features/authentication/data/datasources/permissions_local_data_source.dart';
 import 'package:location_history/features/authentication/data/repository_implementations/authentication_repository_impl.dart';
+import 'package:location_history/features/authentication/data/repository_implementations/permissions_repository_impl.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
+import 'package:location_history/features/authentication/domain/repositories/permissions_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/has_server_connection_saved.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_new_server_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_saved_server_connection.dart';
@@ -41,6 +45,7 @@ void registerThirdPartyDependencies() {
   // -- Data -- //
   getIt.registerLazySingleton(() => Dio());
   getIt.registerLazySingleton(() => const FlutterSecureStorage());
+  getIt.registerLazySingleton(() => FlutterActivityRecognition.instance);
 }
 
 void registerCoreDependencies() {
@@ -112,6 +117,9 @@ void registerAuthenticationDependencies() {
       repositoryFailureHandler: getIt(),
     ),
   );
+  getIt.registerLazySingleton<PermissionsRepository>(
+    () => PermissionsRepositoryImpl(permissionsLocalDataSource: getIt()),
+  );
   getIt.registerLazySingleton<AuthenticationLocalDataSource>(
     () => AuthLocalDataSourceImpl(secureStorage: getIt()),
   );
@@ -120,6 +128,9 @@ void registerAuthenticationDependencies() {
       serverRemoteHandler: getIt(),
       supabaseHandler: getIt(),
     ),
+  );
+  getIt.registerLazySingleton<PermissionsLocalDataSource>(
+    () => PermissionsLocalDataSourceImpl(flutterActivityRecognition: getIt()),
   );
 }
 
