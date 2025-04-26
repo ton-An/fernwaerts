@@ -10,6 +10,7 @@ import 'package:location_history/core/failures/storage/storage_read_failure.dart
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
+import 'package:location_history/features/authentication/domain/enums/permission.dart';
 import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
@@ -205,5 +206,13 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     } on Failure catch (failure) {
       return Left(failure);
     }
+  }
+
+  @override
+  Future<Either<Failure, None>> requestPermissions({
+    required List<Permission> permissions,
+  }) {
+    // TODO: implement requestPermissions
+    throw UnimplementedError();
   }
 }

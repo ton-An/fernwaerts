@@ -38,7 +38,6 @@ void main() {
   initGetIt();
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
   runApp(MainApp());
 }
 
