@@ -4,6 +4,7 @@ import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_new_server_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_server_set_up.dart';
+import 'package:location_history/features/authentication/domain/usecases/request_necessary_permissions.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_up_initial_admin.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_states.dart';
@@ -21,12 +22,14 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
     required this.isServerSetUp,
     required this.signUpInitialAdmin,
     required this.signInUsecase,
+    required this.requestNecessaryPermissions,
   }) : super(const AuthenticationInitial());
 
   final InitializeNewServerConnection initializeServerConnection;
   final IsServerSetUp isServerSetUp;
   final SignUpInitialAdmin signUpInitialAdmin;
   final SignIn signInUsecase;
+  final RequestNecessaryPermissions requestNecessaryPermissions;
 
   String serverUrl = '';
   late ServerInfo serverInfo;
@@ -88,8 +91,19 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
       (Failure failure) {
         emit(AuthenticationError(failure: failure));
       },
-      (None none) {
-        emit(const AdminSignUpSuccessful());
+      (None none) async {
+        final Either<Failure, None> requestPermissionsEither =
+            await requestNecessaryPermissions();
+
+        requestPermissionsEither.fold(
+          (Failure failure) {
+            emit(AuthenticationError(failure: failure));
+            emit(const AdminSignUpSuccessful());
+          },
+          (None none) {
+            emit(const AdminSignUpSuccessful());
+          },
+        );
       },
     );
   }
@@ -107,8 +121,19 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
       (Failure failure) {
         emit(AuthenticationError(failure: failure));
       },
-      (None none) {
-        emit(const LogInSuccessful());
+      (None none) async {
+        final Either<Failure, None> requestPermissionsEither =
+            await requestNecessaryPermissions();
+
+        requestPermissionsEither.fold(
+          (Failure failure) {
+            emit(AuthenticationError(failure: failure));
+            emit(const LogInSuccessful());
+          },
+          (None none) {
+            emit(const LogInSuccessful());
+          },
+        );
       },
     );
   }
