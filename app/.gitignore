@@ -16,6 +16,7 @@
 .swiftpm/
 migrate_working_dir/
 .cxx/
+coverage/
 
 # IntelliJ related
 *.iml
