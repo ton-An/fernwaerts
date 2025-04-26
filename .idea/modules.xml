@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/docs/docs.iml" filepath="$PROJECT_DIR$/docs/docs.iml" />
       <module fileurl="file://$PROJECT_DIR$/location_history.iml" filepath="$PROJECT_DIR$/location_history.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android/location_history_android.iml" filepath="$PROJECT_DIR$/android/location_history_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/supabase/supabase.iml" filepath="$PROJECT_DIR$/supabase/supabase.iml" />
     </modules>
   </component>
 </project>
