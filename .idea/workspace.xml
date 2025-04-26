@@ -5,22 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="959bacb8-ea2d-4a2c-8fcd-7ee72c67e69a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/android/location_history_android.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/location_history.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.continuerc.json" beforeDir="false" afterPath="$PROJECT_DIR$/.continuerc.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_SDK.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/KotlinJavaRuntime.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/main_dart.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/devtools_options.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/app/devtools_options.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/app/ios/Podfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/features/authentication/domain/usecases/initialize_new_server_connection.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/features/authentication/domain/usecases/initialize_new_server_connection.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/features/authentication/domain/usecases/initialize_saved_server_connection.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/features/authentication/domain/usecases/initialize_saved_server_connection.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lib/features/authentication/domain/usecases/sign_up_initial_admin.dart" beforeDir="false" afterPath="$PROJECT_DIR$/app/lib/features/authentication/domain/usecases/sign_up_initial_admin.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/app/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/app/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/app/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,12 +29,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;ton-An&quot;
-  }
-}</component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {}
+}]]></component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/ton-An/fernwaerts.git&quot;,
@@ -75,41 +58,57 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Flutter.main.dart.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/anton/Desktop/Projects/Location History/location_history&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;/Users/anton/Desktop/Projects/Location History/location_history/app/untitled/src/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Flutter Test.tests in test.executor": "Run",
+    "Flutter.main.dart.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/anton/Desktop/Projects/Location History/location_history",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "/Users/anton/Desktop/Projects/Location History/location_history/app/untitled/src/Main.java",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "show.migrate.to.gradle.popup": "false",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/.continue" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Flutter.main.dart">
     <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
+      <option name="additionalArgs" value="--flavor Development" />
       <option name="filePath" value="$PROJECT_DIR$/app/lib/main.dart" />
       <method v="2" />
     </configuration>
+    <configuration name="tests in test" type="FlutterTestConfigType" factoryName="Flutter Test" temporary="true" nameIsGenerated="true">
+      <option name="testDir" value="$PROJECT_DIR$/app/test" />
+      <option name="useRegexp" value="false" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Flutter.main.dart" />
+      <item itemvalue="Flutter Test.tests in test" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Flutter Test.tests in test" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -151,6 +150,7 @@
       <workItem from="1745584153612" duration="89000" />
       <workItem from="1745584254319" duration="2004000" />
       <workItem from="1745594282908" duration="1114000" />
+      <workItem from="1745674159619" duration="380000" />
     </task>
     <servers />
   </component>
