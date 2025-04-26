@@ -3,11 +3,9 @@ import 'package:location_history/core/failures/authentication/invalid_credential
 import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
-import 'package:location_history/core/failures/general/not_all_permissions_granted.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
-import 'package:location_history/features/authentication/domain/enums/permission.dart';
 import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
 
@@ -134,17 +132,5 @@ abstract class AuthenticationRepository {
   /// {@macro converted_dio_exceptions}
   Future<Either<Failure, String>> getAnonKeyFromServer({
     required String serverUrl,
-  });
-
-  /// Requests permissions from to os
-  ///
-  /// Parameters:
-  /// - list of [Permission]s
-  ///
-  /// Failures:
-  /// - [NotAllPermissionsGrantedFailure]
-  /// - ...TBD..
-  Future<Either<Failure, None>> requestPermissions({
-    required List<Permission> permissions,
   });
 }
