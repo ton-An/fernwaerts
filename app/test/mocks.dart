@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_activity_recognition/flutter_activity_recognition.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:location_history/core/data/datasources/server_remote_handler.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
@@ -29,6 +30,9 @@ class MockPostgrestTransformBuilder<T> extends Mock
     implements PostgrestTransformBuilder<T> {}
 
 class MockFlutterSecureStorage extends Mock implements FlutterSecureStorage {}
+
+class MockFlutterActivityRecognition extends Mock
+    implements FlutterActivityRecognition {}
 
 // -- Core -- //
 class MockServerRemoteHandler extends Mock implements ServerRemoteHandler {}
