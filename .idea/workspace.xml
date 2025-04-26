@@ -167,4 +167,8 @@
     <expand />
     <select />
   </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="../../../../Desktop/Projects/Location History/location_history/app/coverage/lcov.info" NAME="tests in test Coverage Results" MODIFIED="1745674313276" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="FlutterCoverageRunner" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="../../../../Desktop/Projects/Location History/location_history/app/coverage/lcov.info" NAME="lcov.info" MODIFIED="1745674319565" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="JestJavaScriptTestRunnerCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+  </component>
 </project>
