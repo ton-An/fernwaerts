@@ -52,6 +52,7 @@ dependencies:
   background_locator_2:
     git:
       url: https://github.com/ton-An/background_locator_3
+  flutter_activity_recognition: ^4.0.0
 
   # Networking
   dio: ^5.8.0+1
@@ -74,7 +75,7 @@ dependencies:
   package_info_plus: ^8.3.0
   uuid: ^4.5.1
   super_keyboard: ^0.1.1
-  flutter_activity_recognition: ^4.0.0
+  permission_handler: ^12.0.0+1
 
 dev_dependencies:
   # Testing
