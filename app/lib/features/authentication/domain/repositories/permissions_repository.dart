@@ -2,6 +2,8 @@ import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
 
 abstract class PermissionsRepository {
+  const PermissionsRepository();
+
   /// Requests permission to use location services.
   ///
   /// Failures:

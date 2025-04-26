@@ -5,6 +5,7 @@ import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/data/repository/repository_failure_handler.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
+import 'package:location_history/features/authentication/data/datasources/permissions_local_data_source.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/authentication/domain/repositories/permissions_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_new_server_connection.dart';
@@ -43,6 +44,9 @@ class MockAuthLocalDataSource extends Mock
 
 class MockAuthRemoteDataSource extends Mock
     implements AuthenticationRemoteDataSource {}
+
+class MockPermissionsLocalDataSource extends Mock
+    implements PermissionsLocalDataSource {}
 
 class MockAuthenticationRepository extends Mock
     implements AuthenticationRepository {}
