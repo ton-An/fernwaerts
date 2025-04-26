@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="959bacb8-ea2d-4a2c-8fcd-7ee72c67e69a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/app/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/docs.iml" beforeDir="false" afterPath="$PROJECT_DIR$/docs/docs.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/supabase/supabase.iml" beforeDir="false" afterPath="$PROJECT_DIR$/supabase/supabase.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,6 +68,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "main",
+    "io.flutter.reload.alreadyRun": "true",
     "last_opened_file_path": "/Users/anton/Desktop/Projects/Location History/location_history",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -150,7 +151,7 @@
       <workItem from="1745584153612" duration="89000" />
       <workItem from="1745584254319" duration="2004000" />
       <workItem from="1745594282908" duration="1114000" />
-      <workItem from="1745674159619" duration="380000" />
+      <workItem from="1745674159619" duration="679000" />
     </task>
     <servers />
   </component>
