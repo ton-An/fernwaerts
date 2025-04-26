@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/permission/activity_permission_not_granted_failure.dart';
-import 'package:location_history/core/failures/permission/location_permission_not_granted_failure.dart';
+import 'package:location_history/core/failures/permission/basic_location_permission_not_granted_failure.dart';
 import 'package:location_history/features/authentication/data/repository_implementations/permissions_repository_impl.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -45,14 +45,14 @@ void main() {
         // arrange
         when(
           () => mockPermissionsLocalDataSource.requestLocationPermission(),
-        ).thenThrow(const LocationPermissionNotGrantedFailure());
+        ).thenThrow(const BasicLocationPermissionNotGrantedFailure());
 
         // act
         final result =
             await permissionsRepositoryImpl.requestLocationPermission();
 
         // assert
-        expect(result, const Left(LocationPermissionNotGrantedFailure()));
+        expect(result, const Left(BasicLocationPermissionNotGrantedFailure()));
       },
     );
   });

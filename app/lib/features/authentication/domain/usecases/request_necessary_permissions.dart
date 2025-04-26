@@ -1,14 +1,16 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/permission/activity_permission_not_granted_failure.dart';
-import 'package:location_history/core/failures/permission/location_permission_not_granted_failure.dart';
+import 'package:location_history/core/failures/permission/background_location_permission_not_granted_failure.dart';
+import 'package:location_history/core/failures/permission/basic_location_permission_not_granted_failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/permissions_repository.dart';
 
 /// {@template request_necessary_permissions}
 /// Requests necessary permissions for the application.
 ///
 /// Failures:
-/// - [LocationPermissionNotGrantedFailure]
+/// - [BasicLocationPermissionNotGrantedFailure]
+/// - [BackgroundLocationPermissionNotGrantedFailure]
 /// - [ActivityPermissionNotGrantedFailure]
 /// {@endtemplate}
 class RequestNecessaryPermissions {
