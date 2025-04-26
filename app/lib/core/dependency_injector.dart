@@ -13,6 +13,7 @@ import 'package:location_history/features/authentication/domain/usecases/initial
 import 'package:location_history/features/authentication/domain/usecases/initialize_saved_server_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_server_set_up.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_signed_in.dart';
+import 'package:location_history/features/authentication/domain/usecases/request_necessary_permissions.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_out.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_up_initial_admin.dart';
@@ -66,12 +67,14 @@ void registerAuthenticationDependencies() {
       isServerSetUp: getIt(),
       signUpInitialAdmin: getIt(),
       signInUsecase: getIt(),
+      requestNecessaryPermissions: getIt(),
     ),
   );
   getIt.registerFactory(
     () => SplashCubit(
       initSavedServerConnection: getIt(),
       isSignedInUsecase: getIt(),
+      requestNecessaryPermissions: getIt(),
     ),
   );
 
@@ -96,6 +99,9 @@ void registerAuthenticationDependencies() {
   );
   getIt.registerLazySingleton(
     () => IsSignedIn(authenticationRepository: getIt()),
+  );
+  getIt.registerLazySingleton(
+    () => RequestNecessaryPermissions(permissionsRepository: getIt()),
   );
 
   // -- Data -- //

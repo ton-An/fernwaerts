@@ -1,21 +1,31 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
-import 'package:location_history/features/authentication/domain/enums/permission.dart';
-import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
+import 'package:location_history/features/authentication/domain/repositories/permissions_repository.dart';
 
 class RequestNecessaryPermissions {
-  const RequestNecessaryPermissions({required this.authenticationRepository});
+  const RequestNecessaryPermissions({required this.permissionsRepository});
 
-  final AuthenticationRepository authenticationRepository;
-
-  static const necessaryPermissions = [
-    Permission.location,
-    Permission.activityRecognition,
-  ];
+  final PermissionsRepository permissionsRepository;
 
   Future<Either<Failure, None>> call() async {
-    return await authenticationRepository.requestPermissions(
-      permissions: necessaryPermissions,
-    );
+    return _requestLocationPermission();
+  }
+
+  Future<Either<Failure, None>> _requestLocationPermission() async {
+    final Either<Failure, None> locationPermissionEither =
+        await permissionsRepository.requestLocationPermission();
+
+    return locationPermissionEither.fold(Left.new, (None none) {
+      return _requestActivityPermission();
+    });
+  }
+
+  Future<Either<Failure, None>> _requestActivityPermission() async {
+    final Either<Failure, None> activityPermissionEither =
+        await permissionsRepository.requestActivityPermission();
+
+    return activityPermissionEither.fold(Left.new, (None none) {
+      return const Right(None());
+    });
   }
 }
