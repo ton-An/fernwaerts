@@ -57,5 +57,7 @@
 		<string>Your location is always needed to accurately track your movement history and identify significant location changes.</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
 		<string>This app uses your location while it's open to build a timeline of places you visit.</string>
+	    <key>NSMotionUsageDescription</key>
+        <string>This app uses your device's motion sensors to detect you activity (walking, running, etc.) and to preserve battery life, by only tracking your GPS location fine-grained when you're moving.</string>
 	</dict>
 </plist>
