@@ -97,6 +97,7 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
 
   void _verticalDragStart(double dragStartPosition) {
     _dragStart = dragStartPosition;
+    _dragPosition = dragStartPosition;
   }
 
   void _verticalDragUpdate(double dragDelta, double dragPosition) {
@@ -112,20 +113,23 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
   }
 
   void _verticalDragEnd() {
-    final VerticalDirection dragDirection =
-        _dragStart > _dragPosition
-            ? VerticalDirection.up
-            : VerticalDirection.down;
-    final bool isDragSignificant = (_dragStart - _dragPosition).abs() > 70;
+    final double dragDelta = _dragStart - _dragPosition;
+    if (dragDelta != 0) {
+      final VerticalDirection dragDirection =
+          _dragStart > _dragPosition
+              ? VerticalDirection.up
+              : VerticalDirection.down;
+      final bool isDragSignificant = dragDelta.abs() > 70;
 
-    final VerticalDirection dragDirectionToAnimate =
-        isDragSignificant ? dragDirection : dragDirection.flip();
+      final VerticalDirection dragDirectionToAnimate =
+          isDragSignificant ? dragDirection : dragDirection.flip();
 
-    widget.draggableScrollableController.animateTo(
-      _getModalHeight(dragDirectionToAnimate),
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeOut,
-    );
+      widget.draggableScrollableController.animateTo(
+        _getModalHeight(dragDirectionToAnimate),
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
   }
 
   double _getModalHeight(VerticalDirection dragDirection) {
