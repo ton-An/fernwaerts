@@ -63,6 +63,7 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
           child: Column(
             children: [
               Listener(
+                behavior: HitTestBehavior.translucent,
                 onPointerDown: (event) => _verticalDragStart(event.position.dy),
                 onPointerUp: (_) => _verticalDragEnd(),
                 onPointerMove: (event) {
