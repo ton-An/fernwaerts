@@ -21,16 +21,7 @@ class RequestNecessaryPermissions {
 
   /// {@macro request_necessary_permissions}
   Future<Either<Failure, None>> call() async {
-    return _requestLocationPermission();
-  }
-
-  Future<Either<Failure, None>> _requestLocationPermission() async {
-    final Either<Failure, None> locationPermissionEither =
-        await permissionsRepository.requestLocationPermission();
-
-    return locationPermissionEither.fold(Left.new, (None none) {
-      return _requestActivityPermission();
-    });
+    return _requestActivityPermission();
   }
 
   Future<Either<Failure, None>> _requestActivityPermission() async {
@@ -38,6 +29,15 @@ class RequestNecessaryPermissions {
         await permissionsRepository.requestActivityPermission();
 
     return activityPermissionEither.fold(Left.new, (None none) {
+      return _requestLocationPermission();
+    });
+  }
+
+  Future<Either<Failure, None>> _requestLocationPermission() async {
+    final Either<Failure, None> locationPermissionEither =
+        await permissionsRepository.requestLocationPermission();
+
+    return locationPermissionEither.fold(Left.new, (None none) {
       return const Right(None());
     });
   }

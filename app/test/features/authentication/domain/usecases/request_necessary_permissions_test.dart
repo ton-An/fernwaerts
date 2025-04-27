@@ -18,11 +18,6 @@ void main() {
     );
   });
 
-  // should request location permissions
-  // should return a LocationPermissionNotGrantedFailure if location permissions are not granted
-  // should request activity recognition permissions
-  // should return an ActivityPermissionNotGrantedFailure if activity recognition permissions are not granted
-
   setUp(() {
     when(
       () => mockPermissionsRepository.requestLocationPermission(),
@@ -31,32 +26,6 @@ void main() {
       () => mockPermissionsRepository.requestActivityPermission(),
     ).thenAnswer((_) async => const Right(None()));
   });
-
-  test('should request location permissions', () async {
-    // act
-    await requestNecessaryPermissions();
-
-    // assert
-    verify(() => mockPermissionsRepository.requestLocationPermission());
-  });
-
-  test(
-    'should return a LocationPermissionNotGrantedFailure if location permissions are not granted',
-    () async {
-      // arrange
-      when(
-        () => mockPermissionsRepository.requestLocationPermission(),
-      ).thenAnswer(
-        (_) async => const Left(BasicLocationPermissionNotGrantedFailure()),
-      );
-
-      // act
-      final result = await requestNecessaryPermissions();
-
-      // assert
-      expect(result, const Left(BasicLocationPermissionNotGrantedFailure()));
-    },
-  );
 
   test('should request activity recognition permissions', () async {
     // act
@@ -81,6 +50,33 @@ void main() {
 
       // assert
       expect(result, const Left(ActivityPermissionNotGrantedFailure()));
+    },
+  );
+
+  test('should request location permissions and return None', () async {
+    // act
+    final result = await requestNecessaryPermissions();
+
+    // assert
+    expect(result, const Right(None()));
+    verify(() => mockPermissionsRepository.requestLocationPermission());
+  });
+
+  test(
+    'should return a LocationPermissionNotGrantedFailure if location permissions are not granted',
+    () async {
+      // arrange
+      when(
+        () => mockPermissionsRepository.requestLocationPermission(),
+      ).thenAnswer(
+        (_) async => const Left(BasicLocationPermissionNotGrantedFailure()),
+      );
+
+      // act
+      final result = await requestNecessaryPermissions();
+
+      // assert
+      expect(result, const Left(BasicLocationPermissionNotGrantedFailure()));
     },
   );
 }

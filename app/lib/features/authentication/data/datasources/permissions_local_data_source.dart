@@ -4,6 +4,13 @@ import 'package:location_history/core/failures/permission/background_location_pe
 import 'package:location_history/core/failures/permission/basic_location_permission_not_granted_failure.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+/*
+  To-Do:
+    - [ ] Might need to add location precision permission for ios
+    - [ ] At the moment the permission_handler package has a bug where you can't await the response for the locationAlways Permission. 
+          Due to that the BackgroundLocationPermissionNotGrantedFailure will be thrown before the user even has a chance to allow the permission.
+*/
+
 abstract class PermissionsLocalDataSource {
   const PermissionsLocalDataSource();
 

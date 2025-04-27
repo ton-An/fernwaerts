@@ -30,6 +30,7 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
     - [ ] Standardize animation durations
     - [ ] Delete cached data on sign out and potentially when auth check on splash screen fails
     - [ ] Standardize docs and fix possible errors (using an llm might be a good idea)
+    - [ ] Add permissions request screen
 */
 
 void main() {
