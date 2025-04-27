@@ -24,6 +24,8 @@ part '_vertical_list_item_divider.dart';
 /* To-Do:
     - [ ] Factor in velocity of drag to determine if a drag was significant
     - [ ] Fix onPointerUp sometimes not being called (might only be an issue in simulators)
+      - This is (at least partly) due to the maplibre package. It introduces (as ios support is still in alpha) render issues, 
+        which includes that the pointer events get interrupted on fade out of the attribution widget
 */
 
 class LocationHistoryModal extends StatefulWidget {
@@ -114,6 +116,7 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
 
   void _verticalDragEnd() {
     final double dragDelta = _dragStart - _dragPosition;
+
     if (dragDelta != 0) {
       final VerticalDirection dragDirection =
           _dragStart > _dragPosition
