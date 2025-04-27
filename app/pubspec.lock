@@ -78,10 +78,10 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "62b8c981d6eedfbc05a390357b71b5155b40e7f7"
-      url: "https://github.com/ton-An/background_locator_3"
+      resolved-ref: "98062c17332d97411c96340b191f93ea4b87bdc0"
+      url: "https://github.com/devappsteam/background_locator_2_flutter_3_29"
     source: git
-    version: "2.0.6"
+    version: "2.0.7"
   bloc:
     dependency: transitive
     description:

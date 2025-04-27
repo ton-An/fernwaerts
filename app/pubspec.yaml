@@ -51,7 +51,7 @@ dependencies:
       ref: ios
   background_locator_2:
     git:
-      url: https://github.com/ton-An/background_locator_3
+      url: https://github.com/devappsteam/background_locator_2_flutter_3_29
   flutter_activity_recognition: ^4.0.0
 
   # Networking
