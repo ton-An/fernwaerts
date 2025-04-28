@@ -53,6 +53,7 @@ dependencies:
     git:
       url: https://github.com/devappsteam/background_locator_2_flutter_3_29
   flutter_activity_recognition: ^4.0.0
+  flutter_background_geolocation: ^4.16.9
 
   # Networking
   dio: ^5.8.0+1
