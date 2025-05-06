@@ -1,10 +1,9 @@
-import 'package:fpdart/src/either.dart';
-import 'package:fpdart/src/option.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/location_tracking/data/datasources/ios_location_tracking_local_data_source.dart';
-import 'package:location_history/features/location_tracking/domain/models/activity.dart';
-import 'package:location_history/features/location_tracking/domain/models/location.dart';
+import 'package:location_history/features/location_tracking/domain/models/location.model.dart';
 import 'package:location_history/features/location_tracking/domain/models/movement_segment.dart';
+import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
 
 class LocationTrackingRepositoryImpl extends LocationTrackingRepository {
@@ -13,11 +12,6 @@ class LocationTrackingRepositoryImpl extends LocationTrackingRepository {
   });
 
   final IOSLocationTrackingLocalDataSource iosLocationTrackingLocalDataSource;
-  @override
-  Stream<Activity> activityChangeStream() {
-    // TODO: implement activityChangeStream
-    throw UnimplementedError();
-  }
 
   @override
   Future<Either<Failure, List<Location>>> getLocationsByDate({
@@ -36,12 +30,12 @@ class LocationTrackingRepositoryImpl extends LocationTrackingRepository {
   }
 
   @override
-  Stream<Location> locationChangeStream() {
+  Stream<RecordedLocation> locationChangeStream() {
     return iosLocationTrackingLocalDataSource.locationChangeStream();
   }
 
   @override
-  Future<Either<Failure, None>> saveLocation(Location location) {
+  Future<Either<Failure, None>> saveLocation({required Location location}) {
     // TODO: implement saveLocation
     throw UnimplementedError();
   }

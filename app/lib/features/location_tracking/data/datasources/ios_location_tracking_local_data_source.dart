@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
     as bg;
-import 'package:location_history/features/location_tracking/domain/models/location.dart';
+import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
 
 /*
   To-Do:
@@ -19,8 +19,8 @@ abstract class IOSLocationTrackingLocalDataSource {
   /// Streams location updates
   ///
   /// Emits:
-  /// - [Location] the current location of the user
-  Stream<Location> locationChangeStream();
+  /// - [RecordedLocation] the current location of the user
+  Stream<RecordedLocation> locationChangeStream();
 }
 
 class IOSLocationTrackingLocalDataSourceImpl
@@ -30,10 +30,8 @@ class IOSLocationTrackingLocalDataSourceImpl
     await bg.BackgroundGeolocation.ready(
       bg.Config(
         desiredAccuracy: bg.Config.DESIRED_ACCURACY_HIGH,
-        stationaryRadius: 200,
+        stationaryRadius: 25,
         elasticityMultiplier: 1.75,
-        // might want to change to 10. Look at docs to investigate
-        desiredOdometerAccuracy: 100,
         stopOnStationary: true,
         stopOnTerminate: false,
         startOnBoot: true,
@@ -41,13 +39,11 @@ class IOSLocationTrackingLocalDataSourceImpl
         showsBackgroundLocationIndicator: true,
       ),
     );
-
-    await bg.BackgroundGeolocation.start();
   }
 
   @override
-  Stream<Location> locationChangeStream() {
-    final StreamController<Location> locationChangeStreamController =
+  Stream<RecordedLocation> locationChangeStream() {
+    final StreamController<RecordedLocation> locationChangeStreamController =
         StreamController();
 
     bg.BackgroundGeolocation.onLocation((bg.Location bgLocation) {
@@ -55,7 +51,9 @@ class IOSLocationTrackingLocalDataSourceImpl
         return;
       }
 
-      final Location location = Location.fromBGLocation(bgLocation);
+      final RecordedLocation location = RecordedLocation.fromBGLocation(
+        bgLocation,
+      );
 
       locationChangeStreamController.sink.add(location);
     });
