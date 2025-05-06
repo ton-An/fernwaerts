@@ -1,5 +1,4 @@
-import 'package:fpdart/src/either.dart';
-import 'package:fpdart/src/option.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.model.dart';
 import 'package:location_history/features/location_tracking/domain/models/movement_segment.dart';

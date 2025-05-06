@@ -31,7 +31,9 @@ import 'package:location_history/features/calendar/presentation/cubits/monthly_c
 import 'package:location_history/features/calendar/presentation/cubits/yearly_calendar_cubit/yearly_calendar_cubit.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/location_tracking/data/datasources/ios_location_tracking_local_data_source.dart';
+import 'package:location_history/features/location_tracking/data/repository_implementations/location_data_repository_impl.dart';
 import 'package:location_history/features/location_tracking/data/repository_implementations/location_tracking_repository_impl.dart';
+import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/get_location_data.dart';
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
@@ -157,6 +159,7 @@ void registerLocationTrackingDependencies() {
     () => InitBackgroundLocationTracking(
       locationTrackingRepository: getIt(),
       authenticationRepository: getIt(),
+      locationDataRepository: getIt(),
     ),
   );
 
@@ -165,6 +168,9 @@ void registerLocationTrackingDependencies() {
     () => LocationTrackingRepositoryImpl(
       iosLocationTrackingLocalDataSource: getIt(),
     ),
+  );
+  getIt.registerLazySingleton<LocationDataRepository>(
+    () => const LocationDataRepositoryImpl(),
   );
   getIt.registerLazySingleton<IOSLocationTrackingLocalDataSource>(
     () => IOSLocationTrackingLocalDataSourceImpl(),
