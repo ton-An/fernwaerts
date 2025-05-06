@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
+import 'package:location_history/features/map/presentation/cubits/map_states.dart';
 import 'package:maplibre/maplibre.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
@@ -17,6 +20,8 @@ class _MapWidgetState extends State<MapWidget> {
   void initState() {
     super.initState();
 
+    context.read<MapCubit>().loadLocations();
+
     _setAppPackageName();
   }
 
@@ -28,7 +33,7 @@ class _MapWidgetState extends State<MapWidget> {
     });
   }
 
-  final _points = <Point>[
+  final List<Point> _points = <Point>[
     Point(coordinates: Position(9.17, 47.68)),
     Point(coordinates: Position(9.17, 48)),
     Point(coordinates: Position(9, 48)),
@@ -39,22 +44,41 @@ class _MapWidgetState extends State<MapWidget> {
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    return MapLibreMap(
-      acceptLicense: true,
-      options: const MapOptions(
-        initStyle:
-            'https://raw.githubusercontent.com/ton-An/tilekiln-shortbread-demo/refs/heads/main/colorful.json',
-      ),
-      layers: [
-        CircleLayer(
-          points: _points,
-          radius: 5,
-          blur: .6,
-          strokeWidth: 4,
-          color: theme.colors.primary,
-          strokeColor: theme.colors.primaryTranslucent,
+    return BlocListener<MapCubit, MapState>(
+      listener: (context, state) {
+        if (state is MapLocationsLoaded) {
+          final points = <Point>[];
+          for (final location in state.locations) {
+            points.add(
+              Point(
+                coordinates: Position(location.longitude, location.latitude),
+              ),
+            );
+          }
+
+          setState(() {
+            _points.clear();
+            _points.addAll(points);
+          });
+        }
+      },
+      child: MapLibreMap(
+        acceptLicense: true,
+        options: const MapOptions(
+          initStyle:
+              'https://raw.githubusercontent.com/ton-An/tilekiln-shortbread-demo/refs/heads/main/colorful.json',
         ),
-      ],
+        layers: [
+          CircleLayer(
+            points: _points,
+            radius: 5,
+            blur: .6,
+            strokeWidth: 4,
+            color: theme.colors.primary,
+            strokeColor: theme.colors.primaryTranslucent,
+          ),
+        ],
+      ),
     );
 
     // return FlutterMap(
