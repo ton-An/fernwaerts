@@ -133,4 +133,22 @@ abstract class AuthenticationRepository {
   Future<Either<Failure, String>> getAnonKeyFromServer({
     required String serverUrl,
   });
+
+  /// Gets the current user's id
+  ///
+  /// Returns:
+  /// - a [String] containing the current user's id
+  ///
+  /// Failures:
+  /// - [StorageReadFailure]
+  Future<Either<Failure, String>> getCurrentUserId();
+
+  /// Gets the current device's id
+  ///
+  /// Returns:
+  /// - a [String] containing the current device's id
+  ///
+  /// Failures:
+  /// - [StorageReadFailure]
+  Future<Either<Failure, String>> getCurrentDeviceId();
 }

@@ -206,4 +206,16 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return Left(failure);
     }
   }
+
+  @override
+  Future<Either<Failure, String>> getCurrentDeviceId() {
+    // TODO: implement getCurrentDeviceId
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, String>> getCurrentUserId() {
+    // TODO: implement getCurrentUserId
+    throw UnimplementedError();
+  }
 }
