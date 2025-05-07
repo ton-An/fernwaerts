@@ -35,7 +35,7 @@ import 'package:location_history/features/location_tracking/data/repository_impl
 import 'package:location_history/features/location_tracking/data/repository_implementations/location_tracking_repository_impl.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
-import 'package:location_history/features/location_tracking/domain/usecases/get_location_data.dart';
+import 'package:location_history/features/location_tracking/domain/usecases/get_locations_by_date.dart';
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
 
 import '../features/location_tracking/domain/usecases/init_background_location_tracking.dart';
@@ -163,7 +163,12 @@ void registerLocationTrackingDependencies() {
     ),
   );
 
-  getIt.registerLazySingleton(() => GetLocationData(supabaseHandler: getIt()));
+  getIt.registerLazySingleton(
+    () => GetLocationsByDate(
+      authenticationRepository: getIt(),
+      locationDataRepository: getIt(),
+    ),
+  );
   getIt.registerLazySingleton<LocationTrackingRepository>(
     () => LocationTrackingRepositoryImpl(
       iosLocationTrackingLocalDataSource: getIt(),
