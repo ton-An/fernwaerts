@@ -21,7 +21,8 @@
     "Supabase",
     "tojunit",
     "usecases",
-    "uuid"
+    "uuid",
+    "Webfabrik"
   ],
   "deno.enablePaths": ["supabase/functions"],
   "deno.lint": true,
