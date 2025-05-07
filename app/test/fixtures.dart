@@ -147,3 +147,6 @@ List<Location> tLocations = [
     deviceId: tDeviceId,
   ),
 ];
+
+final DateTime tStartDate = DateTime(2025, 5, 6);
+final DateTime tEndDate = DateTime(2025, 5, 6, 23, 59, 59);
