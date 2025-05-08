@@ -84,6 +84,7 @@ dev_dependencies:
     sdk: flutter
   mocktail: ^1.0.4
   mock_supabase_http_client: ^0.0.3+2
+  sqflite_common_ffi: ^2.3.5
 
   # Linting & Analysis
   flutter_lints: ^5.0.0
