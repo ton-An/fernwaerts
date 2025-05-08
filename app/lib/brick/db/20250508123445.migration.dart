@@ -9,10 +9,10 @@ part of 'schema.g.dart';
 
 // The migration version must **always** mirror the file name
 
-const List<MigrationCommand> _migration_20250506162315_up = [
+const List<MigrationCommand> _migration_20250508123445_up = [
   InsertTable('Location'),
-  InsertTable('User'),
   InsertTable('Device'),
+  InsertTable('User'),
   InsertColumn('id', Column.varchar, onTable: 'Location'),
   InsertColumn('user_id', Column.varchar, onTable: 'Location'),
   InsertColumn('device_id', Column.varchar, onTable: 'Location'),
@@ -30,9 +30,6 @@ const List<MigrationCommand> _migration_20250506162315_up = [
   InsertColumn('activity_confidence', Column.num, onTable: 'Location'),
   InsertColumn('battery_level', Column.num, onTable: 'Location'),
   InsertColumn('is_device_charging', Column.boolean, onTable: 'Location'),
-  InsertColumn('id', Column.varchar, onTable: 'User'),
-  InsertColumn('username', Column.varchar, onTable: 'User'),
-  InsertColumn('email', Column.varchar, onTable: 'User'),
   InsertColumn('id', Column.varchar, onTable: 'Device'),
   InsertColumn('user_id', Column.varchar, onTable: 'Device'),
   InsertColumn('name', Column.varchar, onTable: 'Device'),
@@ -43,13 +40,16 @@ const List<MigrationCommand> _migration_20250506162315_up = [
   InsertColumn('os_version', Column.varchar, onTable: 'Device'),
   InsertColumn('app_version', Column.varchar, onTable: 'Device'),
   InsertColumn('created_at', Column.datetime, onTable: 'Device'),
-  InsertColumn('updated_at', Column.datetime, onTable: 'Device')
+  InsertColumn('updated_at', Column.datetime, onTable: 'Device'),
+  InsertColumn('id', Column.varchar, onTable: 'User'),
+  InsertColumn('username', Column.varchar, onTable: 'User'),
+  InsertColumn('email', Column.varchar, onTable: 'User')
 ];
 
-const List<MigrationCommand> _migration_20250506162315_down = [
+const List<MigrationCommand> _migration_20250508123445_down = [
   DropTable('Location'),
-  DropTable('User'),
   DropTable('Device'),
+  DropTable('User'),
   DropColumn('id', onTable: 'Location'),
   DropColumn('user_id', onTable: 'Location'),
   DropColumn('device_id', onTable: 'Location'),
@@ -67,9 +67,6 @@ const List<MigrationCommand> _migration_20250506162315_down = [
   DropColumn('activity_confidence', onTable: 'Location'),
   DropColumn('battery_level', onTable: 'Location'),
   DropColumn('is_device_charging', onTable: 'Location'),
-  DropColumn('id', onTable: 'User'),
-  DropColumn('username', onTable: 'User'),
-  DropColumn('email', onTable: 'User'),
   DropColumn('id', onTable: 'Device'),
   DropColumn('user_id', onTable: 'Device'),
   DropColumn('name', onTable: 'Device'),
@@ -80,7 +77,10 @@ const List<MigrationCommand> _migration_20250506162315_down = [
   DropColumn('os_version', onTable: 'Device'),
   DropColumn('app_version', onTable: 'Device'),
   DropColumn('created_at', onTable: 'Device'),
-  DropColumn('updated_at', onTable: 'Device')
+  DropColumn('updated_at', onTable: 'Device'),
+  DropColumn('id', onTable: 'User'),
+  DropColumn('username', onTable: 'User'),
+  DropColumn('email', onTable: 'User')
 ];
 
 //
@@ -88,15 +88,15 @@ const List<MigrationCommand> _migration_20250506162315_down = [
 //
 
 @Migratable(
-  version: '20250506162315',
-  up: _migration_20250506162315_up,
-  down: _migration_20250506162315_down,
+  version: '20250508123445',
+  up: _migration_20250508123445_up,
+  down: _migration_20250508123445_down,
 )
-class Migration20250506162315 extends Migration {
-  const Migration20250506162315()
+class Migration20250508123445 extends Migration {
+  const Migration20250508123445()
     : super(
-        version: 20250506162315,
-        up: _migration_20250506162315_up,
-        down: _migration_20250506162315_down,
+        version: 20250508123445,
+        up: _migration_20250508123445_up,
+        down: _migration_20250508123445_down,
       );
 }
