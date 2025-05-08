@@ -64,7 +64,7 @@ abstract class AuthenticationRemoteDataSource {
   ///
   /// Returns:
   /// - a [bool] indicating if the user is signed in
-  bool isSignedIn();
+  Future<bool> isSignedIn();
 
   /// Notifies when the authentication state changes
   ///
@@ -110,7 +110,7 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
 
   @override
   Future<bool> isServerSetUp() async {
-    final SupabaseClient supabaseClient = supabaseHandler.getClient();
+    final SupabaseClient supabaseClient = await supabaseHandler.getClient();
 
     final queryResult =
         await supabaseClient
@@ -164,8 +164,8 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
   }
 
   @override
-  bool isSignedIn() {
-    final SupabaseClient supabaseClient = supabaseHandler.getClient();
+  Future<bool> isSignedIn() async {
+    final SupabaseClient supabaseClient = await supabaseHandler.getClient();
 
     final Session? currentSession = supabaseClient.auth.currentSession;
 
@@ -178,7 +178,7 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
 
   @override
   Stream<AuthenticationState> authenticationStateStream() async* {
-    final SupabaseClient supabaseClient = supabaseHandler.getClient();
+    final SupabaseClient supabaseClient = await supabaseHandler.getClient();
 
     final Stream<AuthState> authStateSubscription =
         supabaseClient.auth.onAuthStateChange;
@@ -195,10 +195,10 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
   }
 
   @override
-  Future<void> signIn({required String email, required String password}) {
-    final SupabaseClient supabaseClient = supabaseHandler.getClient();
+  Future<void> signIn({required String email, required String password}) async {
+    final SupabaseClient supabaseClient = await supabaseHandler.getClient();
 
-    return supabaseClient.auth.signInWithPassword(
+    await supabaseClient.auth.signInWithPassword(
       email: email,
       password: password,
     );
@@ -206,7 +206,7 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
 
   @override
   Future<void> signOut() async {
-    final SupabaseClient supabaseClient = supabaseHandler.getClient();
+    final SupabaseClient supabaseClient = await supabaseHandler.getClient();
 
     await supabaseClient.auth.signOut();
   }

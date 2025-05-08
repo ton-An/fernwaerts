@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:location_history/core/failures/storage/database_read_failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/get_locations_by_date.dart';
 import 'package:mocktail/mocktail.dart';
@@ -32,7 +31,7 @@ void main() {
         start: any(named: 'start'),
         end: any(named: 'end'),
       ),
-    ).thenAnswer((_) async => Right(tLocations));
+    ).thenAnswer((_) async => tLocations);
   });
 
   test('should get the users id', () async {
@@ -67,20 +66,5 @@ void main() {
         end: tEndDate,
       ),
     );
-  });
-  test('should relay failures from getting locations by date', () async {
-    // arrange
-    when(
-      () => mockLocationDataRepository.getLocationsByDate(
-        start: tStartDate,
-        end: tEndDate,
-      ),
-    ).thenAnswer((_) async => const Left(DatabaseReadFailure()));
-
-    // act
-    final result = await getLocationsByDate(start: tStartDate, end: tEndDate);
-
-    // assert
-    expect(result, const Left(DatabaseReadFailure()));
   });
 }

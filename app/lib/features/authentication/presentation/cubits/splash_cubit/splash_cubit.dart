@@ -42,7 +42,7 @@ class SplashCubit extends Cubit<SplashState> {
       },
 
       (None none) async {
-        bool isSignedIn = isSignedInUsecase();
+        bool isSignedIn = await isSignedInUsecase();
 
         if (isSignedIn) {
           final Either<Failure, None> requestPermissionsEither =

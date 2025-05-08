@@ -31,7 +31,9 @@ void main() {
       httpClient: mockSupabaseHttpClient,
     );
 
-    when(() => mockSupabaseHandler.getClient()).thenReturn(mockSupabaseClient);
+    when(
+      () => mockSupabaseHandler.getClient(),
+    ).thenAnswer((_) async => mockSupabaseClient);
   });
 
   setUpAll(() {
@@ -183,9 +185,9 @@ void main() {
     //     expect(result, true);
     //   });
 
-    test('should return false if the current session is null', () {
+    test('should return false if the current session is null', () async {
       // act
-      final result = authRemoteDataSourceImpl.isSignedIn();
+      final result = await authRemoteDataSourceImpl.isSignedIn();
 
       // assert
       expect(result, false);

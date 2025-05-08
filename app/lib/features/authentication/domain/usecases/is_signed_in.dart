@@ -13,7 +13,7 @@ class IsSignedIn {
   final AuthenticationRepository authenticationRepository;
 
   /// {@macro is_signed_in}
-  bool call() {
+  Future<bool> call() {
     return authenticationRepository.isSignedIn();
   }
 }
