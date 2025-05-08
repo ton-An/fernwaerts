@@ -123,7 +123,7 @@ packages:
     source: hosted
     version: "4.0.0"
   brick_core:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: brick_core
       sha256: "4028265fec9c53cec59ba5c62ce09b292edadedee6b8dd6230d41dcbce23cf78"
