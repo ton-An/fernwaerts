@@ -14,19 +14,25 @@ void main() {
   late MockAuthenticationRepository mockAuthenticationRepository;
   late MockLocationTrackingRepository mockLocationTrackingRepository;
   late MockLocationDataRepository mockLocationDataRepository;
+  late MockInitializeSavedServerConnection mockInitializeSavedServerConnection;
 
   setUp(() {
     mockAuthenticationRepository = MockAuthenticationRepository();
     mockLocationTrackingRepository = MockLocationTrackingRepository();
     mockLocationDataRepository = MockLocationDataRepository();
+    mockInitializeSavedServerConnection = MockInitializeSavedServerConnection();
     locationTrackingHandler = InitBackgroundLocationTracking(
       authenticationRepository: mockAuthenticationRepository,
       locationTrackingRepository: mockLocationTrackingRepository,
       locationDataRepository: mockLocationDataRepository,
+      initializeSavedServerConnection: mockInitializeSavedServerConnection,
     );
   });
 
   setUp(() {
+    when(
+      () => mockInitializeSavedServerConnection(),
+    ).thenAnswer((_) async => const Right(None()));
     when(
       () => mockAuthenticationRepository.getCurrentUserId(),
     ).thenAnswer((_) async => const Right(tUserId));
@@ -50,6 +56,27 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(tLocations[0]);
+  });
+
+  test('should init the saved server connection', () async {
+    // act
+    await locationTrackingHandler();
+
+    // assert
+    verify(() => mockInitializeSavedServerConnection());
+  });
+
+  test('should relay failures from init the saved server connection', () async {
+    // arrange
+    when(
+      () => mockInitializeSavedServerConnection(),
+    ).thenAnswer((_) async => const Left(StorageReadFailure()));
+
+    // act
+    final result = await locationTrackingHandler();
+
+    // assert
+    expect(result, const Left(StorageReadFailure()));
   });
 
   test('should get the current user', () async {

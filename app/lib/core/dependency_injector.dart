@@ -168,6 +168,7 @@ void registerLocationTrackingDependencies() {
       locationTrackingRepository: getIt(),
       authenticationRepository: getIt(),
       locationDataRepository: getIt(),
+      initializeSavedServerConnection: getIt(),
     ),
   );
 

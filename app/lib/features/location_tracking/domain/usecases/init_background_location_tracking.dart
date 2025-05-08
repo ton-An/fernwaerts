@@ -7,6 +7,7 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
+import 'package:location_history/features/authentication/domain/usecases/initialize_saved_server_connection.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.model.dart';
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
@@ -17,14 +18,25 @@ class InitBackgroundLocationTracking {
     required this.authenticationRepository,
     required this.locationTrackingRepository,
     required this.locationDataRepository,
+    required this.initializeSavedServerConnection,
   });
 
   final AuthenticationRepository authenticationRepository;
   final LocationTrackingRepository locationTrackingRepository;
   final LocationDataRepository locationDataRepository;
+  final InitializeSavedServerConnection initializeSavedServerConnection;
 
   Future<Either<Failure, None>> call() async {
-    return _getUserId();
+    return _initServer();
+  }
+
+  Future<Either<Failure, None>> _initServer() async {
+    final Either<Failure, None> initServerConnectionEither =
+        await initializeSavedServerConnection();
+
+    return initServerConnectionEither.fold(Left.new, (None none) {
+      return _getUserId();
+    });
   }
 
   Future<Either<Failure, None>> _getUserId() async {
