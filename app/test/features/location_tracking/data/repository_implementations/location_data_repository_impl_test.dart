@@ -16,6 +16,10 @@ void main() {
     );
   });
 
+  setUpAll(() {
+    registerFallbackValue(tLocations[0]);
+  });
+
   group('getLocationsByDate', () {
     setUp(() {
       when(
