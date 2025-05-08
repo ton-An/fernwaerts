@@ -31,6 +31,7 @@ import 'package:location_history/features/calendar/presentation/cubits/monthly_c
 import 'package:location_history/features/calendar/presentation/cubits/yearly_calendar_cubit/yearly_calendar_cubit.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/location_tracking/data/datasources/ios_location_tracking_local_data_source.dart';
+import 'package:location_history/features/location_tracking/data/datasources/location_data_remote_data_source.dart';
 import 'package:location_history/features/location_tracking/data/repository_implementations/location_data_repository_impl.dart';
 import 'package:location_history/features/location_tracking/data/repository_implementations/location_tracking_repository_impl.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
@@ -66,7 +67,10 @@ void registerCoreDependencies() {
   getIt.registerLazySingleton<ServerRemoteHandler>(
     () => ServerRemoteHandlerImpl(dio: getIt()),
   );
-  getIt.registerLazySingleton<SupabaseHandler>(() => const SupabaseHandler());
+  getIt.registerLazySingleton<SupabaseHandler>(() => SupabaseHandler());
+  getIt.registerLazySingleton(
+    () async => await getIt<SupabaseHandler>().getSupabaseOfflineFirst(),
+  );
 }
 
 void registerInAppNotificationDependencies() {
@@ -155,6 +159,10 @@ void registerCalendarDependencies() {
 }
 
 void registerLocationTrackingDependencies() {
+  // -- Presentation -- //
+  getIt.registerFactory(() => MapCubit(getLocationData: getIt()));
+
+  // -- Domain -- //
   getIt.registerLazySingleton(
     () => InitBackgroundLocationTracking(
       locationTrackingRepository: getIt(),
@@ -174,11 +182,15 @@ void registerLocationTrackingDependencies() {
       iosLocationTrackingLocalDataSource: getIt(),
     ),
   );
+
+  // -- Data -- //
   getIt.registerLazySingleton<LocationDataRepository>(
-    () => const LocationDataRepositoryImpl(),
+    () => LocationDataRepositoryImpl(locationRemoteDataSource: getIt()),
   );
   getIt.registerLazySingleton<IOSLocationTrackingLocalDataSource>(
     () => IOSLocationTrackingLocalDataSourceImpl(),
   );
-  getIt.registerFactory(() => MapCubit(getLocationData: getIt()));
+  getIt.registerLazySingleton<LocationDataRemoteDataSource>(
+    () => LocationDataRemoteDataSourceImpl(supabaseOfflineFirst: getIt()),
+  );
 }
