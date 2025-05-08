@@ -13,7 +13,13 @@ class SupabaseHandler {
   final Completer<SupabaseOfflineFirst> _offlineFirstCompleter =
       Completer<SupabaseOfflineFirst>();
 
-  Future<SupabaseClient> get client => _clientCompleter.future;
+  Future<SupabaseClient> get client {
+    if (_clientCompleter.isCompleted) {
+      return Future.value(Supabase.instance.client);
+    } else {
+      return _clientCompleter.future;
+    }
+  }
 
   Future<SupabaseOfflineFirst> get supabaseOfflineFirst =>
       _offlineFirstCompleter.future;
