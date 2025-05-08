@@ -10,12 +10,12 @@ class SupabaseHandler {
   final Completer<SupabaseClient> _clientCompleter =
       Completer<SupabaseClient>();
 
-  Future<SupabaseClient> getClient() => _clientCompleter.future;
-
   final Completer<SupabaseOfflineFirst> _offlineFirstCompleter =
       Completer<SupabaseOfflineFirst>();
 
-  Future<SupabaseOfflineFirst> getSupabaseOfflineFirst() =>
+  Future<SupabaseClient> get client => _clientCompleter.future;
+
+  Future<SupabaseOfflineFirst> get supabaseOfflineFirst =>
       _offlineFirstCompleter.future;
 
   Future<void> initialize({required ServerInfo serverInfo}) async {

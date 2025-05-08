@@ -69,7 +69,7 @@ void registerCoreDependencies() {
   );
   getIt.registerLazySingleton<SupabaseHandler>(() => SupabaseHandler());
   getIt.registerLazySingleton(
-    () async => await getIt<SupabaseHandler>().getSupabaseOfflineFirst(),
+    () async => await getIt<SupabaseHandler>().supabaseOfflineFirst,
   );
 }
 

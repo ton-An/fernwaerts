@@ -32,7 +32,7 @@ void main() {
     );
 
     when(
-      () => mockSupabaseHandler.getClient(),
+      () => mockSupabaseHandler.client,
     ).thenAnswer((_) async => mockSupabaseClient);
   });
 
