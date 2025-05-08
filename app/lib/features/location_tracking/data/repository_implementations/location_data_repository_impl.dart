@@ -1,31 +1,28 @@
-import 'package:fpdart/fpdart.dart';
-import 'package:location_history/core/failures/failure.dart';
+import 'package:location_history/features/location_tracking/data/datasources/location_data_remote_data_source.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.model.dart';
 import 'package:location_history/features/location_tracking/domain/models/movement_segment.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 
 class LocationDataRepositoryImpl extends LocationDataRepository {
-  const LocationDataRepositoryImpl();
+  const LocationDataRepositoryImpl({required this.locationRemoteDataSource});
+
+  final LocationDataRemoteDataSource locationRemoteDataSource;
 
   @override
-  Future<Either<Failure, List<Location>>> getLocationsByDate({
+  Future<List<Location>> getLocationsByDate({
     required DateTime start,
     required DateTime end,
   }) {
-    // TODO: implement getLocationsByDate
-    throw UnimplementedError();
+    return locationRemoteDataSource.getLocationsByDate(start: start, end: end);
   }
 
   @override
-  Future<Either<Failure, None>> saveLocation({required Location location}) {
-    // TODO: implement saveLocation
-    throw UnimplementedError();
+  Future<void> saveLocation({required Location location}) async {
+    await locationRemoteDataSource.saveLocation(location: location);
   }
 
   @override
-  Future<Either<Failure, None>> saveMovementSegment({
-    required MovementSegment movementSegment,
-  }) {
+  Future<void> saveMovementSegment({required MovementSegment movementSegment}) {
     // TODO: implement saveMovementSegment
     throw UnimplementedError();
   }

@@ -1,5 +1,3 @@
-import 'package:fpdart/fpdart.dart';
-import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/storage/database_read_failure.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.model.dart';
 import 'package:location_history/features/location_tracking/domain/models/movement_segment.dart';
@@ -11,10 +9,7 @@ abstract class LocationDataRepository {
   ///
   /// Parameters:
   /// - [Location] the location to save
-  ///
-  /// Failures:
-  /// - [DatabaseReadFailure]
-  Future<Either<Failure, None>> saveLocation({required Location location});
+  Future<void> saveLocation({required Location location});
 
   /// Get locations by date range
   ///
@@ -27,7 +22,7 @@ abstract class LocationDataRepository {
   ///
   /// Failures:
   /// - [DatabaseReadFailure]
-  Future<Either<Failure, List<Location>>> getLocationsByDate({
+  Future<List<Location>> getLocationsByDate({
     required DateTime start,
     required DateTime end,
   });
@@ -39,7 +34,5 @@ abstract class LocationDataRepository {
   ///
   /// Failures:
   /// - [DatabaseReadFailure]
-  Future<Either<Failure, None>> saveMovementSegment({
-    required MovementSegment movementSegment,
-  });
+  Future<void> saveMovementSegment({required MovementSegment movementSegment});
 }

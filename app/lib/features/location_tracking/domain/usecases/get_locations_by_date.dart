@@ -37,6 +37,9 @@ class GetLocationsByDate {
     required DateTime end,
     required String userId,
   }) async {
-    return locationDataRepository.getLocationsByDate(start: start, end: end);
+    final List<Location> locations = await locationDataRepository
+        .getLocationsByDate(start: start, end: end);
+
+    return Right(locations);
   }
 }
