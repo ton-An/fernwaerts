@@ -221,8 +221,13 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, String>> getCurrentUserId() {
-    // TODO: implement getCurrentUserId
-    throw UnimplementedError();
+  Future<Either<Failure, String>> getCurrentUserId() async {
+    try {
+      final String userId = await authRemoteDataSource.getCurrentUserId();
+
+      return Right(userId);
+    } on Failure catch (failure) {
+      return Left(failure);
+    }
   }
 }

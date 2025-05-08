@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
+import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/bad_response_failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
@@ -537,6 +538,36 @@ void main() {
 
       // assert
       expect(result, const Left<Failure, bool>(StorageReadFailure()));
+    });
+  });
+
+  group('getCurrentUserId', () {
+    setUp(() {
+      when(
+        () => mockAuthRemoteDataSource.getCurrentUserId(),
+      ).thenAnswer((_) async => tUserId);
+    });
+
+    test('should get the current user ID and return it', () async {
+      // act
+      final result = await authenticationRepositoryImpl.getCurrentUserId();
+
+      // assert
+      verify(() => mockAuthRemoteDataSource.getCurrentUserId());
+      expect(result, const Right(tUserId));
+    });
+
+    test('should relay Failures', () async {
+      // arrange
+      when(
+        () => mockAuthRemoteDataSource.getCurrentUserId(),
+      ).thenThrow(const NotSignedInFailure());
+
+      // act
+      final result = await authenticationRepositoryImpl.getCurrentUserId();
+
+      // assert
+      expect(result, const Left<Failure, bool>(NotSignedInFailure()));
     });
   });
 }
