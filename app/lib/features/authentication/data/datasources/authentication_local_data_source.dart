@@ -37,7 +37,7 @@ abstract class AuthenticationLocalDataSource {
   /// - [PlatformException]
   Future<void> saveServerInfo({required ServerInfo serverInfo});
 
-  /// Gets the device id
+  /// Gets the current device's id
   ///
   /// Returns:
   /// - [String] the device id
@@ -45,7 +45,7 @@ abstract class AuthenticationLocalDataSource {
   /// Throws:
   /// - [PlatformException]
   /// - [StorageReadFailure]
-  Future<String> getDeviceId();
+  Future<String> getCurrentDeviceId();
 }
 
 class AuthLocalDataSourceImpl extends AuthenticationLocalDataSource {
@@ -83,7 +83,7 @@ class AuthLocalDataSourceImpl extends AuthenticationLocalDataSource {
   }
 
   @override
-  Future<String> getDeviceId() async {
+  Future<String> getCurrentDeviceId() async {
     final String? deviceId = await secureStorage.read(key: 'device_id');
 
     if (deviceId == null) {

@@ -157,7 +157,7 @@ void main() {
 
     test('should read the device id key from storage', () async {
       // act
-      await authenticationLocalDataSource.getDeviceId();
+      await authenticationLocalDataSource.getCurrentDeviceId();
 
       // assert
       verify(() => mockSecureStorage.read(key: 'device_id'));
@@ -165,7 +165,7 @@ void main() {
 
     test('should return the device id', () async {
       // act
-      final result = await authenticationLocalDataSource.getDeviceId();
+      final result = await authenticationLocalDataSource.getCurrentDeviceId();
 
       // assert
       expect(result, tDeviceId);
@@ -181,7 +181,7 @@ void main() {
 
         // act & assert
         expect(
-          () async => await authenticationLocalDataSource.getDeviceId(),
+          () async => await authenticationLocalDataSource.getCurrentDeviceId(),
           throwsA(const StorageReadFailure()),
         );
       },
