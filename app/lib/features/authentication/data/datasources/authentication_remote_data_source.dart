@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:http/http.dart';
 import 'package:location_history/core/data/datasources/server_remote_handler.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
+import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/misc/url_path_constants.dart';
 import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
@@ -97,6 +98,15 @@ abstract class AuthenticationRemoteDataSource {
   /// Throws:
   /// {@macro server_remote_handler_exceptions}
   Future<String> getAnonKeyFromServer({required String serverUrl});
+
+  /// Gets the current user's id
+  ///
+  /// Returns:
+  /// - a [String] containing the current user's id
+  ///
+  /// Throws:
+  /// - [NotSignedInFailure]
+  Future<String> getCurrentUserId();
 }
 
 class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
@@ -220,5 +230,20 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
     final String anonKey = response!['data']['anon_key'];
 
     return anonKey;
+  }
+
+  @override
+  Future<String> getCurrentUserId() async {
+    final SupabaseClient supabaseClient = await supabaseHandler.client;
+
+    final User? currentUser = supabaseClient.auth.currentUser;
+
+    if (currentUser == null) {
+      throw const NotSignedInFailure();
+    }
+
+    final String currentUserId = currentUser.id;
+
+    return currentUserId;
   }
 }

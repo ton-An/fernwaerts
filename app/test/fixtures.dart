@@ -100,6 +100,14 @@ const String tPassword = 'VeryStrongPassword';
 const String tUserId = '1234567890';
 const String tDeviceId = '1234567890';
 
+const User tSupabaseUser = User(
+  id: tUserId,
+  appMetadata: {},
+  userMetadata: {},
+  aud: 'aud',
+  createdAt: 'createdAt',
+);
+
 List<RecordedLocation> tRecordedLocations = [
   RecordedLocation(
     timestamp: DateTime(2025, 5, 6),
