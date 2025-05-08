@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
+import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -145,5 +146,45 @@ void main() {
       // assert
       verify(() => mockSecureStorage.write(key: 'anon_key', value: tAnonKey));
     });
+  });
+
+  group('getDeviceId()', () {
+    setUp(() {
+      when(
+        () => mockSecureStorage.read(key: any(named: 'key')),
+      ).thenAnswer((_) async => tDeviceId);
+    });
+
+    test('should read the device id key from storage', () async {
+      // act
+      await authenticationLocalDataSource.getDeviceId();
+
+      // assert
+      verify(() => mockSecureStorage.read(key: 'device_id'));
+    });
+
+    test('should return the device id', () async {
+      // act
+      final result = await authenticationLocalDataSource.getDeviceId();
+
+      // assert
+      expect(result, tDeviceId);
+    });
+
+    test(
+      'should throw a storage read failure if the device id is null',
+      () async {
+        // arrange
+        when(
+          () => mockSecureStorage.read(key: 'device_id'),
+        ).thenAnswer((_) async => null);
+
+        // act & assert
+        expect(
+          () async => await authenticationLocalDataSource.getDeviceId(),
+          throwsA(const StorageReadFailure()),
+        );
+      },
+    );
   });
 }

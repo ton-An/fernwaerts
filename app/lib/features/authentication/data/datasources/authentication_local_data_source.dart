@@ -6,6 +6,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
+import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
 
 abstract class AuthenticationLocalDataSource {
@@ -35,6 +36,16 @@ abstract class AuthenticationLocalDataSource {
   /// Throws:
   /// - [PlatformException]
   Future<void> saveServerInfo({required ServerInfo serverInfo});
+
+  /// Gets the device id
+  ///
+  /// Returns:
+  /// - [String] the device id
+  ///
+  /// Throws:
+  /// - [PlatformException]
+  /// - [StorageReadFailure]
+  Future<String> getDeviceId();
 }
 
 class AuthLocalDataSourceImpl extends AuthenticationLocalDataSource {
@@ -69,5 +80,16 @@ class AuthLocalDataSourceImpl extends AuthenticationLocalDataSource {
   Future<void> saveServerInfo({required ServerInfo serverInfo}) async {
     await secureStorage.write(key: _serverUrlKey, value: serverInfo.url);
     await secureStorage.write(key: _anonKey, value: serverInfo.anonKey);
+  }
+
+  @override
+  Future<String> getDeviceId() async {
+    final String? deviceId = await secureStorage.read(key: 'device_id');
+
+    if (deviceId == null) {
+      throw const StorageReadFailure();
+    }
+
+    return deviceId;
   }
 }
