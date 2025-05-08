@@ -4,7 +4,7 @@ import 'package:location_history/features/authentication/data/datasources/authen
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../fixtures.dart';
-import '../../../../mocks.dart';
+import '../../../../mocks/mocks.dart';
 
 void main() {
   late AuthenticationLocalDataSource authenticationLocalDataSource;

@@ -11,7 +11,7 @@ import 'package:location_history/features/authentication/data/repository_impleme
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../fixtures.dart';
-import '../../../../mocks.dart';
+import '../../../../mocks/mocks.dart';
 
 void main() {
   late AuthenticationRepositoryImpl authenticationRepositoryImpl;

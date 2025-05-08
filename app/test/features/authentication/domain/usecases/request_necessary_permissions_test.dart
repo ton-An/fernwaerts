@@ -5,7 +5,7 @@ import 'package:location_history/core/failures/permission/basic_location_permiss
 import 'package:location_history/features/authentication/domain/usecases/request_necessary_permissions.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../../mocks.dart';
+import '../../../../mocks/mocks.dart';
 
 void main() {
   late RequestNecessaryPermissions requestNecessaryPermissions;

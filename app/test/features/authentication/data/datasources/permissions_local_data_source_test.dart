@@ -4,7 +4,7 @@ import 'package:location_history/core/failures/permission/activity_permission_no
 import 'package:location_history/features/authentication/data/datasources/permissions_local_data_source.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../../mocks.dart';
+import '../../../../mocks/mocks.dart';
 
 void main() {
   late PermissionsLocalDataSource permissionsLocalDataSource;

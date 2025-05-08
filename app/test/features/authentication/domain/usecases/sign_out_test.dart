@@ -4,7 +4,7 @@ import 'package:location_history/core/failures/storage/storage_write_failure.dar
 import 'package:location_history/features/authentication/domain/usecases/sign_out.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../../mocks.dart';
+import '../../../../mocks/mocks.dart';
 
 void main() {
   late SignOut signOut;

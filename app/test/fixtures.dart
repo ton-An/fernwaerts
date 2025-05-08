@@ -10,7 +10,7 @@ import 'package:location_history/features/location_tracking/domain/models/locati
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'mocks.dart';
+import 'mocks/mocks.dart';
 
 const String tServerUrlString = 'https://coolness_checks.com';
 const String tServerCallPath = '/is_ted_cool';

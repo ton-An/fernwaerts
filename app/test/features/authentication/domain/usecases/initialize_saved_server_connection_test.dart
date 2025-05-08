@@ -6,7 +6,7 @@ import 'package:location_history/features/authentication/domain/usecases/initial
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../fixtures.dart';
-import '../../../../mocks.dart';
+import '../../../../mocks/mocks.dart';
 
 void main() {
   late InitializeSavedServerConnection initializeSavedServerConnection;

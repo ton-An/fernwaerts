@@ -6,7 +6,7 @@ import 'package:location_history/features/location_tracking/domain/usecases/get_
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../fixtures.dart';
-import '../../../../mocks.dart';
+import '../../../../mocks/mocks.dart';
 
 void main() {
   late GetLocationsByDate getLocationsByDate;
