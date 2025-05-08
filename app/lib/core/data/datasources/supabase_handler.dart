@@ -26,8 +26,12 @@ class SupabaseHandler {
 
     await SupabaseOfflineFirst().initialize();
 
-    _offlineFirstCompleter.complete(SupabaseOfflineFirst());
-    _clientCompleter.complete(Supabase.instance.client);
+    if (!_offlineFirstCompleter.isCompleted) {
+      _offlineFirstCompleter.complete(SupabaseOfflineFirst());
+    }
+    if (!_clientCompleter.isCompleted) {
+      _clientCompleter.complete(Supabase.instance.client);
+    }
   }
 
   Future<void> dispose() async {
