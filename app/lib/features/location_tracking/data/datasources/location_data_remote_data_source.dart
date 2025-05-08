@@ -7,9 +7,6 @@ abstract class LocationDataRemoteDataSource {
   ///
   /// Parameters:
   /// - [Location] the location to save
-  ///
-  /// Throws:
-  /// - TBD
   Future<void> saveLocation({required Location location});
 
   /// Get locations by date range
@@ -20,9 +17,6 @@ abstract class LocationDataRemoteDataSource {
   ///
   /// Returns:
   /// - List of [Location]s within the date range
-  ///
-  /// Throws:
-  /// - TBD
   Future<List<Location>> getLocationsByDate({
     required DateTime start,
     required DateTime end,
