@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:location_history/core/failures/authentication/no_saved_device_failure.dart';
 import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
 import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
@@ -531,13 +532,13 @@ void main() {
       // arrange
       when(
         () => mockAuthLocalDataSource.getCurrentDeviceId(),
-      ).thenThrow(const StorageReadFailure());
+      ).thenThrow(const NoSavedDeviceFailure());
 
       // act
       final result = await authenticationRepositoryImpl.getCurrentDeviceId();
 
       // assert
-      expect(result, const Left<Failure, bool>(StorageReadFailure()));
+      expect(result, const Left<Failure, bool>(NoSavedDeviceFailure()));
     });
   });
 

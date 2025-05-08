@@ -5,6 +5,7 @@
 
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:location_history/core/failures/authentication/no_saved_device_failure.dart';
 import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
@@ -87,7 +88,7 @@ class AuthLocalDataSourceImpl extends AuthenticationLocalDataSource {
     final String? deviceId = await secureStorage.read(key: 'device_id');
 
     if (deviceId == null) {
-      throw const StorageReadFailure();
+      throw const NoSavedDeviceFailure();
     }
 
     return deviceId;

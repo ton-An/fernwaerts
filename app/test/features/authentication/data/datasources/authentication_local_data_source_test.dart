@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:location_history/core/failures/authentication/no_saved_device_failure.dart';
 import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
-import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -172,7 +172,7 @@ void main() {
     });
 
     test(
-      'should throw a storage read failure if the device id is null',
+      'should throw a no saved device failure if the device id is null',
       () async {
         // arrange
         when(
@@ -182,7 +182,7 @@ void main() {
         // act & assert
         expect(
           () async => await authenticationLocalDataSource.getCurrentDeviceId(),
-          throwsA(const StorageReadFailure()),
+          throwsA(const NoSavedDeviceFailure()),
         );
       },
     );
