@@ -47,7 +47,7 @@ class LocationDataRemoteDataSourceImpl implements LocationDataRemoteDataSource {
       endIsoString,
     ], compare: Compare.between);
 
-    final List<Location> locations = await supabaseOfflineFirst.get(
+    final List<Location> locations = await supabaseOfflineFirst.get<Location>(
       query: query,
     );
 
@@ -55,8 +55,7 @@ class LocationDataRemoteDataSourceImpl implements LocationDataRemoteDataSource {
   }
 
   @override
-  Future<void> saveLocation({required Location location}) {
-    // TODO: implement saveLocation
-    throw UnimplementedError();
+  Future<void> saveLocation({required Location location}) async {
+    await supabaseOfflineFirst.upsert<Location>(location);
   }
 }
