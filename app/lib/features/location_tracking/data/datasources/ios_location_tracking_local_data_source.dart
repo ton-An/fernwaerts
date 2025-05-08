@@ -55,7 +55,7 @@ class IOSLocationTrackingLocalDataSourceImpl
         bgLocation,
       );
 
-      locationChangeStreamController.sink.add(location);
+      locationChangeStreamController.add(location);
     });
 
     return locationChangeStreamController.stream;
