@@ -493,4 +493,50 @@ void main() {
       expect(result, const Left<Failure, bool>(tUnknownRequestFailure));
     });
   });
+
+  group('getCurrentDeviceId', () {
+    setUp(() {
+      when(
+        () => mockAuthLocalDataSource.getCurrentDeviceId(),
+      ).thenAnswer((_) async => tDeviceId);
+    });
+
+    test('should get the current device ID and return it', () async {
+      // act
+      final result = await authenticationRepositoryImpl.getCurrentDeviceId();
+
+      // assert
+      verify(() => mockAuthLocalDataSource.getCurrentDeviceId());
+      expect(result, const Right(tDeviceId));
+    });
+
+    test(
+      'should convert PlatformException to StorageReadFailure and return it',
+      () async {
+        // arrange
+        when(
+          () => mockAuthLocalDataSource.getCurrentDeviceId(),
+        ).thenThrow(tPlatformException);
+
+        // act
+        final result = await authenticationRepositoryImpl.getCurrentDeviceId();
+
+        // assert
+        expect(result, const Left(StorageReadFailure()));
+      },
+    );
+
+    test('should relay Failures', () async {
+      // arrange
+      when(
+        () => mockAuthLocalDataSource.getCurrentDeviceId(),
+      ).thenThrow(const StorageReadFailure());
+
+      // act
+      final result = await authenticationRepositoryImpl.getCurrentDeviceId();
+
+      // assert
+      expect(result, const Left<Failure, bool>(StorageReadFailure()));
+    });
+  });
 }
