@@ -1,3 +1,4 @@
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_activity_recognition/flutter_activity_recognition.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -39,6 +40,8 @@ class MockFlutterSecureStorage extends Mock implements FlutterSecureStorage {}
 
 class MockFlutterActivityRecognition extends Mock
     implements FlutterActivityRecognition {}
+
+class MockDeviceInfoPlugin extends Mock implements DeviceInfoPlugin {}
 
 // -- Core -- //
 class MockServerRemoteHandler extends Mock implements ServerRemoteHandler {}

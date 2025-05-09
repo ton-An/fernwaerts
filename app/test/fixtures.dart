@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
+import 'package:location_history/features/authentication/domain/enums/operating_system.dart';
+import 'package:location_history/features/authentication/domain/models/raw_device.dart';
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
 import 'package:location_history/features/location_tracking/domain/enums/activity_type.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.model.dart';
@@ -158,3 +161,31 @@ List<Location> tLocations = [
 
 final DateTime tStartDate = DateTime(2025, 5, 5);
 final DateTime tEndDate = DateTime(2025, 5, 5, 23, 59, 59);
+
+final RawDevice tRawDevice = RawDevice(
+  name: "Ted's iPhone",
+  model: 'iPhone Ultra Max Pro',
+  manufacturer: 'Apple',
+  os: OperatingSystem.ios,
+  osVersion: '18.4.1',
+);
+
+final IosDeviceInfo tIOSDeviceInfo = IosDeviceInfo.setMockInitialValues(
+  name: tRawDevice.name,
+  systemName: 'ios',
+  systemVersion: tRawDevice.osVersion,
+  model: "model",
+  modelName: tRawDevice.model,
+  localizedModel: "localizedModel",
+  isPhysicalDevice: true,
+  isiOSAppOnMac: false,
+  physicalRamSize: 42,
+  availableRamSize: 21,
+  utsname: IosUtsname.setMockInitialValues(
+    sysname: "sysname",
+    nodename: "nodename",
+    release: "release",
+    version: "version",
+    machine: "machine",
+  ),
+);
