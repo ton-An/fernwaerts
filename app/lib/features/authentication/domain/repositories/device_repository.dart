@@ -21,10 +21,7 @@ abstract class DeviceRepository {
   ///
   /// Parameters:
   /// - [Device] device: The device object to save.
-  ///
-  /// Failures:
-  /// - TBD
-  Future<Either<Failure, None>> saveDeviceInfoToDB({required Device device});
+  Future<void> saveDeviceInfoToDB({required Device device});
 
   /// Save the device's id to storage
   ///

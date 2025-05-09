@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
 import 'package:location_history/features/authentication/domain/enums/operating_system.dart';
+import 'package:location_history/features/authentication/domain/models/device.model.dart';
 import 'package:location_history/features/authentication/domain/models/raw_device.dart';
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
 import 'package:location_history/features/location_tracking/domain/enums/activity_type.dart';
@@ -188,6 +189,18 @@ final IosDeviceInfo tIOSDeviceInfo = IosDeviceInfo.setMockInitialValues(
     version: 'version',
     machine: 'machine',
   ),
+);
+
+final Device tDevice = Device(
+  userId: tUserId,
+  name: "Ted's iPhone",
+  model: 'iPhone Ultra Max Pro',
+  manufacturer: 'Apple',
+  os: OperatingSystem.ios,
+  osVersion: '18.4.1',
+  appVersion: '0.0.1',
+  createdAt: tStartDate,
+  updatedAt: tEndDate,
 );
 
 const RawDevice tAndroidRawDevice = RawDevice(

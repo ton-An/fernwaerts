@@ -1,5 +1,6 @@
 import 'package:brick_offline_first_with_supabase/brick_offline_first_with_supabase.dart';
 import 'package:brick_supabase/brick_supabase.dart';
+import 'package:equatable/equatable.dart';
 import 'package:location_history/features/authentication/domain/enums/operating_system.dart';
 import 'package:uuid/uuid.dart';
 
@@ -11,7 +12,7 @@ import 'package:uuid/uuid.dart';
 @ConnectOfflineFirstWithSupabase(
   supabaseConfig: SupabaseSerializable(tableName: 'devices'),
 )
-class Device extends OfflineFirstWithSupabaseModel {
+class Device extends OfflineFirstWithSupabaseModel with EquatableMixin {
   Device({
     String? id,
     required this.userId,
@@ -40,4 +41,19 @@ class Device extends OfflineFirstWithSupabaseModel {
   final String appVersion;
   final DateTime createdAt;
   final DateTime updatedAt;
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [
+    id,
+    userId,
+    name,
+    model,
+    manufacturer,
+    os,
+    osVersion,
+    appVersion,
+    createdAt,
+    updatedAt,
+  ];
 }

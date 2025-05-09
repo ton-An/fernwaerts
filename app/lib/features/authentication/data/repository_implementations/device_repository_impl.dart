@@ -73,7 +73,7 @@ class DeviceRepositoryImpl extends DeviceRepository {
   }
 
   @override
-  Future<Either<Failure, None>> saveDeviceInfoToDB({required Device device}) {
+  Future<void> saveDeviceInfoToDB({required Device device}) {
     // TODO: implement saveDeviceInfoToDB
     throw UnimplementedError();
   }
