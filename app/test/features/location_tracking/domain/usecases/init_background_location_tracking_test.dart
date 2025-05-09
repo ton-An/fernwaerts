@@ -11,18 +11,21 @@ import '../../../../mocks/mocks.dart';
 
 void main() {
   late InitBackgroundLocationTracking locationTrackingHandler;
+  late MockInitializeSavedServerConnection mockInitializeSavedServerConnection;
   late MockAuthenticationRepository mockAuthenticationRepository;
+  late MockDeviceRepository mockDeviceRepository;
   late MockLocationTrackingRepository mockLocationTrackingRepository;
   late MockLocationDataRepository mockLocationDataRepository;
-  late MockInitializeSavedServerConnection mockInitializeSavedServerConnection;
 
   setUp(() {
+    mockInitializeSavedServerConnection = MockInitializeSavedServerConnection();
     mockAuthenticationRepository = MockAuthenticationRepository();
+    mockDeviceRepository = MockDeviceRepository();
     mockLocationTrackingRepository = MockLocationTrackingRepository();
     mockLocationDataRepository = MockLocationDataRepository();
-    mockInitializeSavedServerConnection = MockInitializeSavedServerConnection();
     locationTrackingHandler = InitBackgroundLocationTracking(
       authenticationRepository: mockAuthenticationRepository,
+      deviceRepository: mockDeviceRepository,
       locationTrackingRepository: mockLocationTrackingRepository,
       locationDataRepository: mockLocationDataRepository,
       initializeSavedServerConnection: mockInitializeSavedServerConnection,
@@ -37,7 +40,7 @@ void main() {
       () => mockAuthenticationRepository.getCurrentUserId(),
     ).thenAnswer((_) async => const Right(tUserId));
     when(
-      () => mockAuthenticationRepository.getCurrentDeviceId(),
+      () => mockDeviceRepository.getDeviceIdFromStorage(),
     ).thenAnswer((_) async => const Right(tDeviceId));
     when(
       () => mockLocationTrackingRepository.initTracking(),
@@ -105,13 +108,13 @@ void main() {
     await locationTrackingHandler();
 
     // assert
-    verify(() => mockAuthenticationRepository.getCurrentDeviceId());
+    verify(() => mockDeviceRepository.getDeviceIdFromStorage());
   });
 
   test('should relay failures from getting the device info', () async {
     // arrange
     when(
-      () => mockAuthenticationRepository.getCurrentDeviceId(),
+      () => mockDeviceRepository.getDeviceIdFromStorage(),
     ).thenAnswer((_) async => const Left(StorageReadFailure()));
 
     // act

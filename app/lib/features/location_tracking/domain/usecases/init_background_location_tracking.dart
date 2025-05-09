@@ -7,6 +7,7 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
+import 'package:location_history/features/authentication/domain/repositories/device_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_saved_server_connection.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.model.dart';
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
@@ -15,16 +16,18 @@ import 'package:location_history/features/location_tracking/domain/repositories/
 
 class InitBackgroundLocationTracking {
   InitBackgroundLocationTracking({
+    required this.initializeSavedServerConnection,
     required this.authenticationRepository,
+    required this.deviceRepository,
     required this.locationTrackingRepository,
     required this.locationDataRepository,
-    required this.initializeSavedServerConnection,
   });
 
+  final InitializeSavedServerConnection initializeSavedServerConnection;
   final AuthenticationRepository authenticationRepository;
+  final DeviceRepository deviceRepository;
   final LocationTrackingRepository locationTrackingRepository;
   final LocationDataRepository locationDataRepository;
-  final InitializeSavedServerConnection initializeSavedServerConnection;
 
   Future<Either<Failure, None>> call() async {
     return _initServer();
@@ -50,7 +53,7 @@ class InitBackgroundLocationTracking {
 
   Future<Either<Failure, None>> _getDeviceId({required String userId}) async {
     final Either<Failure, String> deviceIdEither =
-        await authenticationRepository.getCurrentDeviceId();
+        await deviceRepository.getDeviceIdFromStorage();
 
     return deviceIdEither.fold(Left.new, (String deviceId) {
       return _initTracking(userId: userId, deviceId: deviceId);

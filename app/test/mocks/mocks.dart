@@ -8,6 +8,7 @@ import 'package:location_history/features/authentication/data/datasources/authen
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/permissions_local_data_source.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
+import 'package:location_history/features/authentication/domain/repositories/device_repository.dart';
 import 'package:location_history/features/authentication/domain/repositories/permissions_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_new_server_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_saved_server_connection.dart';
@@ -58,6 +59,8 @@ class MockPermissionsLocalDataSource extends Mock
 
 class MockAuthenticationRepository extends Mock
     implements AuthenticationRepository {}
+
+class MockDeviceRepository extends Mock implements DeviceRepository {}
 
 class MockPermissionsRepository extends Mock implements PermissionsRepository {}
 
