@@ -189,3 +189,48 @@ final IosDeviceInfo tIOSDeviceInfo = IosDeviceInfo.setMockInitialValues(
     machine: 'machine',
   ),
 );
+
+const RawDevice tAndroidRawDevice = RawDevice(
+  name: "Ted's Android",
+  model: 'Pixel 7 Pro',
+  manufacturer: 'Google',
+  os: OperatingSystem.android,
+  osVersion: '14.0',
+);
+
+final AndroidDeviceInfo tAndroidDeviceInfo =
+    AndroidDeviceInfo.setMockInitialValues(
+      name: tAndroidRawDevice.name,
+      model: tAndroidRawDevice.model,
+      manufacturer: tAndroidRawDevice.manufacturer,
+      version: AndroidBuildVersion.setMockInitialValues(
+        codename: 'codename',
+        baseOS: 'baseOS',
+        securityPatch: 'securityPatch',
+        previewSdkInt: 42,
+        release: tAndroidRawDevice.osVersion,
+        sdkInt: 42,
+        incremental: 'incremental',
+      ),
+      isPhysicalDevice: true,
+      bootloader: 'bootloader',
+      device: 'device',
+      display: 'display',
+      hardware: 'hardware',
+      fingerprint: 'fingerprint',
+      host: 'host',
+      id: 'id',
+      product: 'product',
+      tags: 'tags',
+      type: 'type',
+      board: 'board',
+      availableRamSize: 21,
+      brand: tAndroidRawDevice.manufacturer,
+      isLowRamDevice: false,
+      physicalRamSize: 42,
+      serialNumber: 'serialNumber',
+      supportedAbis: ['supportedAbis'],
+      systemFeatures: ['systemFeatures'],
+      supported32BitAbis: ['supported32BitAbis'],
+      supported64BitAbis: ['supported64BitAbis'],
+    );

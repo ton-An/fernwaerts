@@ -16,15 +16,18 @@ void main() {
   late DeviceRepositoryImpl deviceRepositoryImpl;
   late MockBaseDeviceLocalDataSource mockBaseDeviceLocalDataSource;
   late MockIOSDeviceLocalDataSource mockIosDeviceLocalDataSource;
+  late MockAndroidDeviceLocalDataSource mockAndroidDeviceLocalDataSource;
   late MockPlatformWrapper mockPlatformWrapper;
 
   setUp(() {
     mockBaseDeviceLocalDataSource = MockBaseDeviceLocalDataSource();
     mockIosDeviceLocalDataSource = MockIOSDeviceLocalDataSource();
+    mockAndroidDeviceLocalDataSource = MockAndroidDeviceLocalDataSource();
     mockPlatformWrapper = MockPlatformWrapper();
     deviceRepositoryImpl = DeviceRepositoryImpl(
       baseDeviceLocalDataSource: mockBaseDeviceLocalDataSource,
       iosDeviceLocalDataSource: mockIosDeviceLocalDataSource,
+      androidDeviceLocalDataSource: mockAndroidDeviceLocalDataSource,
       platformWrapper: mockPlatformWrapper,
     );
   });
@@ -124,6 +127,7 @@ void main() {
   group('getRawDeviceInfo', () {
     setUp(() {
       when(() => mockPlatformWrapper.isIOS).thenReturn(false);
+      when(() => mockPlatformWrapper.isAndroid).thenReturn(false);
     });
 
     test('should if the platform is ios get the ios device info', () async {
@@ -139,6 +143,23 @@ void main() {
       // assert
       expect(result, const Right<Failure, RawDevice>(tIOSRawDevice));
     });
+
+    test(
+      'should if the platform is android get the android device info',
+      () async {
+        // arrange
+        when(() => mockPlatformWrapper.isAndroid).thenReturn(true);
+        when(
+          () => mockAndroidDeviceLocalDataSource.getRawDeviceInfo(),
+        ).thenAnswer((_) async => tAndroidRawDevice);
+
+        // act
+        final result = await deviceRepositoryImpl.getRawDeviceInfo();
+
+        // assert
+        expect(result, const Right<Failure, RawDevice>(tAndroidRawDevice));
+      },
+    );
 
     test(
       'should return DeviceInfoPlatformNotSupported if the platform is not handled',

@@ -6,6 +6,7 @@ import 'package:location_history/core/data/datasources/platform_wrapper.dart';
 import 'package:location_history/core/data/datasources/server_remote_handler.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/data/repository/repository_failure_handler.dart';
+import 'package:location_history/features/authentication/data/datasources/android_device_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/base_device_local_data_source.dart';
@@ -58,6 +59,9 @@ class MockPlatformWrapper extends Mock implements PlatformWrapper {}
 // -- Authentication
 class MockIOSDeviceLocalDataSource extends Mock
     implements IOSDeviceLocalDataSource {}
+
+class MockAndroidDeviceLocalDataSource extends Mock
+    implements AndroidDeviceLocalDataSource {}
 
 class MockBaseDeviceLocalDataSource extends Mock
     implements BaseDeviceLocalDataSource {}

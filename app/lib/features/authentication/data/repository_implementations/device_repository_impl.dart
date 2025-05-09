@@ -6,6 +6,7 @@ import 'package:location_history/core/failures/authentication/email_already_exis
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
+import 'package:location_history/features/authentication/data/datasources/android_device_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/base_device_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/ios_device_local_data_source.dart';
 import 'package:location_history/features/authentication/domain/models/device.model.dart';
@@ -16,11 +17,13 @@ class DeviceRepositoryImpl extends DeviceRepository {
   DeviceRepositoryImpl({
     required this.baseDeviceLocalDataSource,
     required this.iosDeviceLocalDataSource,
+    required this.androidDeviceLocalDataSource,
     required this.platformWrapper,
   });
 
   final BaseDeviceLocalDataSource baseDeviceLocalDataSource;
   final IOSDeviceLocalDataSource iosDeviceLocalDataSource;
+  final AndroidDeviceLocalDataSource androidDeviceLocalDataSource;
   final PlatformWrapper platformWrapper;
 
   @override
@@ -44,6 +47,13 @@ class DeviceRepositoryImpl extends DeviceRepository {
           await iosDeviceLocalDataSource.getRawDeviceInfo();
 
       return Right(iosRawDevice);
+    }
+
+    if (platformWrapper.isAndroid) {
+      final RawDevice androidRawDevice =
+          await androidDeviceLocalDataSource.getRawDeviceInfo();
+
+      return Right(androidRawDevice);
     }
 
     return const Left(DeviceInfoPlatformNotSupported());

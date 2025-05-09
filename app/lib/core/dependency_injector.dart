@@ -8,6 +8,7 @@ import 'package:location_history/core/data/datasources/platform_wrapper.dart';
 import 'package:location_history/core/data/datasources/server_remote_handler.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/data/repository/repository_failure_handler.dart';
+import 'package:location_history/features/authentication/data/datasources/android_device_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/base_device_local_data_source.dart';
@@ -147,6 +148,7 @@ void registerAuthenticationDependencies() {
     () => DeviceRepositoryImpl(
       baseDeviceLocalDataSource: getIt(),
       iosDeviceLocalDataSource: getIt(),
+      androidDeviceLocalDataSource: getIt(),
       platformWrapper: getIt(),
     ),
   );
@@ -167,6 +169,9 @@ void registerAuthenticationDependencies() {
   );
   getIt.registerLazySingleton<IOSDeviceLocalDataSource>(
     () => IOSDeviceLocalDataSourceImpl(deviceInfoPlugin: getIt()),
+  );
+  getIt.registerLazySingleton<AndroidDeviceLocalDataSource>(
+    () => AndroidDeviceLocalDataSourceImpl(deviceInfoPlugin: getIt()),
   );
 }
 
