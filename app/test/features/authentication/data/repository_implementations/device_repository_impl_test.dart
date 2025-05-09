@@ -3,6 +3,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/authentication/no_saved_device_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
+import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/data/repository_implementations/device_repository_impl.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -64,5 +65,51 @@ void main() {
       // assert
       expect(result, const Left<Failure, bool>(NoSavedDeviceFailure()));
     });
+  });
+
+  group('saveDeviceIdToStorage', () {
+    setUp(() {
+      when(
+        () => mockBaseDeviceLocalDataSource.saveDeviceIdToStorage(
+          deviceId: tDeviceId,
+        ),
+      ).thenAnswer((_) => Future.value());
+    });
+
+    test('should save the device id to storage and return None', () async {
+      // act
+      final result = await deviceRepositoryImpl.saveDeviceIdToStorage(
+        deviceId: tDeviceId,
+      );
+
+      // assert
+      verify(
+        () => mockBaseDeviceLocalDataSource.saveDeviceIdToStorage(
+          deviceId: tDeviceId,
+        ),
+      );
+      expect(result, const Right<Failure, None>(None()));
+    });
+
+    test(
+      'should convert PlatformException to StorageWriteFailure and return it',
+
+      () async {
+        // arrange
+        when(
+          () => mockBaseDeviceLocalDataSource.saveDeviceIdToStorage(
+            deviceId: tDeviceId,
+          ),
+        ).thenThrow(tPlatformException);
+
+        // act
+        final result = await deviceRepositoryImpl.saveDeviceIdToStorage(
+          deviceId: tDeviceId,
+        );
+
+        // assert
+        expect(result, const Left(StorageWriteFailure()));
+      },
+    );
   });
 }

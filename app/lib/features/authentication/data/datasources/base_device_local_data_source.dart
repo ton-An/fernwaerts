@@ -13,6 +13,15 @@ abstract class BaseDeviceLocalDataSource {
   /// - [PlatformException]
   /// - [NoSavedDeviceFailure]
   Future<String> getDeviceIdFromStorage();
+
+  /// Saves the device's id to storage
+  ///
+  /// Parameters:
+  /// - [String] deviceId: the id of the device to save.
+  ///
+  /// Throws:
+  /// - [PlatformException]
+  Future<void> saveDeviceIdToStorage({required String deviceId});
 }
 
 class BaseDeviceLocalDataSourceImpl extends BaseDeviceLocalDataSource {
@@ -31,5 +40,11 @@ class BaseDeviceLocalDataSourceImpl extends BaseDeviceLocalDataSource {
     }
 
     return deviceId;
+  }
+
+  @override
+  Future<void> saveDeviceIdToStorage({required String deviceId}) {
+    // TODO: implement saveDeviceIdToStorage
+    throw UnimplementedError();
   }
 }
