@@ -9,7 +9,7 @@ part of 'schema.g.dart';
 
 // The migration version must **always** mirror the file name
 
-const List<MigrationCommand> _migration_20250508123445_up = [
+const List<MigrationCommand> _migration_20250509102604_up = [
   InsertTable('Location'),
   InsertTable('Device'),
   InsertTable('User'),
@@ -33,10 +33,9 @@ const List<MigrationCommand> _migration_20250508123445_up = [
   InsertColumn('id', Column.varchar, onTable: 'Device'),
   InsertColumn('user_id', Column.varchar, onTable: 'Device'),
   InsertColumn('name', Column.varchar, onTable: 'Device'),
-  InsertColumn('type', Column.varchar, onTable: 'Device'),
   InsertColumn('model', Column.varchar, onTable: 'Device'),
   InsertColumn('manufacturer', Column.varchar, onTable: 'Device'),
-  InsertColumn('os', Column.varchar, onTable: 'Device'),
+  InsertColumn('os', Column.integer, onTable: 'Device'),
   InsertColumn('os_version', Column.varchar, onTable: 'Device'),
   InsertColumn('app_version', Column.varchar, onTable: 'Device'),
   InsertColumn('created_at', Column.datetime, onTable: 'Device'),
@@ -46,7 +45,7 @@ const List<MigrationCommand> _migration_20250508123445_up = [
   InsertColumn('email', Column.varchar, onTable: 'User')
 ];
 
-const List<MigrationCommand> _migration_20250508123445_down = [
+const List<MigrationCommand> _migration_20250509102604_down = [
   DropTable('Location'),
   DropTable('Device'),
   DropTable('User'),
@@ -70,7 +69,6 @@ const List<MigrationCommand> _migration_20250508123445_down = [
   DropColumn('id', onTable: 'Device'),
   DropColumn('user_id', onTable: 'Device'),
   DropColumn('name', onTable: 'Device'),
-  DropColumn('type', onTable: 'Device'),
   DropColumn('model', onTable: 'Device'),
   DropColumn('manufacturer', onTable: 'Device'),
   DropColumn('os', onTable: 'Device'),
@@ -88,15 +86,15 @@ const List<MigrationCommand> _migration_20250508123445_down = [
 //
 
 @Migratable(
-  version: '20250508123445',
-  up: _migration_20250508123445_up,
-  down: _migration_20250508123445_down,
+  version: '20250509102604',
+  up: _migration_20250509102604_up,
+  down: _migration_20250509102604_down,
 )
-class Migration20250508123445 extends Migration {
-  const Migration20250508123445()
+class Migration20250509102604 extends Migration {
+  const Migration20250509102604()
     : super(
-        version: 20250508123445,
-        up: _migration_20250508123445_up,
-        down: _migration_20250508123445_down,
+        version: 20250509102604,
+        up: _migration_20250509102604_up,
+        down: _migration_20250509102604_down,
       );
 }
