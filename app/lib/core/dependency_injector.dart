@@ -8,6 +8,7 @@ import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/data/repository/repository_failure_handler.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
+import 'package:location_history/features/authentication/data/datasources/base_device_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/permissions_local_data_source.dart';
 import 'package:location_history/features/authentication/data/repository_implementations/authentication_repository_impl.dart';
 import 'package:location_history/features/authentication/data/repository_implementations/device_repository_impl.dart';
@@ -137,7 +138,9 @@ void registerAuthenticationDependencies() {
   getIt.registerLazySingleton<PermissionsRepository>(
     () => PermissionsRepositoryImpl(permissionsLocalDataSource: getIt()),
   );
-  getIt.registerLazySingleton<DeviceRepository>(() => DeviceRepositoryImpl());
+  getIt.registerLazySingleton<DeviceRepository>(
+    () => DeviceRepositoryImpl(baseDeviceLocalDataSource: getIt()),
+  );
   getIt.registerLazySingleton<AuthenticationLocalDataSource>(
     () => AuthLocalDataSourceImpl(secureStorage: getIt()),
   );
@@ -149,6 +152,9 @@ void registerAuthenticationDependencies() {
   );
   getIt.registerLazySingleton<PermissionsLocalDataSource>(
     () => PermissionsLocalDataSourceImpl(flutterActivityRecognition: getIt()),
+  );
+  getIt.registerLazySingleton<BaseDeviceLocalDataSource>(
+    () => BaseDeviceLocalDataSourceImpl(secureStorage: getIt()),
   );
 }
 

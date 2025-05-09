@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:location_history/core/failures/authentication/no_saved_device_failure.dart';
 import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
 import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
@@ -493,52 +492,6 @@ void main() {
 
       // assert
       expect(result, const Left<Failure, bool>(tUnknownRequestFailure));
-    });
-  });
-
-  group('getCurrentDeviceId', () {
-    setUp(() {
-      when(
-        () => mockAuthLocalDataSource.getCurrentDeviceId(),
-      ).thenAnswer((_) async => tDeviceId);
-    });
-
-    test('should get the current device ID and return it', () async {
-      // act
-      final result = await authenticationRepositoryImpl.getCurrentDeviceId();
-
-      // assert
-      verify(() => mockAuthLocalDataSource.getCurrentDeviceId());
-      expect(result, const Right(tDeviceId));
-    });
-
-    test(
-      'should convert PlatformException to StorageReadFailure and return it',
-      () async {
-        // arrange
-        when(
-          () => mockAuthLocalDataSource.getCurrentDeviceId(),
-        ).thenThrow(tPlatformException);
-
-        // act
-        final result = await authenticationRepositoryImpl.getCurrentDeviceId();
-
-        // assert
-        expect(result, const Left(StorageReadFailure()));
-      },
-    );
-
-    test('should relay Failures', () async {
-      // arrange
-      when(
-        () => mockAuthLocalDataSource.getCurrentDeviceId(),
-      ).thenThrow(const NoSavedDeviceFailure());
-
-      // act
-      final result = await authenticationRepositoryImpl.getCurrentDeviceId();
-
-      // assert
-      expect(result, const Left<Failure, bool>(NoSavedDeviceFailure()));
     });
   });
 

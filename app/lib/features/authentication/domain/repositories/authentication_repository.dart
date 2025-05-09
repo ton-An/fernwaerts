@@ -142,13 +142,4 @@ abstract class AuthenticationRepository {
   /// Failures:
   /// - [StorageReadFailure]
   Future<Either<Failure, String>> getCurrentUserId();
-
-  /// Gets the current device's id
-  ///
-  /// Returns:
-  /// - a [String] containing the current device's id
-  ///
-  /// Failures:
-  /// - [StorageReadFailure]
-  Future<Either<Failure, String>> getCurrentDeviceId();
 }

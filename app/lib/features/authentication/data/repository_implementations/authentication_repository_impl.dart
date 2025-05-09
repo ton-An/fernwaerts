@@ -208,19 +208,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, String>> getCurrentDeviceId() async {
-    try {
-      final String deviceId = await authLocalDataSource.getCurrentDeviceId();
-
-      return Right(deviceId);
-    } on PlatformException {
-      return const Left(StorageReadFailure());
-    } on Failure catch (failure) {
-      return Left(failure);
-    }
-  }
-
-  @override
   Future<Either<Failure, String>> getCurrentUserId() async {
     try {
       final String userId = await authRemoteDataSource.getCurrentUserId();
