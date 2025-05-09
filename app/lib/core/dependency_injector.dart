@@ -1,14 +1,17 @@
 import 'package:brick_offline_first_with_supabase/brick_offline_first_with_supabase.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_activity_recognition/flutter_activity_recognition.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:location_history/core/data/datasources/platform_wrapper.dart';
 import 'package:location_history/core/data/datasources/server_remote_handler.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/data/repository/repository_failure_handler.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/base_device_local_data_source.dart';
+import 'package:location_history/features/authentication/data/datasources/ios_device_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/permissions_local_data_source.dart';
 import 'package:location_history/features/authentication/data/repository_implementations/authentication_repository_impl.dart';
 import 'package:location_history/features/authentication/data/repository_implementations/device_repository_impl.dart';
@@ -61,6 +64,7 @@ void registerThirdPartyDependencies() {
   getIt.registerLazySingleton(() => Dio());
   getIt.registerLazySingleton(() => const FlutterSecureStorage());
   getIt.registerLazySingleton(() => FlutterActivityRecognition.instance);
+  getIt.registerLazySingleton(() => DeviceInfoPlugin());
 }
 
 void registerCoreDependencies() {
@@ -75,6 +79,7 @@ void registerCoreDependencies() {
   getIt.registerSingletonAsync<
     OfflineFirstWithSupabaseRepository<OfflineFirstWithSupabaseModel>
   >(() async => await getIt<SupabaseHandler>().supabaseOfflineFirst);
+  getIt.registerLazySingleton(() => const PlatformWrapper());
 }
 
 void registerInAppNotificationDependencies() {
@@ -139,7 +144,11 @@ void registerAuthenticationDependencies() {
     () => PermissionsRepositoryImpl(permissionsLocalDataSource: getIt()),
   );
   getIt.registerLazySingleton<DeviceRepository>(
-    () => DeviceRepositoryImpl(baseDeviceLocalDataSource: getIt()),
+    () => DeviceRepositoryImpl(
+      baseDeviceLocalDataSource: getIt(),
+      iosDeviceLocalDataSource: getIt(),
+      platformWrapper: getIt(),
+    ),
   );
   getIt.registerLazySingleton<AuthenticationLocalDataSource>(
     () => AuthLocalDataSourceImpl(secureStorage: getIt()),
@@ -155,6 +164,9 @@ void registerAuthenticationDependencies() {
   );
   getIt.registerLazySingleton<BaseDeviceLocalDataSource>(
     () => BaseDeviceLocalDataSourceImpl(secureStorage: getIt()),
+  );
+  getIt.registerLazySingleton<IOSDeviceLocalDataSource>(
+    () => IOSDeviceLocalDataSourceImpl(deviceInfoPlugin: getIt()),
   );
 }
 

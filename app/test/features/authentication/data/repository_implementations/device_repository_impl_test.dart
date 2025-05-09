@@ -1,10 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:location_history/core/failures/authentication/email_already_exists_failure%20copy.dart';
 import 'package:location_history/core/failures/authentication/no_saved_device_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/data/repository_implementations/device_repository_impl.dart';
+import 'package:location_history/features/authentication/domain/models/raw_device.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../fixtures.dart';
@@ -13,11 +15,17 @@ import '../../../../mocks/mocks.dart';
 void main() {
   late DeviceRepositoryImpl deviceRepositoryImpl;
   late MockBaseDeviceLocalDataSource mockBaseDeviceLocalDataSource;
+  late MockIOSDeviceLocalDataSource mockIosDeviceLocalDataSource;
+  late MockPlatformWrapper mockPlatformWrapper;
 
   setUp(() {
     mockBaseDeviceLocalDataSource = MockBaseDeviceLocalDataSource();
+    mockIosDeviceLocalDataSource = MockIOSDeviceLocalDataSource();
+    mockPlatformWrapper = MockPlatformWrapper();
     deviceRepositoryImpl = DeviceRepositoryImpl(
       baseDeviceLocalDataSource: mockBaseDeviceLocalDataSource,
+      iosDeviceLocalDataSource: mockIosDeviceLocalDataSource,
+      platformWrapper: mockPlatformWrapper,
     );
   });
 
@@ -109,6 +117,37 @@ void main() {
 
         // assert
         expect(result, const Left(StorageWriteFailure()));
+      },
+    );
+  });
+
+  group('getRawDeviceInfo', () {
+    setUp(() {
+      when(() => mockPlatformWrapper.isIOS).thenReturn(false);
+    });
+
+    test('should if the platform is ios get the ios device info', () async {
+      // arrange
+      when(() => mockPlatformWrapper.isIOS).thenReturn(true);
+      when(
+        () => mockIosDeviceLocalDataSource.getRawDeviceInfo(),
+      ).thenAnswer((_) async => tIOSRawDevice);
+
+      // act
+      final result = await deviceRepositoryImpl.getRawDeviceInfo();
+
+      // assert
+      expect(result, const Right<Failure, RawDevice>(tIOSRawDevice));
+    });
+
+    test(
+      'should return DeviceInfoPlatformNotSupported if the platform is not handled',
+      () async {
+        // act
+        final result = await deviceRepositoryImpl.getRawDeviceInfo();
+
+        // assert
+        expect(result, const Left(DeviceInfoPlatformNotSupported()));
       },
     );
   });

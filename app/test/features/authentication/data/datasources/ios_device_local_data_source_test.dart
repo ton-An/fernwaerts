@@ -6,12 +6,12 @@ import '../../../../fixtures.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late IosDeviceLocalDataSourceImpl iosDeviceLocalDataSourceImpl;
+  late IOSDeviceLocalDataSourceImpl iosDeviceLocalDataSourceImpl;
   late MockDeviceInfoPlugin mockDeviceInfoPlugin;
 
   setUp(() {
     mockDeviceInfoPlugin = MockDeviceInfoPlugin();
-    iosDeviceLocalDataSourceImpl = IosDeviceLocalDataSourceImpl(
+    iosDeviceLocalDataSourceImpl = IOSDeviceLocalDataSourceImpl(
       deviceInfoPlugin: mockDeviceInfoPlugin,
     );
   });
@@ -30,7 +30,7 @@ void main() {
         final result = await iosDeviceLocalDataSourceImpl.getRawDeviceInfo();
 
         // assert
-        expect(result, tRawDevice);
+        expect(result, tIOSRawDevice);
         verify(() => mockDeviceInfoPlugin.iosInfo);
       },
     );

@@ -162,7 +162,7 @@ List<Location> tLocations = [
 final DateTime tStartDate = DateTime(2025, 5, 5);
 final DateTime tEndDate = DateTime(2025, 5, 5, 23, 59, 59);
 
-final RawDevice tRawDevice = RawDevice(
+const RawDevice tIOSRawDevice = RawDevice(
   name: "Ted's iPhone",
   model: 'iPhone Ultra Max Pro',
   manufacturer: 'Apple',
@@ -171,21 +171,21 @@ final RawDevice tRawDevice = RawDevice(
 );
 
 final IosDeviceInfo tIOSDeviceInfo = IosDeviceInfo.setMockInitialValues(
-  name: tRawDevice.name,
+  name: tIOSRawDevice.name,
   systemName: 'ios',
-  systemVersion: tRawDevice.osVersion,
-  model: "model",
-  modelName: tRawDevice.model,
-  localizedModel: "localizedModel",
+  systemVersion: tIOSRawDevice.osVersion,
+  model: 'model',
+  modelName: tIOSRawDevice.model,
+  localizedModel: 'localizedModel',
   isPhysicalDevice: true,
   isiOSAppOnMac: false,
   physicalRamSize: 42,
   availableRamSize: 21,
   utsname: IosUtsname.setMockInitialValues(
-    sysname: "sysname",
-    nodename: "nodename",
-    release: "release",
-    version: "version",
-    machine: "machine",
+    sysname: 'sysname',
+    nodename: 'nodename',
+    release: 'release',
+    version: 'version',
+    machine: 'machine',
   ),
 );

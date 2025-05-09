@@ -2,12 +2,14 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_activity_recognition/flutter_activity_recognition.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:location_history/core/data/datasources/platform_wrapper.dart';
 import 'package:location_history/core/data/datasources/server_remote_handler.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/data/repository/repository_failure_handler.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/base_device_local_data_source.dart';
+import 'package:location_history/features/authentication/data/datasources/ios_device_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/permissions_local_data_source.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/authentication/domain/repositories/device_repository.dart';
@@ -51,7 +53,12 @@ class MockRepositoryFailureHandler extends Mock
 
 class MockSupabaseHandler extends Mock implements SupabaseHandler {}
 
+class MockPlatformWrapper extends Mock implements PlatformWrapper {}
+
 // -- Authentication
+class MockIOSDeviceLocalDataSource extends Mock
+    implements IOSDeviceLocalDataSource {}
+
 class MockBaseDeviceLocalDataSource extends Mock
     implements BaseDeviceLocalDataSource {}
 

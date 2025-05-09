@@ -2,8 +2,8 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:location_history/features/authentication/domain/enums/operating_system.dart';
 import 'package:location_history/features/authentication/domain/models/raw_device.dart';
 
-abstract class IosDeviceLocalDataSource {
-  const IosDeviceLocalDataSource();
+abstract class IOSDeviceLocalDataSource {
+  const IOSDeviceLocalDataSource();
 
   /// Gets the device information of the current device
   ///
@@ -12,8 +12,8 @@ abstract class IosDeviceLocalDataSource {
   Future<RawDevice> getRawDeviceInfo();
 }
 
-class IosDeviceLocalDataSourceImpl implements IosDeviceLocalDataSource {
-  const IosDeviceLocalDataSourceImpl({required this.deviceInfoPlugin});
+class IOSDeviceLocalDataSourceImpl implements IOSDeviceLocalDataSource {
+  const IOSDeviceLocalDataSourceImpl({required this.deviceInfoPlugin});
 
   final DeviceInfoPlugin deviceInfoPlugin;
 
