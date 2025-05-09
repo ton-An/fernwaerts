@@ -53,6 +53,27 @@ insert into
 values
   ('is_set_up', 'false');
 
+-- Operating Systems
+create table
+  public.operating_systems (id text not null primary key);
+
+alter table public.operating_systems enable row level security;
+
+create policy "Enable read access to all authenticated users" on public.operating_systems for
+select
+  to authenticated;
+
+insert into
+  public.operating_systems (id)
+values
+  ('android'),
+  ('ios'),
+  ('windows'),
+  ('linux'),
+  ('macos'),
+  ('web'),
+  ('unknown');
+
 -- Devices
 create table
   public.devices (
@@ -60,7 +81,7 @@ create table
     user_id uuid references public.users on delete cascade not null,
     name text not null,
     model text not null,
-    os text not null,
+    os_id text references operating_systems (id),
     os_version text not null,
     app_version text not null,
     manufacturer text not null,
