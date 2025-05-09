@@ -31,11 +31,11 @@ class SignIn {
   /// {@macro sign_in}
   const SignIn({
     required this.authenticationRepository,
-    required this.saveDeviceInfoToDB,
+    required this.saveDeviceInfo,
   });
 
   final AuthenticationRepository authenticationRepository;
-  final SaveDeviceInfoToDB saveDeviceInfoToDB;
+  final SaveDeviceInfo saveDeviceInfo;
 
   /// {@macro sign_in}
   Future<Either<Failure, None>> call({
@@ -67,11 +67,11 @@ class SignIn {
 
     return saveServerInfoEither.fold(
       Left.new,
-      (None none) => _saveDeviceInfoToDB(),
+      (None none) => _saveDeviceInfo(),
     );
   }
 
-  Future<Either<Failure, None>> _saveDeviceInfoToDB() async {
-    return saveDeviceInfoToDB();
+  Future<Either<Failure, None>> _saveDeviceInfo() async {
+    return saveDeviceInfo();
   }
 }

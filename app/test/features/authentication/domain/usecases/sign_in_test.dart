@@ -12,14 +12,14 @@ import '../../../../mocks/mocks.dart';
 void main() {
   late SignIn signIn;
   late MockAuthenticationRepository mockAuthenticationRepository;
-  late MockSaveDeviceInfoToDB mockSaveDeviceInfoToDB;
+  late MockSaveDeviceInfo mockSaveDeviceInfo;
 
   setUp(() {
     mockAuthenticationRepository = MockAuthenticationRepository();
-    mockSaveDeviceInfoToDB = MockSaveDeviceInfoToDB();
+    mockSaveDeviceInfo = MockSaveDeviceInfo();
     signIn = SignIn(
       authenticationRepository: mockAuthenticationRepository,
-      saveDeviceInfoToDB: mockSaveDeviceInfoToDB,
+      saveDeviceInfo: mockSaveDeviceInfo,
     );
 
     when(
@@ -34,7 +34,7 @@ void main() {
       ),
     ).thenAnswer((_) async => const Right(None()));
     when(
-      () => mockSaveDeviceInfoToDB(),
+      () => mockSaveDeviceInfo(),
     ).thenAnswer((_) async => const Right(None()));
   });
 
@@ -120,7 +120,7 @@ void main() {
   test('should relay Failures from saving the device info', () async {
     // arrange
     when(
-      () => mockSaveDeviceInfoToDB(),
+      () => mockSaveDeviceInfo(),
     ).thenAnswer((_) async => const Left(NotSignedInFailure()));
 
     // act

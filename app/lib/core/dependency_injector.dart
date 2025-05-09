@@ -126,8 +126,7 @@ void registerAuthenticationDependencies() {
         SignUpInitialAdmin(authenticationRepository: getIt(), signIn: getIt()),
   );
   getIt.registerLazySingleton(
-    () =>
-        SignIn(authenticationRepository: getIt(), saveDeviceInfoToDB: getIt()),
+    () => SignIn(authenticationRepository: getIt(), saveDeviceInfo: getIt()),
   );
   getIt.registerLazySingleton(() => SignOut(authenticationRepository: getIt()));
   getIt.registerLazySingleton(
@@ -143,7 +142,7 @@ void registerAuthenticationDependencies() {
     () => RequestNecessaryPermissions(permissionsRepository: getIt()),
   );
   getIt.registerLazySingleton(
-    () => SaveDeviceInfoToDB(
+    () => SaveDeviceInfo(
       authenticationRepository: getIt(),
       deviceRepository: getIt(),
     ),

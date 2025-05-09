@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/authentication/device_info_platform_not_supported_failure.dart';
 import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
+import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/domain/usecases/save_device_info_to_db.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -9,7 +10,7 @@ import '../../../../fixtures.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late SaveDeviceInfoToDB saveDeviceInfoToDB;
+  late SaveDeviceInfo saveDeviceInfo;
   late MockAuthenticationRepository mockAuthenticationRepository;
   late MockDeviceRepository mockDeviceRepository;
 
@@ -17,7 +18,7 @@ void main() {
     mockAuthenticationRepository = MockAuthenticationRepository();
     mockDeviceRepository = MockDeviceRepository();
 
-    saveDeviceInfoToDB = SaveDeviceInfoToDB(
+    saveDeviceInfo = SaveDeviceInfo(
       authenticationRepository: mockAuthenticationRepository,
       deviceRepository: mockDeviceRepository,
     );
@@ -33,6 +34,11 @@ void main() {
       () =>
           mockDeviceRepository.saveDeviceInfoToDB(device: any(named: 'device')),
     ).thenAnswer((_) async => const Right(None()));
+    when(
+      () => mockDeviceRepository.saveDeviceIdToStorage(
+        deviceId: any(named: 'deviceId'),
+      ),
+    ).thenAnswer((_) async => const Right(None()));
   });
 
   setUpAll(() {
@@ -41,7 +47,7 @@ void main() {
 
   test('should get the current users id', () async {
     // act
-    await saveDeviceInfoToDB();
+    await saveDeviceInfo();
 
     // assert
     verify(() => mockAuthenticationRepository.getCurrentUserId());
@@ -54,7 +60,7 @@ void main() {
     ).thenAnswer((_) async => const Left(NotSignedInFailure()));
 
     // act
-    final result = await saveDeviceInfoToDB();
+    final result = await saveDeviceInfo();
 
     // assert
     expect(result, const Left(NotSignedInFailure()));
@@ -62,7 +68,7 @@ void main() {
 
   test('should get the app version', () async {
     // act
-    await saveDeviceInfoToDB();
+    await saveDeviceInfo();
 
     // assert
     verify(() => mockDeviceRepository.getAppVersion());
@@ -70,7 +76,7 @@ void main() {
 
   test('should get the raw device info', () async {
     // act
-    await saveDeviceInfoToDB();
+    await saveDeviceInfo();
 
     // assert
     verify(() => mockDeviceRepository.getRawDeviceInfo());
@@ -83,17 +89,48 @@ void main() {
     );
 
     // act
-    final result = await saveDeviceInfoToDB();
+    final result = await saveDeviceInfo();
 
     // assert
     expect(result, const Left(DeviceInfoPlatformNotSupportedFailure()));
   });
 
-  test('should save the device info to the database and return none', () async {
+  test('should save the device info to the database', () async {
     // act
-    final result = await saveDeviceInfoToDB();
+    await saveDeviceInfo();
 
     // assert
+    verify(
+      () =>
+          mockDeviceRepository.saveDeviceInfoToDB(device: any(named: 'device')),
+    );
+  });
+
+  test('should save the device id to storage and return None', () async {
+    // act
+    final result = await saveDeviceInfo();
+
+    // assert
+    verify(
+      () => mockDeviceRepository.saveDeviceIdToStorage(
+        deviceId: any(named: 'deviceId'),
+      ),
+    );
     expect(result, const Right(None()));
+  });
+
+  test('should relay failures from saving the device id to storage', () async {
+    // arrange
+    when(
+      () => mockDeviceRepository.saveDeviceIdToStorage(
+        deviceId: any(named: 'deviceId'),
+      ),
+    ).thenAnswer((_) async => const Left(StorageWriteFailure()));
+
+    // act
+    final result = await saveDeviceInfo();
+
+    // assert
+    expect(result, const Left(StorageWriteFailure()));
   });
 }

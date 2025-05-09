@@ -98,7 +98,7 @@ class MockInitializeSavedServerConnection extends Mock
 
 class MockSignIn extends Mock implements SignIn {}
 
-class MockSaveDeviceInfoToDB extends Mock implements SaveDeviceInfoToDB {}
+class MockSaveDeviceInfo extends Mock implements SaveDeviceInfo {}
 
 // -- Location Tracking
 class MockLocationTrackingRepository extends Mock

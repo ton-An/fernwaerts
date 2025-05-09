@@ -14,9 +14,9 @@ import 'package:location_history/features/authentication/domain/repositories/dev
 /// - [NotSignedInFailure]
 /// - [DeviceInfoPlatformNotSupportedFailure]
 /// {@endtemplate}
-class SaveDeviceInfoToDB {
+class SaveDeviceInfo {
   /// {@macro save_device_info_to_db}
-  const SaveDeviceInfoToDB({
+  const SaveDeviceInfo({
     required this.authenticationRepository,
     required this.deviceRepository,
   });
@@ -75,6 +75,12 @@ class SaveDeviceInfoToDB {
 
     await deviceRepository.saveDeviceInfoToDB(device: device);
 
-    return const Right(None());
+    return _saveDeviceIdToStorage(deviceId: device.id);
+  }
+
+  Future<Either<Failure, None>> _saveDeviceIdToStorage({
+    required String deviceId,
+  }) {
+    return deviceRepository.saveDeviceIdToStorage(deviceId: deviceId);
   }
 }
