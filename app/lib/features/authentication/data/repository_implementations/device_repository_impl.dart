@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart';
-import 'package:fpdart/src/either.dart';
-import 'package:fpdart/src/option.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/data/datasources/platform_wrapper.dart';
 import 'package:location_history/core/failures/authentication/device_info_platform_not_supported_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
