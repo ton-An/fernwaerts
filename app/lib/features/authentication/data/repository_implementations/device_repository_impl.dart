@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:fpdart/src/either.dart';
 import 'package:fpdart/src/option.dart';
 import 'package:location_history/core/data/datasources/platform_wrapper.dart';
-import 'package:location_history/core/failures/authentication/email_already_exists_failure%20copy.dart';
+import 'package:location_history/core/failures/authentication/device_info_platform_not_supported_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
@@ -59,7 +59,7 @@ class DeviceRepositoryImpl extends DeviceRepository {
       return Right(androidRawDevice);
     }
 
-    return const Left(DeviceInfoPlatformNotSupported());
+    return const Left(DeviceInfoPlatformNotSupportedFailure());
   }
 
   @override

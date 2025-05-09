@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:location_history/core/failures/authentication/email_already_exists_failure%20copy.dart';
+import 'package:location_history/core/failures/authentication/device_info_platform_not_supported_failure.dart';
 import 'package:location_history/core/failures/authentication/no_saved_device_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
@@ -171,7 +171,7 @@ void main() {
         final result = await deviceRepositoryImpl.getRawDeviceInfo();
 
         // assert
-        expect(result, const Left(DeviceInfoPlatformNotSupported()));
+        expect(result, const Left(DeviceInfoPlatformNotSupportedFailure()));
       },
     );
   });

@@ -1,5 +1,5 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:location_history/core/failures/authentication/email_already_exists_failure%20copy.dart';
+import 'package:location_history/core/failures/authentication/device_info_platform_not_supported_failure.dart';
 import 'package:location_history/core/failures/authentication/no_saved_device_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
@@ -14,7 +14,7 @@ abstract class DeviceRepository {
   /// - a [RawDevice] object containing the device's information.
   ///
   /// Failures:
-  /// - [DeviceInfoPlatformNotSupported]
+  /// - [DeviceInfoPlatformNotSupportedFailure]
   Future<Either<Failure, RawDevice>> getRawDeviceInfo();
 
   /// Saves the device's information to the database
