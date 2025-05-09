@@ -56,4 +56,25 @@ void main() {
       },
     );
   });
+
+  group('saveDeviceIdToStorage()', () {
+    setUp(() {
+      when(
+        () => mockSecureStorage.write(
+          key: any(named: 'key'),
+          value: any(named: 'value'),
+        ),
+      ).thenAnswer((_) async {});
+    });
+
+    test('should save the device id to storage', () async {
+      // act
+      await baseDeviceLocalDataSource.saveDeviceIdToStorage(
+        deviceId: tDeviceId,
+      );
+
+      // assert
+      verify(() => mockSecureStorage.write(key: 'device_id', value: tDeviceId));
+    });
+  });
 }

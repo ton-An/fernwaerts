@@ -43,8 +43,7 @@ class BaseDeviceLocalDataSourceImpl extends BaseDeviceLocalDataSource {
   }
 
   @override
-  Future<void> saveDeviceIdToStorage({required String deviceId}) {
-    // TODO: implement saveDeviceIdToStorage
-    throw UnimplementedError();
+  Future<void> saveDeviceIdToStorage({required String deviceId}) async {
+    await secureStorage.write(key: _deviceIdStorageKey, value: deviceId);
   }
 }
