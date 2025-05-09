@@ -2,6 +2,7 @@ import 'package:brick_offline_first_with_supabase/brick_offline_first_with_supab
 import 'package:brick_supabase/brick_supabase.dart';
 import 'package:equatable/equatable.dart';
 import 'package:location_history/features/authentication/domain/enums/operating_system.dart';
+import 'package:location_history/features/authentication/domain/models/raw_device.dart';
 import 'package:uuid/uuid.dart';
 
 /* 
@@ -42,8 +43,25 @@ class Device extends OfflineFirstWithSupabaseModel with EquatableMixin {
   final DateTime createdAt;
   final DateTime updatedAt;
 
+  static Device fromRawDevice({
+    required RawDevice rawDevice,
+    required String appVersion,
+    required String userId,
+  }) {
+    return Device(
+      userId: userId,
+      name: rawDevice.name,
+      model: rawDevice.model,
+      manufacturer: rawDevice.manufacturer,
+      os: rawDevice.os,
+      osVersion: rawDevice.osVersion,
+      appVersion: appVersion,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+  }
+
   @override
-  // TODO: implement props
   List<Object?> get props => [
     id,
     userId,

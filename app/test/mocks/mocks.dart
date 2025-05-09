@@ -23,6 +23,7 @@ import 'package:location_history/features/location_tracking/data/datasources/loc
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 // -- Third Party -- //
@@ -46,6 +47,8 @@ class MockFlutterActivityRecognition extends Mock
     implements FlutterActivityRecognition {}
 
 class MockDeviceInfoPlugin extends Mock implements DeviceInfoPlugin {}
+
+class MockPackageInfo extends Mock implements PackageInfo {}
 
 // -- Core -- //
 class MockServerRemoteHandler extends Mock implements ServerRemoteHandler {}
