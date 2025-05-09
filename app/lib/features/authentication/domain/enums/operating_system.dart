@@ -1,1 +1,1 @@
-enum OperatingSystem { android, ios, windows, linux, macOS }
+enum OperatingSystem { android, ios, windows, linux, macos }
