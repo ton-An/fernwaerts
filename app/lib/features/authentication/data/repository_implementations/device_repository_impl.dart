@@ -79,4 +79,9 @@ class DeviceRepositoryImpl extends DeviceRepository {
   Future<void> saveDeviceInfoToDB({required Device device}) {
     return deviceRemoteDataSource.saveDeviceInfoToDB(device: device);
   }
+
+  @override
+  String getAppVersion() {
+    return baseDeviceLocalDataSource.getAppVersion();
+  }
 }

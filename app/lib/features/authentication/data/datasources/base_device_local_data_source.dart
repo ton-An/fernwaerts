@@ -1,5 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:location_history/core/failures/authentication/no_saved_device_failure.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 abstract class BaseDeviceLocalDataSource {
   const BaseDeviceLocalDataSource();
@@ -22,12 +23,22 @@ abstract class BaseDeviceLocalDataSource {
   /// Throws:
   /// - [PlatformException]
   Future<void> saveDeviceIdToStorage({required String deviceId});
+
+  /// Gets the app version
+  ///
+  /// Returns:
+  /// - [String] the app version
+  String getAppVersion();
 }
 
 class BaseDeviceLocalDataSourceImpl extends BaseDeviceLocalDataSource {
-  const BaseDeviceLocalDataSourceImpl({required this.secureStorage});
+  const BaseDeviceLocalDataSourceImpl({
+    required this.secureStorage,
+    required this.packageInfo,
+  });
 
   final FlutterSecureStorage secureStorage;
+  final PackageInfo packageInfo;
 
   static const _deviceIdStorageKey = 'device_id';
 
@@ -45,5 +56,10 @@ class BaseDeviceLocalDataSourceImpl extends BaseDeviceLocalDataSource {
   @override
   Future<void> saveDeviceIdToStorage({required String deviceId}) async {
     await secureStorage.write(key: _deviceIdStorageKey, value: deviceId);
+  }
+
+  @override
+  String getAppVersion() {
+    return packageInfo.version;
   }
 }

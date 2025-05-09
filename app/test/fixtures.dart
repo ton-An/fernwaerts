@@ -103,6 +103,7 @@ const String tPassword = 'VeryStrongPassword';
 
 const String tUserId = '1234567890';
 const String tDeviceId = '1234567890';
+const String tAppVersion = '0.0.1';
 
 const User tSupabaseUser = User(
   id: tUserId,

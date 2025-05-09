@@ -47,6 +47,7 @@ import 'package:location_history/features/location_tracking/domain/repositories/
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/get_locations_by_date.dart';
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../features/location_tracking/domain/usecases/init_background_location_tracking.dart';
 
@@ -67,6 +68,7 @@ void registerThirdPartyDependencies() {
   getIt.registerLazySingleton(() => const FlutterSecureStorage());
   getIt.registerLazySingleton(() => FlutterActivityRecognition.instance);
   getIt.registerLazySingleton(() => DeviceInfoPlugin());
+  getIt.registerLazySingletonAsync(() => PackageInfo.fromPlatform());
 }
 
 void registerCoreDependencies() {
@@ -167,7 +169,10 @@ void registerAuthenticationDependencies() {
     () => PermissionsLocalDataSourceImpl(flutterActivityRecognition: getIt()),
   );
   getIt.registerLazySingleton<BaseDeviceLocalDataSource>(
-    () => BaseDeviceLocalDataSourceImpl(secureStorage: getIt()),
+    () => BaseDeviceLocalDataSourceImpl(
+      secureStorage: getIt(),
+      packageInfo: getIt(),
+    ),
   );
   getIt.registerLazySingleton<IOSDeviceLocalDataSource>(
     () => IOSDeviceLocalDataSourceImpl(deviceInfoPlugin: getIt()),

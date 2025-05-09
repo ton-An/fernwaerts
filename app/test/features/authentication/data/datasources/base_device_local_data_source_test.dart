@@ -9,11 +9,15 @@ import '../../../../mocks/mocks.dart';
 void main() {
   late BaseDeviceLocalDataSource baseDeviceLocalDataSource;
   late MockFlutterSecureStorage mockSecureStorage;
+  late MockPackageInfo mockPackageInfo;
 
   setUp(() {
     mockSecureStorage = MockFlutterSecureStorage();
+    mockPackageInfo = MockPackageInfo();
+
     baseDeviceLocalDataSource = BaseDeviceLocalDataSourceImpl(
       secureStorage: mockSecureStorage,
+      packageInfo: mockPackageInfo,
     );
   });
 
@@ -75,6 +79,20 @@ void main() {
 
       // assert
       verify(() => mockSecureStorage.write(key: 'device_id', value: tDeviceId));
+    });
+  });
+
+  group('getAppVersion()', () {
+    setUp(() {
+      when(() => mockPackageInfo.version).thenAnswer((_) => tAppVersion);
+    });
+
+    test('should return the app version', () async {
+      // act
+      final result = baseDeviceLocalDataSource.getAppVersion();
+
+      // assert
+      expect(result, tAppVersion);
     });
   });
 }

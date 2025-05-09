@@ -43,4 +43,10 @@ abstract class DeviceRepository {
   /// - [StorageReadFailure]
   /// - [NoSavedDeviceFailure]
   Future<Either<Failure, String>> getDeviceIdFromStorage();
+
+  /// Gets the app version
+  ///
+  /// Returns:
+  /// - a [String] containing the app version.
+  String getAppVersion();
 }
