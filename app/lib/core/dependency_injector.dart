@@ -10,8 +10,10 @@ import 'package:location_history/features/authentication/data/datasources/authen
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/permissions_local_data_source.dart';
 import 'package:location_history/features/authentication/data/repository_implementations/authentication_repository_impl.dart';
+import 'package:location_history/features/authentication/data/repository_implementations/device_repository_impl.dart';
 import 'package:location_history/features/authentication/data/repository_implementations/permissions_repository_impl.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
+import 'package:location_history/features/authentication/domain/repositories/device_repository.dart';
 import 'package:location_history/features/authentication/domain/repositories/permissions_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/has_server_connection_saved.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_new_server_connection.dart';
@@ -135,6 +137,7 @@ void registerAuthenticationDependencies() {
   getIt.registerLazySingleton<PermissionsRepository>(
     () => PermissionsRepositoryImpl(permissionsLocalDataSource: getIt()),
   );
+  getIt.registerLazySingleton<DeviceRepository>(() => DeviceRepositoryImpl());
   getIt.registerLazySingleton<AuthenticationLocalDataSource>(
     () => AuthLocalDataSourceImpl(secureStorage: getIt()),
   );
@@ -166,13 +169,13 @@ void registerLocationTrackingDependencies() {
   // -- Domain -- //
   getIt.registerLazySingleton(
     () => InitBackgroundLocationTracking(
-      locationTrackingRepository: getIt(),
-      authenticationRepository: getIt(),
-      locationDataRepository: getIt(),
       initializeSavedServerConnection: getIt(),
+      authenticationRepository: getIt(),
+      deviceRepository: getIt(),
+      locationTrackingRepository: getIt(),
+      locationDataRepository: getIt(),
     ),
   );
-
   getIt.registerLazySingleton(
     () => GetLocationsByDate(
       authenticationRepository: getIt(),
