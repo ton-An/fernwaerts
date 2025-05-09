@@ -27,6 +27,7 @@ import 'package:location_history/features/authentication/domain/usecases/initial
 import 'package:location_history/features/authentication/domain/usecases/is_server_set_up.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_signed_in.dart';
 import 'package:location_history/features/authentication/domain/usecases/request_necessary_permissions.dart';
+import 'package:location_history/features/authentication/domain/usecases/save_device_info_to_db.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_out.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_up_initial_admin.dart';
@@ -121,7 +122,10 @@ void registerAuthenticationDependencies() {
     () =>
         SignUpInitialAdmin(authenticationRepository: getIt(), signIn: getIt()),
   );
-  getIt.registerLazySingleton(() => SignIn(authenticationRepository: getIt()));
+  getIt.registerLazySingleton(
+    () =>
+        SignIn(authenticationRepository: getIt(), saveDeviceInfoToDB: getIt()),
+  );
   getIt.registerLazySingleton(() => SignOut(authenticationRepository: getIt()));
   getIt.registerLazySingleton(
     () => HasServerConnectionSaved(authenticationRepository: getIt()),
@@ -134,6 +138,12 @@ void registerAuthenticationDependencies() {
   );
   getIt.registerLazySingleton(
     () => RequestNecessaryPermissions(permissionsRepository: getIt()),
+  );
+  getIt.registerLazySingleton(
+    () => SaveDeviceInfoToDB(
+      authenticationRepository: getIt(),
+      deviceRepository: getIt(),
+    ),
   );
 
   // -- Data -- //
