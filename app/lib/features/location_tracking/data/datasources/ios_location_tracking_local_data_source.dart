@@ -39,6 +39,7 @@ class IOSLocationTrackingLocalDataSourceImpl
         showsBackgroundLocationIndicator: true,
       ),
     );
+    bg.BackgroundGeolocation.start();
   }
 
   @override
