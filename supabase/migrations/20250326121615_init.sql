@@ -59,7 +59,6 @@ create table
     id uuid default gen_random_uuid () primary key,
     user_id uuid references public.users on delete cascade not null,
     name text not null,
-    type text not null,
     model text not null,
     os text not null,
     os_version text not null,

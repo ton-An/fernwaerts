@@ -10,7 +10,6 @@ class Device extends OfflineFirstWithSupabaseModel {
     String? id,
     required this.userId,
     required this.name,
-    required this.type,
     required this.model,
     required this.manufacturer,
     required this.os,
@@ -26,7 +25,6 @@ class Device extends OfflineFirstWithSupabaseModel {
   final String userId;
 
   final String name;
-  final String type;
   final String model;
   final String manufacturer;
   final String os;
