@@ -17,17 +17,20 @@ void main() {
   late MockBaseDeviceLocalDataSource mockBaseDeviceLocalDataSource;
   late MockIOSDeviceLocalDataSource mockIosDeviceLocalDataSource;
   late MockAndroidDeviceLocalDataSource mockAndroidDeviceLocalDataSource;
+  late MockDeviceRemoteDataSource mockDeviceRemoteDataSource;
   late MockPlatformWrapper mockPlatformWrapper;
 
   setUp(() {
     mockBaseDeviceLocalDataSource = MockBaseDeviceLocalDataSource();
     mockIosDeviceLocalDataSource = MockIOSDeviceLocalDataSource();
     mockAndroidDeviceLocalDataSource = MockAndroidDeviceLocalDataSource();
+    mockDeviceRemoteDataSource = MockDeviceRemoteDataSource();
     mockPlatformWrapper = MockPlatformWrapper();
     deviceRepositoryImpl = DeviceRepositoryImpl(
       baseDeviceLocalDataSource: mockBaseDeviceLocalDataSource,
       iosDeviceLocalDataSource: mockIosDeviceLocalDataSource,
       androidDeviceLocalDataSource: mockAndroidDeviceLocalDataSource,
+      deviceRemoteDataSource: mockDeviceRemoteDataSource,
       platformWrapper: mockPlatformWrapper,
     );
   });

@@ -8,6 +8,7 @@ import 'package:location_history/core/failures/storage/storage_read_failure.dart
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/data/datasources/android_device_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/base_device_local_data_source.dart';
+import 'package:location_history/features/authentication/data/datasources/device_remote_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/ios_device_local_data_source.dart';
 import 'package:location_history/features/authentication/domain/models/device.model.dart';
 import 'package:location_history/features/authentication/domain/models/raw_device.dart';
@@ -18,12 +19,14 @@ class DeviceRepositoryImpl extends DeviceRepository {
     required this.baseDeviceLocalDataSource,
     required this.iosDeviceLocalDataSource,
     required this.androidDeviceLocalDataSource,
+    required this.deviceRemoteDataSource,
     required this.platformWrapper,
   });
 
   final BaseDeviceLocalDataSource baseDeviceLocalDataSource;
   final IOSDeviceLocalDataSource iosDeviceLocalDataSource;
   final AndroidDeviceLocalDataSource androidDeviceLocalDataSource;
+  final DeviceRemoteDataSource deviceRemoteDataSource;
   final PlatformWrapper platformWrapper;
 
   @override
@@ -74,7 +77,6 @@ class DeviceRepositoryImpl extends DeviceRepository {
 
   @override
   Future<void> saveDeviceInfoToDB({required Device device}) {
-    // TODO: implement saveDeviceInfoToDB
-    throw UnimplementedError();
+    return deviceRemoteDataSource.saveDeviceInfoToDB(device: device);
   }
 }
