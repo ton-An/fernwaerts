@@ -9,7 +9,8 @@ import 'package:location_history/brick/db/schema.g.dart';
 import 'package:sqflite/sqflite.dart' show databaseFactory;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class SupabaseOfflineFirst extends OfflineFirstWithSupabaseRepository {
+class SupabaseOfflineFirst
+    extends OfflineFirstWithSupabaseRepository<OfflineFirstWithSupabaseModel> {
   SupabaseOfflineFirst._({
     required super.supabaseProvider,
     required super.sqliteProvider,

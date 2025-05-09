@@ -16,8 +16,6 @@ class MapWidget extends StatefulWidget {
 }
 
 class _MapWidgetState extends State<MapWidget> {
-  String? appPackageName;
-
   @override
   void initState() {
     super.initState();

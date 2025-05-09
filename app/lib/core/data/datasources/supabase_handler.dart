@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:brick_offline_first_with_supabase/brick_offline_first_with_supabase.dart';
 import 'package:location_history/core/data/datasources/supabase_offline_first.dart';
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -10,8 +11,8 @@ class SupabaseHandler {
   final Completer<SupabaseClient> _clientCompleter =
       Completer<SupabaseClient>();
 
-  final Completer<SupabaseOfflineFirst> _offlineFirstCompleter =
-      Completer<SupabaseOfflineFirst>();
+  final Completer<OfflineFirstWithSupabaseRepository> _offlineFirstCompleter =
+      Completer<OfflineFirstWithSupabaseRepository>();
 
   Future<SupabaseClient> get client {
     if (_clientCompleter.isCompleted) {
@@ -21,8 +22,13 @@ class SupabaseHandler {
     }
   }
 
-  Future<SupabaseOfflineFirst> get supabaseOfflineFirst =>
-      _offlineFirstCompleter.future;
+  Future<OfflineFirstWithSupabaseRepository> get supabaseOfflineFirst {
+    if (_clientCompleter.isCompleted) {
+      return Future.value(SupabaseOfflineFirst());
+    } else {
+      return _offlineFirstCompleter.future;
+    }
+  }
 
   Future<void> initialize({required ServerInfo serverInfo}) async {
     await SupabaseOfflineFirst.initializeSupabaseAndConfigure(

@@ -3,12 +3,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:location_history/brick/brick.g.dart';
 import 'package:location_history/features/location_tracking/data/datasources/location_data_remote_data_source.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.model.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../../../fixtures.dart';
 import '../../../../mocks/mock_supabase_offline_first_repository.dart';
+import '../../../../mocks/mocks.dart';
 
 void main() {
   late LocationDataRemoteDataSourceImpl locationDataRemoteDataSource;
+  late MockSupabaseHandler mockSupabaseHandler;
   late SupabaseMockServer mockSupabaseServer;
   late MockSupabaseOfflineFirstRepository mockSupabaseOfflineFirstRepository;
 
@@ -22,9 +25,14 @@ void main() {
           mockSupabaseServer: mockSupabaseServer,
         );
     await mockSupabaseOfflineFirstRepository.initialize();
+    mockSupabaseHandler = MockSupabaseHandler();
+
     locationDataRemoteDataSource = LocationDataRemoteDataSourceImpl(
-      supabaseOfflineFirst: mockSupabaseOfflineFirstRepository,
+      supabaseHandler: mockSupabaseHandler,
     );
+    when(
+      () => mockSupabaseHandler.supabaseOfflineFirst,
+    ).thenAnswer((_) async => mockSupabaseOfflineFirstRepository);
   });
 
   tearDown(() async {

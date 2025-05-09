@@ -15,7 +15,7 @@ class MockSupabaseOfflineFirstRepository
     required super.sqliteProvider,
     required super.offlineRequestQueue,
     super.memoryCacheProvider,
-  }) : super(migrations: {const Migration20250509102604()});
+  }) : super(migrations: {const Migration20250509143413()});
 
   factory MockSupabaseOfflineFirstRepository.configure({
     required SupabaseMockServer mockSupabaseServer,

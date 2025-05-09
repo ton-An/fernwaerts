@@ -38,7 +38,7 @@ class Device extends OfflineFirstWithSupabaseModel with EquatableMixin {
   final String model;
   final String manufacturer;
 
-  @Supabase(enumAsString: true)
+  @Supabase(name: 'os_id', enumAsString: true)
   final OperatingSystem os;
   final String osVersion;
   final String appVersion;
@@ -50,6 +50,8 @@ class Device extends OfflineFirstWithSupabaseModel with EquatableMixin {
     required String appVersion,
     required String userId,
   }) {
+    final DateTime now = DateTime.now();
+
     return Device(
       userId: userId,
       name: rawDevice.name,
@@ -58,8 +60,8 @@ class Device extends OfflineFirstWithSupabaseModel with EquatableMixin {
       os: rawDevice.os,
       osVersion: rawDevice.osVersion,
       appVersion: appVersion,
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
+      createdAt: now,
+      updatedAt: now,
     );
   }
 

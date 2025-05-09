@@ -24,6 +24,7 @@ import 'package:location_history/features/in_app_notification/presentation/widge
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
 import 'package:location_history/features/settings/pages/settings_page/settings_page.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 /* 
@@ -35,12 +36,15 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
     - [ ] Add log settings page
 */
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   initGetIt();
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  await getIt.isReady<PackageInfo>();
+
   runApp(MainApp());
 }
 

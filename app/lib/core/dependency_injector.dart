@@ -69,7 +69,9 @@ void registerThirdPartyDependencies() {
   getIt.registerLazySingleton(() => const FlutterSecureStorage());
   getIt.registerLazySingleton(() => FlutterActivityRecognition.instance);
   getIt.registerLazySingleton(() => DeviceInfoPlugin());
-  getIt.registerLazySingletonAsync(() => PackageInfo.fromPlatform());
+  getIt.registerSingletonAsync<PackageInfo>(
+    () async => await PackageInfo.fromPlatform(),
+  );
 }
 
 void registerCoreDependencies() {
@@ -108,6 +110,7 @@ void registerAuthenticationDependencies() {
       initSavedServerConnection: getIt(),
       isSignedInUsecase: getIt(),
       requestNecessaryPermissions: getIt(),
+      initBackgroundLocationTracking: getIt(),
     ),
   );
 
@@ -191,7 +194,7 @@ void registerAuthenticationDependencies() {
     () => AndroidDeviceLocalDataSourceImpl(deviceInfoPlugin: getIt()),
   );
   getIt.registerLazySingleton<DeviceRemoteDataSource>(
-    () => DeviceRemoteDataSourceImpl(supabaseOfflineFirst: getIt()),
+    () => DeviceRemoteDataSourceImpl(supabaseHandler: getIt()),
   );
 }
 
@@ -239,6 +242,6 @@ void registerLocationTrackingDependencies() {
     () => IOSLocationTrackingLocalDataSourceImpl(),
   );
   getIt.registerLazySingleton<LocationDataRemoteDataSource>(
-    () => LocationDataRemoteDataSourceImpl(supabaseOfflineFirst: getIt()),
+    () => LocationDataRemoteDataSourceImpl(supabaseHandler: getIt()),
   );
 }

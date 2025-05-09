@@ -1,11 +1,11 @@
 // GENERATED CODE DO NOT EDIT
 // This file should be version controlled
 import 'package:brick_sqlite/db.dart';
-part '20250509102604.migration.dart';
+part '20250509143413.migration.dart';
 
 /// All intelligently-generated migrations from all `@Migratable` classes on disk
 final migrations = <Migration>{
-  const Migration20250509102604(),};
+  const Migration20250509143413(),};
 
 /// A consumable database structure including the latest generated migration.
 final schema = Schema(
