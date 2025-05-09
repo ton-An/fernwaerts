@@ -1,6 +1,5 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:location_history/features/authentication/domain/enums/operating_system.dart';
-import 'package:location_history/features/authentication/domain/models/device.model.dart';
 import 'package:location_history/features/authentication/domain/models/raw_device.dart';
 
 abstract class IosDeviceLocalDataSource {
@@ -9,10 +8,7 @@ abstract class IosDeviceLocalDataSource {
   /// Gets the device information of the current device
   ///
   /// Returns:
-  /// - [Device] the device information of the current device
-  ///
-  /// Throws:
-  /// - TBD
+  /// - [RawDevice] the device information of the current device
   Future<RawDevice> getRawDeviceInfo();
 }
 
