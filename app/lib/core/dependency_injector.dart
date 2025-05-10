@@ -128,7 +128,12 @@ void registerAuthenticationDependencies() {
   getIt.registerLazySingleton(
     () => SignIn(authenticationRepository: getIt(), saveDeviceInfo: getIt()),
   );
-  getIt.registerLazySingleton(() => SignOut(authenticationRepository: getIt()));
+  getIt.registerLazySingleton(
+    () => SignOut(
+      authenticationRepository: getIt(),
+      locationTrackingRepository: getIt(),
+    ),
+  );
   getIt.registerLazySingleton(
     () => HasServerConnectionSaved(authenticationRepository: getIt()),
   );

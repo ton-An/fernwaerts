@@ -9,13 +9,21 @@ import '../../../../mocks/mocks.dart';
 void main() {
   late SignOut signOut;
   late MockAuthenticationRepository mockAuthenticationRepository;
+  late MockLocationTrackingRepository mockLocationTrackingRepository;
 
   setUp(() {
     mockAuthenticationRepository = MockAuthenticationRepository();
-    signOut = SignOut(authenticationRepository: mockAuthenticationRepository);
+    mockLocationTrackingRepository = MockLocationTrackingRepository();
+    signOut = SignOut(
+      authenticationRepository: mockAuthenticationRepository,
+      locationTrackingRepository: mockLocationTrackingRepository,
+    );
 
     when(
       () => mockAuthenticationRepository.signOut(),
+    ).thenAnswer((_) => Future.value());
+    when(
+      () => mockLocationTrackingRepository.stopTracking(),
     ).thenAnswer((_) => Future.value());
     when(
       () => mockAuthenticationRepository.deleteLocalStorage(),
@@ -32,6 +40,14 @@ void main() {
     // assert
     verify(() => mockAuthenticationRepository.signOut());
     expect(result, const Right(None()));
+  });
+
+  test('should stop location tracking', () async {
+    // act
+    await signOut();
+
+    // assert
+    verify(() => mockLocationTrackingRepository.stopTracking());
   });
 
   test('should delete the local DB cache ', () async {
