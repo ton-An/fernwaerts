@@ -64,14 +64,11 @@ class InitBackgroundLocationTracking {
     required String userId,
     required String deviceId,
   }) async {
-    final Either<Failure, None> initEither =
-        await locationTrackingRepository.initTracking();
+    await locationTrackingRepository.initTracking();
 
-    return initEither.fold(Left.new, (None none) {
-      _listenForLocationChanges(userId: userId, deviceId: deviceId);
+    _listenForLocationChanges(userId: userId, deviceId: deviceId);
 
-      return const Right(None());
-    });
+    return const Right(None());
   }
 
   void _listenForLocationChanges({

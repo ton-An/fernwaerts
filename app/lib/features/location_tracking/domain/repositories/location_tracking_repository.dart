@@ -1,5 +1,3 @@
-import 'package:fpdart/fpdart.dart';
-import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
 
 abstract class LocationTrackingRepository {
@@ -8,10 +6,10 @@ abstract class LocationTrackingRepository {
   /// Initializes the tracking service
   ///
   /// #### This method should be called when the app is started to ensure that the location tracking service is ready to use.
-  ///
-  /// Failures:
-  /// - ...TBD
-  Future<Either<Failure, None>> initTracking();
+  Future<void> initTracking();
+
+  /// Stops the tracking service
+  Future<void> stopTracking();
 
   /// Streams location updates
   ///

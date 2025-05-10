@@ -11,10 +11,10 @@ import 'package:location_history/features/location_tracking/domain/models/record
 
 abstract class IOSLocationTrackingLocalDataSource {
   /// Initializes the tracking service
-  ///
-  /// Throws:
-  /// - ...TBD
   Future<void> initTracking();
+
+  /// Stops the tracking service
+  Future<void> stopTracking();
 
   /// Streams location updates
   ///
@@ -40,6 +40,11 @@ class IOSLocationTrackingLocalDataSourceImpl
       ),
     );
     bg.BackgroundGeolocation.start();
+  }
+
+  @override
+  Future<void> stopTracking() async {
+    await bg.BackgroundGeolocation.stop();
   }
 
   @override

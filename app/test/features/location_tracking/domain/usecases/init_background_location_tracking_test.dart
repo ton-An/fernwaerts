@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:location_history/core/failures/permission/background_location_permission_not_granted_failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/init_background_location_tracking.dart';
@@ -130,19 +129,6 @@ void main() {
 
     // assert
     verify(() => mockLocationTrackingRepository.initTracking());
-  });
-
-  test('should relay failures from initializing tracking', () async {
-    // arrange
-    when(() => mockLocationTrackingRepository.initTracking()).thenAnswer(
-      (_) async => const Left(BackgroundLocationPermissionNotGrantedFailure()),
-    );
-
-    // act
-    final result = await locationTrackingHandler();
-
-    // assert
-    expect(result, const Left(BackgroundLocationPermissionNotGrantedFailure()));
   });
 
   test(
