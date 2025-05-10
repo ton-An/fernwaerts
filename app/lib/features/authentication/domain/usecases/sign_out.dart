@@ -28,21 +28,16 @@ class SignOut {
   Future<Either<Failure, None>> _signOut() async {
     await authenticationRepository.signOut();
 
-    return _deleteLocalStorage();
-  }
-
-  Future<Either<Failure, None>> _deleteLocalStorage() async {
-    final Either<Failure, None> deleteStorageEither =
-        await authenticationRepository.deleteLocalStorage();
-
-    return deleteStorageEither.fold(Left.new, (None none) {
-      return _deleteLocalDBCache();
-    });
+    return _deleteLocalDBCache();
   }
 
   Future<Either<Failure, None>> _deleteLocalDBCache() async {
     await authenticationRepository.deleteLocalDBCache();
 
-    return const Right(None());
+    return _deleteLocalStorage();
+  }
+
+  Future<Either<Failure, None>> _deleteLocalStorage() async {
+    return authenticationRepository.deleteLocalStorage();
   }
 }

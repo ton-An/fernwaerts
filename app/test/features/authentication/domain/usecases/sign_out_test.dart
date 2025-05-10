@@ -34,12 +34,21 @@ void main() {
     expect(result, const Right(None()));
   });
 
-  test('should delete the local storage', () async {
+  test('should delete the local DB cache ', () async {
     // act
     await signOut();
 
     // assert
+    verify(() => mockAuthenticationRepository.deleteLocalDBCache());
+  });
+
+  test('should delete the local storage and return None', () async {
+    // act
+    final result = await signOut();
+
+    // assert
     verify(() => mockAuthenticationRepository.deleteLocalStorage());
+    expect(result, const Right(None()));
   });
 
   test('should relay Failures from deleting the local storage', () async {
@@ -53,14 +62,5 @@ void main() {
 
     // assert
     expect(result, const Left(StorageWriteFailure()));
-  });
-
-  test('should delete the local DB cache and return None', () async {
-    // act
-    final result = await signOut();
-
-    // assert
-    verify(() => mockAuthenticationRepository.deleteLocalDBCache());
-    expect(result, const Right(None()));
   });
 }
