@@ -524,4 +524,37 @@ void main() {
       expect(result, const Left<Failure, bool>(NotSignedInFailure()));
     });
   });
+
+  group('deleteLocalStorage()', () {
+    setUp(() {
+      when(
+        () => mockAuthLocalDataSource.deleteLocalStorage(),
+      ).thenAnswer((_) => Future.value());
+    });
+
+    test('should delete the local storage and return None', () async {
+      // act
+      final result = await authenticationRepositoryImpl.deleteLocalStorage();
+
+      // assert
+      verify(() => mockAuthLocalDataSource.deleteLocalStorage());
+      expect(result, const Right(None()));
+    });
+
+    test(
+      'should convert PlatformException to StorageWriteFailure and return it',
+      () async {
+        // arrange
+        when(
+          () => mockAuthLocalDataSource.deleteLocalStorage(),
+        ).thenThrow(tPlatformException);
+
+        // act
+        final result = await authenticationRepositoryImpl.deleteLocalStorage();
+
+        // assert
+        expect(result, const Left(StorageWriteFailure()));
+      },
+    );
+  });
 }

@@ -219,14 +219,18 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<void> deleteLocalDBCache() {
-    // TODO: implement deleteLocalDBCache
-    throw UnimplementedError();
+  Future<void> deleteLocalDBCache() async {
+    return authLocalDataSource.deleteLocalDBCache();
   }
 
   @override
-  Future<Either<Failure, None>> deleteLocalStorage() {
-    // TODO: implement deleteLocalStorage
-    throw UnimplementedError();
+  Future<Either<Failure, None>> deleteLocalStorage() async {
+    try {
+      await authLocalDataSource.deleteLocalStorage();
+
+      return const Right(None());
+    } on PlatformException {
+      return const Left(StorageWriteFailure());
+    }
   }
 }

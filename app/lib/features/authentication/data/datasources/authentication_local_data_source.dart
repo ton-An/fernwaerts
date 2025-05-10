@@ -35,6 +35,15 @@ abstract class AuthenticationLocalDataSource {
   /// Throws:
   /// - [PlatformException]
   Future<void> saveServerInfo({required ServerInfo serverInfo});
+
+  /// Deletes the local storage
+  ///
+  /// Throws:
+  /// - [PlatformException]
+  Future<void> deleteLocalStorage();
+
+  /// Deletes the local db cache
+  Future<void> deleteLocalDBCache();
 }
 
 class AuthLocalDataSourceImpl extends AuthenticationLocalDataSource {
@@ -69,5 +78,17 @@ class AuthLocalDataSourceImpl extends AuthenticationLocalDataSource {
   Future<void> saveServerInfo({required ServerInfo serverInfo}) async {
     await secureStorage.write(key: _serverUrlKey, value: serverInfo.url);
     await secureStorage.write(key: _anonKey, value: serverInfo.anonKey);
+  }
+
+  @override
+  Future<void> deleteLocalDBCache() {
+    // TODO: implement deleteLocalDBCache
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteLocalStorage() {
+    // TODO: implement deleteLocalStorage
+    throw UnimplementedError();
   }
 }
