@@ -105,6 +105,15 @@ abstract class AuthenticationRepository {
   /// - [StorageWriteFailure]
   Future<Either<Failure, None>> removeSavedServer();
 
+  /// Deletes local storage
+  ///
+  /// Failures:
+  /// - [StorageWriteFailure]
+  Future<Either<Failure, None>> deleteLocalStorage();
+
+  /// Deletes local DB cache
+  Future<void> deleteLocalDBCache();
+
   /// Saves the provided server info
   ///
   /// Parameters:

@@ -217,4 +217,16 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return Left(failure);
     }
   }
+
+  @override
+  Future<void> deleteLocalDBCache() {
+    // TODO: implement deleteLocalDBCache
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, None>> deleteLocalStorage() {
+    // TODO: implement deleteLocalStorage
+    throw UnimplementedError();
+  }
 }

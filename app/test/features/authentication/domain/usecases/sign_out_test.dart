@@ -18,13 +18,12 @@ void main() {
       () => mockAuthenticationRepository.signOut(),
     ).thenAnswer((_) => Future.value());
     when(
-      () => mockAuthenticationRepository.removeSavedServer(),
+      () => mockAuthenticationRepository.deleteLocalStorage(),
     ).thenAnswer((_) => Future.value(const Right(None())));
+    when(
+      () => mockAuthenticationRepository.deleteLocalDBCache(),
+    ).thenAnswer((_) => Future.value());
   });
-
-  /// should sign out the user
-  /// should remove the saved server and return None
-  /// should relay Failures from removing the saved server
 
   test('should sign out the user', () async {
     // act
@@ -35,19 +34,18 @@ void main() {
     expect(result, const Right(None()));
   });
 
-  test('should remove the saved server and return None', () async {
+  test('should delete the local storage', () async {
     // act
-    final result = await signOut();
+    await signOut();
 
     // assert
-    verify(() => mockAuthenticationRepository.removeSavedServer());
-    expect(result, const Right(None()));
+    verify(() => mockAuthenticationRepository.deleteLocalStorage());
   });
 
-  test('should relay Failures from removing the saved server', () async {
+  test('should relay Failures from deleting the local storage', () async {
     // arrange
     when(
-      () => mockAuthenticationRepository.removeSavedServer(),
+      () => mockAuthenticationRepository.deleteLocalStorage(),
     ).thenAnswer((_) => Future.value(const Left(StorageWriteFailure())));
 
     // act
@@ -55,5 +53,14 @@ void main() {
 
     // assert
     expect(result, const Left(StorageWriteFailure()));
+  });
+
+  test('should delete the local DB cache and return None', () async {
+    // act
+    final result = await signOut();
+
+    // assert
+    verify(() => mockAuthenticationRepository.deleteLocalDBCache());
+    expect(result, const Right(None()));
   });
 }
