@@ -169,7 +169,10 @@ void registerAuthenticationDependencies() {
     ),
   );
   getIt.registerLazySingleton<AuthenticationLocalDataSource>(
-    () => AuthLocalDataSourceImpl(secureStorage: getIt()),
+    () => AuthLocalDataSourceImpl(
+      secureStorage: getIt(),
+      supabaseHandler: getIt(),
+    ),
   );
   getIt.registerLazySingleton<AuthenticationRemoteDataSource>(
     () => AuthRemoteDataSourceImpl(

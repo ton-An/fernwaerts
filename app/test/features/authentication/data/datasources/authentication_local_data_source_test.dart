@@ -9,12 +9,19 @@ import '../../../../mocks/mocks.dart';
 void main() {
   late AuthenticationLocalDataSource authenticationLocalDataSource;
   late MockFlutterSecureStorage mockSecureStorage;
+  late MockSupabaseHandler mockSupabaseHandler;
+
+  late MockSupabaseOfflineFirst mockSupabaseOfflineFirst;
 
   setUp(() {
     mockSecureStorage = MockFlutterSecureStorage();
+    mockSupabaseHandler = MockSupabaseHandler();
     authenticationLocalDataSource = AuthLocalDataSourceImpl(
       secureStorage: mockSecureStorage,
+      supabaseHandler: mockSupabaseHandler,
     );
+
+    mockSupabaseOfflineFirst = MockSupabaseOfflineFirst();
   });
 
   group('getSavedServerInfo()', () {
@@ -144,6 +151,41 @@ void main() {
 
       // assert
       verify(() => mockSecureStorage.write(key: 'anon_key', value: tAnonKey));
+    });
+  });
+
+  group('deleteLocalStorage()', () {
+    setUp(() {
+      when(
+        () => mockSecureStorage.deleteAll(),
+      ).thenAnswer((_) => Future.value());
+    });
+
+    test('should delete all local storage', () async {
+      // act
+      await authenticationLocalDataSource.deleteLocalStorage();
+
+      // assert
+      verify(() => mockSecureStorage.deleteAll());
+    });
+  });
+
+  group('deleteLocalDBCache()', () {
+    setUp(() {
+      when(
+        () => mockSupabaseHandler.supabaseOfflineFirst,
+      ).thenAnswer((_) async => mockSupabaseOfflineFirst);
+      when(
+        () => mockSupabaseOfflineFirst.reset(),
+      ).thenAnswer((_) => Future.value());
+    });
+
+    test('should delete the local db cache', () async {
+      // act
+      await authenticationLocalDataSource.deleteLocalDBCache();
+
+      // assert
+      verify(() => mockSupabaseOfflineFirst.reset());
     });
   });
 }

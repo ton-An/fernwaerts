@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:location_history/core/data/datasources/platform_wrapper.dart';
 import 'package:location_history/core/data/datasources/server_remote_handler.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
+import 'package:location_history/core/data/datasources/supabase_offline_first.dart';
 import 'package:location_history/core/data/repository/repository_failure_handler.dart';
 import 'package:location_history/features/authentication/data/datasources/android_device_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
@@ -60,6 +61,8 @@ class MockRepositoryFailureHandler extends Mock
 class MockSupabaseHandler extends Mock implements SupabaseHandler {}
 
 class MockPlatformWrapper extends Mock implements PlatformWrapper {}
+
+class MockSupabaseOfflineFirst extends Mock implements SupabaseOfflineFirst {}
 
 // -- Authentication
 class MockDeviceRemoteDataSource extends Mock
