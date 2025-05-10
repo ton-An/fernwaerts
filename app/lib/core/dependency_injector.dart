@@ -103,6 +103,7 @@ void registerAuthenticationDependencies() {
       signUpInitialAdmin: getIt(),
       signInUsecase: getIt(),
       requestNecessaryPermissions: getIt(),
+      initBackgroundLocationTracking: getIt(),
     ),
   );
   getIt.registerFactory(

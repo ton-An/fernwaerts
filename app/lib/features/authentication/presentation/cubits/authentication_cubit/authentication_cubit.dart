@@ -8,6 +8,7 @@ import 'package:location_history/features/authentication/domain/usecases/request
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_up_initial_admin.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_states.dart';
+import 'package:location_history/features/location_tracking/domain/usecases/init_background_location_tracking.dart';
 
 /* 
   To-Do:
@@ -23,6 +24,7 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
     required this.signUpInitialAdmin,
     required this.signInUsecase,
     required this.requestNecessaryPermissions,
+    required this.initBackgroundLocationTracking,
   }) : super(const AuthenticationInitial());
 
   final InitializeNewServerConnection initializeServerConnection;
@@ -30,6 +32,7 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
   final SignUpInitialAdmin signUpInitialAdmin;
   final SignIn signInUsecase;
   final RequestNecessaryPermissions requestNecessaryPermissions;
+  final InitBackgroundLocationTracking initBackgroundLocationTracking;
 
   String serverUrl = '';
   late ServerInfo serverInfo;
@@ -125,7 +128,13 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
         final Either<Failure, None> requestPermissionsEither =
             await requestNecessaryPermissions();
 
-        requestPermissionsEither.fold(
+        requestPermissionsEither.fold((Failure failure) {
+          emit(AuthenticationError(failure: failure));
+        }, (None none) {});
+
+        final initTrackingEither = await initBackgroundLocationTracking();
+
+        initTrackingEither.fold(
           (Failure failure) {
             emit(AuthenticationError(failure: failure));
             emit(const LogInSuccessful());
