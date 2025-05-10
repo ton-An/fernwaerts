@@ -102,5 +102,3 @@ class _MapWidgetState extends State<MapWidget> {
     );
   }
 }
-
-//
