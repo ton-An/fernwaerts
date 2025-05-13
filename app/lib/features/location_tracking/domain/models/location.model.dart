@@ -52,7 +52,17 @@ class Location extends OfflineFirstWithSupabaseModel with EquatableMixin {
   final num ellipsoidalAltitude;
   final num altitudeAccuracy;
 
-  @Supabase(name: 'activity_type_id', enumAsString: true)
+  @Supabase(
+    name: 'activity_type_id',
+    enumAsString: true,
+    fromGenerator: '''
+    ActivityType.values.firstWhere((value) {
+      if(value.toString() == %DATA_PROPERTY%) return true;
+
+      return false;
+    }, orElse: () => throw ArgumentError.value(%DATA_PROPERTY%, "name", "No enum value with that name"))''',
+    toGenerator: "%INSTANCE_PROPERTY%.toString()",
+  )
   final ActivityType activityType;
   final num activityConfidence;
 
