@@ -14,8 +14,6 @@ PODS:
     - Flutter
   - flutter_secure_storage (6.0.0):
     - Flutter
-  - objective_c (0.0.1):
-    - Flutter
   - permission_handler_apple (9.3.0):
     - Flutter
   - super_keyboard (0.0.1):
@@ -28,7 +26,6 @@ DEPENDENCIES:
   - flutter_activity_recognition (from `.symlinks/plugins/flutter_activity_recognition/ios`)
   - flutter_background_geolocation (from `.symlinks/plugins/flutter_background_geolocation/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
-  - objective_c (from `.symlinks/plugins/objective_c/ios`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - super_keyboard (from `.symlinks/plugins/super_keyboard/ios`)
 
@@ -49,8 +46,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_background_geolocation/ios"
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
-  objective_c:
-    :path: ".symlinks/plugins/objective_c/ios"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
   super_keyboard:
@@ -64,7 +59,6 @@ SPEC CHECKSUMS:
   flutter_activity_recognition: 52dfad4c1e9cec99f0841b3ed0efcc9d424b3deb
   flutter_background_geolocation: 5b84413a1bf24012c9c03bd0bf90a890f941ec29
   flutter_secure_storage: 1ed9476fba7e7a782b22888f956cce43e2c62f13
-  objective_c: 89e720c30d716b036faf9c9684022048eee1eee2
   permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
   super_keyboard: 016de6ce9ab826f9a0b185608209d6a3b556d577
 
