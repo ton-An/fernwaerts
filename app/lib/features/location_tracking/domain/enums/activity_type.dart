@@ -30,4 +30,24 @@ enum ActivityType {
         return ActivityType.unknown;
     }
   }
+
+  @override
+  String toString() {
+    switch (this) {
+      case ActivityType.still:
+        return 'still';
+      case ActivityType.walking:
+        return 'walking';
+      case ActivityType.onFoot:
+        return 'on_foot';
+      case ActivityType.running:
+        return 'running';
+      case ActivityType.onBicycle:
+        return 'on_bicycle';
+      case ActivityType.inVehicle:
+        return 'in_vehicle';
+      case ActivityType.unknown:
+        return 'unknown';
+    }
+  }
 }
