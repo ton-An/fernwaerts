@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:brick_offline_first_with_supabase/brick_offline_first_with_supabase.dart';
+import 'package:brick_sqlite/brick_sqlite.dart';
 import 'package:brick_supabase/brick_supabase.dart';
 import 'package:equatable/equatable.dart';
 import 'package:location_history/features/location_tracking/domain/enums/activity_type.dart';
@@ -31,6 +32,7 @@ class Location extends OfflineFirstWithSupabaseModel with EquatableMixin {
     required this.isDeviceCharging,
   }) : id = id ?? (const Uuid()).v4();
 
+  @Sqlite(unique: true)
   @Supabase(unique: true)
   final String id;
 
