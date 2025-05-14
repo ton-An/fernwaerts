@@ -31,7 +31,7 @@ class IOSLocationTrackingLocalDataSourceImpl
       bg.Config(
         desiredAccuracy: bg.Config.DESIRED_ACCURACY_HIGH,
         stationaryRadius: 25,
-        elasticityMultiplier: 8,
+        elasticityMultiplier: 30,
         stopOnStationary: true,
         stopOnTerminate: false,
         startOnBoot: true,
