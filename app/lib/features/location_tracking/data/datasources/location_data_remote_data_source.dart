@@ -1,5 +1,7 @@
+import 'package:brick_offline_first/brick_offline_first.dart';
 import 'package:brick_offline_first_with_supabase/brick_offline_first_with_supabase.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
+import 'package:location_history/core/misc/date_time_extensions.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.model.dart';
 
 abstract class LocationDataRemoteDataSource {
@@ -28,6 +30,8 @@ class LocationDataRemoteDataSourceImpl implements LocationDataRemoteDataSource {
 
   final SupabaseHandler supabaseHandler;
 
+  static const String _timestampColumnName = 'timestamp';
+
   @override
   Future<List<Location>> getLocationsByDate({
     required DateTime start,
@@ -36,16 +40,19 @@ class LocationDataRemoteDataSourceImpl implements LocationDataRemoteDataSource {
     final OfflineFirstWithSupabaseRepository supabaseOfflineFirst =
         await supabaseHandler.supabaseOfflineFirst;
 
-    // final String startIsoString = start.toIso8601StringWithTz();
-    // final String endIsoString = end.toIso8601StringWithTz();
+    final String startIsoString = start.toIso8601StringWithTz();
+    final String endIsoString = end.toIso8601StringWithTz();
 
-    // final Query query = Query.where('timestamp', [
-    //   start,
-    //   end,
-    // ], compare: Compare.between);
+    final Query query = Query(
+      where: [
+        const Where(_timestampColumnName).isGreaterThan(startIsoString),
+        const Where(_timestampColumnName).isLessThan(endIsoString),
+      ],
+    );
 
     final List<Location> locations = await supabaseOfflineFirst.get<Location>(
-      // query: query,
+      query: query,
+      policy: OfflineFirstGetPolicy.awaitRemote,
     );
 
     return locations;
