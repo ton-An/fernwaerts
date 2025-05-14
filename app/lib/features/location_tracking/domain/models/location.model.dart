@@ -63,7 +63,7 @@ class Location extends OfflineFirstWithSupabaseModel with EquatableMixin {
 
       return false;
     }, orElse: () => throw ArgumentError.value(%DATA_PROPERTY%, "name", "No enum value with that name"))''',
-    toGenerator: "%INSTANCE_PROPERTY%.toString()",
+    toGenerator: '%INSTANCE_PROPERTY%.toString()',
   )
   final ActivityType activityType;
   final num activityConfidence;

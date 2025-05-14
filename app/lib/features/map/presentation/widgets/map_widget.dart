@@ -9,7 +9,6 @@ import 'package:location_history/features/in_app_notification/presentation/cubit
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
 import 'package:location_history/features/map/presentation/cubits/map_states.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 /* 
   To-Do:
@@ -67,12 +66,10 @@ class _MapWidgetState extends State<MapWidget> {
     });
   }
 
-  final List<LatLng> _points = [LatLng(0, 0)];
+  final List<LatLng> _points = [];
 
   @override
   Widget build(BuildContext context) {
-    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
-
     return BlocListener<CalendarDateSelectionCubit, CalendarDateSelectionState>(
       listener: (context, dateSelectionState) {
         _loadLocations(dateSelectionState);
@@ -148,7 +145,7 @@ class _MapWidgetState extends State<MapWidget> {
   }
 
   Color interpolateColors(List<Color> colors, double t) {
-    if (colors.isEmpty) throw ArgumentError("Colors list cannot be empty");
+    if (colors.isEmpty) throw ArgumentError('Colors list cannot be empty');
     if (colors.length == 1 || t <= 0.0) return colors.first;
     if (t >= 1.0) return colors.last;
 
