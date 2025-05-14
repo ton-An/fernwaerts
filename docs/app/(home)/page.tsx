@@ -1,11 +1,12 @@
-import Link from 'next/link';
+import RealisticGlobe from './globe'
+import Features from './features'
 
 export default function HomePage() {
   return (
     <main className="flex flex-1 flex-col justify-center items-center text-center">
-      <div className='flex flex-col items-center pt-16'>
+      <div className='flex flex-col items-center pt-16 z-1 relative'>
         <video src="videos/hero_background.mp4" autoPlay muted loop playsInline className="w-5xl rounded-3xl" />
-        <div className="w-2xl px-12 py-4 flex flex-col items-center rounded-3xl -translate-y-7/12 shadow-2xl backdrop-blur-2xl bg-white/60 dark:bg-white/10">
+        <div className="w-2xl absolute top-80 px-12 py-4 flex flex-col items-center rounded-3xl  shadow-2xl backdrop-blur-2xl bg-white/60 dark:bg-white/10">
           <img src="images/app_icon_transparent.png" alt="" className='w-60 pb-4 drop-shadow-xl' />
           <h1 className="z-1 text-5xl font-bold mb-4 text-white">Fernwärts</h1>
 
@@ -19,7 +20,10 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+      <div className='w-full h-96 relative'>
+        <div className='absolute top-20 -right-96'> <RealisticGlobe /></div>
+      </div>
+      <Features />
     </main >
   );
 }
-//style={{ color: '#EDBB32' }

@@ -9,12 +9,18 @@
     "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
+    "@react-three/drei": "^10.0.7",
+    "@react-three/fiber": "^9.1.2",
+    "cobe": "^0.6.3",
     "fumadocs-core": "15.3.1",
     "fumadocs-mdx": "11.6.3",
     "fumadocs-ui": "15.3.1",
     "next": "^15.3.2",
+    "r3f-globe": "^1.3.7",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "react-globe.gl": "^2.33.2",
+    "three": "^0.176.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.5",
