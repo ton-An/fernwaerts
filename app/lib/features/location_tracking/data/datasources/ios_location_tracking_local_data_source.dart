@@ -31,11 +31,10 @@ class IOSLocationTrackingLocalDataSourceImpl
       bg.Config(
         desiredAccuracy: bg.Config.DESIRED_ACCURACY_HIGH,
         stationaryRadius: 25,
-        elasticityMultiplier: 1.75,
+        elasticityMultiplier: 8,
         stopOnStationary: true,
         stopOnTerminate: false,
         startOnBoot: true,
-        debug: true,
         showsBackgroundLocationIndicator: true,
       ),
     );
