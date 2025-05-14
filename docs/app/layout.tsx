@@ -1,10 +1,12 @@
 import './global.css';
 import { RootProvider } from 'fumadocs-ui/provider';
-import { Inter } from 'next/font/google';
+import localFont from 'next/font/local'
 import type { ReactNode } from 'react';
 
-const inter = Inter({
-  subsets: ['latin'],
+const inter = localFont({
+  src: './fonts/inter.ttf',
+  variable: '--font-myfont',
+  display: 'swap',
 });
 
 export default function Layout({ children }: { children: ReactNode }) {
