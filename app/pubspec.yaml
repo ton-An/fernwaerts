@@ -69,6 +69,7 @@ dependencies:
   brick_sqlite: ^4.0.1
   brick_supabase: ^2.0.0
   brick_core: ^2.0.0
+  brick_offline_first: ^4.0.0
 
   # Media
   video_player: ^2.9.3

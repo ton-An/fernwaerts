@@ -139,7 +139,7 @@ packages:
     source: hosted
     version: "4.0.0"
   brick_offline_first:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: brick_offline_first
       sha256: ed11c6beb35c3b00f3cef0631b4875be98e694ba061a7b196a995486ab141aeb
