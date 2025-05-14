@@ -126,7 +126,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  bool isSignedIn() {
+  Future<bool> isSignedIn() {
     return authRemoteDataSource.isSignedIn();
   }
 
@@ -204,6 +204,33 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return Left(failure);
     } on Failure catch (failure) {
       return Left(failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> getCurrentUserId() async {
+    try {
+      final String userId = await authRemoteDataSource.getCurrentUserId();
+
+      return Right(userId);
+    } on Failure catch (failure) {
+      return Left(failure);
+    }
+  }
+
+  @override
+  Future<void> deleteLocalDBCache() async {
+    return authLocalDataSource.deleteLocalDBCache();
+  }
+
+  @override
+  Future<Either<Failure, None>> deleteLocalStorage() async {
+    try {
+      await authLocalDataSource.deleteLocalStorage();
+
+      return const Right(None());
+    } on PlatformException {
+      return const Left(StorageWriteFailure());
     }
   }
 }

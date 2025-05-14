@@ -6,6 +6,7 @@ import 'package:location_history/features/authentication/domain/usecases/initial
 import 'package:location_history/features/authentication/domain/usecases/is_signed_in.dart';
 import 'package:location_history/features/authentication/domain/usecases/request_necessary_permissions.dart';
 import 'package:location_history/features/authentication/presentation/cubits/splash_cubit/splash_states.dart';
+import 'package:location_history/features/location_tracking/domain/usecases/init_background_location_tracking.dart';
 
 /* 
   To-Do:
@@ -17,12 +18,13 @@ class SplashCubit extends Cubit<SplashState> {
     required this.initSavedServerConnection,
     required this.isSignedInUsecase,
     required this.requestNecessaryPermissions,
+    required this.initBackgroundLocationTracking,
   }) : super(const SplashLoading());
 
   final InitializeSavedServerConnection initSavedServerConnection;
   final IsSignedIn isSignedInUsecase;
-
   final RequestNecessaryPermissions requestNecessaryPermissions;
+  final InitBackgroundLocationTracking initBackgroundLocationTracking;
 
   void initAndCheckAuth() async {
     emit(const SplashLoading());
@@ -42,13 +44,19 @@ class SplashCubit extends Cubit<SplashState> {
       },
 
       (None none) async {
-        bool isSignedIn = isSignedInUsecase();
+        bool isSignedIn = await isSignedInUsecase();
 
         if (isSignedIn) {
           final Either<Failure, None> requestPermissionsEither =
               await requestNecessaryPermissions();
 
-          requestPermissionsEither.fold(
+          requestPermissionsEither.fold((Failure failure) {
+            emit(SplashFailure(failure: failure));
+          }, (None none) {});
+
+          final initTrackingEither = await initBackgroundLocationTracking();
+
+          initTrackingEither.fold(
             (Failure failure) {
               emit(SplashFailure(failure: failure));
               emit(const SplashAuthenticationComplete());

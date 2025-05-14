@@ -4,27 +4,34 @@ import 'package:location_history/core/failures/storage/storage_write_failure.dar
 import 'package:location_history/features/authentication/domain/usecases/sign_out.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../../../mocks.dart';
+import '../../../../mocks/mocks.dart';
 
 void main() {
   late SignOut signOut;
   late MockAuthenticationRepository mockAuthenticationRepository;
+  late MockLocationTrackingRepository mockLocationTrackingRepository;
 
   setUp(() {
     mockAuthenticationRepository = MockAuthenticationRepository();
-    signOut = SignOut(authenticationRepository: mockAuthenticationRepository);
+    mockLocationTrackingRepository = MockLocationTrackingRepository();
+    signOut = SignOut(
+      authenticationRepository: mockAuthenticationRepository,
+      locationTrackingRepository: mockLocationTrackingRepository,
+    );
 
     when(
       () => mockAuthenticationRepository.signOut(),
     ).thenAnswer((_) => Future.value());
     when(
-      () => mockAuthenticationRepository.removeSavedServer(),
+      () => mockLocationTrackingRepository.stopTracking(),
+    ).thenAnswer((_) => Future.value());
+    when(
+      () => mockAuthenticationRepository.deleteLocalStorage(),
     ).thenAnswer((_) => Future.value(const Right(None())));
+    when(
+      () => mockAuthenticationRepository.deleteLocalDBCache(),
+    ).thenAnswer((_) => Future.value());
   });
-
-  /// should sign out the user
-  /// should remove the saved server and return None
-  /// should relay Failures from removing the saved server
 
   test('should sign out the user', () async {
     // act
@@ -35,19 +42,35 @@ void main() {
     expect(result, const Right(None()));
   });
 
-  test('should remove the saved server and return None', () async {
+  test('should stop location tracking', () async {
+    // act
+    await signOut();
+
+    // assert
+    verify(() => mockLocationTrackingRepository.stopTracking());
+  });
+
+  test('should delete the local DB cache ', () async {
+    // act
+    await signOut();
+
+    // assert
+    verify(() => mockAuthenticationRepository.deleteLocalDBCache());
+  });
+
+  test('should delete the local storage and return None', () async {
     // act
     final result = await signOut();
 
     // assert
-    verify(() => mockAuthenticationRepository.removeSavedServer());
+    verify(() => mockAuthenticationRepository.deleteLocalStorage());
     expect(result, const Right(None()));
   });
 
-  test('should relay Failures from removing the saved server', () async {
+  test('should relay Failures from deleting the local storage', () async {
     // arrange
     when(
-      () => mockAuthenticationRepository.removeSavedServer(),
+      () => mockAuthenticationRepository.deleteLocalStorage(),
     ).thenAnswer((_) => Future.value(const Left(StorageWriteFailure())));
 
     // act

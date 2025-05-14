@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
+import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/bad_response_failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
@@ -11,7 +12,7 @@ import 'package:location_history/features/authentication/data/repository_impleme
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../fixtures.dart';
-import '../../../../mocks.dart';
+import '../../../../mocks/mocks.dart';
 
 void main() {
   late AuthenticationRepositoryImpl authenticationRepositoryImpl;
@@ -492,5 +493,68 @@ void main() {
       // assert
       expect(result, const Left<Failure, bool>(tUnknownRequestFailure));
     });
+  });
+
+  group('getCurrentUserId', () {
+    setUp(() {
+      when(
+        () => mockAuthRemoteDataSource.getCurrentUserId(),
+      ).thenAnswer((_) async => tUserId);
+    });
+
+    test('should get the current user ID and return it', () async {
+      // act
+      final result = await authenticationRepositoryImpl.getCurrentUserId();
+
+      // assert
+      verify(() => mockAuthRemoteDataSource.getCurrentUserId());
+      expect(result, const Right(tUserId));
+    });
+
+    test('should relay Failures', () async {
+      // arrange
+      when(
+        () => mockAuthRemoteDataSource.getCurrentUserId(),
+      ).thenThrow(const NotSignedInFailure());
+
+      // act
+      final result = await authenticationRepositoryImpl.getCurrentUserId();
+
+      // assert
+      expect(result, const Left<Failure, bool>(NotSignedInFailure()));
+    });
+  });
+
+  group('deleteLocalStorage()', () {
+    setUp(() {
+      when(
+        () => mockAuthLocalDataSource.deleteLocalStorage(),
+      ).thenAnswer((_) => Future.value());
+    });
+
+    test('should delete the local storage and return None', () async {
+      // act
+      final result = await authenticationRepositoryImpl.deleteLocalStorage();
+
+      // assert
+      verify(() => mockAuthLocalDataSource.deleteLocalStorage());
+      expect(result, const Right(None()));
+    });
+
+    test(
+      'should convert PlatformException to StorageWriteFailure and return it',
+      () async {
+        // arrange
+        when(
+          () => mockAuthLocalDataSource.deleteLocalStorage(),
+        ).thenThrow(tPlatformException);
+
+        // act
+        final result = await authenticationRepositoryImpl.deleteLocalStorage();
+
+        // assert
+        expect(result, const Left(StorageWriteFailure()));
+      },
+    );
   });
 }

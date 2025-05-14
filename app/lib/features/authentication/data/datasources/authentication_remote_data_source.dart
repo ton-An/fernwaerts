@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:http/http.dart';
 import 'package:location_history/core/data/datasources/server_remote_handler.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
+import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/misc/url_path_constants.dart';
 import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
@@ -64,7 +65,7 @@ abstract class AuthenticationRemoteDataSource {
   ///
   /// Returns:
   /// - a [bool] indicating if the user is signed in
-  bool isSignedIn();
+  Future<bool> isSignedIn();
 
   /// Notifies when the authentication state changes
   ///
@@ -97,6 +98,15 @@ abstract class AuthenticationRemoteDataSource {
   /// Throws:
   /// {@macro server_remote_handler_exceptions}
   Future<String> getAnonKeyFromServer({required String serverUrl});
+
+  /// Gets the current user's id
+  ///
+  /// Returns:
+  /// - a [String] containing the current user's id
+  ///
+  /// Throws:
+  /// - [NotSignedInFailure]
+  Future<String> getCurrentUserId();
 }
 
 class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
@@ -110,7 +120,7 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
 
   @override
   Future<bool> isServerSetUp() async {
-    final SupabaseClient supabaseClient = supabaseHandler.getClient();
+    final SupabaseClient supabaseClient = await supabaseHandler.client;
 
     final queryResult =
         await supabaseClient
@@ -164,8 +174,8 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
   }
 
   @override
-  bool isSignedIn() {
-    final SupabaseClient supabaseClient = supabaseHandler.getClient();
+  Future<bool> isSignedIn() async {
+    final SupabaseClient supabaseClient = await supabaseHandler.client;
 
     final Session? currentSession = supabaseClient.auth.currentSession;
 
@@ -178,7 +188,7 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
 
   @override
   Stream<AuthenticationState> authenticationStateStream() async* {
-    final SupabaseClient supabaseClient = supabaseHandler.getClient();
+    final SupabaseClient supabaseClient = await supabaseHandler.client;
 
     final Stream<AuthState> authStateSubscription =
         supabaseClient.auth.onAuthStateChange;
@@ -195,10 +205,10 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
   }
 
   @override
-  Future<void> signIn({required String email, required String password}) {
-    final SupabaseClient supabaseClient = supabaseHandler.getClient();
+  Future<void> signIn({required String email, required String password}) async {
+    final SupabaseClient supabaseClient = await supabaseHandler.client;
 
-    return supabaseClient.auth.signInWithPassword(
+    await supabaseClient.auth.signInWithPassword(
       email: email,
       password: password,
     );
@@ -206,7 +216,7 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
 
   @override
   Future<void> signOut() async {
-    final SupabaseClient supabaseClient = supabaseHandler.getClient();
+    final SupabaseClient supabaseClient = await supabaseHandler.client;
 
     await supabaseClient.auth.signOut();
   }
@@ -220,5 +230,20 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
     final String anonKey = response!['data']['anon_key'];
 
     return anonKey;
+  }
+
+  @override
+  Future<String> getCurrentUserId() async {
+    final SupabaseClient supabaseClient = await supabaseHandler.client;
+
+    final User? currentUser = supabaseClient.auth.currentUser;
+
+    if (currentUser == null) {
+      throw const NotSignedInFailure();
+    }
+
+    final String currentUserId = currentUser.id;
+
+    return currentUserId;
   }
 }

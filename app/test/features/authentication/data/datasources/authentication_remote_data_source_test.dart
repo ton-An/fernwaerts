@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
 import 'package:location_history/core/misc/url_path_constants.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
@@ -6,7 +7,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../fixtures.dart';
-import '../../../../mocks.dart';
+import '../../../../mocks/mocks.dart';
 
 void main() {
   late AuthRemoteDataSourceImpl authRemoteDataSourceImpl;
@@ -31,7 +32,9 @@ void main() {
       httpClient: mockSupabaseHttpClient,
     );
 
-    when(() => mockSupabaseHandler.getClient()).thenReturn(mockSupabaseClient);
+    when(
+      () => mockSupabaseHandler.client,
+    ).thenAnswer((_) async => mockSupabaseClient);
   });
 
   setUpAll(() {
@@ -183,9 +186,9 @@ void main() {
     //     expect(result, true);
     //   });
 
-    test('should return false if the current session is null', () {
+    test('should return false if the current session is null', () async {
       // act
-      final result = authRemoteDataSourceImpl.isSignedIn();
+      final result = await authRemoteDataSourceImpl.isSignedIn();
 
       // assert
       expect(result, false);
@@ -220,6 +223,25 @@ void main() {
         () => mockServerRemoteHandler.get(
           url: Uri.parse(tServerUrlString + UrlPathConstants.getAnonKey),
         ),
+      );
+    });
+  });
+
+  group('getCurrentUserId', () {
+    // ToDo: uncomment this test when the mock_supabase_http_client package supports mocking auth
+    // test('should return the current user id', () async {
+    //   // act
+    //   final result = await authRemoteDataSourceImpl.getCurrentUserId();
+
+    //   // assert
+    //   expect(result, tSupabaseUser.id);
+    // });
+
+    test('should throw a not signed in failure if the user is null', () async {
+      // act & assert
+      expect(
+        () async => await authRemoteDataSourceImpl.getCurrentUserId(),
+        throwsA(isA<NotSignedInFailure>()),
       );
     });
   });

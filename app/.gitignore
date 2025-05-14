@@ -1,6 +1,7 @@
 # Generated Files
 *.freezed.dart
 *.g.dart
+!schema.g.dart
 
 # Miscellaneous
 *.class

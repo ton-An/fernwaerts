@@ -7,6 +7,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_map_attribution.dart';
+part '_map_time_gradient.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -34,6 +35,8 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
+
     return Stack(
       children: [
         const Positioned.fill(child: MapWidget()),
@@ -42,9 +45,7 @@ class _MapPageState extends State<MapPage> {
             SafeArea(
               bottom: false,
               child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: WebfabrikTheme.of(context).spacing.medium,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: theme.spacing.medium),
                 child: const CalendarComposite(),
               ),
             ),
@@ -64,9 +65,25 @@ class _MapPageState extends State<MapPage> {
                     (context, scrollController) => Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        _MapAttribution(
-                          draggableScrollableController:
-                              _draggableScrollableController,
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: theme.spacing.medium,
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: _MapTimeGradient(
+                                  draggableScrollableController:
+                                      _draggableScrollableController,
+                                ),
+                              ),
+                              const MediumGap(),
+                              _MapAttribution(
+                                draggableScrollableController:
+                                    _draggableScrollableController,
+                              ),
+                            ],
+                          ),
                         ),
                         const XSmallGap(),
                         Expanded(

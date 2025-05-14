@@ -1,6 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
+import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
 
 /*
   To-Do:
@@ -16,9 +17,13 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 /// {@endtemplate}
 class SignOut {
   /// {@macro sign_out}
-  const SignOut({required this.authenticationRepository});
+  const SignOut({
+    required this.authenticationRepository,
+    required this.locationTrackingRepository,
+  });
 
   final AuthenticationRepository authenticationRepository;
+  final LocationTrackingRepository locationTrackingRepository;
 
   /// {@macro sign_out}
   Future<Either<Failure, None>> call() {
@@ -28,13 +33,22 @@ class SignOut {
   Future<Either<Failure, None>> _signOut() async {
     await authenticationRepository.signOut();
 
-    return _removeSavedServer();
+    return _stopTracking();
   }
 
-  Future<Either<Failure, None>> _removeSavedServer() async {
-    final Either<Failure, None> removalEither =
-        await authenticationRepository.removeSavedServer();
+  Future<Either<Failure, None>> _stopTracking() async {
+    await locationTrackingRepository.stopTracking();
 
-    return removalEither;
+    return _deleteLocalDBCache();
+  }
+
+  Future<Either<Failure, None>> _deleteLocalDBCache() async {
+    await authenticationRepository.deleteLocalDBCache();
+
+    return _deleteLocalStorage();
+  }
+
+  Future<Either<Failure, None>> _deleteLocalStorage() async {
+    return authenticationRepository.deleteLocalStorage();
   }
 }

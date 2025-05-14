@@ -19,14 +19,18 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 /// {@endtemplate}
 class InitializeSavedServerConnection {
   /// {@macro initialize_saved_server_connection}
-  const InitializeSavedServerConnection({
-    required this.authenticationRepository,
-  });
+  InitializeSavedServerConnection({required this.authenticationRepository});
 
   final AuthenticationRepository authenticationRepository;
 
+  bool _isServerSetUp = false;
+
   /// {@macro initialize_saved_server_connection}
-  Future<Either<Failure, None>> call() {
+  Future<Either<Failure, None>> call() async {
+    if (_isServerSetUp) {
+      return const Right(None());
+    }
+
     return _getSavedServerInfo();
   }
 
@@ -41,9 +45,16 @@ class InitializeSavedServerConnection {
 
   Future<Either<Failure, None>> _initializeServerConnection({
     required ServerInfo serverInfo,
-  }) {
-    return authenticationRepository.initializeServerConnection(
-      serverInfo: serverInfo,
-    );
+  }) async {
+    final Either<Failure, None> initServerConnectionEither =
+        await authenticationRepository.initializeServerConnection(
+          serverInfo: serverInfo,
+        );
+
+    return initServerConnectionEither.fold(Left.new, (None none) {
+      _isServerSetUp = true;
+
+      return const Right(None());
+    });
   }
 }

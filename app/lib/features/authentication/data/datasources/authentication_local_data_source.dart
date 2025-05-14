@@ -3,8 +3,10 @@
     - [ ] Standardize error handling and server calls
 */
 
+import 'package:brick_offline_first_with_supabase/brick_offline_first_with_supabase.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
 
@@ -35,12 +37,25 @@ abstract class AuthenticationLocalDataSource {
   /// Throws:
   /// - [PlatformException]
   Future<void> saveServerInfo({required ServerInfo serverInfo});
+
+  /// Deletes the local storage
+  ///
+  /// Throws:
+  /// - [PlatformException]
+  Future<void> deleteLocalStorage();
+
+  /// Deletes the local db cache
+  Future<void> deleteLocalDBCache();
 }
 
 class AuthLocalDataSourceImpl extends AuthenticationLocalDataSource {
-  const AuthLocalDataSourceImpl({required this.secureStorage});
+  const AuthLocalDataSourceImpl({
+    required this.secureStorage,
+    required this.supabaseHandler,
+  });
 
   final FlutterSecureStorage secureStorage;
+  final SupabaseHandler supabaseHandler;
 
   static const String _serverUrlKey = 'server_url';
   static const String _anonKey = 'anon_key';
@@ -69,5 +84,18 @@ class AuthLocalDataSourceImpl extends AuthenticationLocalDataSource {
   Future<void> saveServerInfo({required ServerInfo serverInfo}) async {
     await secureStorage.write(key: _serverUrlKey, value: serverInfo.url);
     await secureStorage.write(key: _anonKey, value: serverInfo.anonKey);
+  }
+
+  @override
+  Future<void> deleteLocalDBCache() async {
+    final OfflineFirstWithSupabaseRepository supabaseOfflineFirst =
+        await supabaseHandler.supabaseOfflineFirst;
+
+    await supabaseOfflineFirst.reset();
+  }
+
+  @override
+  Future<void> deleteLocalStorage() async {
+    await secureStorage.deleteAll();
   }
 }

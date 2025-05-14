@@ -1,16 +1,25 @@
+import 'package:brick_offline_first_with_supabase/brick_offline_first_with_supabase.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_activity_recognition/flutter_activity_recognition.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:location_history/core/data/datasources/platform_wrapper.dart';
 import 'package:location_history/core/data/datasources/server_remote_handler.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/data/repository/repository_failure_handler.dart';
+import 'package:location_history/features/authentication/data/datasources/android_device_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
+import 'package:location_history/features/authentication/data/datasources/base_device_local_data_source.dart';
+import 'package:location_history/features/authentication/data/datasources/device_remote_data_source.dart';
+import 'package:location_history/features/authentication/data/datasources/ios_device_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/permissions_local_data_source.dart';
 import 'package:location_history/features/authentication/data/repository_implementations/authentication_repository_impl.dart';
+import 'package:location_history/features/authentication/data/repository_implementations/device_repository_impl.dart';
 import 'package:location_history/features/authentication/data/repository_implementations/permissions_repository_impl.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
+import 'package:location_history/features/authentication/domain/repositories/device_repository.dart';
 import 'package:location_history/features/authentication/domain/repositories/permissions_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/has_server_connection_saved.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_new_server_connection.dart';
@@ -18,6 +27,7 @@ import 'package:location_history/features/authentication/domain/usecases/initial
 import 'package:location_history/features/authentication/domain/usecases/is_server_set_up.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_signed_in.dart';
 import 'package:location_history/features/authentication/domain/usecases/request_necessary_permissions.dart';
+import 'package:location_history/features/authentication/domain/usecases/save_device_info_to_db.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_out.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_up_initial_admin.dart';
@@ -30,6 +40,17 @@ import 'package:location_history/features/calendar/presentation/cubits/decennial
 import 'package:location_history/features/calendar/presentation/cubits/monthly_calendar_cubit/monthly_calendar_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/yearly_calendar_cubit/yearly_calendar_cubit.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
+import 'package:location_history/features/location_tracking/data/datasources/ios_location_tracking_local_data_source.dart';
+import 'package:location_history/features/location_tracking/data/datasources/location_data_remote_data_source.dart';
+import 'package:location_history/features/location_tracking/data/repository_implementations/location_data_repository_impl.dart';
+import 'package:location_history/features/location_tracking/data/repository_implementations/location_tracking_repository_impl.dart';
+import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
+import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
+import 'package:location_history/features/location_tracking/domain/usecases/get_locations_by_date.dart';
+import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+
+import '../features/location_tracking/domain/usecases/init_background_location_tracking.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -39,6 +60,7 @@ void initGetIt() {
   registerInAppNotificationDependencies();
   registerAuthenticationDependencies();
   registerCalendarDependencies();
+  registerLocationTrackingDependencies();
 }
 
 void registerThirdPartyDependencies() {
@@ -46,6 +68,10 @@ void registerThirdPartyDependencies() {
   getIt.registerLazySingleton(() => Dio());
   getIt.registerLazySingleton(() => const FlutterSecureStorage());
   getIt.registerLazySingleton(() => FlutterActivityRecognition.instance);
+  getIt.registerLazySingleton(() => DeviceInfoPlugin());
+  getIt.registerSingletonAsync<PackageInfo>(
+    () async => await PackageInfo.fromPlatform(),
+  );
 }
 
 void registerCoreDependencies() {
@@ -56,7 +82,11 @@ void registerCoreDependencies() {
   getIt.registerLazySingleton<ServerRemoteHandler>(
     () => ServerRemoteHandlerImpl(dio: getIt()),
   );
-  getIt.registerLazySingleton<SupabaseHandler>(() => const SupabaseHandler());
+  getIt.registerLazySingleton<SupabaseHandler>(() => SupabaseHandler());
+  getIt.registerSingletonAsync<
+    OfflineFirstWithSupabaseRepository<OfflineFirstWithSupabaseModel>
+  >(() async => await getIt<SupabaseHandler>().supabaseOfflineFirst);
+  getIt.registerLazySingleton(() => const PlatformWrapper());
 }
 
 void registerInAppNotificationDependencies() {
@@ -73,6 +103,7 @@ void registerAuthenticationDependencies() {
       signUpInitialAdmin: getIt(),
       signInUsecase: getIt(),
       requestNecessaryPermissions: getIt(),
+      initBackgroundLocationTracking: getIt(),
     ),
   );
   getIt.registerFactory(
@@ -80,6 +111,7 @@ void registerAuthenticationDependencies() {
       initSavedServerConnection: getIt(),
       isSignedInUsecase: getIt(),
       requestNecessaryPermissions: getIt(),
+      initBackgroundLocationTracking: getIt(),
     ),
   );
 
@@ -94,8 +126,15 @@ void registerAuthenticationDependencies() {
     () =>
         SignUpInitialAdmin(authenticationRepository: getIt(), signIn: getIt()),
   );
-  getIt.registerLazySingleton(() => SignIn(authenticationRepository: getIt()));
-  getIt.registerLazySingleton(() => SignOut(authenticationRepository: getIt()));
+  getIt.registerLazySingleton(
+    () => SignIn(authenticationRepository: getIt(), saveDeviceInfo: getIt()),
+  );
+  getIt.registerLazySingleton(
+    () => SignOut(
+      authenticationRepository: getIt(),
+      locationTrackingRepository: getIt(),
+    ),
+  );
   getIt.registerLazySingleton(
     () => HasServerConnectionSaved(authenticationRepository: getIt()),
   );
@@ -107,6 +146,12 @@ void registerAuthenticationDependencies() {
   );
   getIt.registerLazySingleton(
     () => RequestNecessaryPermissions(permissionsRepository: getIt()),
+  );
+  getIt.registerLazySingleton(
+    () => SaveDeviceInfo(
+      authenticationRepository: getIt(),
+      deviceRepository: getIt(),
+    ),
   );
 
   // -- Data -- //
@@ -120,8 +165,20 @@ void registerAuthenticationDependencies() {
   getIt.registerLazySingleton<PermissionsRepository>(
     () => PermissionsRepositoryImpl(permissionsLocalDataSource: getIt()),
   );
+  getIt.registerLazySingleton<DeviceRepository>(
+    () => DeviceRepositoryImpl(
+      baseDeviceLocalDataSource: getIt(),
+      iosDeviceLocalDataSource: getIt(),
+      androidDeviceLocalDataSource: getIt(),
+      deviceRemoteDataSource: getIt(),
+      platformWrapper: getIt(),
+    ),
+  );
   getIt.registerLazySingleton<AuthenticationLocalDataSource>(
-    () => AuthLocalDataSourceImpl(secureStorage: getIt()),
+    () => AuthLocalDataSourceImpl(
+      secureStorage: getIt(),
+      supabaseHandler: getIt(),
+    ),
   );
   getIt.registerLazySingleton<AuthenticationRemoteDataSource>(
     () => AuthRemoteDataSourceImpl(
@@ -131,6 +188,21 @@ void registerAuthenticationDependencies() {
   );
   getIt.registerLazySingleton<PermissionsLocalDataSource>(
     () => PermissionsLocalDataSourceImpl(flutterActivityRecognition: getIt()),
+  );
+  getIt.registerLazySingleton<BaseDeviceLocalDataSource>(
+    () => BaseDeviceLocalDataSourceImpl(
+      secureStorage: getIt(),
+      packageInfo: getIt(),
+    ),
+  );
+  getIt.registerLazySingleton<IOSDeviceLocalDataSource>(
+    () => IOSDeviceLocalDataSourceImpl(deviceInfoPlugin: getIt()),
+  );
+  getIt.registerLazySingleton<AndroidDeviceLocalDataSource>(
+    () => AndroidDeviceLocalDataSourceImpl(deviceInfoPlugin: getIt()),
+  );
+  getIt.registerLazySingleton<DeviceRemoteDataSource>(
+    () => DeviceRemoteDataSourceImpl(supabaseHandler: getIt()),
   );
 }
 
@@ -142,4 +214,42 @@ void registerCalendarDependencies() {
   getIt.registerFactory(() => YearlyCalendarCubit());
   getIt.registerFactory(() => DecenniallyCalendarCubit());
   getIt.registerFactory(() => CalendarDateSelectionCubit());
+}
+
+void registerLocationTrackingDependencies() {
+  // -- Presentation -- //
+  getIt.registerFactory(() => MapCubit(getLocationData: getIt()));
+
+  // -- Domain -- //
+  getIt.registerLazySingleton(
+    () => InitBackgroundLocationTracking(
+      initializeSavedServerConnection: getIt(),
+      authenticationRepository: getIt(),
+      deviceRepository: getIt(),
+      locationTrackingRepository: getIt(),
+      locationDataRepository: getIt(),
+    ),
+  );
+  getIt.registerLazySingleton(
+    () => GetLocationsByDate(
+      authenticationRepository: getIt(),
+      locationDataRepository: getIt(),
+    ),
+  );
+  getIt.registerLazySingleton<LocationTrackingRepository>(
+    () => LocationTrackingRepositoryImpl(
+      iosLocationTrackingLocalDataSource: getIt(),
+    ),
+  );
+
+  // -- Data -- //
+  getIt.registerLazySingleton<LocationDataRepository>(
+    () => LocationDataRepositoryImpl(locationRemoteDataSource: getIt()),
+  );
+  getIt.registerLazySingleton<IOSLocationTrackingLocalDataSource>(
+    () => IOSLocationTrackingLocalDataSourceImpl(),
+  );
+  getIt.registerLazySingleton<LocationDataRemoteDataSource>(
+    () => LocationDataRemoteDataSourceImpl(supabaseHandler: getIt()),
+  );
 }

@@ -6,7 +6,7 @@ import 'package:location_history/features/authentication/domain/usecases/initial
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../fixtures.dart';
-import '../../../../mocks.dart';
+import '../../../../mocks/mocks.dart';
 
 void main() {
   late InitializeSavedServerConnection initializeSavedServerConnection;
@@ -31,6 +31,21 @@ void main() {
   setUpAll(() {
     registerFallbackValue(tServerInfo);
   });
+
+  test(
+    'should return early with None if the server is already set up',
+    () async {
+      // arrange
+      await initializeSavedServerConnection();
+
+      // act
+      final result = await initializeSavedServerConnection();
+
+      // assert
+      expect(result, const Right(None()));
+      verify(() => mockAuthenticationRepository.getSavedServerInfo()).called(1);
+    },
+  );
 
   test('should get the saved server info', () async {
     // act

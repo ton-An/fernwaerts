@@ -1,6 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/authentication/invalid_credentials_failure.dart';
 import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
+import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
@@ -8,11 +9,6 @@ import 'package:location_history/core/failures/storage/storage_read_failure.dart
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
-
-/*
-  To-Do:
-    - [ ] Add TBD Failures
-*/
 
 abstract class AuthenticationRepository {
   /// Checks if the server is reachable.
@@ -78,7 +74,7 @@ abstract class AuthenticationRepository {
   ///
   /// Returns:
   /// - a [bool] indicating if the user is signed in
-  bool isSignedIn();
+  Future<bool> isSignedIn();
 
   /// Notifies when the authentication state changes
   ///
@@ -109,6 +105,15 @@ abstract class AuthenticationRepository {
   /// - [StorageWriteFailure]
   Future<Either<Failure, None>> removeSavedServer();
 
+  /// Deletes local storage
+  ///
+  /// Failures:
+  /// - [StorageWriteFailure]
+  Future<Either<Failure, None>> deleteLocalStorage();
+
+  /// Deletes local DB cache
+  Future<void> deleteLocalDBCache();
+
   /// Saves the provided server info
   ///
   /// Parameters:
@@ -133,4 +138,13 @@ abstract class AuthenticationRepository {
   Future<Either<Failure, String>> getAnonKeyFromServer({
     required String serverUrl,
   });
+
+  /// Gets the current user's id
+  ///
+  /// Returns:
+  /// - a [String] containing the current user's id
+  ///
+  /// Failures:
+  /// - [NotSignedInFailure]
+  Future<Either<Failure, String>> getCurrentUserId();
 }
