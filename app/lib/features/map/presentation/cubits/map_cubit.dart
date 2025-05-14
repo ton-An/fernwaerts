@@ -18,7 +18,7 @@ class MapCubit extends Cubit<MapState> {
         await getLocationData(start: start, end: end);
 
     locationsEither.fold(
-      (failure) {},
+      (failure) => emit(MapLocationsError(failure: failure)),
       (locations) => emit(MapLocationsLoaded(locations: locations)),
     );
   }
