@@ -24,6 +24,8 @@ class MapWidget extends StatefulWidget {
 class _MapWidgetState extends State<MapWidget> {
   String? appPackageName;
 
+  final List<LatLng> _points = [];
+
   @override
   void initState() {
     super.initState();
@@ -36,40 +38,65 @@ class _MapWidgetState extends State<MapWidget> {
     _loadLocations(dateSelectionState);
   }
 
-  Future<void> _loadLocations(
-    CalendarDateSelectionState dateSelectionState,
-  ) async {
-    DateTime? startDate;
-    DateTime? endDate;
-
-    if (dateSelectionState is CalendarRangeSelected) {
-      startDate = dateSelectionState.startDate;
-      endDate = dateSelectionState.endDate;
-    } else if (dateSelectionState is CalendarDaySelected) {
-      startDate = dateSelectionState.selectedDate;
-      endDate = dateSelectionState.selectedDate.endOfDay();
-    }
-
-    if (startDate != null && endDate != null) {
-      context.read<MapCubit>().loadLocationsByDate(
-        start: startDate,
-        end: endDate,
-      );
-    }
-  }
-
-  Future<void> _setAppPackageName() async {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-
-    setState(() {
-      appPackageName = packageInfo.packageName;
-    });
-  }
-
-  final List<LatLng> _points = [];
-
   @override
   Widget build(BuildContext context) {
+    final List<Color> colors = [];
+
+    for (int i = 0; i < _points.length; i++) {
+      colors.add(
+        interpolateColors([
+          Colors.purple,
+          Colors.blue,
+          Colors.teal,
+          Colors.green,
+          Colors.yellow,
+          Colors.orange,
+          Colors.red,
+        ], i / _points.length),
+      );
+    }
+
+    final List<Marker> markers = [];
+
+    for (int i = 0; i < _points.length - 1; i++) {
+      if (_shouldDisplayArrow(point: _points[i], nextPoint: _points[i + 1])) {
+        markers.add(
+          Marker(
+            width: 24,
+            height: 24,
+            point: _points[i],
+            child: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: colors[i],
+                    border: Border.all(
+                      width: 8,
+                      color: colors[i].withValues(alpha: .3),
+                      strokeAlign: BorderSide.strokeAlignOutside,
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Transform.rotate(
+                    angle: _calculateAngleToNextPoint(
+                      point: _points[i],
+                      nextPoint: _points[i + 1],
+                    ),
+                    child: const Icon(
+                      Icons.arrow_upward,
+                      size: 20,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+    }
     return BlocListener<CalendarDateSelectionCubit, CalendarDateSelectionState>(
       listener: (context, dateSelectionState) {
         _loadLocations(dateSelectionState);
@@ -110,38 +137,58 @@ class _MapWidgetState extends State<MapWidget> {
               urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
               userAgentPackageName: appPackageName ?? 'location_history',
             ),
-            CircleLayer(
-              circles: [
-                for (int i = 0; i < _points.length; i++)
-                  CircleMarker(
-                    point: _points[i],
-                    radius: 10,
-                    color: interpolateColors([
-                      Colors.purple,
-                      Colors.blue,
-                      Colors.teal,
-                      Colors.green,
-                      Colors.yellow,
-                      Colors.orange,
-                      Colors.red,
-                    ], i / _points.length),
-                    borderStrokeWidth: 8,
-                    borderColor: interpolateColors([
-                      Colors.purple,
-                      Colors.blue,
-                      Colors.teal,
-                      Colors.green,
-                      Colors.yellow,
-                      Colors.orange,
-                      Colors.red,
-                    ], i / _points.length).withValues(alpha: .3),
-                  ),
-              ],
-            ),
+            MarkerLayer(markers: markers.reversed.toList()),
+            // ToDo: remove after may 15th + 1 month - keep for debugging until then
+            // MarkerLayer(
+            //   markers: [
+            //     for (int i = 0; i < _points.length; i++)
+            //       Marker(
+            //         width: 24,
+            //         height: 24,
+            //         point: _points[i],
+            //         child: Padding(
+            //           padding: EdgeInsets.only(
+            //             top: Random().nextInt(12).toDouble(),
+            //           ),
+            //           child: Text(i.toString(), style: TextStyle(fontSize: 10)),
+            //         ),
+            //       ),
+            //   ],
+            // ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _loadLocations(
+    CalendarDateSelectionState dateSelectionState,
+  ) async {
+    DateTime? startDate;
+    DateTime? endDate;
+
+    if (dateSelectionState is CalendarRangeSelected) {
+      startDate = dateSelectionState.startDate;
+      endDate = dateSelectionState.endDate;
+    } else if (dateSelectionState is CalendarDaySelected) {
+      startDate = dateSelectionState.selectedDate;
+      endDate = dateSelectionState.selectedDate.endOfDay();
+    }
+
+    if (startDate != null && endDate != null) {
+      context.read<MapCubit>().loadLocationsByDate(
+        start: startDate,
+        end: endDate,
+      );
+    }
+  }
+
+  Future<void> _setAppPackageName() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+    setState(() {
+      appPackageName = packageInfo.packageName;
+    });
   }
 
   Color interpolateColors(List<Color> colors, double t) {
@@ -159,5 +206,35 @@ class _MapWidgetState extends State<MapWidget> {
     Color color = Color.lerp(colorStart, colorEnd, localT)!;
 
     return color;
+  }
+
+  bool _shouldDisplayArrow({required LatLng point, required LatLng nextPoint}) {
+    const Distance distanceUtils = Distance();
+
+    final double distance = distanceUtils.as(
+      LengthUnit.Meter,
+      point,
+      nextPoint,
+    );
+
+    const minDistanceInMeters = 10;
+
+    return distance > minDistanceInMeters;
+  }
+
+  double _calculateAngleToNextPoint({
+    required LatLng point,
+    required LatLng nextPoint,
+  }) {
+    const Distance distanceUtils = Distance();
+
+    // Distance.bearing() gives you the heading clockwise from North, in degrees.
+    final double bearingDeg = distanceUtils.bearing(point, nextPoint);
+
+    // Convert degrees → radians for Transform.rotate
+    final double bearingRad = bearingDeg * (pi / 180);
+
+    // Normalize to 0 .. 2π
+    return (bearingRad + 2 * pi) % (2 * pi);
   }
 }
