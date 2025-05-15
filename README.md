@@ -6,7 +6,7 @@
 
 <p align="center">
   A privacy-focused, self-hosted location history app powered by Flutter.<br/>
-  Open code. Local control. Beautiful insights.
+  Open source. Local control. Beautiful insights.
 </p>
 
 <p align="center">
@@ -15,9 +15,6 @@
   </a>
   <a href="LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-blue.svg" />
-  </a>
-  <a href="LICENSE.store">
-    <img src="https://img.shields.io/badge/License-Store%20Restricted-red" />
   </a>
   <a href="https://github.com/ton-An/fernwaerts/stargazers">
     <img src="https://img.shields.io/github/stars/ton-An/fernwaerts?style=social" />
@@ -89,16 +86,6 @@ guidelines, and project structure.
 
 ### 📝 License
 
-This project uses a **dual license**:
-
-- **MIT License** — for open-source use, modification, and distribution.
-- **Proprietary License** — only the original author (Anton Heuchert) may
-  publish the app on the Google Play Store or Apple App Store.
-
-🆓 Publishing to AltStore, Aptoide, or similar is explicitly allowed under MIT.\
-📜 See [`LICENSE`](LICENSE) and [`LICENSE.store`](LICENSE.store) for full
-details.
-
----
+This project uses a **MIT License** (see [LICENSE](LICENSE))
 
 ### 💡 Your Journey, Your Data – Open, Private, Yours.
