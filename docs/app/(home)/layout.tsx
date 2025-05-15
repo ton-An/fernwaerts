@@ -6,6 +6,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <HomeLayout
       {...baseOptions}
+      // @ts-ignore
       links={[
         {
           text: 'Documentation',
