@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -14,6 +16,7 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 /* 
   To-Do:
     - [ ] Improve implementation of gradient (include theme etc..)
+    - [ ] Improve arrowOffsetDirection as it doesn't seem accurate over long distances
 */
 class MapWidget extends StatefulWidget {
   const MapWidget({super.key});
@@ -63,6 +66,16 @@ class _MapWidgetState extends State<MapWidget> {
 
     for (int i = 0; i < _points.length - 1; i++) {
       if (_shouldDisplayArrow(point: _points[i], nextPoint: _points[i + 1])) {
+        final double angleToNextPoint = _calculateAngleToNextPoint(
+          point: _points[i],
+          nextPoint: _points[i + 1],
+        );
+
+        final Offset arrowOffset = Offset.fromDirection(
+          angleToNextPoint - pi / 2,
+          20,
+        );
+
         markers.add(
           Marker(
             width: 24,
@@ -82,20 +95,20 @@ class _MapWidgetState extends State<MapWidget> {
                   ),
                 ),
                 Center(
-                  child: Transform.rotate(
-                    angle: _calculateAngleToNextPoint(
-                      point: _points[i],
-                      nextPoint: _points[i + 1],
-                    ),
-                    child: OverflowBox(
-                      maxWidth: double.infinity,
-                      maxHeight: double.infinity,
-                      alignment: Alignment.center,
-                      child: Center(
-                        child: Icon(
-                          Icons.arrow_drop_up_rounded,
-                          size: 40,
-                          color: theme.colors.background.withValues(alpha: .9),
+                  child: Transform.translate(
+                    offset: arrowOffset,
+                    child: Transform.rotate(
+                      angle: angleToNextPoint,
+                      child: OverflowBox(
+                        maxWidth: double.infinity,
+                        maxHeight: double.infinity,
+                        alignment: Alignment.center,
+                        child: Center(
+                          child: Icon(
+                            Icons.arrow_drop_up_rounded,
+                            size: 60,
+                            color: colors[i],
+                          ),
                         ),
                       ),
                     ),
@@ -149,22 +162,22 @@ class _MapWidgetState extends State<MapWidget> {
             ),
             MarkerLayer(markers: markers.reversed.toList()),
             // ToDo: remove after may 15th + 1 month - keep for debugging until then
-            // MarkerLayer(
-            //   markers: [
-            //     for (int i = 0; i < _points.length; i++)
-            //       Marker(
-            //         width: 24,
-            //         height: 24,
-            //         point: _points[i],
-            //         child: Padding(
-            //           padding: EdgeInsets.only(
-            //             top: Random().nextInt(12).toDouble(),
-            //           ),
-            //           child: Text(i.toString(), style: TextStyle(fontSize: 10)),
-            //         ),
-            //       ),
-            //   ],
-            // ),
+            MarkerLayer(
+              markers: [
+                for (int i = 0; i < _points.length; i++)
+                  Marker(
+                    width: 24,
+                    height: 24,
+                    point: _points[i],
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        top: Random().nextInt(12).toDouble(),
+                      ),
+                      child: Text(i.toString(), style: TextStyle(fontSize: 10)),
+                    ),
+                  ),
+              ],
+            ),
           ],
         ),
       ),
