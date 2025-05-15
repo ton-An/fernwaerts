@@ -1,29 +1,56 @@
 "use client";
 
-import R3fGlobe from 'r3f-globe';
-import React, { useMemo, useCallback } from "react";
-import ReactDOM from "react-dom";
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+import * as React from 'react';
+import MapGL from 'react-map-gl/mapbox';
 
 
+const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
 export default function RealisticGlobe() {
-    return <div style={{ width: '1500px', height: '1500px', }}>
-        <Canvas flat camera={useMemo(() => ({ fov: 40, position: [0, 0, 350] }), [])}>
-            <OrbitControls minDistance={100} maxDistance={1000} dampingFactor={0.1} zoomSpeed={0.3} rotateSpeed={0.3} autoRotate={true} enableRotate={false} enableZoom={false} autoRotateSpeed={.5} />
-            <ambientLight color={0xcccccc} intensity={Math.PI} />
-            <directionalLight intensity={4 * Math.PI} />
-            <GlobeViz />
-        </Canvas>
-    </div>;
+    const mapRef = React.useRef<any>(null);
+
+    const handleMapLoad = (event: any) => {
+        const map = event.target;
+        let startTime = Date.now();
+
+        const rotate = () => {
+            const elapsed = Date.now() - startTime;
+            const duration = 20000
+
+            if (elapsed < duration) {
+                const t = elapsed / duration;
+                const easedProgress = easeOutCubic(t);
+                const newLongitude = (-100 + easedProgress * 200) % 360;
+                map.setCenter({ lng: newLongitude, lat: 40 });
+                requestAnimationFrame(rotate);
+            }
+        };
+
+        rotate();
+    };
+    const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_API_KEY;
+
+    return <MapGL
+        ref={mapRef}
+        onLoad={handleMapLoad}
+        initialViewState={{
+            longitude: -100,
+            latitude: 40,
+            zoom: 2.5
+        }}
+        mapboxAccessToken={mapboxToken}
+        style={{ width: 1500, height: 1500 }}
+        mapStyle="mapbox://styles/antonheu/cmap4824h01ki01sl8mkr9rgu"
+        projection={'globe'}
+        dragRotate={false}
+        dragPan={false}
+        touchZoomRotate={false}
+        scrollZoom={false}
+        doubleClickZoom={false}
+        attributionControl={false}
+        light={
+            { anchor: 'viewport', color: '#FFB700', intensity: 1, position: [1, 120, 120] }
+        }
+    />;
 };
 
-function GlobeViz() {
-    return <R3fGlobe
-        globeImageUrl="//cdn.jsdelivr.net/npm/three-globe/example/img/earth-blue-marble.jpg"
-        pointAltitude="size"
-        pointColor="color"
-        animateIn={true}
-    />;
-}
