@@ -72,7 +72,7 @@ Includes setup for:
 ### 📚 Documentation
 
 Work-in-progress docs are available at\
-👉 [https://ton-an.github.io/fernwaerts/](https://ton-an.github.io/fernwaerts/)
+👉 [https://fernwaerts.eu](https://fernwaerts.eu)
 
 ---
 
