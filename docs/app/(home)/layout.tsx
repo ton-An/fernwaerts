@@ -6,7 +6,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <HomeLayout
       {...baseOptions}
-      // @ts-ignore
+      // @ts-expect-error
       links={[
         {
           text: 'Documentation',

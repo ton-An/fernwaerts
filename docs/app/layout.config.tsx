@@ -1,4 +1,5 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
+import Image from 'next/image';
 
 /**
  * Shared layout configurations
@@ -11,7 +12,7 @@ export const baseOptions: BaseLayoutProps = {
   nav: {
     title: (
       <>
-        <img src="images/app_icon_transparent_bg.png" alt="" width={32} height={32} />
+        <Image src="images/app_icon_transparent_bg.png" alt="" width={32} height={32} />
         Fernwärts
       </>
     ),

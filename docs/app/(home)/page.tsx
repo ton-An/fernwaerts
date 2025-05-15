@@ -5,6 +5,7 @@ import Features from './features'
 import TextButton from './text_button';
 import Wave from './wave';
 import MapAttribution from './map_attribution';
+import Image from 'next/image';
 
 export default function HomePage() {
   return (
@@ -12,7 +13,7 @@ export default function HomePage() {
       <div className='flex flex-col items-center pt-16 z-1 relative'>
         <video src="videos/hero_background.mp4" autoPlay muted loop playsInline className="w-5xl rounded-3xl animate-fadeInOut" />
         <div className="w-2xl absolute top-80 px-12 py-4 flex flex-col items-center rounded-3xl  shadow-2xl backdrop-blur-2xl bg-white/60 dark:bg-white/10">
-          <img src="images/app_icon_transparent.png" alt="" className='w-60 pb-4 drop-shadow-xl' />
+          <Image src="images/app_icon_transparent.png" alt="" className='w-60 pb-4 drop-shadow-xl' />
           <h1 className="z-1 text-5xl font-bold mb-4 text-white">Fernwärts</h1>
 
           <Wave className='-translate-y-9 translate-x-12' />

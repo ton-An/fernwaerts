@@ -1,17 +1,16 @@
 "use client";
 
 import * as React from 'react';
-import MapGL from 'react-map-gl/mapbox';
-
+import MapGL, { MapEvent, MapRef } from 'react-map-gl/mapbox';
 
 const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
 export default function RealisticGlobe() {
-    const mapRef = React.useRef<any>(null);
+    const mapRef = React.useRef<MapRef>(null);
 
-    const handleMapLoad = (event: any) => {
+    const handleMapLoad = (event: MapEvent) => {
         const map = event.target;
-        let startTime = Date.now();
+        let startTime: number = Date.now();
 
         const rotate = () => {
             const elapsed = Date.now() - startTime;
