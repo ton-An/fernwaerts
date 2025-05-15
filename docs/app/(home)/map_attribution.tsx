@@ -1,7 +1,7 @@
 export default function MapAttribution() {
     const aClasses = ''
     return (
-        <div className="fixed right-12 px-5 py-3 flex flex-row gap-x-3 items-center text-sm text-black/70 dark:text-white transition-colors duration-300 shadow-2xl backdrop-blur-2xl bg-white/60 dark:bg-white/10 rounded-lg z-2">
+        <div className="fixed right-4 bottom-4 px-5 py-3 flex flex-row gap-x-3 items-center text-sm text-black/70 dark:text-white transition-colors duration-300 shadow-2xl backdrop-blur-2xl bg-white/60 dark:bg-white/10 rounded-lg z-2">
             <Link href="https://www.mapbox.com/about/maps" title="© Mapbox" />
             <Divider />
             <Link href="https://www.openstreetmap.org/about/" title="© OpenStreetMap" />
