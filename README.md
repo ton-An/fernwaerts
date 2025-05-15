@@ -86,6 +86,6 @@ guidelines, and project structure.
 
 ### 📝 License
 
-This project uses a **MIT License** (see [LICENSE](LICENSE))
+This project is licensed under the **MIT License** (see [LICENSE](LICENSE))
 
 ### 💡 Your Journey, Your Data – Open, Private, Yours.
