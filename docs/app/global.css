@@ -1,0 +1,15 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+
+@theme {
+  --color-fernwaerts-primary: #23AE54; 
+  --color-fernwaerts-secondary: #EDBB32; 
+  --color-fernwaerts-primary-accent: #23c35b;
+  --color-fernwaerts-secondary-accent: #f8cb4f;
+}
+
+:root {  
+    --color-fd-primary: #23AE54;
+    --color-fd-accent: #EDBB32;
+}
