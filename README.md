@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/public/assets/app_icon_transparent_new.png" width="150" />
+  <img src="docs/public/images/app_icon_transparent_bg.png" width="150" />
 </p>
 
 <h1 align="center">Fernwärts</h1>
@@ -29,20 +29,24 @@
 ### 📸 Screenshots
 
 <p float="left">
-  <img src="docs/public/assets/screenshots/home.png" width="32%" />
-  <img src="docs/public/assets/screenshots/map.png" width="32%" />
-  <img src="docs/public/assets/screenshots/map_modal.png" width="32%" />
+  <img src="docs/public/images/home.png" width="32%" />
+  <img src="docs/public/images/map.png" width="32%" />
+  <img src="docs/public/images/map_modal.png" width="32%" />
 </p>
 
 ---
 
 ### ✨ Features
 
-- **Privacy First**: Data is stored locally or on your self-hosted Supabase instance
-- **Smart Location Insights**: Detects and categorizes visits by place, city, and country
-- **Activity Recognition**: Knows whether you’re walking, biking, driving, or just chilling
-- **Cross-Platform (Flutter)**: Currently supports **iOS** and **Android**  
-  > 🚧 Desktop (macOS, Linux and Windows) and Web support are on the roadmap and coming soon
+- **Privacy First**: Data is stored locally or on your self-hosted Supabase
+  instance
+- **Smart Location Insights**: Detects and categorizes visits by place, city,
+  and country
+- **Activity Recognition**: Knows whether you’re walking, biking, driving, or
+  just chilling
+- **Cross-Platform (Flutter)**: Currently supports **iOS** and **Android**
+  > 🚧 Desktop (macOS, Linux and Windows) and Web support are on the roadmap and
+  > coming soon
 
 ---
 
@@ -50,16 +54,18 @@
 
 Coming soon for **iOS** and **Android**. Star the repo to stay updated :)
 
-> Desktop and Web versions are in development and will be released shortly after.
-
+> Desktop and Web versions are in development and will be released shortly
+> after.
 
 ---
 
 ### ⚙️ Getting Started with the Server
 
-While we work on a dedicated setup page, devs can jump right in using the [Contributing Guide](CONTRIBUTING.md).
+While we work on a dedicated setup page, devs can jump right in using the
+[Contributing Guide](CONTRIBUTING.md).
 
 Includes setup for:
+
 - Flutter app with flavors
 - Supabase backend (self-hosted)
 - Optional AI-assisted coding tools
@@ -68,15 +74,16 @@ Includes setup for:
 
 ### 📚 Documentation
 
-Work-in-progress docs are available at  
+Work-in-progress docs are available at\
 👉 [https://ton-an.github.io/fernwaerts/](https://ton-an.github.io/fernwaerts/)
 
 ---
 
 ### 🤝 Contributing
 
-Pull requests are welcome!  
-See the [Contributing Guide](CONTRIBUTING.md) for setup instructions, commit guidelines, and project structure.
+Pull requests are welcome!\
+See the [Contributing Guide](CONTRIBUTING.md) for setup instructions, commit
+guidelines, and project structure.
 
 ---
 
@@ -85,10 +92,12 @@ See the [Contributing Guide](CONTRIBUTING.md) for setup instructions, commit gui
 This project uses a **dual license**:
 
 - **MIT License** — for open-source use, modification, and distribution.
-- **Proprietary License** — only the original author (Anton Heuchert) may publish the app on the Google Play Store or Apple App Store.
+- **Proprietary License** — only the original author (Anton Heuchert) may
+  publish the app on the Google Play Store or Apple App Store.
 
-🆓 Publishing to AltStore, Aptoide, or similar is explicitly allowed under MIT.  
-📜 See [`LICENSE`](LICENSE) and [`LICENSE.store`](LICENSE.store) for full details.
+🆓 Publishing to AltStore, Aptoide, or similar is explicitly allowed under MIT.\
+📜 See [`LICENSE`](LICENSE) and [`LICENSE.store`](LICENSE.store) for full
+details.
 
 ---
 
