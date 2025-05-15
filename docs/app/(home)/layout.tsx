@@ -6,7 +6,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <HomeLayout
       {...baseOptions}
-      // @ts-expect-error
+      // @ts-expect-error: links is (for some reason) not recognized by the type checker
       links={[
         {
           text: 'Documentation',

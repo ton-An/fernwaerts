@@ -10,7 +10,7 @@ export default function RealisticGlobe() {
 
     const handleMapLoad = (event: MapEvent) => {
         const map = event.target;
-        let startTime: number = Date.now();
+        const startTime: number = Date.now();
 
         const rotate = () => {
             const elapsed = Date.now() - startTime;
