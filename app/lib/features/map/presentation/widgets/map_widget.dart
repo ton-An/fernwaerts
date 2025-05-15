@@ -9,6 +9,7 @@ import 'package:location_history/features/in_app_notification/presentation/cubit
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
 import 'package:location_history/features/map/presentation/cubits/map_states.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 /* 
   To-Do:
@@ -40,6 +41,8 @@ class _MapWidgetState extends State<MapWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
+
     final List<Color> colors = [];
 
     for (int i = 0; i < _points.length; i++) {
@@ -84,10 +87,17 @@ class _MapWidgetState extends State<MapWidget> {
                       point: _points[i],
                       nextPoint: _points[i + 1],
                     ),
-                    child: const Icon(
-                      Icons.arrow_upward,
-                      size: 20,
-                      color: Colors.white,
+                    child: OverflowBox(
+                      maxWidth: double.infinity,
+                      maxHeight: double.infinity,
+                      alignment: Alignment.center,
+                      child: Center(
+                        child: Icon(
+                          Icons.arrow_drop_up_rounded,
+                          size: 40,
+                          color: theme.colors.background.withValues(alpha: .9),
+                        ),
+                      ),
                     ),
                   ),
                 ),
