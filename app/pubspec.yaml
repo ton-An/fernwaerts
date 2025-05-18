@@ -43,6 +43,8 @@ dependencies:
   gap: ^3.0.1
   dotted_line: ^3.2.3
   simple_shadow: ^0.3.1
+  flutter_svg: ^2.1.0
+  gradient_borders: ^1.0.1
 
   # Maps & Location
   # maplibre:
@@ -112,3 +114,4 @@ flutter:
   assets:
     - assets/videos/
     - assets/images/app_icons/
+    - assets/images/logos/

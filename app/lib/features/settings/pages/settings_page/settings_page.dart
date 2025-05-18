@@ -5,6 +5,7 @@ import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_out.dart';
 import 'package:location_history/features/authentication/presentation/pages/authentication_page/authentication_page.dart';
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
+import 'package:location_history/features/settings/widgets/oss_info.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_footer.dart';
@@ -46,6 +47,9 @@ class SettingsPage extends StatelessWidget {
                   const _SubPageLink(),
                   const _SubPageLink(),
                   const XXMediumGap(),
+                  const OSSInfo(),
+                  const XXMediumGap(),
+
                   CustomCupertinoTextButton(
                     text: AppLocalizations.of(context)!.signOut,
                     textColor: theme.colors.backgroundContrast,
