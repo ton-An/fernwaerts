@@ -1634,7 +1634,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "41135eff022a98ec34b844c88cae03f2fa9ed3d3"
+      resolved-ref: c97c0007b7ba3fb0a1f2502fc1556a82b53c8715
       url: "https://github.com/ton-An/webfabrik_theme"
     source: git
     version: "0.0.1"

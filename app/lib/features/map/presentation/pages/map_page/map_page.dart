@@ -1,13 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
+import 'package:location_history/core/misc/date_time_extensions.dart';
+import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_cubit.dart';
+import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_state.dart';
 import 'package:location_history/features/calendar/presentation/widgets/calendar_composite/calendar_composite.dart';
+import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
+import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
+import 'package:location_history/features/map/presentation/cubits/map_states.dart';
 import 'package:location_history/features/map/presentation/widgets/location_history_modal/location_history_modal.dart';
-import 'package:location_history/features/map/presentation/widgets/map_widget.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_map_attribution.dart';
+part '_map_legend_container.dart';
+part '_map_location_markers.dart';
+part '_map_modal.dart';
+part '_map_single_location_marker.dart';
 part '_map_time_gradient.dart';
+part '_map_widget.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -20,86 +34,65 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  late DraggableScrollableController _draggableScrollableController;
-
   @override
   void initState() {
     super.initState();
 
-    _draggableScrollableController = DraggableScrollableController();
+    final CalendarDateSelectionState dateSelectionState =
+        context.read<CalendarDateSelectionCubit>().state;
 
-    _draggableScrollableController.addListener(() {
-      setState(() {});
-    });
+    _loadLocations(dateSelectionState);
   }
 
   @override
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    return Stack(
-      children: [
-        const Positioned.fill(child: MapWidget()),
-        Column(
-          children: [
-            SafeArea(
-              bottom: false,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: theme.spacing.medium),
-                child: const CalendarComposite(),
+    return BlocListener<CalendarDateSelectionCubit, CalendarDateSelectionState>(
+      listener: (context, dateSelectionState) {
+        _loadLocations(dateSelectionState);
+      },
+      child: Stack(
+        children: [
+          const Positioned.fill(child: _MapWidget()),
+          Column(
+            children: [
+              SafeArea(
+                bottom: false,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: theme.spacing.medium,
+                  ),
+                  child: const CalendarComposite(),
+                ),
               ),
-            ),
-            Expanded(
-              child: DraggableScrollableSheet(
-                initialChildSize: LocationHistoryModal.mediumModalHeight,
-                minChildSize: LocationHistoryModal.smallModalHeight,
-                maxChildSize: LocationHistoryModal.largeModalHeight,
-                snap: true,
-                snapSizes: const [
-                  LocationHistoryModal.smallModalHeight,
-                  LocationHistoryModal.largeModalHeight,
-                ],
-                controller: _draggableScrollableController,
-                snapAnimationDuration: const Duration(milliseconds: 300),
-                builder:
-                    (context, scrollController) => Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: theme.spacing.medium,
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: _MapTimeGradient(
-                                  draggableScrollableController:
-                                      _draggableScrollableController,
-                                ),
-                              ),
-                              const MediumGap(),
-                              _MapAttribution(
-                                draggableScrollableController:
-                                    _draggableScrollableController,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const XSmallGap(),
-                        Expanded(
-                          child: LocationHistoryModal(
-                            scrollController: scrollController,
-                            draggableScrollableController:
-                                _draggableScrollableController,
-                          ),
-                        ),
-                      ],
-                    ),
-              ),
-            ),
-          ],
-        ),
-      ],
+              const _MapModal(),
+            ],
+          ),
+        ],
+      ),
     );
+  }
+
+  Future<void> _loadLocations(
+    CalendarDateSelectionState dateSelectionState,
+  ) async {
+    DateTime? startDate;
+    DateTime? endDate;
+
+    if (dateSelectionState is CalendarRangeSelected) {
+      startDate = dateSelectionState.startDate;
+      endDate = dateSelectionState.endDate;
+    } else if (dateSelectionState is CalendarDaySelected) {
+      startDate = dateSelectionState.selectedDate;
+      endDate = dateSelectionState.selectedDate.endOfDay();
+    }
+
+    if (startDate != null && endDate != null) {
+      context.read<MapCubit>().loadLocationsByDate(
+        start: startDate,
+        end: endDate,
+      );
+    }
   }
 }
