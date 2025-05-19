@@ -13,6 +13,8 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_day_cell.dart';
 part '_days_grid.dart';
+part '_days_grid_builder.dart';
+part '_days_grid_params.dart';
 part '_week_number_cell.dart';
 part '_weekdays_header.dart';
 
