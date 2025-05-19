@@ -110,7 +110,7 @@ class _VideoBackgroundState extends State<_VideoBackground>
 
   void _setUpVideoListeners() {
     _videoController.addListener(() {
-      if (!isShowingSecondVideo && _isAtEnd(_videoController)) {
+      if (!isShowingSecondVideo && _isControllerAtEnd(_videoController)) {
         setState(() {
           isShowingSecondVideo = true;
         });
@@ -124,7 +124,7 @@ class _VideoBackgroundState extends State<_VideoBackground>
     });
 
     _videoController2.addListener(() {
-      if (isShowingSecondVideo && _isAtEnd(_videoController2)) {
+      if (isShowingSecondVideo && _isControllerAtEnd(_videoController2)) {
         setState(() {
           isShowingSecondVideo = false;
         });
@@ -138,7 +138,7 @@ class _VideoBackgroundState extends State<_VideoBackground>
     });
   }
 
-  bool _isAtEnd(VideoPlayerController controller) {
+  bool _isControllerAtEnd(VideoPlayerController controller) {
     return controller.value.position.inSeconds != 0 &&
         controller.value.position.inSeconds >=
             controller.value.duration.inSeconds - _transitionDuration.inSeconds;
