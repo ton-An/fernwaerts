@@ -14,12 +14,11 @@ part '_fade_wrapper.dart';
 
 /*
   To-Dos:
-  - [ ] Implement this screen and clean up
+  - [ ] Move durations to theme
   - [ ] Clear up naming of the whole in app notification feature
   - [ ] Add a toast like notification when the failure has been copied to clipboard
 */
 
-/// __In App Notification__ builds an in app notification wich displays a [Failure]
 class InAppNotification extends StatelessWidget {
   const InAppNotification({required this.failure, super.key});
 
