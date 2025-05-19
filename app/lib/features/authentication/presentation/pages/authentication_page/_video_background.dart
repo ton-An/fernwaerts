@@ -17,19 +17,23 @@ class _VideoBackgroundState extends State<_VideoBackground>
   late VideoPlayerController _videoController2;
   late Duration _transitionDuration;
 
+  bool _didInitAnimations = false;
   bool isShowingSecondVideo = false;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
+    if (!_didInitAnimations) {
+      final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    _transitionDuration = theme.durations.huge * 2;
+      _transitionDuration = theme.durations.huge * 2;
 
-    _initAndStartFade(theme: theme);
-    _initVideoControllers();
-    _setUpVideoListeners();
+      _initAndStartFade(theme: theme);
+      _initVideoControllers();
+      _setUpVideoListeners();
+      _didInitAnimations = true;
+    }
   }
 
   @override

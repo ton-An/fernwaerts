@@ -40,19 +40,29 @@ class _FadeTapDetectorState extends State<FadeTapDetector>
   late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;
 
+  bool _didInitAnimation = false;
+
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    _fadeController = AnimationController(
-      duration: theme.durations.short,
-      vsync: this,
-    );
-    _fadeAnimation = Tween<double>(
-      begin: 1,
-      end: .8,
-    ).chain(CurveTween(curve: Curves.easeInOut)).animate(_fadeController);
+    if (!_didInitAnimation) {
+      _fadeController = AnimationController(
+        duration: theme.durations.short,
+        vsync: this,
+      );
+
+      _fadeAnimation = Tween<double>(
+        begin: 1,
+        end: .8,
+      ).chain(CurveTween(curve: Curves.easeInOut)).animate(_fadeController);
+
+      _didInitAnimation = true;
+    } else {
+      _fadeController.duration = theme.durations.short;
+    }
   }
 
   @override

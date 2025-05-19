@@ -14,28 +14,39 @@ class _FadeWrapperState extends State<_FadeWrapper>
   late Animation _fadeOutAnimation;
   late AnimationController _fadeOutController;
 
+  bool _didInitAnimations = false;
+
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    _fadeOutController =
-        AnimationController(duration: theme.durations.short, vsync: this)
-          ..addListener(() {
-            setState(() {});
-          })
-          ..addStatusListener((status) {
-            if (status == AnimationStatus.completed) {
-              context
-                  .read<InAppNotificationCubit>()
-                  .confirmNotificationReplaced();
-            }
-          });
+    if (!_didInitAnimations) {
+      _fadeOutController =
+          AnimationController(duration: theme.durations.short, vsync: this)
+            ..addListener(() {
+              setState(() {});
+            })
+            ..addStatusListener((status) {
+              if (status == AnimationStatus.completed) {
+                context
+                    .read<InAppNotificationCubit>()
+                    .confirmNotificationReplaced();
+              }
+            });
 
-    _fadeOutAnimation = _fadeOutController.drive(
-      Tween<double>(begin: 1, end: 0).chain(CurveTween(curve: Curves.easeOut)),
-    );
+      _fadeOutAnimation = _fadeOutController.drive(
+        Tween<double>(
+          begin: 1,
+          end: 0,
+        ).chain(CurveTween(curve: Curves.easeOut)),
+      );
+
+      _didInitAnimations = true;
+    } else {
+      _fadeOutController.duration = theme.durations.short;
+    }
   }
 
   @override

@@ -14,28 +14,36 @@ class _DateButtonState extends State<_DateButton>
   late AnimationController _fadeController;
   late Animation<int> _fadeAnimation;
 
+  bool _didInitAnimations = false;
   _LabelSize _labelSize = _LabelSize.large;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    _fadeController = AnimationController(
-      duration: theme.durations.xxTiny,
-      reverseDuration: theme.durations.short,
-      vsync: this,
-    );
-    _fadeAnimation = CurvedAnimation(
-      parent: _fadeController,
-      curve: Curves.easeOut,
-      reverseCurve: Curves.easeIn,
-    ).drive(IntTween(begin: 0, end: 18));
+    if (!_didInitAnimations) {
+      _fadeController = AnimationController(
+        duration: theme.durations.xxTiny,
+        reverseDuration: theme.durations.short,
+        vsync: this,
+      );
+      _fadeAnimation = CurvedAnimation(
+        parent: _fadeController,
+        curve: Curves.easeOut,
+        reverseCurve: Curves.easeIn,
+      ).drive(IntTween(begin: 0, end: 18));
 
-    _fadeController.addListener(() {
-      setState(() {});
-    });
+      _fadeController.addListener(() {
+        setState(() {});
+      });
+
+      _didInitAnimations = true;
+    } else {
+      _fadeController.duration = theme.durations.xxTiny;
+      _fadeController.reverseDuration = theme.durations.short;
+    }
   }
 
   @override

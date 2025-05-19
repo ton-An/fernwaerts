@@ -68,15 +68,24 @@ class _CalendarCompositeState extends State<CalendarComposite>
   late Animation<double> _translateAnimation;
   late Animation<double> _fadeAnimation;
 
+  bool _didInitAnimations = false;
+
   CalendarSelectionTypeState? _lastSelectionTypeState;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    _initTranslateAnimation(theme: theme);
-    _initFadeAnimation(theme: theme);
+    if (!_didInitAnimations) {
+      _initTranslateAnimation(theme: theme);
+      _initFadeAnimation(theme: theme);
+
+      _didInitAnimations = true;
+    } else {
+      _updateControllerDurations(theme: theme);
+    }
   }
 
   @override
@@ -159,6 +168,14 @@ class _CalendarCompositeState extends State<CalendarComposite>
         reverseCurve: Curves.easeOut,
       ),
     );
+  }
+
+  void _updateControllerDurations({required WebfabrikThemeData theme}) {
+    _translateController.duration = theme.durations.xxShort;
+    _translateController.reverseDuration = theme.durations.xxMedium;
+
+    _fadeController.duration = theme.durations.medium;
+    _fadeController.reverseDuration = theme.durations.short;
   }
 
   void _handleSelectionTypeState({
