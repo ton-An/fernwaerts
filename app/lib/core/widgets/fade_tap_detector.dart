@@ -34,6 +34,12 @@ class _FadeTapDetectorState extends State<FadeTapDetector>
   }
 
   @override
+  void dispose() {
+    _fadeAnimationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: widget.onLongPress,
