@@ -117,11 +117,19 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
     );
   }
 
+  /// Records the start position of a vertical drag gesture.
+  ///
+  /// Stores the initial y-coordinate of the pointer when dragging begins.
   void _verticalDragStart(double dragStartPosition) {
     _dragStart = dragStartPosition;
     _dragPosition = dragStartPosition;
   }
 
+  /// Updates the modal height in response to the user's drag movement.
+  ///
+  /// Adjusts the [DraggableScrollableController] based on the drag delta,
+  /// clamped between [smallModalHeight] and [largeModalHeight], and updates
+  /// the current drag position.
   void _verticalDragUpdate(double dragDelta, double dragPosition) {
     double currentExtent = widget.draggableScrollableController.size;
 
@@ -134,6 +142,10 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
     _dragPosition = dragPosition;
   }
 
+  /// Handles completion of a vertical drag by animating to the nearest snap point.
+  ///
+  /// Determines drag direction and significance to animate the modal to
+  /// either [largeModalHeight] or [smallModalHeight] with an easing curve.
   void _verticalDragEnd({required WebfabrikThemeData theme}) {
     final double dragDelta = _dragStart - _dragPosition;
 
@@ -155,6 +167,9 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
     }
   }
 
+  /// Returns the target modal height based on the drag direction.
+  ///
+  /// If dragging up, returns [largeModalHeight], otherwise returns [smallModalHeight].
   double _getModalHeight(VerticalDirection dragDirection) {
     if (dragDirection == VerticalDirection.up) {
       return LocationHistoryModal.largeModalHeight;

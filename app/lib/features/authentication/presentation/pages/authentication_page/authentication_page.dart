@@ -116,6 +116,12 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     );
   }
 
+  /// Responds to changes in authentication state by navigating or displaying errors.
+  ///
+  /// - If entering server details, animates to server URL page.
+  /// - If entering login or admin sign-up info, sets form type and animates to form page.
+  /// - On successful login or sign-up, finalizes autofill and navigates to [MapPage].
+  /// - On error, sends a failure notification via [InAppNotificationCubit].
   void _handleAuthState({
     required AuthenticationCubitState authState,
     required WebfabrikThemeData theme,
@@ -146,10 +152,14 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     }
   }
 
+  /// Updates the form type (sign-in or admin sign-up) and triggers a rebuild.
   void _setFormType({required AuthenticationFormType formType}) {
     setState(() => _formType = formType);
   }
 
+  /// Animates the carousel to the given page index with a smooth curve.
+  ///
+  /// Uses [ExpandableCarouselController] to switch pages over [theme.durations.medium].
   void _animateToPage({
     required int pageIndex,
     required WebfabrikThemeData theme,

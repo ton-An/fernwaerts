@@ -1,5 +1,14 @@
 part of 'authentication_form.dart';
 
+/// A widget that shows the label, description, and optional hint for the AuthenticationForm.
+///
+/// Animates opacity and size based on keyboard visibility.
+///
+/// Parameters:
+/// - label: The title text of the form.
+/// - description: The descriptive text of the form.
+/// - hint: Optional hint text to show below the description.
+/// - isKeyboardVisible: Controls hiding the description when keyboard is open.
 class _Description extends StatelessWidget {
   const _Description({
     required this.label,
