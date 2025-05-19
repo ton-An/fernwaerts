@@ -49,47 +49,12 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     _carouselController = ExpandableCarouselController();
   }
 
-  void _animateToPage(int pageIndex) {
-    _carouselController.animateToPage(
-      pageIndex,
-      duration: const Duration(milliseconds: 420),
-      curve: Curves.easeInOut,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
     return BlocListener<AuthenticationCubit, AuthenticationCubitState>(
-      listener: (context, state) {
-        if (state is EnterServerDetails) {
-          _animateToPage(1);
-        }
-
-        if (state is EnterLogInInfo) {
-          setState(() {
-            _formType = AuthenticationFormType.signIn;
-          });
-          _animateToPage(2);
-        }
-
-        if (state is EnterAdminSignUpInfo) {
-          setState(() {
-            _formType = AuthenticationFormType.adminSignUp;
-          });
-          _animateToPage(2);
-        }
-
-        if (state is LogInSuccessful || state is AdminSignUpSuccessful) {
-          TextInput.finishAutofillContext();
-          context.go(MapPage.route);
-        }
-
-        if (state is AuthenticationError) {
-          context.read<InAppNotificationCubit>().sendFailureNotification(
-            state.failure,
-          );
-        }
+      listener: (BuildContext context, AuthenticationCubitState state) {
+        _handleAuthState(state);
       },
       child: Stack(
         children: [
@@ -133,6 +98,45 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           ),
         ],
       ),
+    );
+  }
+
+  void _handleAuthState(AuthenticationCubitState state) {
+    if (state is EnterServerDetails) {
+      _animateToPage(1);
+    }
+
+    if (state is EnterLogInInfo) {
+      setState(() {
+        _formType = AuthenticationFormType.signIn;
+      });
+      _animateToPage(2);
+    }
+
+    if (state is EnterAdminSignUpInfo) {
+      setState(() {
+        _formType = AuthenticationFormType.adminSignUp;
+      });
+      _animateToPage(2);
+    }
+
+    if (state is LogInSuccessful || state is AdminSignUpSuccessful) {
+      TextInput.finishAutofillContext();
+      context.go(MapPage.route);
+    }
+
+    if (state is AuthenticationError) {
+      context.read<InAppNotificationCubit>().sendFailureNotification(
+        state.failure,
+      );
+    }
+  }
+
+  void _animateToPage(int pageIndex) {
+    _carouselController.animateToPage(
+      pageIndex,
+      duration: const Duration(milliseconds: 420),
+      curve: Curves.easeInOut,
     );
   }
 }
