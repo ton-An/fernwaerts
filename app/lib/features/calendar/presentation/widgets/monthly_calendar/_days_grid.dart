@@ -3,10 +3,11 @@ part of 'monthly_calendar.dart';
 class _DaysGrid extends StatelessWidget {
   const _DaysGrid({required this.monthOffset});
 
-  final int monthOffset;
-
   static const int _daysInWeek = 7;
   static const int _firstDayOfMonthNumber = 1;
+
+  final int monthOffset;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CalendarDateSelectionCubit, CalendarDateSelectionState>(
@@ -22,14 +23,18 @@ class _DaysGrid extends StatelessWidget {
               focusedMonth.month,
               _firstDayOfMonthNumber,
             );
+
             int startOffset = firstDayOfMonth.weekday % _daysInWeek;
             startOffset = startOffset == 0 ? 7 : startOffset;
+
             final int daysInMonth =
                 DateTime(focusedMonth.year, focusedMonth.month + 1, 0).day;
+
             int endOffset =
                 ((daysInMonth + startOffset) % _daysInWeek - 7).abs();
             endOffset = endOffset == 6 ? -1 : endOffset;
             endOffset = endOffset == 7 ? 0 : endOffset;
+
             final int totalDays = daysInMonth + startOffset + endOffset;
             final int rowCount = (totalDays / _daysInWeek).ceil();
             const int crossAxisCount = _daysInWeek + 1;
@@ -145,7 +150,6 @@ class _DaysGrid extends StatelessWidget {
     return focusedMonth.copyWith(day: dayInMonthIndex);
   }
 
-  // filler dates should also be selectable
   _DayCellType _getDayCellType(
     DateTime date,
     CalendarDateSelectionState selectionState,
