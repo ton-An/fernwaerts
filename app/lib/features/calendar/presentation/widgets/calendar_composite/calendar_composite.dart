@@ -28,8 +28,8 @@ class CalendarComposite extends StatefulWidget {
 
 class _CalendarCompositeState extends State<CalendarComposite>
     with TickerProviderStateMixin {
-  late AnimationController _translateAnimationController;
-  late AnimationController _fadeAnimationController;
+  late AnimationController _translateController;
+  late AnimationController _fadeController;
 
   late Animation<double> _translateAnimation;
   late Animation<double> _fadeAnimation;
@@ -39,113 +39,30 @@ class _CalendarCompositeState extends State<CalendarComposite>
   @override
   void initState() {
     super.initState();
-
-    _translateAnimationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-      reverseDuration: const Duration(milliseconds: 580),
-    );
-
-    _translateAnimationController.addListener(() {
-      setState(() {});
-    });
-
-    _fadeAnimationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 400),
-      reverseDuration: const Duration(milliseconds: 200),
-    );
-
-    _fadeAnimationController.addListener(() {
-      setState(() {});
-    });
-
-    _translateAnimation = Tween<double>(begin: 1, end: 0).animate(
-      CurvedAnimation(
-        parent: _translateAnimationController,
-        curve: Curves.easeOutCubic,
-        reverseCurve: Curves.easeInCubic,
-      ),
-    );
-
-    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(
-        parent: _fadeAnimationController,
-        curve: Curves.easeOut,
-        reverseCurve: Curves.easeOut,
-      ),
-    );
+    _initTranslateAnimation();
+    _initFadeAnimation();
   }
 
   @override
   void dispose() {
-    _translateAnimationController.dispose();
-    _fadeAnimationController.dispose();
+    _translateController.dispose();
+    _fadeController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CalendarSelectionTypeCubit, CalendarSelectionTypeState>(
-      listener: (context, selectionTypeState) {
-        final DateTime? selectionStart = _getStartDateOfSelection(context);
-        if (selectionStart != null) {
-          if (!(_lastSelectionTypeState is CalendarRangeSelection ||
-                  _lastSelectionTypeState is CalendarDaySelection ||
-                  _lastSelectionTypeState is CalendarWeekSelection) &&
-              (selectionTypeState is CalendarRangeSelection ||
-                  selectionTypeState is CalendarDaySelection ||
-                  selectionTypeState is CalendarWeekSelection)) {
-            context.read<MonthlyCalendarCubit>().showMonth(selectionStart);
-          } else if (selectionTypeState is CalendarMonthSelection) {
-            context.read<YearlyCalendarCubit>().showYear(selectionStart);
-          } else if (selectionTypeState is CalendarYearSelection) {
-            context.read<DecenniallyCalendarCubit>().showDecade(selectionStart);
-          }
-        }
-
-        _lastSelectionTypeState = selectionTypeState;
+      listener: (context, CalendarSelectionTypeState selectionTypeState) {
+        _handleSelectionTypeState(selectionTypeState: selectionTypeState);
       },
-      builder: (context, selectionTypeState) {
+      builder: (context, CalendarSelectionTypeState selectionTypeState) {
         return BlocConsumer<CalendarExpansionCubit, CalendarExpansionState>(
           listener: (context, expansionState) {
-            if (expansionState is CalendarCollapsed) {
-              _translateAnimationController.reverse();
-              _fadeAnimationController.reverse();
-            }
-
-            if (expansionState is CalendarExpanded) {
-              _translateAnimationController.forward();
-              _fadeAnimationController.forward();
-
-              final bool hasMovedRange =
-                  context.read<CalendarDateSelectionCubit>().hasMovedRange;
-
-              if (hasMovedRange) {
-                final DateTime? selectionStart = _getStartDateOfSelection(
-                  context,
-                );
-
-                if (selectionStart != null) {
-                  if (selectionTypeState is CalendarRangeSelection ||
-                      selectionTypeState is CalendarDaySelection ||
-                      selectionTypeState is CalendarWeekSelection) {
-                    context.read<MonthlyCalendarCubit>().showMonth(
-                      selectionStart,
-                    );
-                  } else if (selectionTypeState is CalendarMonthSelection) {
-                    context.read<YearlyCalendarCubit>().showYear(
-                      selectionStart,
-                    );
-                  } else if (selectionTypeState is CalendarYearSelection) {
-                    context.read<DecenniallyCalendarCubit>().showDecade(
-                      selectionStart,
-                    );
-                  }
-                }
-              }
-              context.read<CalendarDateSelectionCubit>().resetHasMovedRange();
-            }
+            _handleCalendarExpansionState(
+              expansionState: expansionState,
+              selectionTypeState: selectionTypeState,
+            );
           },
           builder: (context, state) {
             return ClipRRect(
@@ -157,12 +74,10 @@ class _CalendarCompositeState extends State<CalendarComposite>
                 calendarOffset: _translateAnimation.value,
                 children: [
                   const CalendarStepper(),
-                  if (!(_translateAnimationController.status ==
-                          AnimationStatus.dismissed &&
-                      _fadeAnimationController.status ==
-                          AnimationStatus.dismissed))
-                    Opacity(
-                      opacity: _fadeAnimation.value,
+
+                  if (_shouldDisplayCalendar())
+                    FadeTransition(
+                      opacity: _fadeAnimation,
                       child: const Calendar(),
                     ),
                 ],
@@ -172,6 +87,99 @@ class _CalendarCompositeState extends State<CalendarComposite>
         );
       },
     );
+  }
+
+  void _initTranslateAnimation() {
+    _translateController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+      reverseDuration: const Duration(milliseconds: 580),
+    );
+
+    _translateController.addListener(() {
+      setState(() {});
+    });
+
+    _translateAnimation = Tween<double>(begin: 1, end: 0).animate(
+      CurvedAnimation(
+        parent: _translateController,
+        curve: Curves.easeOutCubic,
+        reverseCurve: Curves.easeInCubic,
+      ),
+    );
+  }
+
+  void _initFadeAnimation() {
+    _fadeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+      reverseDuration: const Duration(milliseconds: 200),
+    );
+
+    _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(
+        parent: _fadeController,
+        curve: Curves.easeOut,
+        reverseCurve: Curves.easeOut,
+      ),
+    );
+  }
+
+  void _handleSelectionTypeState({
+    required CalendarSelectionTypeState selectionTypeState,
+  }) {
+    final DateTime? selectionStart = _getStartDateOfSelection(context);
+    if (selectionStart != null) {
+      if (!(_lastSelectionTypeState is CalendarRangeSelection ||
+              _lastSelectionTypeState is CalendarDaySelection ||
+              _lastSelectionTypeState is CalendarWeekSelection) &&
+          (selectionTypeState is CalendarRangeSelection ||
+              selectionTypeState is CalendarDaySelection ||
+              selectionTypeState is CalendarWeekSelection)) {
+        context.read<MonthlyCalendarCubit>().showMonth(selectionStart);
+      } else if (selectionTypeState is CalendarMonthSelection) {
+        context.read<YearlyCalendarCubit>().showYear(selectionStart);
+      } else if (selectionTypeState is CalendarYearSelection) {
+        context.read<DecenniallyCalendarCubit>().showDecade(selectionStart);
+      }
+    }
+
+    _lastSelectionTypeState = selectionTypeState;
+  }
+
+  void _handleCalendarExpansionState({
+    required CalendarExpansionState expansionState,
+    required CalendarSelectionTypeState selectionTypeState,
+  }) {
+    if (expansionState is CalendarCollapsed) {
+      _translateController.reverse();
+      _fadeController.reverse();
+    }
+
+    if (expansionState is CalendarExpanded) {
+      _translateController.forward();
+      _fadeController.forward();
+
+      final bool hasMovedRange =
+          context.read<CalendarDateSelectionCubit>().hasMovedRange;
+
+      if (hasMovedRange) {
+        final DateTime? selectionStart = _getStartDateOfSelection(context);
+
+        if (selectionStart != null) {
+          if (selectionTypeState is CalendarRangeSelection ||
+              selectionTypeState is CalendarDaySelection ||
+              selectionTypeState is CalendarWeekSelection) {
+            context.read<MonthlyCalendarCubit>().showMonth(selectionStart);
+          } else if (selectionTypeState is CalendarMonthSelection) {
+            context.read<YearlyCalendarCubit>().showYear(selectionStart);
+          } else if (selectionTypeState is CalendarYearSelection) {
+            context.read<DecenniallyCalendarCubit>().showDecade(selectionStart);
+          }
+        }
+      }
+      context.read<CalendarDateSelectionCubit>().resetHasMovedRange();
+    }
   }
 
   DateTime? _getStartDateOfSelection(BuildContext context) {
@@ -184,4 +192,8 @@ class _CalendarCompositeState extends State<CalendarComposite>
       return (dateSelectionState as CalendarRangeSelected).startDate;
     }
   }
+
+  bool _shouldDisplayCalendar() =>
+      !(_translateController.status == AnimationStatus.dismissed &&
+          _fadeController.status == AnimationStatus.dismissed);
 }
