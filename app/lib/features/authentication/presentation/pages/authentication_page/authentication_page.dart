@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_cubit.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_states.dart';
-import 'package:location_history/features/authentication/presentation/widgets/authentication_form.dart';
+import 'package:location_history/features/authentication/presentation/widgets/authentication_form/authentication_form.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
 import 'package:simple_shadow/simple_shadow.dart';
