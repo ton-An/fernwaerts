@@ -1,7 +1,7 @@
 part of 'map_page.dart';
 
-class _MapLocationMarkers extends StatelessWidget {
-  const _MapLocationMarkers({required this.points});
+class _LocationMarkers extends StatelessWidget {
+  const _LocationMarkers({required this.points});
 
   final List<LatLng> points;
 
@@ -48,7 +48,7 @@ class _MapLocationMarkers extends StatelessWidget {
               );
 
       markers.add(
-        _MapSingleLocationMarker(
+        _SingleLocationMarker(
           point: points[i],
           arrowOffset: arrowOffset,
           arrowRotation: angleToNextPoint,

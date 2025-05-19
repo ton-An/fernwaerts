@@ -1,13 +1,13 @@
 part of 'map_page.dart';
 
-class _MapTimeGradientLegend extends StatelessWidget {
-  const _MapTimeGradientLegend();
+class _TimeGradientLegend extends StatelessWidget {
+  const _TimeGradientLegend();
 
   @override
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    return _MapLegendContainer(
+    return _LegendContainer(
       child: Container(
         height: 10,
         margin: EdgeInsets.all(theme.spacing.xTiny),

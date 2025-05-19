@@ -4,14 +4,14 @@ part of 'map_page.dart';
   To-Do:
     - [ ] Improve arrowOffsetDirection as it doesn't seem accurate over long distances
 */
-class _MapWidget extends StatefulWidget {
-  const _MapWidget();
+class _Map extends StatefulWidget {
+  const _Map();
 
   @override
-  State<_MapWidget> createState() => _MapWidgetState();
+  State<_Map> createState() => _MapState();
 }
 
-class _MapWidgetState extends State<_MapWidget> {
+class _MapState extends State<_Map> {
   String? appPackageName;
 
   List<LatLng> _points = [];
@@ -37,7 +37,7 @@ class _MapWidgetState extends State<_MapWidget> {
             urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
             userAgentPackageName: appPackageName ?? 'location_history',
           ),
-          _MapLocationMarkers(points: _points),
+          _LocationMarkers(points: _points),
           // ToDo: remove after may 15th + 1 month - keep for debugging until then
           // MarkerLayer(
           //   markers: [

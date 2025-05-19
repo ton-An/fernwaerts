@@ -1,7 +1,7 @@
 part of 'map_page.dart';
 
-class _MapAttributionLegend extends StatelessWidget {
-  const _MapAttributionLegend();
+class _AttributionLegend extends StatelessWidget {
+  const _AttributionLegend();
 
   static const String attributionUrl =
       'https://www.openstreetmap.org/copyright';
@@ -14,7 +14,7 @@ class _MapAttributionLegend extends StatelessWidget {
       onTap: () {
         launchUrlString(attributionUrl);
       },
-      child: _MapLegendContainer(
+      child: _LegendContainer(
         child: Text(
           AppLocalizations.of(context)!.openStreetMapAttribution,
           style: theme.text.subhead.copyWith(

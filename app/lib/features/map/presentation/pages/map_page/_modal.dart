@@ -1,13 +1,13 @@
 part of 'map_page.dart';
 
-class _MapModal extends StatefulWidget {
-  const _MapModal();
+class _Modal extends StatefulWidget {
+  const _Modal();
 
   @override
-  State<_MapModal> createState() => _MapModalState();
+  State<_Modal> createState() => _ModalState();
 }
 
-class _MapModalState extends State<_MapModal> {
+class _ModalState extends State<_Modal> {
   late DraggableScrollableController _draggableScrollableController;
 
   @override
@@ -51,9 +51,9 @@ class _MapModalState extends State<_MapModal> {
                     ),
                     child: const Row(
                       children: [
-                        Expanded(child: _MapTimeGradientLegend()),
+                        Expanded(child: _TimeGradientLegend()),
                         MediumGap(),
-                        _MapAttributionLegend(),
+                        _AttributionLegend(),
                       ],
                     ),
                   ),

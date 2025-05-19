@@ -16,13 +16,13 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
-part '_map_attribution_legend.dart';
-part '_map_legend_container.dart';
-part '_map_location_markers.dart';
-part '_map_modal.dart';
-part '_map_single_location_marker.dart';
-part '_map_time_gradient_legend.dart';
-part '_map_widget.dart';
+part '_attribution_legend.dart';
+part '_legend_container.dart';
+part '_location_markers.dart';
+part '_modal.dart';
+part '_single_location_marker.dart';
+part '_time_gradient_legend.dart';
+part '_map.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -58,7 +58,7 @@ class _MapPageState extends State<MapPage> {
       },
       child: Stack(
         children: [
-          const Positioned.fill(child: _MapWidget()),
+          const Positioned.fill(child: _Map()),
           Column(
             children: [
               SafeArea(
@@ -70,7 +70,7 @@ class _MapPageState extends State<MapPage> {
                   child: const CalendarComposite(),
                 ),
               ),
-              const _MapModal(),
+              const _Modal(),
             ],
           ),
         ],

@@ -1,7 +1,7 @@
 part of 'map_page.dart';
 
-class _MapSingleLocationMarker extends Marker {
-  _MapSingleLocationMarker({
+class _SingleLocationMarker extends Marker {
+  _SingleLocationMarker({
     required super.point,
     required Offset? arrowOffset,
     required double? arrowRotation,

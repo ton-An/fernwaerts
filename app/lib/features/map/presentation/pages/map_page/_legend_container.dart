@@ -1,7 +1,7 @@
 part of 'map_page.dart';
 
-class _MapLegendContainer extends StatelessWidget {
-  const _MapLegendContainer({required this.child});
+class _LegendContainer extends StatelessWidget {
+  const _LegendContainer({required this.child});
 
   final Widget child;
 
