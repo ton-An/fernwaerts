@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
+import 'package:location_history/core/widgets/fade_tap_detector.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
@@ -15,7 +16,7 @@ class OSSInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    return GestureDetector(
+    return FadeTapDetector(
       onTap: () {
         launchUrlString(_repositoryUrl);
       },

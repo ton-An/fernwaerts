@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location_history/core/failures/failure.dart';
+import 'package:location_history/core/widgets/fade_tap_detector.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_states.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
@@ -28,7 +29,7 @@ class InAppNotification extends StatelessWidget {
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    return GestureDetector(
+    return FadeTapDetector(
       onLongPress: () {
         Clipboard.setData(ClipboardData(text: failure.toString()));
       },

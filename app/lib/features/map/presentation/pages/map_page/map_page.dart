@@ -4,6 +4,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/core/misc/date_time_extensions.dart';
+import 'package:location_history/core/widgets/fade_tap_detector.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_state.dart';
 import 'package:location_history/features/calendar/presentation/widgets/calendar_composite/calendar_composite.dart';

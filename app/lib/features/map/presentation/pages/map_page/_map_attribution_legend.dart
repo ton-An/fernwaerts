@@ -10,7 +10,7 @@ class _MapAttributionLegend extends StatelessWidget {
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    return GestureDetector(
+    return FadeTapDetector(
       onTap: () {
         launchUrlString(attributionUrl);
       },
