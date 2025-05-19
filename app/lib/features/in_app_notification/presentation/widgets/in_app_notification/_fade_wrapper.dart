@@ -11,38 +11,14 @@ class _FadeWrapper extends StatefulWidget {
 
 class _FadeWrapperState extends State<_FadeWrapper>
     with SingleTickerProviderStateMixin {
-  late Animation _replacementFadeAnimation;
-  late AnimationController _replacementFadeController;
+  late Animation _fadeOutAnimation;
+  late AnimationController _fadeOutController;
 
   @override
   void initState() {
     super.initState();
-    _initReplacementFadeAnimation();
-  }
 
-  @override
-  void dispose() {
-    _replacementFadeController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocListener<InAppNotificationCubit, InAppNotificationState>(
-      listener: (context, state) {
-        if (state is InAppNotificationReplacing) {
-          _replacementFadeController.forward();
-        }
-      },
-      child: Opacity(
-        opacity: _replacementFadeAnimation.value,
-        child: widget.child,
-      ),
-    );
-  }
-
-  void _initReplacementFadeAnimation() {
-    _replacementFadeController =
+    _fadeOutController =
         AnimationController(
             duration: const Duration(milliseconds: 220),
             vsync: this,
@@ -58,8 +34,26 @@ class _FadeWrapperState extends State<_FadeWrapper>
             }
           });
 
-    _replacementFadeAnimation = _replacementFadeController.drive(
+    _fadeOutAnimation = _fadeOutController.drive(
       Tween<double>(begin: 1, end: 0).chain(CurveTween(curve: Curves.easeOut)),
+    );
+  }
+
+  @override
+  void dispose() {
+    _fadeOutController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<InAppNotificationCubit, InAppNotificationState>(
+      listener: (context, state) {
+        if (state is InAppNotificationReplacing) {
+          _fadeOutController.forward();
+        }
+      },
+      child: Opacity(opacity: _fadeOutAnimation.value, child: widget.child),
     );
   }
 }
