@@ -51,9 +51,9 @@ class _MapModalState extends State<_MapModal> {
                     ),
                     child: const Row(
                       children: [
-                        Expanded(child: _MapTimeGradient()),
+                        Expanded(child: _MapTimeGradientLegend()),
                         MediumGap(),
-                        _MapAttribution(),
+                        _MapAttributionLegend(),
                       ],
                     ),
                   ),

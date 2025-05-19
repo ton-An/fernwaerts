@@ -1,7 +1,7 @@
 part of 'map_page.dart';
 
-class _MapAttribution extends StatelessWidget {
-  const _MapAttribution();
+class _MapAttributionLegend extends StatelessWidget {
+  const _MapAttributionLegend();
 
   @override
   Widget build(BuildContext context) {

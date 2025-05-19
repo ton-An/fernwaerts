@@ -15,12 +15,12 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
-part '_map_attribution.dart';
+part '_map_attribution_legend.dart';
 part '_map_legend_container.dart';
 part '_map_location_markers.dart';
 part '_map_modal.dart';
 part '_map_single_location_marker.dart';
-part '_map_time_gradient.dart';
+part '_map_time_gradient_legend.dart';
 part '_map_widget.dart';
 
 class MapPage extends StatefulWidget {
@@ -49,7 +49,10 @@ class _MapPageState extends State<MapPage> {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
     return BlocListener<CalendarDateSelectionCubit, CalendarDateSelectionState>(
-      listener: (context, dateSelectionState) {
+      listener: (
+        BuildContext context,
+        CalendarDateSelectionState dateSelectionState,
+      ) {
         _loadLocations(dateSelectionState);
       },
       child: Stack(

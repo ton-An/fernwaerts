@@ -1,7 +1,7 @@
 part of 'map_page.dart';
 
-class _MapTimeGradient extends StatelessWidget {
-  const _MapTimeGradient();
+class _MapTimeGradientLegend extends StatelessWidget {
+  const _MapTimeGradientLegend();
 
   @override
   Widget build(BuildContext context) {

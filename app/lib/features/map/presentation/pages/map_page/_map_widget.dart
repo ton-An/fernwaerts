@@ -2,7 +2,6 @@ part of 'map_page.dart';
 
 /* 
   To-Do:
-    - [ ] Improve implementation of gradient (include theme etc..)
     - [ ] Improve arrowOffsetDirection as it doesn't seem accurate over long distances
 */
 class _MapWidget extends StatefulWidget {
