@@ -22,11 +22,10 @@ part '_welcome.dart';
 
 /*
   To-Do:
-    - [ ] Add loading animations (to the buttons)
     - [ ] Add apple-apple-site-association to fully enable autofill on iOS
 */
 
-enum AuthenticationFormType { logIn, adminSignUp }
+enum AuthenticationFormType { signIn, adminSignUp }
 
 class AuthenticationPage extends StatefulWidget {
   const AuthenticationPage({super.key});
@@ -41,7 +40,7 @@ class AuthenticationPage extends StatefulWidget {
 class _AuthenticationPageState extends State<AuthenticationPage> {
   late ExpandableCarouselController _carouselController;
 
-  AuthenticationFormType _formType = AuthenticationFormType.logIn;
+  AuthenticationFormType _formType = AuthenticationFormType.signIn;
 
   @override
   void initState() {
@@ -69,7 +68,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
 
         if (state is EnterLogInInfo) {
           setState(() {
-            _formType = AuthenticationFormType.logIn;
+            _formType = AuthenticationFormType.signIn;
           });
           _animateToPage(2);
         }
