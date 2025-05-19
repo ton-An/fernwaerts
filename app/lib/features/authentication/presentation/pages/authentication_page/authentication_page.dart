@@ -52,9 +52,10 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   @override
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
+
     return BlocListener<AuthenticationCubit, AuthenticationCubitState>(
       listener: (BuildContext context, AuthenticationCubitState state) {
-        _handleAuthState(state);
+        _handleAuthState(authState: state, theme: theme);
       },
       child: Stack(
         children: [
@@ -101,29 +102,32 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     );
   }
 
-  void _handleAuthState(AuthenticationCubitState state) {
-    if (state is EnterServerDetails) {
-      _animateToPage(pageIndex: 1);
+  void _handleAuthState({
+    required AuthenticationCubitState authState,
+    required WebfabrikThemeData theme,
+  }) {
+    if (authState is EnterServerDetails) {
+      _animateToPage(pageIndex: 1, theme: theme);
     }
 
-    if (state is EnterLogInInfo) {
+    if (authState is EnterLogInInfo) {
       _setFormType(formType: AuthenticationFormType.signIn);
-      _animateToPage(pageIndex: 2);
+      _animateToPage(pageIndex: 2, theme: theme);
     }
 
-    if (state is EnterAdminSignUpInfo) {
+    if (authState is EnterAdminSignUpInfo) {
       _setFormType(formType: AuthenticationFormType.adminSignUp);
-      _animateToPage(pageIndex: 2);
+      _animateToPage(pageIndex: 2, theme: theme);
     }
 
-    if (state is LogInSuccessful || state is AdminSignUpSuccessful) {
+    if (authState is LogInSuccessful || authState is AdminSignUpSuccessful) {
       TextInput.finishAutofillContext();
       context.go(MapPage.route);
     }
 
-    if (state is AuthenticationError) {
+    if (authState is AuthenticationError) {
       context.read<InAppNotificationCubit>().sendFailureNotification(
-        state.failure,
+        authState.failure,
       );
     }
   }
@@ -132,10 +136,13 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     setState(() => _formType = formType);
   }
 
-  void _animateToPage({required int pageIndex}) {
+  void _animateToPage({
+    required int pageIndex,
+    required WebfabrikThemeData theme,
+  }) {
     _carouselController.animateToPage(
       pageIndex,
-      duration: const Duration(milliseconds: 420),
+      duration: theme.durations.medium,
       curve: Curves.easeInOut,
     );
   }

@@ -19,10 +19,10 @@ class _Description extends StatelessWidget {
 
     return AnimatedOpacity(
       opacity: isKeyboardVisible ? 0 : 1,
-      duration: const Duration(milliseconds: 600),
+      duration: theme.durations.xxMedium,
       curve: Curves.easeInOut,
       child: AnimatedSize(
-        duration: const Duration(milliseconds: 300),
+        duration: theme.durations.medium,
         curve: Curves.easeOut,
         child: SizedBox(
           height: isKeyboardVisible ? 0 : null,

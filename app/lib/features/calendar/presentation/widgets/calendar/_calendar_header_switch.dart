@@ -17,9 +17,12 @@ class _SwitchState extends State<_Switch> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
+
     _fadeController = AnimationController(
-      duration: const Duration(milliseconds: 250),
-      reverseDuration: const Duration(milliseconds: 280),
+      duration: theme.durations.xShort,
+      reverseDuration: theme.durations.xShort,
       vsync: this,
     );
 

@@ -39,8 +39,10 @@ class _CalendarCompositeState extends State<CalendarComposite>
   @override
   void initState() {
     super.initState();
-    _initTranslateAnimation();
-    _initFadeAnimation();
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
+
+    _initTranslateAnimation(theme: theme);
+    _initFadeAnimation(theme: theme);
   }
 
   @override
@@ -89,11 +91,11 @@ class _CalendarCompositeState extends State<CalendarComposite>
     );
   }
 
-  void _initTranslateAnimation() {
+  void _initTranslateAnimation({required WebfabrikThemeData theme}) {
     _translateController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300),
-      reverseDuration: const Duration(milliseconds: 580),
+      duration: theme.durations.xxShort,
+      reverseDuration: theme.durations.xxMedium,
     );
 
     _translateController.addListener(() {
@@ -109,11 +111,11 @@ class _CalendarCompositeState extends State<CalendarComposite>
     );
   }
 
-  void _initFadeAnimation() {
+  void _initFadeAnimation({required WebfabrikThemeData theme}) {
     _fadeController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 400),
-      reverseDuration: const Duration(milliseconds: 200),
+      duration: theme.durations.medium,
+      reverseDuration: theme.durations.short,
     );
 
     _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(

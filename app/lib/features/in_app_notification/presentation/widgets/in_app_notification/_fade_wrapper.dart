@@ -18,11 +18,10 @@ class _FadeWrapperState extends State<_FadeWrapper>
   void initState() {
     super.initState();
 
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
+
     _fadeOutController =
-        AnimationController(
-            duration: const Duration(milliseconds: 220),
-            vsync: this,
-          )
+        AnimationController(duration: theme.durations.short, vsync: this)
           ..addListener(() {
             setState(() {});
           })

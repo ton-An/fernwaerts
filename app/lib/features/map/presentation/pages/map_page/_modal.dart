@@ -36,7 +36,7 @@ class _ModalState extends State<_Modal> {
           LocationHistoryModal.largeModalHeight,
         ],
         controller: _draggableScrollableController,
-        snapAnimationDuration: const Duration(milliseconds: 300),
+        snapAnimationDuration: theme.durations.medium,
         builder:
             (context, scrollController) => Column(
               crossAxisAlignment: CrossAxisAlignment.end,

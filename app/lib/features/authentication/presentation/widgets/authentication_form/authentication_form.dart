@@ -79,7 +79,7 @@ class AuthenticationForm extends StatelessWidget {
                 isLoading: isLoading,
               ),
               AnimatedSize(
-                duration: const Duration(milliseconds: 300),
+                duration: theme.durations.medium,
                 curve: Curves.easeOut,
                 child: SizedBox(
                   height: isKeyboardVisible ? 0 : theme.spacing.medium,

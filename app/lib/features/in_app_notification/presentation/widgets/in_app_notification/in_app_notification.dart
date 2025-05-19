@@ -43,9 +43,9 @@ class InAppNotification extends StatelessWidget {
                       context
                           .read<InAppNotificationCubit>()
                           .dismissNotification(),
-              movementDuration: const Duration(milliseconds: 450),
-              reverseMovementDuration: const Duration(milliseconds: 2000),
-              entryDuration: const Duration(milliseconds: 800),
+              movementDuration: theme.durations.xMedium,
+              reverseMovementDuration: theme.durations.xHuge,
+              entryDuration: theme.durations.long,
               key: GlobalKey(),
               child: SafeArea(
                 bottom: false,

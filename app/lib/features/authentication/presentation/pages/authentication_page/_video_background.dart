@@ -9,20 +9,25 @@ class _VideoBackground extends StatefulWidget {
 
 class _VideoBackgroundState extends State<_VideoBackground>
     with SingleTickerProviderStateMixin {
-  static const _transitionDuration = Duration(milliseconds: 3000);
   static const String _videoPath = 'assets/videos/forest_aerial.mp4';
 
   late AnimationController _fadeInController;
   late Animation<double> _fadeInAnimation;
   late VideoPlayerController _videoController;
   late VideoPlayerController _videoController2;
+  late Duration _transitionDuration;
 
   bool isShowingSecondVideo = false;
 
   @override
   void initState() {
     super.initState();
-    _initAndStartFade();
+
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
+
+    _transitionDuration = theme.durations.huge * 2;
+
+    _initAndStartFade(theme: theme);
     _initVideoControllers();
     _setUpVideoListeners();
   }
@@ -73,10 +78,10 @@ class _VideoBackgroundState extends State<_VideoBackground>
     );
   }
 
-  void _initAndStartFade() {
+  void _initAndStartFade({required WebfabrikThemeData theme}) {
     _fadeInController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1200),
+      duration: theme.durations.xxLong,
     );
 
     _fadeInAnimation = Tween<double>(

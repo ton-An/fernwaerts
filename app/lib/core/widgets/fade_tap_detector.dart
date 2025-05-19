@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 class FadeTapDetector extends StatefulWidget {
   const FadeTapDetector({
@@ -24,8 +25,10 @@ class _FadeTapDetectorState extends State<FadeTapDetector>
   @override
   void initState() {
     super.initState();
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
+
     _fadeController = AnimationController(
-      duration: const Duration(milliseconds: 200),
+      duration: theme.durations.short,
       vsync: this,
     );
     _fadeAnimation = Tween<double>(

@@ -19,9 +19,12 @@ class _DateButtonState extends State<_DateButton>
   @override
   void initState() {
     super.initState();
+
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
+
     _fadeController = AnimationController(
-      duration: const Duration(milliseconds: 160),
-      reverseDuration: const Duration(milliseconds: 220),
+      duration: theme.durations.xxTiny,
+      reverseDuration: theme.durations.short,
       vsync: this,
     );
     _fadeAnimation = CurvedAnimation(
@@ -83,7 +86,7 @@ class _DateButtonState extends State<_DateButton>
                         ),
                         SizedBox(width: theme.spacing.xSmall),
                         AnimatedRotation(
-                          duration: const Duration(milliseconds: 200),
+                          duration: theme.durations.short,
                           turns: expansionState is CalendarCollapsed ? 0 : .5,
                           child: Icon(
                             CupertinoIcons.arrow_down_circle_fill,

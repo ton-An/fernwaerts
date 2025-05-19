@@ -67,11 +67,11 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
               Listener(
                 behavior: HitTestBehavior.translucent,
                 onPointerDown: (event) => _verticalDragStart(event.position.dy),
-                onPointerUp: (_) => _verticalDragEnd(),
+                onPointerUp: (_) => _verticalDragEnd(theme: theme),
                 onPointerMove: (event) {
                   _verticalDragUpdate(event.delta.dy, event.position.dy);
                 },
-                onPointerCancel: (_) => _verticalDragEnd(),
+                onPointerCancel: (_) => _verticalDragEnd(theme: theme),
                 child: Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: theme.spacing.medium,
@@ -114,7 +114,7 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
     _dragPosition = dragPosition;
   }
 
-  void _verticalDragEnd() {
+  void _verticalDragEnd({required WebfabrikThemeData theme}) {
     final double dragDelta = _dragStart - _dragPosition;
 
     if (dragDelta != 0) {
@@ -129,7 +129,7 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
 
       widget.draggableScrollableController.animateTo(
         _getModalHeight(dragDirectionToAnimate),
-        duration: const Duration(milliseconds: 300),
+        duration: theme.durations.medium,
         curve: Curves.easeOut,
       );
     }
