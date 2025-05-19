@@ -103,21 +103,17 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
 
   void _handleAuthState(AuthenticationCubitState state) {
     if (state is EnterServerDetails) {
-      _animateToPage(1);
+      _animateToPage(pageIndex: 1);
     }
 
     if (state is EnterLogInInfo) {
-      setState(() {
-        _formType = AuthenticationFormType.signIn;
-      });
-      _animateToPage(2);
+      _setFormType(formType: AuthenticationFormType.signIn);
+      _animateToPage(pageIndex: 2);
     }
 
     if (state is EnterAdminSignUpInfo) {
-      setState(() {
-        _formType = AuthenticationFormType.adminSignUp;
-      });
-      _animateToPage(2);
+      _setFormType(formType: AuthenticationFormType.adminSignUp);
+      _animateToPage(pageIndex: 2);
     }
 
     if (state is LogInSuccessful || state is AdminSignUpSuccessful) {
@@ -132,7 +128,11 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     }
   }
 
-  void _animateToPage(int pageIndex) {
+  void _setFormType({required AuthenticationFormType formType}) {
+    setState(() => _formType = formType);
+  }
+
+  void _animateToPage({required int pageIndex}) {
     _carouselController.animateToPage(
       pageIndex,
       duration: const Duration(milliseconds: 420),
