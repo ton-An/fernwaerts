@@ -69,7 +69,7 @@ class _CalendarCompositeState extends State<CalendarComposite>
               borderRadius: BorderRadius.circular(
                 WebfabrikTheme.of(context).radii.medium,
               ),
-              child: _LayoutRenderObjectWidget(
+              child: _Layout(
                 itemSpacing: WebfabrikTheme.of(context).spacing.medium,
                 calendarOffset: _translateAnimation.value,
                 children: [
