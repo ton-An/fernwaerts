@@ -43,23 +43,24 @@ class _FadeTapDetectorState extends State<FadeTapDetector>
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: widget.onLongPress,
-      onTapDown: (_) {
-        _fadeAnimationController.forward();
-      },
-      onTapUp: (_) async {
-        if (widget.onTap != null) widget.onTap!();
-
-        if (_fadeAnimationController.isCompleted) {
-          _fadeAnimationController.reverse();
-        } else {
-          await _fadeAnimationController.forward();
-          _fadeAnimationController.reverse();
-        }
-      },
-      onTapCancel: () {
-        _fadeAnimationController.reverse();
-      },
+      onTapDown: (_) => _onTapDown(),
+      onTapUp: (_) => _onTapUp(),
+      onTapCancel: _onTapCancel,
       child: FadeTransition(opacity: _fadeAnimation, child: widget.child),
     );
   }
+
+  void _onTapDown() => _fadeAnimationController.forward();
+
+  Future<void> _onTapUp() async {
+    widget.onTap?.call();
+    if (_fadeAnimationController.isCompleted) {
+      await _fadeAnimationController.reverse();
+    } else {
+      await _fadeAnimationController.forward();
+      await _fadeAnimationController.reverse();
+    }
+  }
+
+  void _onTapCancel() => _fadeAnimationController.reverse();
 }
