@@ -22,7 +22,9 @@ class _VideoBackgroundState extends State<_VideoBackground>
   @override
   void initState() {
     super.initState();
-    _initControllers();
+    _initAndStartFade();
+    _initVideoControllers();
+    _setUpVideoListeners();
   }
 
   @override
@@ -71,7 +73,7 @@ class _VideoBackgroundState extends State<_VideoBackground>
     );
   }
 
-  void _initControllers() {
+  void _initAndStartFade() {
     _fadeInController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1200),
@@ -83,7 +85,9 @@ class _VideoBackgroundState extends State<_VideoBackground>
     ).animate(CurvedAnimation(parent: _fadeInController, curve: Curves.easeIn));
 
     _fadeInController.forward();
+  }
 
+  void _initVideoControllers() {
     _videoController =
         VideoPlayerController.asset(
             _videoPath,
@@ -102,7 +106,9 @@ class _VideoBackgroundState extends State<_VideoBackground>
           )
           ..setVolume(0)
           ..initialize();
+  }
 
+  void _setUpVideoListeners() {
     _videoController.addListener(() {
       if (!isShowingSecondVideo && _isAtEnd(_videoController)) {
         setState(() {
