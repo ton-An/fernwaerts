@@ -37,8 +37,8 @@ class _VideoBackgroundState extends State<_VideoBackground>
   Widget build(BuildContext context) {
     return Container(
       color: Colors.black,
-      child: Opacity(
-        opacity: _fadeInAnimation.value,
+      child: FadeTransition(
+        opacity: _fadeInAnimation,
         child: Stack(
           children: [
             Positioned.fill(
@@ -82,10 +82,6 @@ class _VideoBackgroundState extends State<_VideoBackground>
       end: 1,
     ).animate(CurvedAnimation(parent: _fadeInController, curve: Curves.easeIn));
 
-    _fadeInController.addListener(() {
-      setState(() {});
-    });
-
     _fadeInController.forward();
 
     _videoController =
@@ -98,6 +94,7 @@ class _VideoBackgroundState extends State<_VideoBackground>
             setState(() {});
             _videoController.play();
           });
+
     _videoController2 =
         VideoPlayerController.asset(
             _videoPath,
