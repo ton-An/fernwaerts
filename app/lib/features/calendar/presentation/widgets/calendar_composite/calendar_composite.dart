@@ -19,7 +19,41 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_layout_render_object_widget.dart';
 
+/// {@template calendar_composite}
+/// A composite widget that combines the [CalendarStepper] and the [Calendar]
+/// view, managing their layout and animations for expansion and collapse.
+///
+/// This widget orchestrates the display of the calendar. The [CalendarStepper]
+/// is always visible, while the [Calendar] view (which shows days, months, or years)
+/// can be expanded or collapsed. The expansion/collapse is animated with a
+/// translation and fade effect.
+///
+/// State Management:
+/// - Listens to [CalendarSelectionTypeCubit] to update the displayed calendar view
+///   (e.g., monthly, yearly) when the selection type changes.
+/// - Listens to [CalendarExpansionCubit] to trigger animations when the calendar
+///   is expanded or collapsed.
+/// - Interacts with [MonthlyCalendarCubit], [YearlyCalendarCubit], and
+///   [DecenniallyCalendarCubit] to ensure the correct time period is displayed
+///   within the [Calendar] view, especially after expansion or selection type changes.
+///
+/// Animations:
+/// - `_translateController` and `_translateAnimation`: Control the vertical
+///   translation of the [Calendar] view during expansion/collapse.
+/// - `_fadeController` and `_fadeAnimation`: Control the fade-in/fade-out of the
+///   [Calendar] view.
+///
+/// Layout:
+/// - Uses a custom [_Layout] widget (a [MultiChildRenderObjectWidget]) to position the
+/// [CalendarStepper] and the [Calendar] view, handling the animated offset.
+///
+/// Sub-components:
+/// - [CalendarStepper]: Allows navigation and toggles expansion.
+/// - [Calendar]: The main calendar display area.
+/// - [_Layout]: Custom rendering logic for positioning children.
+/// {@endtemplate}
 class CalendarComposite extends StatefulWidget {
+  /// {@macro calendar_composite}
   const CalendarComposite({super.key});
 
   @override

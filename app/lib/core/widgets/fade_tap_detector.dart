@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
+/// {@template fade_tap_detector}
+/// A widget that provides tap and long-press detection with a fade animation
+/// on tap-down.
+///
+/// This widget wraps its [child] with a [GestureDetector] to handle tap and
+/// long-press events. When the user taps down on the widget, it animates a
+/// fade effect (reducing opacity). The opacity is restored when the tap is
+/// released or cancelled.
+///
+/// It uses an [AnimationController] and [FadeTransition] to achieve the
+/// fade effect.
+/// {@endtemplate}
 class FadeTapDetector extends StatefulWidget {
+  /// {@macro fade_tap_detector}
   const FadeTapDetector({
     super.key,
     required this.child,
@@ -9,8 +22,13 @@ class FadeTapDetector extends StatefulWidget {
     this.onLongPress,
   });
 
+  /// Callback triggered when the widget is tapped.
   final VoidCallback? onTap;
+
+  /// Callback triggered when the widget is long-pressed.
   final VoidCallback? onLongPress;
+
+  /// The widget below this widget in the tree that receives the tap and fade effect.
   final Widget child;
 
   @override

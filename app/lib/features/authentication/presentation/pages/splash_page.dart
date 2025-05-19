@@ -7,7 +7,19 @@ import 'package:location_history/features/authentication/presentation/pages/auth
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
 
+/// {@template splash_page}
+/// A page displayed during app initialization.
+///
+/// This page is responsible for triggering the initial authentication check
+/// via the [SplashCubit]. Based on the authentication status, it navigates
+/// either to the [MapPage] (if authenticated) or the [AuthenticationPage]
+/// (if not authenticated or an error occurs).
+///
+/// It also handles displaying any failures encountered during the initialization
+/// process using the [InAppNotificationCubit].
+/// {@endtemplate}
 class SplashPage extends StatefulWidget {
+  /// {@macro splash_page}
   const SplashPage({super.key});
 
   static const String pageName = 'splash';

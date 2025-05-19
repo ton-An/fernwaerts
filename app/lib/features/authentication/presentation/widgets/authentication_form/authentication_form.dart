@@ -5,7 +5,15 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 part '_back_button.dart';
 part '_description.dart';
 
+/// {@template authentication_form}
+/// A form widget for authentication purposes.
+///
+/// This widget displays an icon, a label, a description, a list of text fields,
+/// and a button. It can also optionally show a back button and a hint.
+/// The form adapts its layout based on keyboard visibility.
+/// {@endtemplate}
 class AuthenticationForm extends StatelessWidget {
+  /// {@macro authentication_form}
   const AuthenticationForm({
     super.key,
     required this.icon,
@@ -20,15 +28,38 @@ class AuthenticationForm extends StatelessWidget {
     this.hint,
   });
 
+  /// The icon to display at the top of the form.
   final IconData icon;
+
+  /// The main label for the form.
   final String label;
+
+  /// A more detailed description of the form's purpose.
   final String description;
+
+  /// An optional hint displayed below the description.
   final String? hint;
+
+  /// The text to display on the main action button.
   final String buttonText;
+
+  /// A list of [CustomCupertinoTextField] widgets for user input.
   final List<CustomCupertinoTextField> textFields;
+
+  /// Whether the form is currently in a loading state (e.g., submitting data).
+  ///
+  /// If true, the main action button will show a loading indicator.
   final bool isLoading;
+
+  /// Callback triggered when the main action button is pressed.
   final VoidCallback onButtonPressed;
+
+  /// Whether to display a back button at the top left of the form.
   final bool showBackButton;
+
+  /// Callback triggered when the back button is pressed.
+  ///
+  /// This is only relevant if [showBackButton] is true.
   final VoidCallback? onBackPressed;
 
   @override

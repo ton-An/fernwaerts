@@ -11,9 +11,27 @@ import 'package:location_history/features/calendar/presentation/widgets/calendar
 
 part '_months_grid.dart';
 
+/// {@template yearly_calendar}
+/// A calendar widget that displays months within a specific year.
+///
+/// This widget is used to show a grid of months, allowing users to select a month.
+/// It relies on the [YearlyCalendarCubit] to determine the year to display
+/// based on the [yearOffset] and the [CalendarDateSelectionCubit] to handle
+/// month selections.
+///
+/// The actual layout and rendering of the months are handled by the `_MonthsGrid`
+/// private widget, which is contained within a [CalendarViewContainer] for
+/// consistent styling.
+///
+/// Sub-components:
+/// - [_MonthsGrid]: Displays the grid of [BigCalendarCell] widgets for each month.
+/// {@endtemplate}
 class YearlyCalendar extends StatelessWidget {
+  /// {@macro yearly_calendar}
   const YearlyCalendar({super.key, required this.yearOffset});
 
+  /// The offset from the currently selected year to display.
+  /// For example, 0 means the current year, 1 means the next year, -1 means the previous year.
   final int yearOffset;
 
   @override

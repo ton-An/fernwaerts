@@ -18,7 +18,33 @@ part '_sub_page_link.dart';
     - [ ] Find right style for list items and buttons
 */
 
+/// {@template settings_page}
+/// The main page for application settings.
+///
+/// This page provides access to various application settings and information.
+/// It is structured with sections for general settings, open-source information,
+/// and a sign-out button.
+///
+/// The layout consists of:
+/// - **Body**: A scrollable list containing different setting sections and links.
+///   - General settings (placeholder links).
+///   - [OSSInfo] widget displaying open-source information.
+///   - Sign-out button.
+/// - **Footer**: Displays application version and build number (via `_Footer`).
+///
+/// Navigation:
+/// - Tapping on sub-page links (placeholders) would navigate to respective settings screens.
+/// - Tapping the sign-out button logs the user out and navigates to the [AuthenticationPage].
+///
+/// Sub-components:
+/// - [_PageContainer]: Provides the main container styling for the page.
+/// - [_SectionTitle]: Displays titles for different settings sections.
+/// - [_SubPageLink]: Represents a tappable link to a sub-settings page (currently placeholders).
+/// - [_Footer]: Displays application version information.
+/// - [OSSInfo]: A widget to display open-source software information.
+/// {@endtemplate}
 class SettingsPage extends StatelessWidget {
+  /// {@macro settings_page}
   const SettingsPage({super.key});
 
   static const String pageName = 'settings';

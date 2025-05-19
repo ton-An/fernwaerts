@@ -28,18 +28,38 @@ part '_vertical_list_item_divider.dart';
         which includes that the pointer events get interrupted on fade out of the attribution widget
 */
 
+/// {@template location_history_modal}
+/// A draggable modal sheet that displays the user's location history.
+///
+/// This widget allows the user to view their location history in a list format.
+/// It can be dragged to three different heights: small, medium (implicitly),
+/// and large, controlled by a [DraggableScrollableController].
+///
+/// The modal includes a header, a draggable handle, and a scrollable list
+/// of location and activity items.
+/// {@endtemplate}
 class LocationHistoryModal extends StatefulWidget {
+  /// {@macro location_history_modal}
   const LocationHistoryModal({
     super.key,
     required this.scrollController,
     required this.draggableScrollableController,
   });
 
+  /// The [ScrollController] for the list of location history items within the modal.
   final ScrollController scrollController;
+
+  /// The [DraggableScrollableController] that controls the size and position
+  /// of the modal.
   final DraggableScrollableController draggableScrollableController;
 
+  /// The maximum height of the modal, occupying the full screen.
   static const double largeModalHeight = 1;
+
+  /// The default medium height of the modal.
   static const double mediumModalHeight = .6;
+
+  /// The minimum height of the modal when collapsed.
   static const double smallModalHeight = .3;
 
   @override

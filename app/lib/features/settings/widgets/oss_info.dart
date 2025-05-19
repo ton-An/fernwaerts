@@ -6,7 +6,15 @@ import 'package:location_history/core/widgets/fade_tap_detector.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
+/// {@template oss_info}
+/// A widget that displays information about the open-source nature of the app.
+///
+/// It includes a GitHub icon, a title, an explanatory text, and an arrow icon.
+/// Tapping this widget opens the project's GitHub repository in a browser.
+/// The widget has a gradient border and a translucent background.
+/// {@endtemplate}
 class OSSInfo extends StatelessWidget {
+  /// {@macro oss_info}
   const OSSInfo({super.key});
 
   static const String _githubIconPath = 'assets/images/logos/github.svg';

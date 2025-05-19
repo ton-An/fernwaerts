@@ -4,9 +4,22 @@ import 'package:location_history/features/calendar/presentation/cubits/calendar_
 import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_type_state.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
+/// {@template calendar_view_container}
+/// A container widget that provides a common styling for different calendar views
+/// (e.g., monthly, yearly, decennially).
+///
+/// This widget wraps its [child] with padding and a decorated [Container]
+/// (rounded corners, translucent background). The horizontal padding adjusts
+/// based on the current [CalendarSelectionTypeState] to optimize spacing for
+/// different calendar granularities (e.g., less padding for month/year views
+/// which might have wider cells).
+/// {@endtemplate}
 class CalendarViewContainer extends StatelessWidget {
+  /// {@macro calendar_view_container}
   const CalendarViewContainer({super.key, required this.child});
 
+  /// The calendar content (e.g., a grid of days, months, or years) to be displayed
+  /// within this container.
   final Widget child;
 
   @override

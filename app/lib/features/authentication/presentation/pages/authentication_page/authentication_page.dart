@@ -27,7 +27,21 @@ part '_welcome.dart';
 
 enum AuthenticationFormType { signIn, adminSignUp }
 
+/// {@template authentication_page}
+/// The main page for handling user authentication.
+///
+/// This page manages different authentication flows including:
+/// - Welcome screen
+/// - Server URL input
+/// - Sign in
+/// - Initial admin sign up
+///
+/// It uses an [ExpandableCarousel] to navigate between these different
+/// authentication steps and responds to state changes from the [AuthenticationCubit].
+/// A video background is displayed for visual appeal.
+/// {@endtemplate}
 class AuthenticationPage extends StatefulWidget {
+  /// {@macro authentication_page}
   const AuthenticationPage({super.key});
 
   static const String pageName = 'authentication';
