@@ -41,7 +41,7 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
     emit(const EnterServerDetails());
   }
 
-  void toLogInInfo(String serverUrl) async {
+  void toLogInInfo({required String serverUrl}) async {
     emit(const EnterServerDetailsLoading());
 
     final Either<Failure, ServerInfo> isServerReachableEither =
@@ -74,12 +74,12 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
     );
   }
 
-  void signUpAdmin(
-    String username,
-    String email,
-    String password,
-    String repeatedPassword,
-  ) async {
+  void signUpAdmin({
+    required String username,
+    required String email,
+    required String password,
+    required String repeatedPassword,
+  }) async {
     emit(const AdminSignUpLoading());
 
     final Either<Failure, None> signUpEither = await signUpInitialAdmin(
@@ -111,7 +111,7 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
     );
   }
 
-  void signIn(String email, String password) async {
+  void signIn({required String email, required String password}) async {
     emit(const LogInLoading());
 
     final Either<Failure, None> signInEither = await signInUsecase(
