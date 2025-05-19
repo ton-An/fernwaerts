@@ -31,10 +31,6 @@ class _FadeTapDetectorState extends State<FadeTapDetector>
     _fadeAnimation = Tween<double>(begin: 1, end: .8)
         .chain(CurveTween(curve: Curves.easeInOut))
         .animate(_fadeAnimationController);
-
-    _fadeAnimationController.addListener(() {
-      setState(() {});
-    });
   }
 
   @override
@@ -57,7 +53,7 @@ class _FadeTapDetectorState extends State<FadeTapDetector>
       onTapCancel: () {
         _fadeAnimationController.reverse();
       },
-      child: Opacity(opacity: _fadeAnimation.value, child: widget.child),
+      child: FadeTransition(opacity: _fadeAnimation, child: widget.child),
     );
   }
 }
