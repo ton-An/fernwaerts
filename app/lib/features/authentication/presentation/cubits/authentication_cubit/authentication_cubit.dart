@@ -103,6 +103,7 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
         emit(AuthenticationFailure(failure: failure));
       },
       (None none) async {
+        emit(const AuthenticationSuccessful());
         _requestNecessaryPermissions();
       },
     );
@@ -128,6 +129,7 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
         emit(AuthenticationFailure(failure: failure));
       },
       (None none) async {
+        emit(const AuthenticationSuccessful());
         _requestNecessaryPermissions();
       },
     );
