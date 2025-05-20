@@ -111,7 +111,7 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
 
   /// Sign in an existing user with [email] and [password] on the configured server
   ///
-  /// /// Emits:
+  /// Emits:
   /// - [AuthenticationLoading] while processing
   /// - [AuthenticationSuccessful] if successful
   /// - [AuthenticationFailure] if an error occurs
