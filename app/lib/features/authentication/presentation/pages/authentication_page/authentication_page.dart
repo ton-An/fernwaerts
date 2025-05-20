@@ -140,12 +140,12 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       _animateToPage(pageIndex: 2, theme: theme);
     }
 
-    if (authState is LogInSuccessful || authState is AdminSignUpSuccessful) {
+    if (authState is AuthenticationSuccessful) {
       TextInput.finishAutofillContext();
       context.go(MapPage.route);
     }
 
-    if (authState is AuthenticationError) {
+    if (authState is AuthenticationFailure) {
       context.read<InAppNotificationCubit>().sendFailureNotification(
         authState.failure,
       );

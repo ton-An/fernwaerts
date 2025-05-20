@@ -53,7 +53,7 @@ class _SignInFormState extends State<_SignInForm> {
           onBackPressed: () {
             context.read<AuthenticationCubit>().toServerDetails();
           },
-          isLoading: state is LogInLoading,
+          isLoading: state is AuthenticationLoading,
         );
       },
     );

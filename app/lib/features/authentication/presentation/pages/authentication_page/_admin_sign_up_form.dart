@@ -72,7 +72,7 @@ class _AdminSignUpFormState extends State<_AdminSignUpForm> {
           onBackPressed: () {
             context.read<AuthenticationCubit>().toServerDetails();
           },
-          isLoading: state is AdminSignUpLoading,
+          isLoading: state is AuthenticationLoading,
         );
       },
     );
