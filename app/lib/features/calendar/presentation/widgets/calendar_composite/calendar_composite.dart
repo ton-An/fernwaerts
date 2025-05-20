@@ -17,7 +17,7 @@ import 'package:location_history/features/calendar/presentation/widgets/calendar
 import 'package:location_history/features/calendar/presentation/widgets/calendar_stepper/calendar_stepper.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
-part '_layout_render_object_widget.dart';
+part '_layout.dart';
 
 /// {@template calendar_composite}
 /// A composite widget that combines the [CalendarStepper] and the [Calendar]
