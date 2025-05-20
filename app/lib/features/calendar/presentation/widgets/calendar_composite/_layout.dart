@@ -1,7 +1,7 @@
 part of 'calendar_composite.dart';
 
-class _LayoutRenderObjectWidget extends MultiChildRenderObjectWidget {
-  const _LayoutRenderObjectWidget({
+class _Layout extends MultiChildRenderObjectWidget {
+  const _Layout({
     required super.children,
     required this.itemSpacing,
     required this.calendarOffset,
@@ -77,7 +77,6 @@ class _LayoutRenderObject extends RenderBox
         childParentData.offset = Offset(0, yOffset);
         yOffset += child.size.height;
         yOffset += itemSpacing;
-        // yOffset += calendarOffset;
       }
 
       maxWidth = max(maxWidth, child.size.width);

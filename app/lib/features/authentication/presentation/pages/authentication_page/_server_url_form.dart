@@ -34,11 +34,11 @@ class _ServerUrlFormState extends State<_ServerUrlForm> {
             ),
           ],
           onButtonPressed: () {
-            context.read<AuthenticationCubit>().toLogInInfo(
-              _urlEditController.text,
+            context.read<AuthenticationCubit>().toAuthDetails(
+              serverUrl: _urlEditController.text,
             );
           },
-          isLoading: state is EnterServerDetailsLoading,
+          isLoading: state is AuthenticationLoading,
         );
       },
     );

@@ -10,10 +10,15 @@ import 'package:location_history/features/location_tracking/domain/usecases/init
 
 /* 
   To-Do:
-    - [ ] Clean up toLogInInfo method (de-nest)
+    - [ ] Add unit tests
 */
 
+/// {@template splash_cubit}
+/// Manages the application initialization flow including server connection,
+/// authentication verification, permission requests, and location tracking setup.
+/// {@endtemplate}
 class SplashCubit extends Cubit<SplashState> {
+  /// {@macro splash_cubit}
   SplashCubit({
     required this.initSavedServerConnection,
     required this.isSignedInUsecase,
@@ -26,49 +31,71 @@ class SplashCubit extends Cubit<SplashState> {
   final RequestNecessaryPermissions requestNecessaryPermissions;
   final InitBackgroundLocationTracking initBackgroundLocationTracking;
 
-  void initAndCheckAuth() async {
+  /// Initiates the app startup sequence and determines the initial application state.
+  ///
+  /// This method follows these steps:
+  /// 1. Attempts to initialize any saved server connection
+  /// 2. If successful, verifies user authentication
+  /// 3. If authenticated, requests permissions and initializes location tracking
+  ///
+  /// The method will always emit either [SplashAuthenticationRequired] or
+  /// [SplashAuthenticationComplete] as the final state. The [SplashFailure]s
+  /// main purpose is to display errors to the user.
+  ///
+  /// Emits:
+  /// - [SplashLoading] during initialization
+  /// - [SplashAuthenticationRequired] if no server connection or not authenticated
+  /// - [SplashAuthenticationComplete] if authentication is successful
+  /// - [SplashFailure] if any errors occur during the process
+  void determineInitialAppState() async {
     emit(const SplashLoading());
 
-    final Either<Failure, None> initServerConnectionEither =
+    final Either<Failure, None> initSavedConnectionEither =
         await initSavedServerConnection();
 
-    initServerConnectionEither.fold(
+    initSavedConnectionEither.fold(_handleConnectionFailure, (None none) async {
+      _checkAuthentication();
+    });
+  }
+
+  void _handleConnectionFailure(Failure failure) {
+    if (failure is! NoSavedServerFailure) {
+      emit(SplashFailure(failure: failure));
+    }
+
+    emit(const SplashAuthenticationRequired());
+  }
+
+  void _checkAuthentication() async {
+    bool isSignedIn = await isSignedInUsecase();
+
+    if (isSignedIn) {
+      emit(const SplashAuthenticationComplete());
+      _requestNecessaryPermissions();
+    } else {
+      emit(const SplashAuthenticationRequired());
+    }
+  }
+
+  void _requestNecessaryPermissions() async {
+    final Either<Failure, None> requestPermissionsEither =
+        await requestNecessaryPermissions();
+
+    requestPermissionsEither.fold(
       (Failure failure) {
-        if (failure is NoSavedServerFailure) {
-          emit(const SplashAuthenticationRequired());
-        } else {
-          emit(SplashFailure(failure: failure));
-        }
-
-        return false;
+        emit(SplashFailure(failure: failure));
       },
-
-      (None none) async {
-        bool isSignedIn = await isSignedInUsecase();
-
-        if (isSignedIn) {
-          final Either<Failure, None> requestPermissionsEither =
-              await requestNecessaryPermissions();
-
-          requestPermissionsEither.fold((Failure failure) {
-            emit(SplashFailure(failure: failure));
-          }, (None none) {});
-
-          final initTrackingEither = await initBackgroundLocationTracking();
-
-          initTrackingEither.fold(
-            (Failure failure) {
-              emit(SplashFailure(failure: failure));
-              emit(const SplashAuthenticationComplete());
-            },
-            (None none) {
-              emit(const SplashAuthenticationComplete());
-            },
-          );
-        } else {
-          emit(const SplashAuthenticationRequired());
-        }
+      (None none) {
+        _initBackgroundLocationTracking();
       },
     );
+  }
+
+  void _initBackgroundLocationTracking() async {
+    final initTrackingEither = await initBackgroundLocationTracking();
+
+    initTrackingEither.fold((Failure failure) {
+      emit(SplashFailure(failure: failure));
+    }, (_) {});
   }
 }

@@ -3,114 +3,110 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:in_date_utils/in_date_utils.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_state.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_type_state.dart';
+import 'package:location_history/features/calendar/presentation/widgets/calendar_composite/calendar_composite.dart';
 
 class CalendarDateSelectionCubit extends Cubit<CalendarDateSelectionState> {
   CalendarDateSelectionCubit()
     : super(CalendarDaySelected(selectedDate: DTU.startOfDay(DateTime.now())));
 
-  bool hasMovedRange = false;
+  bool _hasShiftedSelection = false;
 
-  void resetHasMovedRange() {
-    hasMovedRange = false;
+  /// Indicates if the selection has been shifted. This information
+  /// is needed to decide if the calendar view needs to be updated
+  /// when the [CalendarComposite] gets expanded
+  bool get hasShiftedSelection => _hasShiftedSelection;
+
+  /// Resets the shifted selection flag.
+  ///
+  /// Used to track when a selection has been programmatically shifted
+  /// rather than directly selected by a user.
+  void resetHasShiftedSelection() {
+    _hasShiftedSelection = false;
   }
 
-  void moveRange({required bool isForward}) {
-    hasMovedRange = true;
-    if (state is CalendarDaySelected) {
-      _moveDaySelection((state as CalendarDaySelected).selectedDate, isForward);
-    } else if (state is CalendarRangeSelected) {
-      final DateTime? startDate = (state as CalendarRangeSelected).startDate;
-      final DateTime? endDate = (state as CalendarRangeSelected).endDate;
-
-      if (startDate == null && endDate == null) {
-        return;
-      }
-
-      if (startDate == null && endDate != null ||
-          startDate != null && endDate == null) {
-        final DateTime toBeMovedDate = startDate ?? endDate!;
-        _moveDaySelection(toBeMovedDate, isForward);
-      }
-
-      late DateTime movedStartDate;
-      late DateTime movedEndDate;
-
-      if (state is CalendarCustomRangeSelected) {
-        final Duration dateDifference = endDate!.difference(startDate!);
-        movedStartDate =
-            isForward
-                ? startDate.add(dateDifference)
-                : startDate.subtract(dateDifference);
-        movedEndDate =
-            isForward
-                ? endDate.add(dateDifference)
-                : endDate.subtract(dateDifference);
-        emit(
-          CalendarCustomRangeSelected(
-            startDate: movedStartDate,
-            endDate: movedEndDate,
-          ),
-        );
-      } else if (state is CalendarWeekSelected) {
-        movedStartDate =
-            isForward
-                ? DTU.addWeeks(startDate!, 1)
-                : DTU.addWeeks(startDate!, -1);
-        movedEndDate =
-            isForward ? DTU.addWeeks(endDate!, 1) : DTU.addWeeks(endDate!, -1);
-
-        emit(
-          CalendarWeekSelected(
-            startDate: movedStartDate,
-            endDate: movedEndDate,
-          ),
-        );
-      } else if (state is CalendarMonthSelected) {
-        movedStartDate =
-            isForward
-                ? DTU.addMonths(startDate!, 1)
-                : DTU.addMonths(startDate!, -1);
-
-        movedEndDate =
-            isForward
-                ? _addMonthsToRangeEnd(endDate!, 1)
-                : _addMonthsToRangeEnd(endDate!, -1);
-
-        emit(
-          CalendarMonthSelected(
-            startDate: movedStartDate,
-            endDate: movedEndDate,
-          ),
-        );
-      } else if (state is CalendarYearSelected) {
-        movedStartDate =
-            isForward
-                ? DTU.addYears(startDate!, 1)
-                : DTU.addYears(startDate!, -1);
-        movedEndDate =
-            isForward ? DTU.addYears(endDate!, 1) : DTU.addYears(endDate!, -1);
-
-        emit(
-          CalendarYearSelected(
-            startDate: movedStartDate,
-            endDate: movedEndDate,
-          ),
-        );
-      }
+  /// Updates the calendar selection based on the provided date and selection type.
+  ///
+  /// Parameters:
+  /// - [selectedDate]: The date to select.
+  /// - [type]: The type of selection (day, range, week, month, year).
+  ///
+  /// Emits:
+  /// - [CalendarDaySelected] when a day is selected.
+  /// - [CalendarCustomRangeSelected] when a range is selected.
+  /// - [CalendarWeekSelected] when a week is selected.
+  /// - [CalendarMonthSelected] when a month is selected.
+  /// - [CalendarYearSelected] when a year is selected.
+  void updateSelection({
+    required DateTime selectedDate,
+    required CalendarSelectionTypeState type,
+  }) {
+    if (type is CalendarDaySelection) {
+      _selectDay(selectedDate: selectedDate);
+    } else if (type is CalendarRangeSelection) {
+      _selectRange(selectedDate: selectedDate);
+    } else if (type is CalendarWeekSelection) {
+      _selectWeek(selectedDate: selectedDate);
+    } else if (type is CalendarMonthSelection) {
+      _selectMonth(selectedDate: selectedDate);
+    } else if (type is CalendarYearSelection) {
+      _selectYear(selectedDate: selectedDate);
     }
   }
 
-  void selectDate(DateTime selectedDate, CalendarSelectionTypeState type) {
-    if (type is CalendarDaySelection) {
-      _selectDay(selectedDate);
-    } else if (type is CalendarRangeSelection) {
-      _selectRange(selectedDate);
-    } else if (type is CalendarWeekSelection) {
-      _selectWeek(selectedDate);
-    } else if (type is CalendarMonthSelection) {
-      _selectMonth(selectedDate);
-    } else if (type is CalendarYearSelection) {
-      _selectYear(selectedDate);
+  /// Shifts the current selection forward or backward in time.
+  ///
+  /// This method maintains the current selection pattern (day, range, week, etc.)
+  /// while moving it in the specified direction.
+  ///
+  /// Parameters:
+  /// - [forward]: When true, shifts the selection forward in time.
+  ///   When false, shifts the selection backward in time.
+  ///
+  /// Emits:
+  /// - [CalendarDaySelected] when a day is selected.
+  /// - [CalendarCustomRangeSelected] when a range is selected.
+  /// - [CalendarWeekSelected] when a week is selected.
+  /// - [CalendarMonthSelected] when a month is selected.
+  /// - [CalendarYearSelected] when a year is selected.
+  void shiftSelection({required bool forward}) {
+    _hasShiftedSelection = true;
+
+    if (state is CalendarDaySelected) {
+      _shiftDay(
+        selectedDate: (state as CalendarDaySelected).selectedDate,
+        forward: forward,
+      );
+    } else if (state is CalendarRangeSelected) {
+      _shiftRange(forward: forward);
+    }
+  }
+
+  void _shiftRange({required bool forward}) {
+    final DateTime? startDate = (state as CalendarRangeSelected).startDate;
+    final DateTime? endDate = (state as CalendarRangeSelected).endDate;
+
+    if (startDate == null && endDate == null) {
+      return;
+    }
+
+    if (startDate == null && endDate != null ||
+        startDate != null && endDate == null) {
+      final DateTime toBeShiftedDate = startDate ?? endDate!;
+      _shiftDay(selectedDate: toBeShiftedDate, forward: forward);
+    }
+
+    if (state is CalendarCustomRangeSelected) {
+      _shiftCustomRange(
+        startDate: startDate!,
+        endDate: endDate!,
+        forward: forward,
+      );
+    } else if (state is CalendarWeekSelected) {
+      _shiftWeek(startDate: startDate!, endDate: endDate!, forward: forward);
+    } else if (state is CalendarMonthSelected) {
+      _shiftMonth(startDate: startDate!, endDate: endDate!, forward: forward);
+    } else if (state is CalendarYearSelected) {
+      _shiftYear(startDate: startDate!, endDate: endDate!, forward: forward);
     }
   }
 
@@ -121,20 +117,100 @@ class CalendarDateSelectionCubit extends Cubit<CalendarDateSelectionState> {
     return newDate;
   }
 
-  void _moveDaySelection(DateTime selectedDate, bool isForward) {
-    const Duration durationOfDay = Duration(days: 1);
-    final DateTime movedDate =
-        isForward
-            ? selectedDate.add(durationOfDay)
-            : selectedDate.subtract(durationOfDay);
-    emit(CalendarDaySelected(selectedDate: movedDate));
+  void _shiftCustomRange({
+    required DateTime startDate,
+    required DateTime endDate,
+    required bool forward,
+  }) {
+    final Duration dateDifference = endDate.difference(startDate);
+    final DateTime shiftedStartDate =
+        forward
+            ? startDate.add(dateDifference)
+            : startDate.subtract(dateDifference);
+    final DateTime shiftedEndDate =
+        forward
+            ? endDate.add(dateDifference)
+            : endDate.subtract(dateDifference);
+
+    emit(
+      CalendarCustomRangeSelected(
+        startDate: shiftedStartDate,
+        endDate: shiftedEndDate,
+      ),
+    );
   }
 
-  void _selectDay(DateTime selectedDate) {
+  void _shiftWeek({
+    required DateTime startDate,
+    required DateTime endDate,
+    required bool forward,
+  }) {
+    final DateTime shiftedStartDate =
+        forward ? DTU.addWeeks(startDate, 1) : DTU.addWeeks(startDate, -1);
+    final DateTime shiftedEndDate =
+        forward ? DTU.addWeeks(endDate, 1) : DTU.addWeeks(endDate, -1);
+
+    emit(
+      CalendarWeekSelected(
+        startDate: shiftedStartDate,
+        endDate: shiftedEndDate,
+      ),
+    );
+  }
+
+  void _shiftMonth({
+    required DateTime startDate,
+    required DateTime endDate,
+    required bool forward,
+  }) {
+    final DateTime shiftedStartDate =
+        forward ? DTU.addMonths(startDate, 1) : DTU.addMonths(startDate, -1);
+
+    final DateTime shiftedEndDate =
+        forward
+            ? _addMonthsToRangeEnd(endDate, 1)
+            : _addMonthsToRangeEnd(endDate, -1);
+
+    emit(
+      CalendarMonthSelected(
+        startDate: shiftedStartDate,
+        endDate: shiftedEndDate,
+      ),
+    );
+  }
+
+  void _shiftYear({
+    required DateTime startDate,
+    required DateTime endDate,
+    required bool forward,
+  }) {
+    final DateTime shiftedStartDate =
+        forward ? DTU.addYears(startDate, 1) : DTU.addYears(startDate, -1);
+    final DateTime shiftedEndDate =
+        forward ? DTU.addYears(endDate, 1) : DTU.addYears(endDate, -1);
+
+    emit(
+      CalendarYearSelected(
+        startDate: shiftedStartDate,
+        endDate: shiftedEndDate,
+      ),
+    );
+  }
+
+  void _shiftDay({required DateTime selectedDate, required bool forward}) {
+    const Duration durationOfDay = Duration(days: 1);
+    final DateTime shiftedDay =
+        forward
+            ? selectedDate.add(durationOfDay)
+            : selectedDate.subtract(durationOfDay);
+    emit(CalendarDaySelected(selectedDate: shiftedDay));
+  }
+
+  void _selectDay({required DateTime selectedDate}) {
     emit(CalendarDaySelected(selectedDate: selectedDate));
   }
 
-  void _selectRange(DateTime selectedDate) {
+  void _selectRange({required DateTime selectedDate}) {
     if (state is! CalendarCustomRangeSelected) {
       emit(CalendarCustomRangeSelected(startDate: selectedDate, endDate: null));
       return;
@@ -174,7 +250,7 @@ class CalendarDateSelectionCubit extends Cubit<CalendarDateSelectionState> {
     }
   }
 
-  void _selectWeek(DateTime selectedDate) {
+  void _selectWeek({required DateTime selectedDate}) {
     final DateTime startOfWeek = selectedDate.subtract(
       Duration(days: selectedDate.weekday - 1),
     );
@@ -183,7 +259,7 @@ class CalendarDateSelectionCubit extends Cubit<CalendarDateSelectionState> {
     emit(CalendarWeekSelected(startDate: startOfWeek, endDate: endOfWeek));
   }
 
-  void _selectMonth(DateTime selectedDate) {
+  void _selectMonth({required DateTime selectedDate}) {
     final DateTime startOfMonth = DateTime(
       selectedDate.year,
       selectedDate.month,
@@ -196,7 +272,7 @@ class CalendarDateSelectionCubit extends Cubit<CalendarDateSelectionState> {
     emit(CalendarMonthSelected(startDate: startOfMonth, endDate: endOfMonth));
   }
 
-  void _selectYear(DateTime selectedDate) {
+  void _selectYear({required DateTime selectedDate}) {
     final DateTime startOfYear = DateTime(selectedDate.year);
     final DateTime endOfYear = DateTime(
       selectedDate.year + 1,

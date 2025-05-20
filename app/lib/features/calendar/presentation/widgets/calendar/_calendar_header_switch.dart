@@ -14,24 +14,36 @@ class _SwitchState extends State<_Switch> with SingleTickerProviderStateMixin {
   late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;
 
+  bool _didInitAnimations = false;
+
   @override
-  void initState() {
-    super.initState();
-    _fadeController = AnimationController(
-      duration: const Duration(milliseconds: 250),
-      reverseDuration: const Duration(milliseconds: 280),
-      vsync: this,
-    );
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-    _fadeAnimation = CurvedAnimation(
-      parent: _fadeController,
-      curve: Curves.easeOut,
-      reverseCurve: Curves.easeIn,
-    ).drive(Tween(begin: 1, end: .5));
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    _fadeController.addListener(() {
-      setState(() {});
-    });
+    if (!_didInitAnimations) {
+      _fadeController = AnimationController(
+        duration: theme.durations.xShort,
+        reverseDuration: theme.durations.xShort,
+        vsync: this,
+      );
+
+      _fadeAnimation = CurvedAnimation(
+        parent: _fadeController,
+        curve: Curves.easeOut,
+        reverseCurve: Curves.easeIn,
+      ).drive(Tween(begin: 1, end: .5));
+
+      _fadeController.addListener(() {
+        setState(() {});
+      });
+
+      _didInitAnimations = true;
+    } else {
+      _fadeController.duration = theme.durations.xShort;
+      _fadeController.reverseDuration = theme.durations.xShort;
+    }
   }
 
   @override

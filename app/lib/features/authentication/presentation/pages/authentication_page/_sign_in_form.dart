@@ -46,14 +46,14 @@ class _SignInFormState extends State<_SignInForm> {
           ],
           onButtonPressed: () {
             context.read<AuthenticationCubit>().signIn(
-              _emailController.text,
-              _passwordController.text,
+              email: _emailController.text,
+              password: _passwordController.text,
             );
           },
           onBackPressed: () {
             context.read<AuthenticationCubit>().toServerDetails();
           },
-          isLoading: state is LogInLoading,
+          isLoading: state is AuthenticationLoading,
         );
       },
     );

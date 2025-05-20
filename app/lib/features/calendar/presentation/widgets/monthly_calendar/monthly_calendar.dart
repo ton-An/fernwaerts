@@ -13,12 +13,33 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_day_cell.dart';
 part '_days_grid.dart';
+part '_days_grid_builder.dart';
+part '_days_grid_params.dart';
 part '_week_number_cell.dart';
 part '_weekdays_header.dart';
 
+/// {@template monthly_calendar}
+/// A calendar widget that displays days of a specific month.
+///
+/// This widget shows a grid of days for a given month, determined by the
+/// [monthOffset] from the currently selected month in [MonthlyCalendarCubit].
+/// It includes a header for weekdays and the main grid for days.
+/// User interactions (tapping on a day) are handled by [CalendarDateSelectionCubit].
+///
+/// The overall structure is wrapped in a [CalendarViewContainer] for consistent styling.
+///
+/// Sub-components:
+/// - [_WeekdaysHeader]: Displays the row of weekday abbreviations (e.g., Mon, Tue).
+/// - [_DaysGrid]: Displays the grid of `_DayCell` and `_WeekNumberCell` widgets.
+///   - [_DayCell]: Represents a single day in the month.
+///   - [_WeekNumberCell]: Displays the week number for each row of days.
+/// {@endtemplate}
 class MonthlyCalendar extends StatelessWidget {
+  /// {@macro monthly_calendar}
   const MonthlyCalendar({super.key, required this.monthOffset});
 
+  /// The offset from the currently selected month to display.
+  /// For example, 0 means the current month, 1 means the next month, -1 means the previous month.
   final int monthOffset;
 
   @override

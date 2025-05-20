@@ -2,7 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:super_keyboard/super_keyboard.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
+part '_back_button.dart';
+part '_description.dart';
+
+/// {@template authentication_form}
+/// A form widget for authentication purposes.
+///
+/// This widget displays an icon, a label, a description, a list of text fields,
+/// and a button. It can also optionally show a back button and a hint.
+/// The form adapts its layout based on keyboard visibility.
+/// {@endtemplate}
 class AuthenticationForm extends StatelessWidget {
+  /// {@macro authentication_form}
   const AuthenticationForm({
     super.key,
     required this.icon,
@@ -17,15 +28,38 @@ class AuthenticationForm extends StatelessWidget {
     this.hint,
   });
 
+  /// The icon to display at the top of the form.
   final IconData icon;
+
+  /// The main label for the form.
   final String label;
+
+  /// A more detailed description of the form's purpose.
   final String description;
+
+  /// An optional hint displayed below the description.
   final String? hint;
+
+  /// The text to display on the main action button.
   final String buttonText;
+
+  /// A list of [CustomCupertinoTextField] widgets for user input.
   final List<CustomCupertinoTextField> textFields;
+
+  /// Whether the form is currently in a loading state (e.g., submitting data).
+  ///
+  /// If true, the main action button will show a loading indicator.
   final bool isLoading;
+
+  /// Callback triggered when the main action button is pressed.
   final VoidCallback onButtonPressed;
+
+  /// Whether to display a back button at the top left of the form.
   final bool showBackButton;
+
+  /// Callback triggered when the back button is pressed.
+  ///
+  /// This is only relevant if [showBackButton] is true.
   final VoidCallback? onBackPressed;
 
   @override
@@ -52,60 +86,17 @@ class AuthenticationForm extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (showBackButton) ...[
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: SmallIconButton(
-                    icon: CupertinoIcons.back,
-                    alignmentOffset: const Offset(-1, 0),
-                    onPressed: onBackPressed ?? () {},
-                  ),
-                ),
-                const XTinyGap(),
-              ],
+              if (showBackButton) _BackButton(onPressed: onBackPressed),
               Icon(
                 icon,
                 color: theme.colors.primary.withValues(alpha: .6),
                 size: 82,
               ),
-              AnimatedOpacity(
-                opacity: isKeyboardVisible ? 0 : 1,
-                duration: const Duration(milliseconds: 600),
-                curve: Curves.easeInOut,
-                child: AnimatedSize(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeOut,
-                  child: SizedBox(
-                    height: isKeyboardVisible ? 0 : null,
-                    child: Column(
-                      children: [
-                        const MediumGap(),
-                        Text(
-                          label,
-                          textAlign: TextAlign.center,
-                          style: theme.text.largeTitle.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SmallGap(),
-                        Text(
-                          description,
-                          textAlign: TextAlign.center,
-                          style: theme.text.body.copyWith(height: 1.45),
-                        ),
-                        if (hint != null)
-                          Text(
-                            hint!,
-                            textAlign: TextAlign.center,
-                            style: theme.text.body.copyWith(
-                              height: 1.45,
-                              color: theme.colors.text.withValues(alpha: .5),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                ),
+              _Description(
+                label: label,
+                description: description,
+                hint: hint,
+                isKeyboardVisible: isKeyboardVisible,
               ),
               const XMediumGap(),
               for (final textField in textFields) ...[
@@ -119,7 +110,7 @@ class AuthenticationForm extends StatelessWidget {
                 isLoading: isLoading,
               ),
               AnimatedSize(
-                duration: const Duration(milliseconds: 300),
+                duration: theme.durations.medium,
                 curve: Curves.easeOut,
                 child: SizedBox(
                   height: isKeyboardVisible ? 0 : theme.spacing.medium,

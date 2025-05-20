@@ -63,16 +63,16 @@ class _AdminSignUpFormState extends State<_AdminSignUpForm> {
           ],
           onButtonPressed: () {
             context.read<AuthenticationCubit>().signUpAdmin(
-              _usernameController.text,
-              _emailController.text,
-              _passwordController.text,
-              _confirmPasswordController.text,
+              username: _usernameController.text,
+              email: _emailController.text,
+              password: _passwordController.text,
+              repeatedPassword: _confirmPasswordController.text,
             );
           },
           onBackPressed: () {
             context.read<AuthenticationCubit>().toServerDetails();
           },
-          isLoading: state is AdminSignUpLoading,
+          isLoading: state is AuthenticationLoading,
         );
       },
     );

@@ -102,7 +102,7 @@ class _DismissibleState extends State<_Dismissible>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context); // See AutomaticKeepAliveClientMixin.
+    super.build(context);
 
     return GestureDetector(
       onVerticalDragStart: _handleDragStart,

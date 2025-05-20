@@ -4,11 +4,22 @@ import 'package:location_history/features/in_app_notification/presentation/cubit
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_states.dart';
 import 'package:location_history/features/in_app_notification/presentation/widgets/in_app_notification/in_app_notification.dart';
 
-/// __In App Notification Listener__ manages the overlay for [InAppNotification]s and
-/// works in conjunction with [InAppNotificationCubit]
+/// {@template in_app_notification_listener}
+/// A widget that listens to [InAppNotificationCubit] states and displays
+/// in-app notifications accordingly.
+///
+/// This widget wraps its [child] and uses a [BlocListener] to observe
+/// [InAppNotificationState] changes. When an [InAppNotificationInitiating]
+/// state is emitted, it creates an [OverlayEntry] with an [InAppNotification]
+/// widget and triggers the cubit to deliver it. When an
+/// [InAppNotificationDelivering] state is emitted, it inserts the notification
+/// into the [Overlay].
+/// {@endtemplate}
 class InAppNotificationListener extends StatelessWidget {
+  /// {@macro in_app_notification_listener}
   const InAppNotificationListener({super.key, required this.child});
 
+  /// The widget below this widget in the tree.
   final Widget child;
 
   @override

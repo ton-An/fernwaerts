@@ -9,84 +9,36 @@ class _VideoBackground extends StatefulWidget {
 
 class _VideoBackgroundState extends State<_VideoBackground>
     with SingleTickerProviderStateMixin {
+  static const String _videoPath = 'assets/videos/forest_aerial.mp4';
+
   late AnimationController _fadeInController;
   late Animation<double> _fadeInAnimation;
   late VideoPlayerController _videoController;
   late VideoPlayerController _videoController2;
+  late Duration _transitionDuration;
 
-  static const transitionDuration = Duration(milliseconds: 3000);
-
+  bool _didInitAnimations = false;
   bool isShowingSecondVideo = false;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-    _fadeInController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1200),
-    );
+    if (!_didInitAnimations) {
+      final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    _fadeInAnimation = Tween<double>(
-      begin: 0,
-      end: 1,
-    ).animate(CurvedAnimation(parent: _fadeInController, curve: Curves.easeIn));
+      _transitionDuration = theme.durations.huge * 2;
 
-    _fadeInController.addListener(() {
-      setState(() {});
-    });
-
-    _fadeInController.forward();
-
-    _videoController =
-        VideoPlayerController.asset(
-            'assets/videos/forest_aerial.mp4',
-            videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
-          )
-          ..setVolume(0)
-          ..initialize().then((_) {
-            setState(() {});
-            _videoController.play();
-          });
-    _videoController2 =
-        VideoPlayerController.asset(
-            'assets/videos/forest_aerial.mp4',
-            videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
-          )
-          ..setVolume(0)
-          ..initialize();
-
-    _videoController.addListener(() {
-      if (!isShowingSecondVideo && _isAtEnd(_videoController)) {
-        setState(() {
-          isShowingSecondVideo = true;
-        });
-        _videoController2.play();
-
-        Future.delayed(transitionDuration).then((_) {
-          _videoController.seekTo(Duration.zero);
-          _videoController.pause();
-        });
-      }
-    });
-
-    _videoController2.addListener(() {
-      if (isShowingSecondVideo && _isAtEnd(_videoController2)) {
-        setState(() {
-          isShowingSecondVideo = false;
-        });
-        _videoController.play();
-
-        Future.delayed(transitionDuration).then((_) {
-          _videoController2.seekTo(Duration.zero);
-          _videoController2.pause();
-        });
-      }
-    });
+      _initAndStartFade(theme: theme);
+      _initVideoControllers();
+      _setUpVideoListeners();
+      _didInitAnimations = true;
+    }
   }
 
   @override
   void dispose() {
+    _fadeInController.dispose();
     _videoController.dispose();
     _videoController2.dispose();
     super.dispose();
@@ -96,8 +48,8 @@ class _VideoBackgroundState extends State<_VideoBackground>
   Widget build(BuildContext context) {
     return Container(
       color: Colors.black,
-      child: Opacity(
-        opacity: _fadeInAnimation.value,
+      child: FadeTransition(
+        opacity: _fadeInAnimation,
         child: Stack(
           children: [
             Positioned.fill(
@@ -118,7 +70,7 @@ class _VideoBackgroundState extends State<_VideoBackground>
                   width: _videoController2.value.size.width,
                   child: AnimatedOpacity(
                     opacity: isShowingSecondVideo ? 1 : 0,
-                    duration: transitionDuration,
+                    duration: _transitionDuration,
                     child: VideoPlayer(_videoController2),
                   ),
                 ),
@@ -130,9 +82,74 @@ class _VideoBackgroundState extends State<_VideoBackground>
     );
   }
 
-  bool _isAtEnd(VideoPlayerController controller) {
+  void _initAndStartFade({required WebfabrikThemeData theme}) {
+    _fadeInController = AnimationController(
+      vsync: this,
+      duration: theme.durations.xxLong,
+    );
+
+    _fadeInAnimation = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(CurvedAnimation(parent: _fadeInController, curve: Curves.easeIn));
+
+    _fadeInController.forward();
+  }
+
+  void _initVideoControllers() {
+    _videoController =
+        VideoPlayerController.asset(
+            _videoPath,
+            videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+          )
+          ..setVolume(0)
+          ..initialize().then((_) {
+            setState(() {});
+            _videoController.play();
+          });
+
+    _videoController2 =
+        VideoPlayerController.asset(
+            _videoPath,
+            videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+          )
+          ..setVolume(0)
+          ..initialize();
+  }
+
+  void _setUpVideoListeners() {
+    _videoController.addListener(() {
+      if (!isShowingSecondVideo && _isControllerAtEnd(_videoController)) {
+        setState(() {
+          isShowingSecondVideo = true;
+        });
+        _videoController2.play();
+
+        Future.delayed(_transitionDuration).then((_) {
+          _videoController.seekTo(Duration.zero);
+          _videoController.pause();
+        });
+      }
+    });
+
+    _videoController2.addListener(() {
+      if (isShowingSecondVideo && _isControllerAtEnd(_videoController2)) {
+        setState(() {
+          isShowingSecondVideo = false;
+        });
+        _videoController.play();
+
+        Future.delayed(_transitionDuration).then((_) {
+          _videoController2.seekTo(Duration.zero);
+          _videoController2.pause();
+        });
+      }
+    });
+  }
+
+  bool _isControllerAtEnd(VideoPlayerController controller) {
     return controller.value.position.inSeconds != 0 &&
         controller.value.position.inSeconds >=
-            controller.value.duration.inSeconds - transitionDuration.inSeconds;
+            controller.value.duration.inSeconds - _transitionDuration.inSeconds;
   }
 }

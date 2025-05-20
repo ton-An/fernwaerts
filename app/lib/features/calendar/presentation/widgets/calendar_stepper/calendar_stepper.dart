@@ -12,9 +12,33 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 part '_date_button.dart';
 part '_switch.dart';
 
+/// {@template calendar_stepper}
+/// A widget that allows users to navigate between different time periods in the calendar.
+///
+/// It consists of:
+/// - **Previous Button**: Navigates to the previous time period (e.g., previous month, year).
+/// - **Date Display Button**: Shows the currently selected date/range and toggles the calendar expansion.
+/// - **Next Button**: Navigates to the next time period.
+///
+/// The stepper uses a [ClipRRect] for rounded corners and a [BackdropFilter]
+/// for a blurred background effect. The layout is managed using [ElevatedRow]
+/// and [Elevated] from the `elevated_flex` package for consistent elevation
+/// and spacing.
+///
+/// Interactions:
+/// - Tapping the previous/next buttons calls `moveRange` on [CalendarDateSelectionCubit].
+/// - Tapping the date display button (handled by `_DateButton`) interacts with
+///   [CalendarExpansionCubit] to toggle the calendar view.
+///
+/// Sub-components:
+/// - [_Switch]: Represents the previous and next navigation buttons.
+/// - [_DateButton]: Displays the current date and handles expansion toggle.
+/// {@endtemplate}
 class CalendarStepper extends StatelessWidget {
+  /// {@macro calendar_stepper}
   const CalendarStepper({super.key});
 
+  /// The fixed height of the calendar stepper.
   static const double height = 60;
 
   @override
@@ -37,8 +61,8 @@ class CalendarStepper extends StatelessWidget {
                   _Switch(
                     icon: Icons.arrow_back_ios_new_rounded,
                     onPressed: () {
-                      context.read<CalendarDateSelectionCubit>().moveRange(
-                        isForward: false,
+                      context.read<CalendarDateSelectionCubit>().shiftSelection(
+                        forward: false,
                       );
                     },
                   ),
@@ -51,8 +75,8 @@ class CalendarStepper extends StatelessWidget {
                   _Switch(
                     icon: Icons.arrow_forward_ios_rounded,
                     onPressed: () {
-                      context.read<CalendarDateSelectionCubit>().moveRange(
-                        isForward: true,
+                      context.read<CalendarDateSelectionCubit>().shiftSelection(
+                        forward: true,
                       );
                     },
                   ),

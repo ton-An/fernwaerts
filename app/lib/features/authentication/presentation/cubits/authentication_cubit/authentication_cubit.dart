@@ -8,16 +8,23 @@ import 'package:location_history/features/authentication/domain/usecases/request
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_up_initial_admin.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_states.dart';
+import 'package:location_history/features/authentication/presentation/pages/authentication_page/authentication_page.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/init_background_location_tracking.dart';
 
 /* 
   To-Do:
-    - [ ] Clean up toLogInInfo method (de-nest)
-    - [ ] Add loading indicators to widgets
-    - [ ] Look into simplifying states    
+    - [ ] Add unit tests
 */
 
+/// {@template authentication_cubit}
+/// Manages the entire authentication flow of the [AuthenticationPage]:
+/// - Initializes and validates server connection.
+/// - Routes to either admin sign-up or user sign-in.
+/// - Requests platform permissions.
+/// - Kicks off background location tracking.
+/// {@endtemplate}
 class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
+  /// {@macro authentication_cubit}
   AuthenticationCubit({
     required this.initializeServerConnection,
     required this.isServerSetUp,
@@ -34,53 +41,54 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
   final RequestNecessaryPermissions requestNecessaryPermissions;
   final InitBackgroundLocationTracking initBackgroundLocationTracking;
 
-  String serverUrl = '';
   late ServerInfo serverInfo;
 
+  /// Emits [EnterServerDetails] to prompt the user to enter server details.
+  ///
+  /// Emits:
+  /// - [EnterServerDetails]
   void toServerDetails() {
     emit(const EnterServerDetails());
   }
 
-  void toLogInInfo(String serverUrl) async {
-    emit(const EnterServerDetailsLoading());
+  /// Attempts to connect to the server using the provided [serverUrl]
+  /// and checks if the server is set up.
+  ///
+  /// Emits:
+  /// - [AuthenticationLoading] while processing
+  /// - [EnterLogInInfo] if server is reachable and set up
+  /// - [EnterAdminSignUpInfo] if server is reachable but not set up
+  void toAuthDetails({required String serverUrl}) async {
+    emit(const AuthenticationLoading());
 
     final Either<Failure, ServerInfo> isServerReachableEither =
         await initializeServerConnection(serverUrl: serverUrl);
 
     isServerReachableEither.fold(
       (Failure failure) {
-        emit(AuthenticationError(failure: failure));
+        emit(AuthenticationFailure(failure: failure));
       },
       (ServerInfo serverInfo) async {
         this.serverInfo = serverInfo;
 
-        final Either<Failure, bool> isServerSetUpEither = await isServerSetUp();
-
-        isServerSetUpEither.fold(
-          (Failure failure) {
-            emit(AuthenticationError(failure: failure));
-          },
-          (bool isServerSetUp) {
-            this.serverUrl = serverUrl;
-
-            if (isServerSetUp) {
-              emit(const EnterLogInInfo());
-            } else {
-              emit(const EnterAdminSignUpInfo());
-            }
-          },
-        );
+        _checkServerSetupStatus();
       },
     );
   }
 
-  void signUpAdmin(
-    String username,
-    String email,
-    String password,
-    String repeatedPassword,
-  ) async {
-    emit(const AdminSignUpLoading());
+  /// Sign up the initial admin with given credentials on the configured server.
+  ///
+  /// Emits:
+  /// - [AuthenticationLoading] while processing
+  /// - [AuthenticationSuccessful] if successful
+  /// - [AuthenticationFailure] if an error occurs
+  void signUpAdmin({
+    required String username,
+    required String email,
+    required String password,
+    required String repeatedPassword,
+  }) async {
+    emit(const AuthenticationLoading());
 
     final Either<Failure, None> signUpEither = await signUpInitialAdmin(
       serverInfo: serverInfo,
@@ -92,27 +100,23 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
 
     signUpEither.fold(
       (Failure failure) {
-        emit(AuthenticationError(failure: failure));
+        emit(AuthenticationFailure(failure: failure));
       },
       (None none) async {
-        final Either<Failure, None> requestPermissionsEither =
-            await requestNecessaryPermissions();
-
-        requestPermissionsEither.fold(
-          (Failure failure) {
-            emit(AuthenticationError(failure: failure));
-            emit(const AdminSignUpSuccessful());
-          },
-          (None none) {
-            emit(const AdminSignUpSuccessful());
-          },
-        );
+        emit(const AuthenticationSuccessful());
+        _requestNecessaryPermissions();
       },
     );
   }
 
-  void signIn(String email, String password) async {
-    emit(const LogInLoading());
+  /// Sign in an existing user with [email] and [password] on the configured server
+  ///
+  /// Emits:
+  /// - [AuthenticationLoading] while processing
+  /// - [AuthenticationSuccessful] if successful
+  /// - [AuthenticationFailure] if an error occurs
+  void signIn({required String email, required String password}) async {
+    emit(const AuthenticationLoading());
 
     final Either<Failure, None> signInEither = await signInUsecase(
       serverInfo: serverInfo,
@@ -122,28 +126,51 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
 
     signInEither.fold(
       (Failure failure) {
-        emit(AuthenticationError(failure: failure));
+        emit(AuthenticationFailure(failure: failure));
       },
       (None none) async {
-        final Either<Failure, None> requestPermissionsEither =
-            await requestNecessaryPermissions();
-
-        requestPermissionsEither.fold((Failure failure) {
-          emit(AuthenticationError(failure: failure));
-        }, (None none) {});
-
-        final initTrackingEither = await initBackgroundLocationTracking();
-
-        initTrackingEither.fold(
-          (Failure failure) {
-            emit(AuthenticationError(failure: failure));
-            emit(const LogInSuccessful());
-          },
-          (None none) {
-            emit(const LogInSuccessful());
-          },
-        );
+        emit(const AuthenticationSuccessful());
+        _requestNecessaryPermissions();
       },
     );
+  }
+
+  void _checkServerSetupStatus() async {
+    final Either<Failure, bool> isServerSetUpEither = await isServerSetUp();
+
+    isServerSetUpEither.fold(
+      (Failure failure) {
+        emit(AuthenticationFailure(failure: failure));
+      },
+      (bool isServerSetUp) {
+        if (isServerSetUp) {
+          emit(const EnterLogInInfo());
+        } else {
+          emit(const EnterAdminSignUpInfo());
+        }
+      },
+    );
+  }
+
+  void _requestNecessaryPermissions() async {
+    final Either<Failure, None> requestPermissionsEither =
+        await requestNecessaryPermissions();
+
+    requestPermissionsEither.fold(
+      (Failure failure) {
+        emit(AuthenticationFailure(failure: failure));
+      },
+      (None none) {
+        _initBackgroundLocationTracking();
+      },
+    );
+  }
+
+  void _initBackgroundLocationTracking() async {
+    final initTrackingEither = await initBackgroundLocationTracking();
+
+    initTrackingEither.fold((Failure failure) {
+      emit(AuthenticationFailure(failure: failure));
+    }, (_) {});
   }
 }

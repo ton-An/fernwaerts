@@ -28,18 +28,38 @@ part '_vertical_list_item_divider.dart';
         which includes that the pointer events get interrupted on fade out of the attribution widget
 */
 
+/// {@template location_history_modal}
+/// A draggable modal sheet that displays the user's location history.
+///
+/// This widget allows the user to view their location history in a list format.
+/// It can be dragged to three different heights: small, medium (implicitly),
+/// and large, controlled by a [DraggableScrollableController].
+///
+/// The modal includes a header, a draggable handle, and a scrollable list
+/// of location and activity items.
+/// {@endtemplate}
 class LocationHistoryModal extends StatefulWidget {
+  /// {@macro location_history_modal}
   const LocationHistoryModal({
     super.key,
     required this.scrollController,
     required this.draggableScrollableController,
   });
 
+  /// The [ScrollController] for the list of location history items within the modal.
   final ScrollController scrollController;
+
+  /// The [DraggableScrollableController] that controls the size and position
+  /// of the modal.
   final DraggableScrollableController draggableScrollableController;
 
+  /// The maximum height of the modal, occupying the full screen.
   static const double largeModalHeight = 1;
+
+  /// The default medium height of the modal.
   static const double mediumModalHeight = .6;
+
+  /// The minimum height of the modal when collapsed.
   static const double smallModalHeight = .3;
 
   @override
@@ -67,11 +87,11 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
               Listener(
                 behavior: HitTestBehavior.translucent,
                 onPointerDown: (event) => _verticalDragStart(event.position.dy),
-                onPointerUp: (_) => _verticalDragEnd(),
+                onPointerUp: (_) => _verticalDragEnd(theme: theme),
                 onPointerMove: (event) {
                   _verticalDragUpdate(event.delta.dy, event.position.dy);
                 },
-                onPointerCancel: (_) => _verticalDragEnd(),
+                onPointerCancel: (_) => _verticalDragEnd(theme: theme),
                 child: Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: theme.spacing.medium,
@@ -97,11 +117,19 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
     );
   }
 
+  /// Records the start position of a vertical drag gesture.
+  ///
+  /// Stores the initial y-coordinate of the pointer when dragging begins.
   void _verticalDragStart(double dragStartPosition) {
     _dragStart = dragStartPosition;
     _dragPosition = dragStartPosition;
   }
 
+  /// Updates the modal height in response to the user's drag movement.
+  ///
+  /// Adjusts the [DraggableScrollableController] based on the drag delta,
+  /// clamped between [smallModalHeight] and [largeModalHeight], and updates
+  /// the current drag position.
   void _verticalDragUpdate(double dragDelta, double dragPosition) {
     double currentExtent = widget.draggableScrollableController.size;
 
@@ -114,7 +142,11 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
     _dragPosition = dragPosition;
   }
 
-  void _verticalDragEnd() {
+  /// Handles completion of a vertical drag by animating to the nearest snap point.
+  ///
+  /// Determines drag direction and significance to animate the modal to
+  /// either [largeModalHeight] or [smallModalHeight] with an easing curve.
+  void _verticalDragEnd({required WebfabrikThemeData theme}) {
     final double dragDelta = _dragStart - _dragPosition;
 
     if (dragDelta != 0) {
@@ -129,12 +161,15 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
 
       widget.draggableScrollableController.animateTo(
         _getModalHeight(dragDirectionToAnimate),
-        duration: const Duration(milliseconds: 300),
+        duration: theme.durations.medium,
         curve: Curves.easeOut,
       );
     }
   }
 
+  /// Returns the target modal height based on the drag direction.
+  ///
+  /// If dragging up, returns [largeModalHeight], otherwise returns [smallModalHeight].
   double _getModalHeight(VerticalDirection dragDirection) {
     if (dragDirection == VerticalDirection.up) {
       return LocationHistoryModal.largeModalHeight;

@@ -12,7 +12,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appName => 'Fernwärts';
 
   @override
-  String get appDescription => 'A simple app to track your location history.\nIt is open source, is self hosted and a blast to use.';
+  String get appDescription =>
+      'A simple app to track your location history.\nIt is open source, is self hosted and a blast to use.';
 
   @override
   String get range => 'Range';
@@ -63,7 +64,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get serverDetailsDescription => 'Enter the URL of your server';
 
   @override
-  String get serverDetailsHint => 'It should look like this: https://example.com';
+  String get serverDetailsHint =>
+      'It should look like this: https://example.com';
 
   @override
   String get continueButton => 'Continue';
@@ -99,7 +101,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createAdmin => 'Create Admin';
 
   @override
-  String get adminSignUpDescription => 'You are accessing a fresh install.\nPlease create an admin account.';
+  String get adminSignUpDescription =>
+      'You are accessing a fresh install.\nPlease create an admin account.';
 
   @override
   String get openStreetMapAttribution => '© OpenStreetMap';
@@ -108,5 +111,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get proudlyOpenSource => 'Proudly Open Source';
 
   @override
-  String get openSourceExplanation => 'This means that the source code is publicly available. You are invited to contribute, report bugs or suggest new features.';
+  String get openSourceExplanation =>
+      'This means that the source code is publicly available. You are invited to contribute, report bugs or suggest new features.';
 }

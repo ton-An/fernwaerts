@@ -14,25 +14,36 @@ class _DateButtonState extends State<_DateButton>
   late AnimationController _fadeController;
   late Animation<int> _fadeAnimation;
 
+  bool _didInitAnimations = false;
   _LabelSize _labelSize = _LabelSize.large;
 
   @override
-  void initState() {
-    super.initState();
-    _fadeController = AnimationController(
-      duration: const Duration(milliseconds: 160),
-      reverseDuration: const Duration(milliseconds: 220),
-      vsync: this,
-    );
-    _fadeAnimation = CurvedAnimation(
-      parent: _fadeController,
-      curve: Curves.easeOut,
-      reverseCurve: Curves.easeIn,
-    ).drive(IntTween(begin: 0, end: 18));
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-    _fadeController.addListener(() {
-      setState(() {});
-    });
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
+
+    if (!_didInitAnimations) {
+      _fadeController = AnimationController(
+        duration: theme.durations.xxTiny,
+        reverseDuration: theme.durations.short,
+        vsync: this,
+      );
+      _fadeAnimation = CurvedAnimation(
+        parent: _fadeController,
+        curve: Curves.easeOut,
+        reverseCurve: Curves.easeIn,
+      ).drive(IntTween(begin: 0, end: 18));
+
+      _fadeController.addListener(() {
+        setState(() {});
+      });
+
+      _didInitAnimations = true;
+    } else {
+      _fadeController.duration = theme.durations.xxTiny;
+      _fadeController.reverseDuration = theme.durations.short;
+    }
   }
 
   @override
@@ -83,7 +94,7 @@ class _DateButtonState extends State<_DateButton>
                         ),
                         SizedBox(width: theme.spacing.xSmall),
                         AnimatedRotation(
-                          duration: const Duration(milliseconds: 200),
+                          duration: theme.durations.short,
                           turns: expansionState is CalendarCollapsed ? 0 : .5,
                           child: Icon(
                             CupertinoIcons.arrow_down_circle_fill,

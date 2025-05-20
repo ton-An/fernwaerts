@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_cubit.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_states.dart';
-import 'package:location_history/features/authentication/presentation/widgets/authentication_form.dart';
+import 'package:location_history/features/authentication/presentation/widgets/authentication_form/authentication_form.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
 import 'package:simple_shadow/simple_shadow.dart';
@@ -22,13 +22,26 @@ part '_welcome.dart';
 
 /*
   To-Do:
-    - [ ] Add loading animations (to the buttons)
     - [ ] Add apple-apple-site-association to fully enable autofill on iOS
 */
 
-enum AuthenticationFormType { logIn, adminSignUp }
+enum AuthenticationFormType { signIn, adminSignUp }
 
+/// {@template authentication_page}
+/// The main page for handling user authentication.
+///
+/// This page manages different authentication flows including:
+/// - Welcome screen
+/// - Server URL input
+/// - Sign in
+/// - Initial admin sign up
+///
+/// It uses an [ExpandableCarousel] to navigate between these different
+/// authentication steps and responds to state changes from the [AuthenticationCubit].
+/// A video background is displayed for visual appeal.
+/// {@endtemplate}
 class AuthenticationPage extends StatefulWidget {
+  /// {@macro authentication_page}
   const AuthenticationPage({super.key});
 
   static const String pageName = 'authentication';
@@ -41,7 +54,7 @@ class AuthenticationPage extends StatefulWidget {
 class _AuthenticationPageState extends State<AuthenticationPage> {
   late ExpandableCarouselController _carouselController;
 
-  AuthenticationFormType _formType = AuthenticationFormType.logIn;
+  AuthenticationFormType _formType = AuthenticationFormType.signIn;
 
   @override
   void initState() {
@@ -50,47 +63,13 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     _carouselController = ExpandableCarouselController();
   }
 
-  void _animateToPage(int pageIndex) {
-    _carouselController.animateToPage(
-      pageIndex,
-      duration: const Duration(milliseconds: 420),
-      curve: Curves.easeInOut,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
+
     return BlocListener<AuthenticationCubit, AuthenticationCubitState>(
-      listener: (context, state) {
-        if (state is EnterServerDetails) {
-          _animateToPage(1);
-        }
-
-        if (state is EnterLogInInfo) {
-          setState(() {
-            _formType = AuthenticationFormType.logIn;
-          });
-          _animateToPage(2);
-        }
-
-        if (state is EnterAdminSignUpInfo) {
-          setState(() {
-            _formType = AuthenticationFormType.adminSignUp;
-          });
-          _animateToPage(2);
-        }
-
-        if (state is LogInSuccessful || state is AdminSignUpSuccessful) {
-          TextInput.finishAutofillContext();
-          context.go(MapPage.route);
-        }
-
-        if (state is AuthenticationError) {
-          context.read<InAppNotificationCubit>().sendFailureNotification(
-            state.failure,
-          );
-        }
+      listener: (BuildContext context, AuthenticationCubitState state) {
+        _handleAuthState(authState: state, theme: theme);
       },
       child: Stack(
         children: [
@@ -134,6 +113,61 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           ),
         ],
       ),
+    );
+  }
+
+  /// Responds to changes in authentication state by navigating or displaying errors.
+  ///
+  /// - If entering server details, animates to server URL page.
+  /// - If entering login or admin sign-up info, sets form type and animates to form page.
+  /// - On successful login or sign-up, finalizes autofill and navigates to [MapPage].
+  /// - On error, sends a failure notification via [InAppNotificationCubit].
+  void _handleAuthState({
+    required AuthenticationCubitState authState,
+    required WebfabrikThemeData theme,
+  }) {
+    if (authState is EnterServerDetails) {
+      _animateToPage(pageIndex: 1, theme: theme);
+    }
+
+    if (authState is EnterLogInInfo) {
+      _setFormType(formType: AuthenticationFormType.signIn);
+      _animateToPage(pageIndex: 2, theme: theme);
+    }
+
+    if (authState is EnterAdminSignUpInfo) {
+      _setFormType(formType: AuthenticationFormType.adminSignUp);
+      _animateToPage(pageIndex: 2, theme: theme);
+    }
+
+    if (authState is AuthenticationSuccessful) {
+      TextInput.finishAutofillContext();
+      context.go(MapPage.route);
+    }
+
+    if (authState is AuthenticationFailure) {
+      context.read<InAppNotificationCubit>().sendFailureNotification(
+        authState.failure,
+      );
+    }
+  }
+
+  /// Updates the form type (sign-in or admin sign-up) and triggers a rebuild.
+  void _setFormType({required AuthenticationFormType formType}) {
+    setState(() => _formType = formType);
+  }
+
+  /// Animates the carousel to the given page index with a smooth curve.
+  ///
+  /// Uses [ExpandableCarouselController] to switch pages over [theme.durations.medium].
+  void _animateToPage({
+    required int pageIndex,
+    required WebfabrikThemeData theme,
+  }) {
+    _carouselController.animateToPage(
+      pageIndex,
+      duration: theme.durations.medium,
+      curve: Curves.easeInOut,
     );
   }
 }
