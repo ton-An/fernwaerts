@@ -27,9 +27,9 @@ class _DayCell extends StatelessWidget {
       builder: (context, selectionTypeState) {
         return GestureDetector(
           onTap: () {
-            context.read<CalendarDateSelectionCubit>().selectDate(
-              date,
-              selectionTypeState,
+            context.read<CalendarDateSelectionCubit>().updateSelection(
+              selectedDate: date,
+              type: selectionTypeState,
             );
           },
           child: Stack(

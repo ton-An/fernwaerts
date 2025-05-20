@@ -213,10 +213,10 @@ class _CalendarCompositeState extends State<CalendarComposite>
       _translateController.forward();
       _fadeController.forward();
 
-      final bool hasMovedRange =
-          context.read<CalendarDateSelectionCubit>().hasMovedRange;
+      final bool hasShiftedSelection =
+          context.read<CalendarDateSelectionCubit>().hasShiftedSelection;
 
-      if (hasMovedRange) {
+      if (hasShiftedSelection) {
         final DateTime? selectionStart = _getStartDateOfSelection(context);
 
         if (selectionStart != null) {
@@ -231,7 +231,8 @@ class _CalendarCompositeState extends State<CalendarComposite>
           }
         }
       }
-      context.read<CalendarDateSelectionCubit>().resetHasMovedRange();
+
+      context.read<CalendarDateSelectionCubit>().resetHasShiftedSelection();
     }
   }
 
