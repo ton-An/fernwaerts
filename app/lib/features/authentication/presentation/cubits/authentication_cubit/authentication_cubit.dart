@@ -13,8 +13,7 @@ import 'package:location_history/features/location_tracking/domain/usecases/init
 
 /* 
   To-Do:
-    - [ ] Clean up toLogInInfo method (de-nest)
-    - [ ] Look into simplifying states    
+    - [ ] Add unit tests
 */
 
 /// {@template authentication_cubit}

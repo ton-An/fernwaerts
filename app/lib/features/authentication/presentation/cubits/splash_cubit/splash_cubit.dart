@@ -8,6 +8,11 @@ import 'package:location_history/features/authentication/domain/usecases/request
 import 'package:location_history/features/authentication/presentation/cubits/splash_cubit/splash_states.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/init_background_location_tracking.dart';
 
+/* 
+  To-Do:
+    - [ ] Add unit tests
+*/
+
 /// {@template splash_cubit}
 /// Manages the application initialization flow including server connection,
 /// authentication verification, permission requests, and location tracking setup.
