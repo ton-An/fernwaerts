@@ -3,9 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_states.dart';
 
-/// __In App Notification Cubit__ controls the state in app notifications throughout the app and
+/// {@template in_app_notification_cubit}
+/// Controls the state in app notifications throughout the app and
 /// works in conjunction with [InAppNotificationListener] to apply the notification overlay
+/// to the app.
+/// {@endtemplate}
 class InAppNotificationCubit extends Cubit<InAppNotificationState> {
+  /// {@macro in_app_notification_cubit}
   InAppNotificationCubit() : super(const InAppNotificationInitial());
 
   Failure? failure;
