@@ -1501,6 +1501,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.7.9"
+  talker_bloc_logger:
+    dependency: "direct main"
+    description:
+      name: talker_bloc_logger
+      sha256: "5857b9bc03d5ef41188a0e1f9e5733526ed8878dd826c80c5148969ae468b51b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.7.9"
   talker_flutter:
     dependency: "direct main"
     description:

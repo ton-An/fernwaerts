@@ -86,6 +86,7 @@ dependencies:
   device_info_plus: ^11.4.0
   talker: ^4.7.9
   talker_flutter: ^4.7.9
+  talker_bloc_logger: ^4.7.9
 
 dev_dependencies:
   # Testing

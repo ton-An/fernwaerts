@@ -27,6 +27,7 @@ import 'package:location_history/features/map/presentation/pages/map_page/map_pa
 import 'package:location_history/features/settings/pages/debug_page.dart';
 import 'package:location_history/features/settings/pages/settings_page/settings_page.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:talker_bloc_logger/talker_bloc_logger.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
@@ -50,6 +51,11 @@ void main() async {
 
       await getIt.isReady<PackageInfo>();
 
+      Bloc.observer = TalkerBlocObserver(
+        talker: getIt<Talker>(),
+        settings: TalkerBlocLoggerSettings(printChanges: true),
+      );
+
       runApp(MainApp());
     },
     (exception, stackTrace) {
@@ -58,8 +64,22 @@ void main() async {
   );
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   MainApp({super.key});
+
+  @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  late final GoRouter router;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _initRouter();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,100 +120,113 @@ class MainApp extends StatelessWidget {
     );
   }
 
-  final GoRouter router = GoRouter(
-    initialLocation: SplashPage.route,
-    routes: <RouteBase>[
-      ShellRoute(
-        builder:
-            (context, state, child) => InAppNotificationListener(child: child),
-        routes: [
-          GoRoute(
-            path: '/',
+  void _initRouter() {
+    router = GoRouter(
+      debugLogDiagnostics: true,
+      initialLocation: SplashPage.route,
+      routes: <RouteBase>[
+        ShellRoute(
+          builder:
+              (context, state, child) =>
+                  InAppNotificationListener(child: child),
+          routes: [
+            GoRoute(
+              path: '/',
 
-            /// This base route is necessary for the edges of the modal to be blurred
-            /// when an [InAppNotification] is shown.
-            pageBuilder:
-                (context, state) => const NoTransitionPage(
-                  child: ColoredBox(color: Colors.white),
-                ),
-            routes: [
-              GoRoute(
-                path: SplashPage.pageName,
-                builder:
-                    (context, state) => BlocProvider(
-                      create: (context) => getIt<SplashCubit>(),
-                      child: const SplashPage(),
-                    ),
-              ),
-              GoRoute(
-                path: DebugPage.pageName,
-                pageBuilder: (context, state) {
-                  return const NoTransitionPage(child: DebugPage());
-                },
-              ),
-              GoRoute(
-                path: AuthenticationPage.pageName,
-                pageBuilder: (BuildContext context, GoRouterState state) {
-                  return NoTransitionPage(
-                    child: MultiBlocProvider(
-                      providers: [
-                        BlocProvider(
-                          create: (context) => getIt<AuthenticationCubit>(),
-                        ),
-                      ],
-                      child: const AuthenticationPage(),
-                    ),
-                  );
-                },
-              ),
-              GoRoute(
-                path: MapPage.pageName,
-                pageBuilder: (BuildContext context, GoRouterState state) {
-                  return NoTransitionPage(
-                    child: MultiBlocProvider(
-                      providers: [
-                        BlocProvider(
-                          create: (context) => getIt<CalendarExpansionCubit>(),
-                        ),
-                        BlocProvider(
-                          create:
-                              (context) => getIt<CalendarSelectionTypeCubit>(),
-                        ),
-                        BlocProvider(
-                          create: (context) => getIt<MonthlyCalendarCubit>(),
-                        ),
-                        BlocProvider(
-                          create: (context) => getIt<YearlyCalendarCubit>(),
-                        ),
-                        BlocProvider(
-                          create:
-                              (context) => getIt<DecenniallyCalendarCubit>(),
-                        ),
-                        BlocProvider(
-                          create:
-                              (context) => getIt<CalendarDateSelectionCubit>(),
-                        ),
-                        BlocProvider(create: (context) => getIt<MapCubit>()),
-                      ],
-                      child: const MapPage(),
-                    ),
-                  );
-                },
-                routes: [
-                  GoRoute(
-                    path: SettingsPage.pageName,
-                    pageBuilder: (context, state) {
-                      return DialogPage(
-                        builder: (context) => const SettingsPage(),
-                      );
-                    },
+              /// This base route is necessary for the edges of the modal to be blurred
+              /// when an [InAppNotification] is shown.
+              pageBuilder:
+                  (context, state) => const NoTransitionPage(
+                    child: ColoredBox(color: Colors.white),
                   ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    ],
-  );
+              routes: [
+                GoRoute(
+                  path: SplashPage.pageName,
+                  builder:
+                      (context, state) => BlocProvider(
+                        create: (context) => getIt<SplashCubit>(),
+                        child: const SplashPage(),
+                      ),
+                ),
+                GoRoute(
+                  path: DebugPage.pageName,
+                  pageBuilder: (context, state) {
+                    return const NoTransitionPage(child: DebugPage());
+                  },
+                ),
+                GoRoute(
+                  path: AuthenticationPage.pageName,
+                  pageBuilder: (BuildContext context, GoRouterState state) {
+                    return NoTransitionPage(
+                      child: MultiBlocProvider(
+                        providers: [
+                          BlocProvider(
+                            create: (context) => getIt<AuthenticationCubit>(),
+                          ),
+                        ],
+                        child: const AuthenticationPage(),
+                      ),
+                    );
+                  },
+                ),
+                GoRoute(
+                  path: MapPage.pageName,
+                  pageBuilder: (BuildContext context, GoRouterState state) {
+                    return NoTransitionPage(
+                      child: MultiBlocProvider(
+                        providers: [
+                          BlocProvider(
+                            create:
+                                (context) => getIt<CalendarExpansionCubit>(),
+                          ),
+                          BlocProvider(
+                            create:
+                                (context) =>
+                                    getIt<CalendarSelectionTypeCubit>(),
+                          ),
+                          BlocProvider(
+                            create: (context) => getIt<MonthlyCalendarCubit>(),
+                          ),
+                          BlocProvider(
+                            create: (context) => getIt<YearlyCalendarCubit>(),
+                          ),
+                          BlocProvider(
+                            create:
+                                (context) => getIt<DecenniallyCalendarCubit>(),
+                          ),
+                          BlocProvider(
+                            create:
+                                (context) =>
+                                    getIt<CalendarDateSelectionCubit>(),
+                          ),
+                          BlocProvider(create: (context) => getIt<MapCubit>()),
+                        ],
+                        child: const MapPage(),
+                      ),
+                    );
+                  },
+                  routes: [
+                    GoRoute(
+                      path: SettingsPage.pageName,
+                      pageBuilder: (context, state) {
+                        return DialogPage(
+                          builder: (context) => const SettingsPage(),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
+
+    router.routerDelegate.addListener(() {
+      final String? routePath = router.routerDelegate.state.fullPath;
+
+      if (routePath != null) getIt<Talker>().info('Opened route: $routePath');
+    });
+  }
 }

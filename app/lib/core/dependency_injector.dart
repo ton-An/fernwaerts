@@ -73,9 +73,7 @@ void registerThirdPartyDependencies() {
   getIt.registerSingletonAsync<PackageInfo>(
     () async => await PackageInfo.fromPlatform(),
   );
-  getIt.registerLazySingleton(
-    () => TalkerFlutter.init(settings: TalkerSettings(useConsoleLogs: true)),
-  );
+  getIt.registerLazySingleton(() => TalkerFlutter.init());
 }
 
 void registerCoreDependencies() {
