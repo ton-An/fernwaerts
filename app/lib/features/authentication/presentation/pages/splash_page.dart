@@ -6,6 +6,8 @@ import 'package:location_history/features/authentication/presentation/cubits/spl
 import 'package:location_history/features/authentication/presentation/pages/authentication_page/authentication_page.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
+import 'package:location_history/features/settings/pages/debug_page.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 /// {@template splash_page}
 /// A page displayed during app initialization.
@@ -38,6 +40,8 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
+
     return BlocListener<SplashCubit, SplashState>(
       listener: (context, state) {
         if (state is SplashFailure) {
@@ -54,7 +58,20 @@ class _SplashPageState extends State<SplashPage> {
           context.go(AuthenticationPage.route);
         }
       },
-      child: Container(color: Colors.black),
+      child: Container(
+        color: Colors.black,
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onDoubleTap: () {
+            context.push(DebugPage.route);
+          },
+          child: Container(
+            padding: EdgeInsets.all(theme.spacing.large),
+            alignment: Alignment.center,
+            child: const LoadingIndicator(),
+          ),
+        ),
+      ),
     );
   }
 }
