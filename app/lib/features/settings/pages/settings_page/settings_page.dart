@@ -1,17 +1,22 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location_history/core/dependency_injector.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_out.dart';
 import 'package:location_history/features/authentication/presentation/pages/authentication_page/authentication_page.dart';
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
+import 'package:location_history/features/settings/pages/debug_page.dart';
 import 'package:location_history/features/settings/widgets/oss_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_footer.dart';
 part '_page_container.dart';
 part '_section_title.dart';
 part '_sub_page_link.dart';
+part '_version_tag.dart';
 
 /*
   To-Do:
@@ -82,6 +87,8 @@ class SettingsPage extends StatelessWidget {
                     color: theme.colors.primaryTranslucent,
                     onPressed: () => _signOut(context),
                   ),
+                  const XXMediumGap(),
+                  const _VersionTag(),
                   const LargeGap(),
                 ],
               ),
