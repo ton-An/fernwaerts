@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -23,8 +24,10 @@ import 'package:location_history/features/in_app_notification/presentation/cubit
 import 'package:location_history/features/in_app_notification/presentation/widgets/in_app_notification_listener.dart';
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
+import 'package:location_history/features/settings/pages/debug_page.dart';
 import 'package:location_history/features/settings/pages/settings_page/settings_page.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 /* 
@@ -37,15 +40,22 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 */
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  runZonedGuarded(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
 
-  initGetIt();
+      initGetIt();
 
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-  await getIt.isReady<PackageInfo>();
+      await getIt.isReady<PackageInfo>();
 
-  runApp(MainApp());
+      runApp(MainApp());
+    },
+    (exception, stackTrace) {
+      getIt<Talker>().handle(exception, stackTrace, 'Uncaught Exception');
+    },
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -114,6 +124,12 @@ class MainApp extends StatelessWidget {
                       create: (context) => getIt<SplashCubit>(),
                       child: const SplashPage(),
                     ),
+              ),
+              GoRoute(
+                path: DebugPage.pageName,
+                pageBuilder: (context, state) {
+                  return const NoTransitionPage(child: DebugPage());
+                },
               ),
               GoRoute(
                 path: AuthenticationPage.pageName,
