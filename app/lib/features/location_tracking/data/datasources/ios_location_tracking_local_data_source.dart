@@ -30,7 +30,7 @@ class IOSLocationTrackingLocalDataSourceImpl
     await bg.BackgroundGeolocation.ready(
       bg.Config(
         desiredAccuracy: bg.Config.DESIRED_ACCURACY_HIGH,
-        stationaryRadius: 25,
+        stationaryRadius: 200,
         elasticityMultiplier: 18,
         stopOnStationary: true,
         stopOnTerminate: false,
