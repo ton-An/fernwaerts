@@ -297,6 +297,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This means that the source code is publicly available. You are invited to contribute, report bugs or suggest new features.'**
   String get openSourceExplanation;
+
+  /// No description provided for @debugger.
+  ///
+  /// In en, this message translates to:
+  /// **'Debugger'**
+  String get debugger;
 }
 
 class _AppLocalizationsDelegate

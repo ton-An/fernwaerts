@@ -17,6 +17,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.4.4"
+  ansicolor:
+    dependency: transitive
+    description:
+      name: ansicolor
+      sha256: "50e982d500bc863e1d703448afdbf9e5a72eb48840a4f766fa361ffd6877055f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.3"
   app_links:
     dependency: transitive
     description:
@@ -338,6 +346,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.2"
+  cross_file:
+    dependency: transitive
+    description:
+      name: cross_file
+      sha256: "7caf6a750a0c04effbb52a676dce9a4a592e10ad35c34d6d2d0e4811160d5670"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.4+2"
   crypto:
     dependency: transitive
     description:
@@ -712,6 +728,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.2"
+  group_button:
+    dependency: transitive
+    description:
+      name: group_button
+      sha256: "0610fcf28ed122bfb4b410fce161a390f7f2531d55d1d65c5375982001415940"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.3.4"
   gtk:
     dependency: transitive
     description:
@@ -1200,6 +1224,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.28.0"
+  share_plus:
+    dependency: transitive
+    description:
+      name: share_plus
+      sha256: fce43200aa03ea87b91ce4c3ac79f0cecd52e2a7a56c7a4185023c271fbfa6da
+      url: "https://pub.dev"
+    source: hosted
+    version: "10.1.4"
+  share_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: share_plus_platform_interface
+      sha256: cc012a23fc2d479854e6c80150696c4a5f5bb62cb89af4de1c505cf78d0a5d0b
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.2"
   shared_preferences:
     dependency: transitive
     description:
@@ -1453,6 +1493,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.3.1"
+  talker:
+    dependency: "direct main"
+    description:
+      name: talker
+      sha256: "13e4c7c77b2ebd24ca0394b42858e7d42f28b5758255129369842eb71ceac80d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.7.9"
+  talker_bloc_logger:
+    dependency: "direct main"
+    description:
+      name: talker_bloc_logger
+      sha256: "5857b9bc03d5ef41188a0e1f9e5733526ed8878dd826c80c5148969ae468b51b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.7.9"
+  talker_flutter:
+    dependency: "direct main"
+    description:
+      name: talker_flutter
+      sha256: "0ddcc60e491106d37f99dcb548bcf18caff5fe5ac0aa037ab21aadc371a8280b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.7.9"
+  talker_logger:
+    dependency: transitive
+    description:
+      name: talker_logger
+      sha256: d8d2afd912c4a185bc125d8ae84d5960c3505f7ec52856e732a4b8a0db510b5d
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.7.9"
   term_glyph:
     dependency: transitive
     description:
@@ -1682,7 +1754,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "0b96c51e4d91792c4d57fe15c11bfb41fb5ea394"
+      resolved-ref: "43ede1f7b35853d3dd630677cb0beb7a782be98b"
       url: "https://github.com/ton-An/webfabrik_theme"
     source: git
     version: "0.0.1"

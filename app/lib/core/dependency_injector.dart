@@ -49,6 +49,7 @@ import 'package:location_history/features/location_tracking/domain/repositories/
 import 'package:location_history/features/location_tracking/domain/usecases/get_locations_by_date.dart';
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 import '../features/location_tracking/domain/usecases/init_background_location_tracking.dart';
 
@@ -72,6 +73,7 @@ void registerThirdPartyDependencies() {
   getIt.registerSingletonAsync<PackageInfo>(
     () async => await PackageInfo.fromPlatform(),
   );
+  getIt.registerLazySingleton(() => TalkerFlutter.init());
 }
 
 void registerCoreDependencies() {
@@ -112,6 +114,7 @@ void registerAuthenticationDependencies() {
       isSignedInUsecase: getIt(),
       requestNecessaryPermissions: getIt(),
       initBackgroundLocationTracking: getIt(),
+      talker: getIt(),
     ),
   );
 
@@ -184,6 +187,7 @@ void registerAuthenticationDependencies() {
     () => AuthRemoteDataSourceImpl(
       serverRemoteHandler: getIt(),
       supabaseHandler: getIt(),
+      talker: getIt(),
     ),
   );
   getIt.registerLazySingleton<PermissionsLocalDataSource>(

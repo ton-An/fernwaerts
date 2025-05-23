@@ -38,11 +38,16 @@ class _Description extends StatelessWidget {
           child: Column(
             children: [
               const MediumGap(),
-              Text(
-                label,
-                textAlign: TextAlign.center,
-                style: theme.text.largeTitle.copyWith(
-                  fontWeight: FontWeight.w600,
+              GestureDetector(
+                onDoubleTap: () {
+                  context.push(DebugPage.route);
+                },
+                child: Text(
+                  label,
+                  textAlign: TextAlign.center,
+                  style: theme.text.largeTitle.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               const SmallGap(),

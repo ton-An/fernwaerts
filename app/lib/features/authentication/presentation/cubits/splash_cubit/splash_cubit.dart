@@ -7,6 +7,7 @@ import 'package:location_history/features/authentication/domain/usecases/is_sign
 import 'package:location_history/features/authentication/domain/usecases/request_necessary_permissions.dart';
 import 'package:location_history/features/authentication/presentation/cubits/splash_cubit/splash_states.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/init_background_location_tracking.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 /* 
   To-Do:
@@ -24,12 +25,19 @@ class SplashCubit extends Cubit<SplashState> {
     required this.isSignedInUsecase,
     required this.requestNecessaryPermissions,
     required this.initBackgroundLocationTracking,
+    required this.talker,
   }) : super(const SplashLoading());
 
   final InitializeSavedServerConnection initSavedServerConnection;
   final IsSignedIn isSignedInUsecase;
   final RequestNecessaryPermissions requestNecessaryPermissions;
   final InitBackgroundLocationTracking initBackgroundLocationTracking;
+  final Talker talker;
+
+  /* 
+  To-Do:
+    - [ ] Failures from _requestNecessaryPermissions probably won't be displayed in the ui as the splash screen will already be disposed
+*/
 
   /// Initiates the app startup sequence and determines the initial application state.
   ///
@@ -54,11 +62,14 @@ class SplashCubit extends Cubit<SplashState> {
         await initSavedServerConnection();
 
     initSavedConnectionEither.fold(_handleConnectionFailure, (None none) async {
+      talker.debug('Init saved server succeeded');
       _checkAuthentication();
     });
   }
 
   void _handleConnectionFailure(Failure failure) {
+    talker.debug('Init saved server failed with Failure: $failure');
+
     if (failure is! NoSavedServerFailure) {
       emit(SplashFailure(failure: failure));
     }
@@ -68,6 +79,8 @@ class SplashCubit extends Cubit<SplashState> {
 
   void _checkAuthentication() async {
     bool isSignedIn = await isSignedInUsecase();
+
+    talker.debug('Is User signed in: $isSignedIn');
 
     if (isSignedIn) {
       emit(const SplashAuthenticationComplete());
