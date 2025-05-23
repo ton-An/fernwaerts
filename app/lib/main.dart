@@ -53,7 +53,7 @@ void main() async {
 
       Bloc.observer = TalkerBlocObserver(
         talker: getIt<Talker>(),
-        settings: TalkerBlocLoggerSettings(printChanges: true),
+        settings: const TalkerBlocLoggerSettings(printChanges: true),
       );
 
       runApp(MainApp());
@@ -65,7 +65,7 @@ void main() async {
 }
 
 class MainApp extends StatefulWidget {
-  MainApp({super.key});
+  const MainApp({super.key});
 
   @override
   State<MainApp> createState() => _MainAppState();
