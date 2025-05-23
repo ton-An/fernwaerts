@@ -9,6 +9,7 @@ import 'package:location_history/core/misc/url_path_constants.dart';
 import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 /*
   To-Do:
@@ -113,10 +114,12 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
   const AuthRemoteDataSourceImpl({
     required this.serverRemoteHandler,
     required this.supabaseHandler,
+    required this.talker,
   });
 
   final ServerRemoteHandler serverRemoteHandler;
   final SupabaseHandler supabaseHandler;
+  final Talker talker;
 
   @override
   Future<bool> isServerSetUp() async {
@@ -178,6 +181,9 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
     final SupabaseClient supabaseClient = await supabaseHandler.client;
 
     final Session? currentSession = supabaseClient.auth.currentSession;
+
+    talker.info('Has session: ${currentSession?.accessToken != 'null'}');
+    talker.info('Expires at: ${currentSession?.expiresAt}');
 
     if (currentSession != null) {
       return true;

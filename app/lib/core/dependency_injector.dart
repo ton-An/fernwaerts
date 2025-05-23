@@ -114,6 +114,7 @@ void registerAuthenticationDependencies() {
       isSignedInUsecase: getIt(),
       requestNecessaryPermissions: getIt(),
       initBackgroundLocationTracking: getIt(),
+      talker: getIt(),
     ),
   );
 
@@ -186,6 +187,7 @@ void registerAuthenticationDependencies() {
     () => AuthRemoteDataSourceImpl(
       serverRemoteHandler: getIt(),
       supabaseHandler: getIt(),
+      talker: getIt(),
     ),
   );
   getIt.registerLazySingleton<PermissionsLocalDataSource>(
