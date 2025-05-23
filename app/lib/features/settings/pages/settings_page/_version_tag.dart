@@ -1,7 +1,7 @@
 part of 'settings_page.dart';
 
 class _VersionTag extends StatefulWidget {
-  const _VersionTag({super.key});
+  const _VersionTag();
 
   @override
   State<_VersionTag> createState() => _VersionTagState();
