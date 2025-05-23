@@ -12,6 +12,7 @@ import 'package:talker_flutter/talker_flutter.dart';
 /* 
   To-Do:
     - [ ] Add unit tests
+    - [ ] Failures from _requestNecessaryPermissions probably won't be displayed in the ui as the splash screen will already be disposed
 */
 
 /// {@template splash_cubit}
@@ -33,11 +34,6 @@ class SplashCubit extends Cubit<SplashState> {
   final RequestNecessaryPermissions requestNecessaryPermissions;
   final InitBackgroundLocationTracking initBackgroundLocationTracking;
   final Talker talker;
-
-  /* 
-  To-Do:
-    - [ ] Failures from _requestNecessaryPermissions probably won't be displayed in the ui as the splash screen will already be disposed
-*/
 
   /// Initiates the app startup sequence and determines the initial application state.
   ///

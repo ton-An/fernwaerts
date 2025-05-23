@@ -13,7 +13,7 @@ import 'package:location_history/features/location_tracking/domain/usecases/init
 
 /* 
   To-Do:
-    - [ ] Add unit tests
+    - [ ] Add tests
 */
 
 /// {@template authentication_cubit}
