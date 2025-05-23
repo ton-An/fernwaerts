@@ -5,6 +5,7 @@ import 'package:location_history/features/authentication/data/datasources/authen
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:talker/talker.dart';
 
 import '../../../../fixtures.dart';
 import '../../../../mocks/mocks.dart';
@@ -23,6 +24,7 @@ void main() {
     authRemoteDataSourceImpl = AuthRemoteDataSourceImpl(
       serverRemoteHandler: mockServerRemoteHandler,
       supabaseHandler: mockSupabaseHandler,
+      talker: Talker(),
     );
 
     mockSupabaseHttpClient = MockSupabaseHttpClient();
