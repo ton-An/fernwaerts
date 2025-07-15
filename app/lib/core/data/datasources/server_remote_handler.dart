@@ -39,7 +39,11 @@ abstract class ServerRemoteHandler {
   });
 }
 
+/// {@template server_remote_handler_impl}
+/// A class that represents server remote handler impl.
+/// {@endtemplate}
 class ServerRemoteHandlerImpl extends ServerRemoteHandler {
+/// {@macro server_remote_handler_impl}
   const ServerRemoteHandlerImpl({required this.dio});
 
   final Dio dio;

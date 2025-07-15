@@ -10,8 +10,15 @@ import 'package:location_history/core/data/datasources/jwt_refresh_client.dart';
 import 'package:sqflite/sqflite.dart' show databaseFactory;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+/// {@template supabase_offline_first}
+/// A repository that provides offline-first functionality with Supabase.
+///
+/// This class extends [OfflineFirstWithSupabaseRepository] to provide
+/// offline-first data access with Supabase as the remote data source.
+/// {@endtemplate}
 class SupabaseOfflineFirst
     extends OfflineFirstWithSupabaseRepository<OfflineFirstWithSupabaseModel> {
+  /// {@macro supabase_offline_first}
   SupabaseOfflineFirst._({
     required super.supabaseProvider,
     required super.sqliteProvider,

@@ -4,6 +4,10 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 import 'package:location_history/features/location_tracking/domain/models/location.model.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 
+/// {@template get_locations_by_date}
+/// {@macro get_locations_by_date}
+/// A class that represents GetLocationsByDate.
+/// {@endtemplate}
 class GetLocationsByDate {
   const GetLocationsByDate({
     required this.authenticationRepository,

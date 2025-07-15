@@ -1,6 +1,10 @@
 part of 'map_page.dart';
 
+/// {@template legend_container}
+/// A container widget that wraps legend content.
+/// {@endtemplate}
 class _LegendContainer extends StatelessWidget {
+/// {@macro legend_container}
   const _LegendContainer({required this.child});
 
   final Widget child;

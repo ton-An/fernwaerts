@@ -28,7 +28,11 @@ abstract class PermissionsLocalDataSource {
   Future<void> requestLocationPermission();
 }
 
+/// {@template permissions_local_data_source_impl}
+/// A class that represents permissions local data source impl.
+/// {@endtemplate}
 class PermissionsLocalDataSourceImpl extends PermissionsLocalDataSource {
+/// {@macro permissions_local_data_source_impl}
   const PermissionsLocalDataSourceImpl({
     required this.flutterActivityRecognition,
   });

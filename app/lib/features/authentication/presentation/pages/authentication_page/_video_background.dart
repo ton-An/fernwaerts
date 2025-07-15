@@ -1,12 +1,19 @@
 part of 'authentication_page.dart';
 
+/// {@template video_background}
+/// A class that represents video background.
+/// {@endtemplate}
 class _VideoBackground extends StatefulWidget {
+/// {@macro video_background}
   const _VideoBackground();
 
   @override
   State<_VideoBackground> createState() => _VideoBackgroundState();
 }
 
+/// {@template video_background_state}
+/// A state class that represents videobackground state.
+/// {@endtemplate}
 class _VideoBackgroundState extends State<_VideoBackground>
     with SingleTickerProviderStateMixin {
   static const String _videoPath = 'assets/videos/forest_aerial.mp4';

@@ -5,6 +5,10 @@ import 'package:location_history/core/data/datasources/supabase_offline_first.da
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+/// {@template supabase_handler}
+/// {@macro supabase_handler}
+/// A class that represents SupabaseHandler.
+/// {@endtemplate}
 class SupabaseHandler {
   SupabaseHandler();
 

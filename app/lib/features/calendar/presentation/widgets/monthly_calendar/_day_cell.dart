@@ -9,7 +9,14 @@ enum _DayCellType {
   filler,
 }
 
+/// {@template day_cell}
+/// A single day cell in the monthly calendar grid.
+///
+/// This widget represents a single day in the calendar and handles its
+/// visual appearance based on the selection state ([_DayCellType]).
+/// {@endtemplate}
 class _DayCell extends StatelessWidget {
+  /// {@macro day_cell}
   const _DayCell({
     required this.date,
     required this.type,

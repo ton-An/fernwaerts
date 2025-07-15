@@ -10,8 +10,12 @@ const double _kFlingVelocityScale = 1.0 / 300.0;
 
 enum _FlingGestureKind { none, forward, reverse }
 
-/// This is a cut down version of the Dismissible widget from Flutter.
+
+/// {@template dismissible}
+/// A class that represents dismissible.
+/// {@endtemplate}
 class _Dismissible extends StatefulWidget {
+/// {@macro dismissible}
   const _Dismissible({
     required Key key,
     required this.child,
@@ -38,6 +42,9 @@ class _Dismissible extends StatefulWidget {
   State<_Dismissible> createState() => _DismissibleState();
 }
 
+/// {@template dismissible_state}
+/// A state class that represents dismissible state.
+/// {@endtemplate}
 class _DismissibleState extends State<_Dismissible>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   @override

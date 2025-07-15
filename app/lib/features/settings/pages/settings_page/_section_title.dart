@@ -1,6 +1,10 @@
 part of 'settings_page.dart';
 
+/// {@template section_title}
+/// A class that represents section title.
+/// {@endtemplate}
 class _SectionTitle extends StatelessWidget {
+/// {@macro section_title}
   const _SectionTitle({required this.title});
 
   final String title;

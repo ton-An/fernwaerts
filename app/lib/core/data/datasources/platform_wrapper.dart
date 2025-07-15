@@ -1,5 +1,9 @@
 import 'dart:io';
 
+/// {@template platform_wrapper}
+/// {@macro platform_wrapper}
+/// A class that represents PlatformWrapper.
+/// {@endtemplate}
 class PlatformWrapper {
   const PlatformWrapper();
 

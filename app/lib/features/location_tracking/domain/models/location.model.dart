@@ -11,7 +11,11 @@ import 'package:uuid/uuid.dart';
 @ConnectOfflineFirstWithSupabase(
   supabaseConfig: SupabaseSerializable(tableName: 'raw_location_data'),
 )
+/// {@template location}
+/// A class that represents location.
+/// {@endtemplate}
 class Location extends OfflineFirstWithSupabaseModel with EquatableMixin {
+/// {@macro location}
   Location({
     String? id,
     required this.userId,

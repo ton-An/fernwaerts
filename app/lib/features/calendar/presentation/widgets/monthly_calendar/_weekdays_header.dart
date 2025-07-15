@@ -1,6 +1,13 @@
 part of 'monthly_calendar.dart';
 
+/// {@template weekdays_header}
+/// A header row that displays the abbreviated weekday names.
+///
+/// This widget renders the weekday abbreviations (e.g., M, T, W, T, F, S, S)
+/// as a header row for the monthly calendar grid.
+/// {@endtemplate}
 class _WeekdaysHeader extends StatelessWidget {
+  /// {@macro weekdays_header}
   const _WeekdaysHeader();
 
   @override

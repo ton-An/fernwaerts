@@ -1,6 +1,13 @@
 part of 'calendar.dart';
 
+/// {@template calendar_header}
+/// A header widget that displays calendar navigation controls.
+///
+/// This widget provides navigation controls for switching between different
+/// calendar views and time periods.
+/// {@endtemplate}
 class _CalendarHeader extends StatelessWidget {
+  /// {@macro calendar_header}
   const _CalendarHeader();
 
   @override

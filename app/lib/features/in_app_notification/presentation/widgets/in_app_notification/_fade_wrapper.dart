@@ -1,6 +1,10 @@
 part of 'in_app_notification.dart';
 
+/// {@template fade_wrapper}
+/// A class that represents fade wrapper.
+/// {@endtemplate}
 class _FadeWrapper extends StatefulWidget {
+/// {@macro fade_wrapper}
   const _FadeWrapper({required this.child});
 
   final Widget child;
@@ -9,6 +13,9 @@ class _FadeWrapper extends StatefulWidget {
   State<_FadeWrapper> createState() => _FadeWrapperState();
 }
 
+/// {@template fade_wrapper_state}
+/// A state class that represents fadewrapper state.
+/// {@endtemplate}
 class _FadeWrapperState extends State<_FadeWrapper>
     with SingleTickerProviderStateMixin {
   late Animation _fadeOutAnimation;

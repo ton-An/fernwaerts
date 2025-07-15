@@ -1,7 +1,16 @@
 part of 'location_history_modal.dart';
 
+/// {@template place_icon}
+/// A widget that displays an icon for a place type.
+///
+/// This widget renders an icon with a background color based on the
+/// [PlaceType] provided.
+/// {@endtemplate}
 class _PlaceIcon extends StatelessWidget {
+  /// {@macro place_icon}
   const _PlaceIcon({required this.type});
+  
+  /// The type of place to display an icon for.
   final PlaceType type;
 
   @override
@@ -53,6 +62,10 @@ class _PlaceIcon extends StatelessWidget {
   }
 }
 
+/// {@template place_icon_data}
+/// {@macro place_icon_data}
+/// A class that represents _PlaceIconData.
+/// {@endtemplate}
 class _PlaceIconData {
   const _PlaceIconData({required this.icon, required this.color});
 

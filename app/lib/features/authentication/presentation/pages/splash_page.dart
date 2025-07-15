@@ -31,6 +31,9 @@ class SplashPage extends StatefulWidget {
   State<SplashPage> createState() => _SplashPageState();
 }
 
+/// {@template splash_page_state}
+/// A state class that represents splashpage state.
+/// {@endtemplate}
 class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {

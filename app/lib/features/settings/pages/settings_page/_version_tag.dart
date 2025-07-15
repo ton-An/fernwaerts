@@ -1,12 +1,19 @@
 part of 'settings_page.dart';
 
+/// {@template version_tag}
+/// A class that represents version tag.
+/// {@endtemplate}
 class _VersionTag extends StatefulWidget {
+/// {@macro version_tag}
   const _VersionTag();
 
   @override
   State<_VersionTag> createState() => _VersionTagState();
 }
 
+/// {@template version_tag_state}
+/// A state class that represents versiontag state.
+/// {@endtemplate}
 class _VersionTagState extends State<_VersionTag> {
   int _tapCount = 0;
   String? _appVersion;
@@ -45,7 +52,11 @@ class _VersionTagState extends State<_VersionTag> {
   }
 }
 
+/// {@template small_text_button}
+/// A button widget that handles smalltext actions.
+/// {@endtemplate}
 class SmallTextButton extends StatefulWidget {
+/// {@macro small_text_button}
   const SmallTextButton({
     super.key,
     required this.text,
@@ -59,6 +70,9 @@ class SmallTextButton extends StatefulWidget {
   State<SmallTextButton> createState() => _SmallTextButtonState();
 }
 
+/// {@template small_text_button_state}
+/// A state class that represents smalltextbutton state.
+/// {@endtemplate}
 class _SmallTextButtonState extends State<SmallTextButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _fadeController;

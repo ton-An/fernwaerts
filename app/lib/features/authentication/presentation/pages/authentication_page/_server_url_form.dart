@@ -1,12 +1,19 @@
 part of 'authentication_page.dart';
 
+/// {@template server_url_form}
+/// A class that represents server url form.
+/// {@endtemplate}
 class _ServerUrlForm extends StatefulWidget {
+/// {@macro server_url_form}
   const _ServerUrlForm();
 
   @override
   State<_ServerUrlForm> createState() => _ServerUrlFormState();
 }
 
+/// {@template server_url_form_state}
+/// A state class that represents serverurlform state.
+/// {@endtemplate}
 class _ServerUrlFormState extends State<_ServerUrlForm> {
   late TextEditingController _urlEditController;
 

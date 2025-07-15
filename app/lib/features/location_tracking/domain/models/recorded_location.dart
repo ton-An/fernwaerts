@@ -7,6 +7,10 @@ import 'package:location_history/features/location_tracking/domain/enums/activit
     - [ ] Check if timestamp is parsed correctly
 */
 
+/// {@template recorded_location}
+/// {@macro recorded_location}
+/// A class that represents RecordedLocation.
+/// {@endtemplate}
 class RecordedLocation {
   RecordedLocation({
     required this.timestamp,

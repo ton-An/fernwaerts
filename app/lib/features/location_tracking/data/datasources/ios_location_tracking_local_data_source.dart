@@ -23,8 +23,17 @@ abstract class IOSLocationTrackingLocalDataSource {
   Stream<RecordedLocation> locationChangeStream();
 }
 
+/// {@template ios_location_tracking_local_data_source_impl}
+/// Implementation of [IOSLocationTrackingLocalDataSource] for iOS platforms.
+///
+/// This class provides location tracking functionality specifically for iOS
+/// devices using the background geolocation plugin.
+/// {@endtemplate}
 class IOSLocationTrackingLocalDataSourceImpl
     extends IOSLocationTrackingLocalDataSource {
+  /// {@macro ios_location_tracking_local_data_source_impl}
+  IOSLocationTrackingLocalDataSourceImpl();
+
   @override
   Future<void> initTracking() async {
     await bg.BackgroundGeolocation.ready(

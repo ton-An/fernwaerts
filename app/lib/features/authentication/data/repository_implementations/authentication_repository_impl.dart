@@ -20,7 +20,11 @@ import 'package:supabase_flutter/supabase_flutter.dart';
     - [ ] Standardize error handling of supabase errors
 */
 
+/// {@template authentication_repository_impl}
+/// A class that represents authentication repository impl.
+/// {@endtemplate}
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
+/// {@macro authentication_repository_impl}
   const AuthenticationRepositoryImpl({
     required this.authRemoteDataSource,
     required this.authLocalDataSource,

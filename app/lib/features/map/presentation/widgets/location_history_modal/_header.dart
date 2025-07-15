@@ -1,6 +1,10 @@
 part of 'location_history_modal.dart';
 
+/// {@template header}
+/// A header widget that displays  information.
+/// {@endtemplate}
 class _Header extends StatelessWidget {
+/// {@macro header}
   const _Header();
 
   @override

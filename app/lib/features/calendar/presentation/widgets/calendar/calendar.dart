@@ -25,32 +25,35 @@ part '_calendar_type_selector.dart';
 /// This is used by `_CalendarTypeSelector` to offer different ways to select dates.
 enum CalendarSelectionType { customRange, day, week, month, year }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /// {@template calendar}
-/// The main calendar view widget that allows users to select dates or date ranges.
-///
-/// This widget adapts its display based on the [CalendarSelectionTypeState]
-/// (e.g., showing a [MonthlyCalendar], [YearlyCalendar], or [DecenniallyYearCalendar]).
-/// It uses an [ExpandableCarousel] to allow swiping between different time periods
-/// (e.g., months, years, decades).
-///
-/// Structure:
-/// - **Header**: Displays the current time period and navigation arrows (via `_CalendarHeader`).
-/// - **Carousel**: A swipeable area showing the appropriate calendar view ([MonthlyCalendar], [YearlyCalendar], or [DecenniallyYearCalendar]).
-/// - **Type Selector**: Allows changing the selection granularity (e.g., day, week, month, year) (via `_CalendarTypeSelector`).
-///
-/// State Management:
-/// - Listens to [CalendarSelectionTypeCubit] to determine which calendar view to display.
-/// - Interacts with [MonthlyCalendarCubit], [YearlyCalendarCubit], or [DecenniallyCalendarCubit]
-///   when the user swipes the carousel to load the corresponding time frame.
-///
-/// Sub-components:
-/// - [_CalendarContainer]: Provides the main visual container for the calendar.
-/// - [_CalendarHeader]: Displays the current period (e.g., "May 2023") and navigation.
-///   - [_CalendarHeaderSwitch]: The interactive element in the header to change period or selection type.
-/// - [MonthlyCalendar]: Displays days of a month.
-/// - [YearlyCalendar]: Displays months of a year.
-/// - [DecenniallyYearCalendar]: Displays years of a decade.
-/// - [_CalendarTypeSelector]: Buttons to switch between different selection modes (day, week, month, etc.).
+/// A class that represents calendar.
 /// {@endtemplate}
 class Calendar extends StatefulWidget {
   /// {@macro calendar}
@@ -60,6 +63,9 @@ class Calendar extends StatefulWidget {
   State<Calendar> createState() => _CalendarState();
 }
 
+/// {@template calendar_state}
+/// A state class that represents calendar state.
+/// {@endtemplate}
 class _CalendarState extends State<Calendar> {
   late final ExpandableCarouselController _carouselController;
   int _lastOffsetFromCenter = 0;

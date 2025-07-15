@@ -1,6 +1,10 @@
 part of 'in_app_notification.dart';
 
+/// {@template content}
+/// A class that represents content.
+/// {@endtemplate}
 class _Content extends StatelessWidget {
+/// {@macro content}
   const _Content({required this.failure});
 
   final Failure failure;

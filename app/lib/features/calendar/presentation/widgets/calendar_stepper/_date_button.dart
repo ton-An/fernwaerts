@@ -2,13 +2,20 @@ part of 'calendar_stepper.dart';
 
 enum _LabelSize { small, medium, large }
 
+/// {@template date_button}
+/// A button widget that handles date actions.
+/// {@endtemplate}
 class _DateButton extends StatefulWidget {
+/// {@macro date_button}
   const _DateButton();
 
   @override
   State<_DateButton> createState() => _DateButtonState();
 }
 
+/// {@template date_button_state}
+/// A state class that represents datebutton state.
+/// {@endtemplate}
 class _DateButtonState extends State<_DateButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _fadeController;

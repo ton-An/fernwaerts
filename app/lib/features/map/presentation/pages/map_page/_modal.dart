@@ -1,12 +1,19 @@
 part of 'map_page.dart';
 
+/// {@template modal}
+/// A modal widget that displays  content.
+/// {@endtemplate}
 class _Modal extends StatefulWidget {
+/// {@macro modal}
   const _Modal();
 
   @override
   State<_Modal> createState() => _ModalState();
 }
 
+/// {@template modal_state}
+/// A state class that represents modal state.
+/// {@endtemplate}
 class _ModalState extends State<_Modal> {
   late DraggableScrollableController _draggableScrollableController;
 

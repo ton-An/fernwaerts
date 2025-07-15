@@ -110,7 +110,11 @@ abstract class AuthenticationRemoteDataSource {
   Future<String> getCurrentUserId();
 }
 
+/// {@template auth_remote_data_source_impl}
+/// A class that represents auth remote data source impl.
+/// {@endtemplate}
 class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
+/// {@macro auth_remote_data_source_impl}
   const AuthRemoteDataSourceImpl({
     required this.serverRemoteHandler,
     required this.supabaseHandler,

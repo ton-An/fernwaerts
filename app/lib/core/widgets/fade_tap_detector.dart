@@ -35,6 +35,9 @@ class FadeTapDetector extends StatefulWidget {
   State<FadeTapDetector> createState() => _FadeTapDetectorState();
 }
 
+/// {@template fade_tap_detector_state}
+/// A state class that represents fadetapdetector state.
+/// {@endtemplate}
 class _FadeTapDetectorState extends State<FadeTapDetector>
     with SingleTickerProviderStateMixin {
   late AnimationController _fadeController;

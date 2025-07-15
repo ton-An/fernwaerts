@@ -24,32 +24,35 @@ part '_modal.dart';
 part '_single_location_marker.dart';
 part '_time_gradient_legend.dart';
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /// {@template map_page}
-/// The main page of the application, displaying the map, calendar, and location history modal.
-///
-/// This page integrates several key features:
-/// - **Map View**: Displays a geographical map using `flutter_map` (via `_Map`).
-///   - Shows location markers for the selected date range (via `_LocationMarkers`).
-///   - Includes attribution and time gradient legends (via `_AttributionLegend`, `_TimeGradientLegend`).
-/// - **Calendar**: Allows users to select dates or date ranges for viewing location history (via [CalendarComposite]).
-/// - **Location History Modal**: A draggable bottom sheet that displays detailed location history (via `_Modal` which wraps [LocationHistoryModal]).
-///
-/// State Management:
-/// - Listens to [CalendarDateSelectionCubit] to load location data via [MapCubit] when the selected date changes.
-/// - [MapCubit] manages fetching and providing location data to the map and modal.
-///
-/// Initialization:
-/// - On `initState`, it triggers an initial load of locations based on the current state of [CalendarDateSelectionCubit].
-///
-/// Sub-components:
-/// - [_Map]: The core map widget.
-/// - [_LocationMarkers]: Renders markers on the map.
-/// - [_SingleLocationMarker]: Represents an individual marker.
-/// - [_AttributionLegend]: Displays map attribution information.
-/// - [_TimeGradientLegend]: Shows a legend for the time-based color gradient of location markers.
-/// - [_LegendContainer]: A common container for map legends.
-/// - [CalendarComposite]: The interactive calendar widget.
-/// - [_Modal]: Manages the presentation of the [LocationHistoryModal].
+/// A page that displays map content.
 /// {@endtemplate}
 class MapPage extends StatefulWidget {
   /// {@macro map_page}
@@ -62,6 +65,9 @@ class MapPage extends StatefulWidget {
   State<MapPage> createState() => _MapPageState();
 }
 
+/// {@template map_page_state}
+/// A state class that represents mappage state.
+/// {@endtemplate}
 class _MapPageState extends State<MapPage> {
   @override
   void initState() {

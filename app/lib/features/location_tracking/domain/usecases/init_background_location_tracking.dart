@@ -14,6 +14,10 @@ import 'package:location_history/features/location_tracking/domain/models/record
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
 
+/// {@template init_background_location_tracking}
+/// {@macro init_background_location_tracking}
+/// A class that represents InitBackgroundLocationTracking.
+/// {@endtemplate}
 class InitBackgroundLocationTracking {
   InitBackgroundLocationTracking({
     required this.initializeSavedServerConnection,

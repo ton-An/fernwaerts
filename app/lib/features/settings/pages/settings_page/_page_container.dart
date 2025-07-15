@@ -1,6 +1,10 @@
 part of 'settings_page.dart';
 
+/// {@template page_container}
+/// A container widget that wraps page content.
+/// {@endtemplate}
 class _PageContainer extends StatelessWidget {
+/// {@macro page_container}
   const _PageContainer({required this.child});
 
   final Widget child;

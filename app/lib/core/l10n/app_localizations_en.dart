@@ -4,8 +4,12 @@ import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
 
-/// The translations for English (`en`).
+
+/// {@template app_localizations_en}
+/// A class that represents app localizations en.
+/// {@endtemplate}
 class AppLocalizationsEn extends AppLocalizations {
+/// {@macro app_localizations_en}
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override

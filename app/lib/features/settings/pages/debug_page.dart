@@ -4,7 +4,11 @@ import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
+/// {@template debug_page}
+/// A page that displays debug content.
+/// {@endtemplate}
 class DebugPage extends StatelessWidget {
+/// {@macro debug_page}
   const DebugPage({super.key});
 
   static const String pageName = 'debug';

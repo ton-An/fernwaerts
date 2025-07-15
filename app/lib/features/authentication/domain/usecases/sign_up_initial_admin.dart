@@ -11,18 +11,22 @@ import 'package:location_history/features/authentication/domain/usecases/sign_in
     - [ ] Add possible Failures from sign in 
 */
 
-/// Signs up the initial admin user
-///
-/// Parameters:
-/// - [String] username: The username of the admin user
-/// - [String] email: The email of the admin user
-/// - [String] password: The password of the admin user
-/// - [String] repeatedPassword: The repeated password of the admin user to confirm it
-///
-/// Failures:
-/// - [WeakPasswordFailure]
-/// {@macro converted_dio_exceptions}
-/// {@macro converted_client_exceptions}
+
+
+
+
+
+
+
+
+
+
+
+
+/// {@template sign_up_initial_admin}
+/// {@macro sign_up_initial_admin}
+/// Signs up the initial admin user Parameters: - [String] username: The username of the admin user - [String] email: The email of the admin user - [String] password: The password of the admin user - [String] repeatedPassword: The repeated password of the admin user to confirm it Failures: - [WeakPasswordFailure]
+/// {@endtemplate}
 class SignUpInitialAdmin {
   const SignUpInitialAdmin({
     required this.authenticationRepository,

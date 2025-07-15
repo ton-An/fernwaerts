@@ -1,6 +1,10 @@
 part of 'calendar_stepper.dart';
 
+/// {@template switch}
+/// A class that represents switch.
+/// {@endtemplate}
 class _Switch extends StatefulWidget {
+/// {@macro switch}
   const _Switch({required this.icon, required this.onPressed});
 
   final IconData icon;
@@ -10,6 +14,9 @@ class _Switch extends StatefulWidget {
   State<_Switch> createState() => _SwitchState();
 }
 
+/// {@template switch_state}
+/// A state class that represents switch state.
+/// {@endtemplate}
 class _SwitchState extends State<_Switch> with SingleTickerProviderStateMixin {
   late AnimationController _fadeController;
   late Animation<int> _fadeAnimation;

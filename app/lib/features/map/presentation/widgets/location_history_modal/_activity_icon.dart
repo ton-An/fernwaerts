@@ -1,6 +1,10 @@
 part of 'location_history_modal.dart';
 
+/// {@template activity_icon}
+/// A class that represents activity icon.
+/// {@endtemplate}
 class _ActivityIcon extends StatelessWidget {
+/// {@macro activity_icon}
   const _ActivityIcon({required this.type});
 
   final ActivityType type;

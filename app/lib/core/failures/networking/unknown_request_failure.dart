@@ -1,7 +1,11 @@
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/failure_constants.dart';
 
+/// {@template unknown_request_failure}
+/// A class that represents unknown request failure.
+/// {@endtemplate}
 class UnknownRequestFailure extends Failure {
+/// {@macro unknown_request_failure}
   const UnknownRequestFailure()
     : super(
         name: 'Unknown Request Failure',

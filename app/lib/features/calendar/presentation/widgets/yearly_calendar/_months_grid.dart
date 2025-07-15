@@ -1,8 +1,16 @@
 part of 'yearly_calendar.dart';
 
+/// {@template months_grid}
+/// A grid widget that displays months of a year in a yearly calendar view.
+///
+/// This widget renders a grid of month cells, allowing users to select
+/// specific months within a year.
+/// {@endtemplate}
 class _MonthsGrid extends StatelessWidget {
+  /// {@macro months_grid}
   const _MonthsGrid({required this.yearOffset});
 
+  /// The offset from the currently selected year to display.
   final int yearOffset;
 
   static const _monthsInYear = 12;

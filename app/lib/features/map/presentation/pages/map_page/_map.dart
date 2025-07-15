@@ -4,13 +4,20 @@ part of 'map_page.dart';
   To-Do:
     - [ ] Improve arrowOffsetDirection as it doesn't seem accurate over long distances
 */
+/// {@template map}
+/// A class that represents map.
+/// {@endtemplate}
 class _Map extends StatefulWidget {
+/// {@macro map}
   const _Map();
 
   @override
   State<_Map> createState() => _MapState();
 }
 
+/// {@template map_state}
+/// A state class that represents map state.
+/// {@endtemplate}
 class _MapState extends State<_Map> {
   String? appPackageName;
 

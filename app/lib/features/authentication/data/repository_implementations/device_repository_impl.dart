@@ -13,7 +13,11 @@ import 'package:location_history/features/authentication/domain/models/device.mo
 import 'package:location_history/features/authentication/domain/models/raw_device.dart';
 import 'package:location_history/features/authentication/domain/repositories/device_repository.dart';
 
+/// {@template device_repository_impl}
+/// A class that represents device repository impl.
+/// {@endtemplate}
 class DeviceRepositoryImpl extends DeviceRepository {
+/// {@macro device_repository_impl}
   DeviceRepositoryImpl({
     required this.baseDeviceLocalDataSource,
     required this.iosDeviceLocalDataSource,

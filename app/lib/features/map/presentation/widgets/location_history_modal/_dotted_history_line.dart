@@ -1,6 +1,10 @@
 part of 'location_history_modal.dart';
 
+/// {@template dotted_history_line}
+/// A class that represents dotted history line.
+/// {@endtemplate}
 class _DottedHistoryLine extends StatelessWidget {
+/// {@macro dotted_history_line}
   const _DottedHistoryLine();
 
   @override
