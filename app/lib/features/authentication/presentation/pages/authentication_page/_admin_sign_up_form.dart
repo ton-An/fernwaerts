@@ -1,19 +1,13 @@
 part of 'authentication_page.dart';
 
-/// {@template admin_sign_up_form}
-/// A class that represents admin sign up form.
-/// {@endtemplate}
 class _AdminSignUpForm extends StatefulWidget {
-/// {@macro admin_sign_up_form}
   const _AdminSignUpForm();
 
   @override
   State<_AdminSignUpForm> createState() => _AdminSignUpFormState();
 }
 
-/// {@template admin_sign_up_form_state}
 /// A state class that represents adminsignupform state.
-/// {@endtemplate}
 class _AdminSignUpFormState extends State<_AdminSignUpForm> {
   late TextEditingController _usernameController;
   late TextEditingController _emailController;

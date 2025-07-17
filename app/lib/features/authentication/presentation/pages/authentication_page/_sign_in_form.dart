@@ -1,19 +1,13 @@
 part of 'authentication_page.dart';
 
-/// {@template sign_in_form}
-/// A class that represents sign in form.
-/// {@endtemplate}
 class _SignInForm extends StatefulWidget {
-/// {@macro sign_in_form}
   const _SignInForm();
 
   @override
   State<_SignInForm> createState() => _SignInFormState();
 }
 
-/// {@template sign_in_form_state}
 /// A state class that represents signinform state.
-/// {@endtemplate}
 class _SignInFormState extends State<_SignInForm> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;

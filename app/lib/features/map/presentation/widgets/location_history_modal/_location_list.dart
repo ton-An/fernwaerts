@@ -1,10 +1,6 @@
 part of 'location_history_modal.dart';
 
-/// {@template location_list}
-/// A class that represents location list.
-/// {@endtemplate}
 class _LocationList extends StatelessWidget {
-/// {@macro location_list}
   const _LocationList({required this.scrollController});
 
   final ScrollController scrollController;

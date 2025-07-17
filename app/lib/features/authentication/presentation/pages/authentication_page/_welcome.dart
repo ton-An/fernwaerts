@@ -1,10 +1,6 @@
 part of 'authentication_page.dart';
 
-/// {@template welcome}
-/// A class that represents welcome.
-/// {@endtemplate}
 class _Welcome extends StatelessWidget {
-/// {@macro welcome}
   const _Welcome();
 
   @override

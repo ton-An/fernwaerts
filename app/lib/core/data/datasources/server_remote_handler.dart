@@ -18,11 +18,9 @@ abstract class ServerRemoteHandler {
   /// - [Map]?: response body (if any)
   ///
   /// Throws:
-  /// {@template server_remote_handler_exceptions}
   /// - [StatusCodeNotOkFailure]
   /// - [UnknownRequestFailure]
   /// - [DioException]
-  /// {@endtemplate}
   Future<Map<String, dynamic>?> get({required Uri url});
 
   /// Sends a POST request to the server
@@ -32,18 +30,13 @@ abstract class ServerRemoteHandler {
   /// - [Map]: request body
   ///
   /// Throws:
-  /// {@macro server_remote_handler_exceptions}
   Future<Map<String, dynamic>?> post({
     required Uri url,
     required Map<String, dynamic> body,
   });
 }
 
-/// {@template server_remote_handler_impl}
-/// A class that represents server remote handler impl.
-/// {@endtemplate}
 class ServerRemoteHandlerImpl extends ServerRemoteHandler {
-/// {@macro server_remote_handler_impl}
   const ServerRemoteHandlerImpl({required this.dio});
 
   final Dio dio;

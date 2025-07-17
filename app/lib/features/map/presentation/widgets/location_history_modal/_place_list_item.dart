@@ -1,10 +1,6 @@
 part of 'location_history_modal.dart';
 
-/// {@template place_list_item}
-/// A class that represents place list item.
-/// {@endtemplate}
 class _PlaceListItem extends StatelessWidget {
-/// {@macro place_list_item}
   const _PlaceListItem({required this.place});
 
   final Place place;

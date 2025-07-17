@@ -90,11 +90,7 @@ const List<MigrationCommand> _migration_20250513135647_down = [
   up: _migration_20250513135647_up,
   down: _migration_20250513135647_down,
 )
-/// {@template migration20250513135647}
-/// A class that represents migration20250513135647.
-/// {@endtemplate}
 class Migration20250513135647 extends Migration {
-/// {@macro migration20250513135647}
   const Migration20250513135647()
     : super(
         version: 20250513135647,

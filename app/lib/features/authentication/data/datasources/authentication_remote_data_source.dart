@@ -25,7 +25,6 @@ abstract class AuthenticationRemoteDataSource {
   /// - [String] serverUrl: The URL of the server to connect to
   ///
   /// Throws:
-  /// {@macro server_remote_handler_exceptions}
   Future<void> isServerConnectionValid({required String serverUrl});
 
   /// Checks if the server is set up.
@@ -54,7 +53,6 @@ abstract class AuthenticationRemoteDataSource {
   ///
   /// Throws:
   /// - [WeakPasswordFailure]
-  /// {@macro server_remote_handler_exceptions}
   Future<void> signUpInitialAdmin({
     required String serverUrl,
     required String username,
@@ -97,7 +95,6 @@ abstract class AuthenticationRemoteDataSource {
   /// - a [String] containing the Supabase anon key
   ///
   /// Throws:
-  /// {@macro server_remote_handler_exceptions}
   Future<String> getAnonKeyFromServer({required String serverUrl});
 
   /// Gets the current user's id
@@ -110,11 +107,7 @@ abstract class AuthenticationRemoteDataSource {
   Future<String> getCurrentUserId();
 }
 
-/// {@template auth_remote_data_source_impl}
-/// A class that represents auth remote data source impl.
-/// {@endtemplate}
 class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
-/// {@macro auth_remote_data_source_impl}
   const AuthRemoteDataSourceImpl({
     required this.serverRemoteHandler,
     required this.supabaseHandler,

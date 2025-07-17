@@ -1,10 +1,6 @@
 part of 'map_page.dart';
 
-/// {@template location_markers}
-/// A class that represents location markers.
-/// {@endtemplate}
 class _LocationMarkers extends StatelessWidget {
-/// {@macro location_markers}
   const _LocationMarkers({required this.points});
 
   final List<LatLng> points;

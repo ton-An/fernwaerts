@@ -18,54 +18,14 @@ import 'package:location_history/features/calendar/presentation/widgets/calendar
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_layout.dart';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/// {@template calendar_composite}
-/// A class that represents calendar composite.
-/// {@endtemplate}
 class CalendarComposite extends StatefulWidget {
-  /// {@macro calendar_composite}
   const CalendarComposite({super.key});
 
   @override
   State<CalendarComposite> createState() => _CalendarCompositeState();
 }
 
-/// {@template calendar_composite_state}
 /// A state class that represents calendarcomposite state.
-/// {@endtemplate}
 class _CalendarCompositeState extends State<CalendarComposite>
     with TickerProviderStateMixin {
   late AnimationController _translateController;

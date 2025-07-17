@@ -31,11 +31,7 @@ abstract class BaseDeviceLocalDataSource {
   String getAppVersion();
 }
 
-/// {@template base_device_local_data_source_impl}
-/// A class that represents base device local data source impl.
-/// {@endtemplate}
 class BaseDeviceLocalDataSourceImpl extends BaseDeviceLocalDataSource {
-/// {@macro base_device_local_data_source_impl}
   const BaseDeviceLocalDataSourceImpl({
     required this.secureStorage,
     required this.packageInfo,

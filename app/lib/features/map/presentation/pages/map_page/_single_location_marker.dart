@@ -1,10 +1,6 @@
 part of 'map_page.dart';
 
-/// {@template single_location_marker}
-/// A class that represents single location marker.
-/// {@endtemplate}
 class _SingleLocationMarker extends Marker {
-/// {@macro single_location_marker}
   _SingleLocationMarker({
     required super.point,
     required Offset? arrowOffset,

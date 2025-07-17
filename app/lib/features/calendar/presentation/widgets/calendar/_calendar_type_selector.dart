@@ -1,10 +1,6 @@
 part of 'calendar.dart';
 
-/// {@template calendar_type_selector}
-/// A class that represents calendar type selector.
-/// {@endtemplate}
 class _CalendarTypeSelector extends StatelessWidget {
-/// {@macro calendar_type_selector}
   const _CalendarTypeSelector();
 
   @override

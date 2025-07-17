@@ -16,11 +16,7 @@ extension ActivityTypeLocalizationExtension on ActivityType {
   }
 }
 
-/// {@template activity_list_item}
-/// A class that represents activity list item.
-/// {@endtemplate}
 class _ActivityListItem extends StatelessWidget {
-/// {@macro activity_list_item}
   const _ActivityListItem({required this.activity});
 
   final Activity activity;

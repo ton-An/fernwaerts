@@ -1,10 +1,6 @@
 part of 'location_history_modal.dart';
 
-/// {@template vertical_list_item_divider}
-/// A class that represents vertical list item divider.
-/// {@endtemplate}
 class _VerticalListItemDivider extends StatelessWidget {
-/// {@macro vertical_list_item_divider}
   const _VerticalListItemDivider();
 
   @override

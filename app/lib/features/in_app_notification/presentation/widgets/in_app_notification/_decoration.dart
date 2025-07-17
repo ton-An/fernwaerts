@@ -1,10 +1,6 @@
 part of 'in_app_notification.dart';
 
-/// {@template decoration}
-/// A class that represents decoration.
-/// {@endtemplate}
 class _Decoration extends StatelessWidget {
-/// {@macro decoration}
   const _Decoration({required this.child});
 
   final Widget child;

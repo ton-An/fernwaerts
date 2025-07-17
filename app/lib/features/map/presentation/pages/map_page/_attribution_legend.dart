@@ -1,10 +1,6 @@
 part of 'map_page.dart';
 
-/// {@template attribution_legend}
-/// A class that represents attribution legend.
-/// {@endtemplate}
 class _AttributionLegend extends StatelessWidget {
-/// {@macro attribution_legend}
   const _AttributionLegend();
 
   static const String attributionUrl =

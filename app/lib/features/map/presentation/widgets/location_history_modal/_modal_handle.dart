@@ -1,10 +1,6 @@
 part of 'location_history_modal.dart';
 
-/// {@template modal_handle}
-/// A class that represents modal handle.
-/// {@endtemplate}
 class _ModalHandle extends StatelessWidget {
-/// {@macro modal_handle}
   const _ModalHandle();
 
   @override

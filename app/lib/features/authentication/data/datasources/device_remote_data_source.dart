@@ -10,11 +10,7 @@ abstract class DeviceRemoteDataSource {
   Future<void> saveDeviceInfoToDB({required Device device});
 }
 
-/// {@template device_remote_data_source_impl}
-/// A class that represents device remote data source impl.
-/// {@endtemplate}
 class DeviceRemoteDataSourceImpl implements DeviceRemoteDataSource {
-/// {@macro device_remote_data_source_impl}
   const DeviceRemoteDataSourceImpl({required this.supabaseHandler});
 
   final SupabaseHandler supabaseHandler;

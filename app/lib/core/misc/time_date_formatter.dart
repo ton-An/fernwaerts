@@ -1,8 +1,5 @@
 import 'package:intl/intl.dart';
 
-/// {@template time_date_formatter}
-/// A class that represents TimeDateFormatter.
-/// {@endtemplate}
 class TimeDateFormatter {
   static String getDuration(DateTime startTime, DateTime endTime) {
     final Duration duration = endTime.difference(startTime);

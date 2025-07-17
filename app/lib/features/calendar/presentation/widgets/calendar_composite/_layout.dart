@@ -1,10 +1,6 @@
 part of 'calendar_composite.dart';
 
-/// {@template layout}
-/// A class that represents layout.
-/// {@endtemplate}
 class _Layout extends MultiChildRenderObjectWidget {
-/// {@macro layout}
   const _Layout({
     required super.children,
     required this.itemSpacing,
@@ -37,14 +33,10 @@ class _Layout extends MultiChildRenderObjectWidget {
   }
 }
 
-/// {@template layout_render_object}
-/// A class that represents layout render object.
-/// {@endtemplate}
 class _LayoutRenderObject extends RenderBox
     with
         ContainerRenderObjectMixin<RenderBox, VerticalListParentData>,
         RenderBoxContainerDefaultsMixin<RenderBox, VerticalListParentData> {
-/// {@macro layout_render_object}
   _LayoutRenderObject({
     required this.itemSpacing,
     required this.calendarOffset,
@@ -129,7 +121,4 @@ class _LayoutRenderObject extends RenderBox
   }
 }
 
-/// {@template vertical_list_parent_data}
-/// A class that represents vertical list parent data.
-/// {@endtemplate}
 class VerticalListParentData extends ContainerBoxParentData<RenderBox> {}

@@ -1,10 +1,6 @@
 part of 'map_page.dart';
 
-/// {@template time_gradient_legend}
-/// A class that represents time gradient legend.
-/// {@endtemplate}
 class _TimeGradientLegend extends StatelessWidget {
-/// {@macro time_gradient_legend}
   const _TimeGradientLegend();
 
   @override

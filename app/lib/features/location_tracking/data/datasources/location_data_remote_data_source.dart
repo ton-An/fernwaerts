@@ -25,11 +25,7 @@ abstract class LocationDataRemoteDataSource {
   });
 }
 
-/// {@template location_data_remote_data_source_impl}
-/// A class that represents location data remote data source impl.
-/// {@endtemplate}
 class LocationDataRemoteDataSourceImpl implements LocationDataRemoteDataSource {
-/// {@macro location_data_remote_data_source_impl}
   const LocationDataRemoteDataSourceImpl({required this.supabaseHandler});
 
   final SupabaseHandler supabaseHandler;

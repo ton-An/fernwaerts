@@ -5,11 +5,7 @@ import 'package:brick_supabase/brick_supabase.dart';
 @ConnectOfflineFirstWithSupabase(
   supabaseConfig: SupabaseSerializable(tableName: 'users'),
 )
-/// {@template user}
-/// A class that represents user.
-/// {@endtemplate}
 class User extends OfflineFirstWithSupabaseModel {
-/// {@macro user}
   User({required this.id, required this.username, required this.email});
 
   @Sqlite(unique: true)

@@ -64,20 +64,14 @@ void main() async {
   );
 }
 
-/// {@template main_app}
-/// A class that represents main app.
-/// {@endtemplate}
 class MainApp extends StatefulWidget {
-/// {@macro main_app}
   const MainApp({super.key});
 
   @override
   State<MainApp> createState() => _MainAppState();
 }
 
-/// {@template main_app_state}
 /// A state class that represents mainapp state.
-/// {@endtemplate}
 class _MainAppState extends State<MainApp> {
   late final GoRouter router;
 

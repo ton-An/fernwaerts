@@ -12,11 +12,7 @@ abstract class IOSDeviceLocalDataSource {
   Future<RawDevice> getRawDeviceInfo();
 }
 
-/// {@template iosdevice_local_data_source_impl}
-/// A class that represents iosdevice local data source impl.
-/// {@endtemplate}
 class IOSDeviceLocalDataSourceImpl implements IOSDeviceLocalDataSource {
-/// {@macro iosdevice_local_data_source_impl}
   const IOSDeviceLocalDataSourceImpl({required this.deviceInfoPlugin});
 
   final DeviceInfoPlugin deviceInfoPlugin;

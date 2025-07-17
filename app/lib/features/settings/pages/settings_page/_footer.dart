@@ -1,10 +1,6 @@
 part of 'settings_page.dart';
 
-/// {@template footer}
-/// A class that represents footer.
-/// {@endtemplate}
 class _Footer extends StatelessWidget {
-/// {@macro footer}
   const _Footer();
 
   @override

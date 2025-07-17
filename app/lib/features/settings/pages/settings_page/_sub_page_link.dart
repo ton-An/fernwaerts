@@ -1,10 +1,6 @@
 part of 'settings_page.dart';
 
-/// {@template sub_page_link}
-/// A class that represents sub page link.
-/// {@endtemplate}
 class _SubPageLink extends StatelessWidget {
-/// {@macro sub_page_link}
   const _SubPageLink();
 
   @override

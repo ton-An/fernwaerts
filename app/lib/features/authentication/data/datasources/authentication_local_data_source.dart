@@ -48,11 +48,7 @@ abstract class AuthenticationLocalDataSource {
   Future<void> deleteLocalDBCache();
 }
 
-/// {@template auth_local_data_source_impl}
-/// A class that represents auth local data source impl.
-/// {@endtemplate}
 class AuthLocalDataSourceImpl extends AuthenticationLocalDataSource {
-/// {@macro auth_local_data_source_impl}
   const AuthLocalDataSourceImpl({
     required this.secureStorage,
     required this.supabaseHandler,

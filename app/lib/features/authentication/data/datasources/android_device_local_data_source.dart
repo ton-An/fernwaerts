@@ -12,11 +12,7 @@ abstract class AndroidDeviceLocalDataSource {
   Future<RawDevice> getRawDeviceInfo();
 }
 
-/// {@template android_device_local_data_source_impl}
-/// A class that represents android device local data source impl.
-/// {@endtemplate}
 class AndroidDeviceLocalDataSourceImpl implements AndroidDeviceLocalDataSource {
-/// {@macro android_device_local_data_source_impl}
   const AndroidDeviceLocalDataSourceImpl({required this.deviceInfoPlugin});
 
   final DeviceInfoPlugin deviceInfoPlugin;

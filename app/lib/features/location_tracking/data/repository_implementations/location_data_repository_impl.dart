@@ -3,11 +3,7 @@ import 'package:location_history/features/location_tracking/domain/models/locati
 import 'package:location_history/features/location_tracking/domain/models/movement_segment.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 
-/// {@template location_data_repository_impl}
-/// A class that represents location data repository impl.
-/// {@endtemplate}
 class LocationDataRepositoryImpl extends LocationDataRepository {
-/// {@macro location_data_repository_impl}
   const LocationDataRepositoryImpl({required this.locationRemoteDataSource});
 
   final LocationDataRemoteDataSource locationRemoteDataSource;

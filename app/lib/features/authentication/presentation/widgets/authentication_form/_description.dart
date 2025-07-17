@@ -1,19 +1,5 @@
 part of 'authentication_form.dart';
-
-
-
-
-
-
-
-
-
-
-/// {@template description}
-/// A class that represents description.
-/// {@endtemplate}
 class _Description extends StatelessWidget {
-/// {@macro description}
   const _Description({
     required this.label,
     required this.description,

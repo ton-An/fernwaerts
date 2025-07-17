@@ -16,11 +16,7 @@ import 'package:uuid/uuid.dart';
 @ConnectOfflineFirstWithSupabase(
   supabaseConfig: SupabaseSerializable(tableName: 'devices'),
 )
-/// {@template device}
-/// A class that represents device.
-/// {@endtemplate}
 class Device extends OfflineFirstWithSupabaseModel with EquatableMixin {
-/// {@macro device}
   Device({
     String? id,
     required this.userId,
