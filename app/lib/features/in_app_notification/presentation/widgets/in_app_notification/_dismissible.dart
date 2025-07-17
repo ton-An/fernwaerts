@@ -36,7 +36,6 @@ class _Dismissible extends StatefulWidget {
   State<_Dismissible> createState() => _DismissibleState();
 }
 
-/// A state class that represents dismissible state.
 class _DismissibleState extends State<_Dismissible>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   @override

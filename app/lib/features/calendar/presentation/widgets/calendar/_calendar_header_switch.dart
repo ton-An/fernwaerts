@@ -10,7 +10,6 @@ class _Switch extends StatefulWidget {
   State<_Switch> createState() => _SwitchState();
 }
 
-/// A state class that represents switch state.
 class _SwitchState extends State<_Switch> with SingleTickerProviderStateMixin {
   late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;

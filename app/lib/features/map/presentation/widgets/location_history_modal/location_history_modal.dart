@@ -67,7 +67,6 @@ class LocationHistoryModal extends StatefulWidget {
 }
 
 /// {@template location_history_modal_state}
-/// A state class that represents locationhistorymodal state.
 /// {@endtemplate}
 class _LocationHistoryModalState extends State<LocationHistoryModal> {
   double _dragStart = 0;

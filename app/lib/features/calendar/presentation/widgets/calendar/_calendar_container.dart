@@ -1,10 +1,6 @@
 part of 'calendar.dart';
 
-/// {@template calendar_container}
-/// A container widget that wraps calendar content.
-/// {@endtemplate}
 class _CalendarContainer extends StatelessWidget {
-/// {@macro calendar_container}
   const _CalendarContainer({required this.child});
 
   final Widget child;

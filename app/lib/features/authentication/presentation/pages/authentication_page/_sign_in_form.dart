@@ -7,7 +7,6 @@ class _SignInForm extends StatefulWidget {
   State<_SignInForm> createState() => _SignInFormState();
 }
 
-/// A state class that represents signinform state.
 class _SignInFormState extends State<_SignInForm> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;

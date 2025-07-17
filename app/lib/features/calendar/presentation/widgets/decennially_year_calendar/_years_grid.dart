@@ -1,10 +1,6 @@
 part of 'decennially_year_calendar.dart';
 
-/// {@template years_grid}
-/// A grid widget that displays years in a grid layout.
-/// {@endtemplate}
 class _YearsGrid extends StatelessWidget {
-/// {@macro years_grid}
   const _YearsGrid({required this.decadeOffset});
 
   final int decadeOffset;

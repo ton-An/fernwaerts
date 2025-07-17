@@ -7,7 +7,6 @@ class _VideoBackground extends StatefulWidget {
   State<_VideoBackground> createState() => _VideoBackgroundState();
 }
 
-/// A state class that represents videobackground state.
 class _VideoBackgroundState extends State<_VideoBackground>
     with SingleTickerProviderStateMixin {
   static const String _videoPath = 'assets/videos/forest_aerial.mp4';

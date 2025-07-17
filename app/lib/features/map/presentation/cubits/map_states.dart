@@ -5,7 +5,6 @@ abstract class MapState {
   const MapState();
 }
 
-/// A state class that represents mapinitial state.
 class MapInitialState extends MapState {
   const MapInitialState();
 }

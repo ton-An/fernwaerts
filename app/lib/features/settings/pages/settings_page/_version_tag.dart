@@ -7,7 +7,6 @@ class _VersionTag extends StatefulWidget {
   State<_VersionTag> createState() => _VersionTagState();
 }
 
-/// A state class that represents versiontag state.
 class _VersionTagState extends State<_VersionTag> {
   int _tapCount = 0;
   String? _appVersion;
@@ -46,7 +45,6 @@ class _VersionTagState extends State<_VersionTag> {
   }
 }
 
-/// A button widget that handles smalltext actions.
 class SmallTextButton extends StatefulWidget {
   const SmallTextButton({
     super.key,
@@ -61,7 +59,6 @@ class SmallTextButton extends StatefulWidget {
   State<SmallTextButton> createState() => _SmallTextButtonState();
 }
 
-/// A state class that represents smalltextbutton state.
 class _SmallTextButtonState extends State<SmallTextButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _fadeController;

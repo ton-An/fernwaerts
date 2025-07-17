@@ -87,9 +87,6 @@ class Calendar extends StatefulWidget {
   State<Calendar> createState() => _CalendarState();
 }
 
-/// {@template calendar_state}
-/// A state class that represents calendar state.
-/// {@endtemplate}
 class _CalendarState extends State<Calendar> {
   late final ExpandableCarouselController _carouselController;
   int _lastOffsetFromCenter = 0;

@@ -52,7 +52,6 @@ class AuthenticationPage extends StatefulWidget {
 }
 
 /// {@template authentication_page_state}
-/// A state class that represents authenticationpage state.
 /// {@endtemplate}
 class _AuthenticationPageState extends State<AuthenticationPage> {
   late ExpandableCarouselController _carouselController;

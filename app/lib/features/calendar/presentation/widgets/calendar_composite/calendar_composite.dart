@@ -25,7 +25,6 @@ class CalendarComposite extends StatefulWidget {
   State<CalendarComposite> createState() => _CalendarCompositeState();
 }
 
-/// A state class that represents calendarcomposite state.
 class _CalendarCompositeState extends State<CalendarComposite>
     with TickerProviderStateMixin {
   late AnimationController _translateController;

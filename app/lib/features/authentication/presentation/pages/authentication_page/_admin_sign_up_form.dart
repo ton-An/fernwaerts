@@ -7,7 +7,6 @@ class _AdminSignUpForm extends StatefulWidget {
   State<_AdminSignUpForm> createState() => _AdminSignUpFormState();
 }
 
-/// A state class that represents adminsignupform state.
 class _AdminSignUpFormState extends State<_AdminSignUpForm> {
   late TextEditingController _usernameController;
   late TextEditingController _emailController;

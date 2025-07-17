@@ -12,7 +12,6 @@ class _Modal extends StatefulWidget {
 }
 
 /// {@template modal_state}
-/// A state class that represents modal state.
 /// {@endtemplate}
 class _ModalState extends State<_Modal> {
   late DraggableScrollableController _draggableScrollableController;

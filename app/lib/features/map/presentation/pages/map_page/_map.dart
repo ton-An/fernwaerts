@@ -11,7 +11,6 @@ class _Map extends StatefulWidget {
   State<_Map> createState() => _MapState();
 }
 
-/// A state class that represents map state.
 class _MapState extends State<_Map> {
   String? appPackageName;
 

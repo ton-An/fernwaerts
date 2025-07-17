@@ -71,7 +71,6 @@ class MainApp extends StatefulWidget {
   State<MainApp> createState() => _MainAppState();
 }
 
-/// A state class that represents mainapp state.
 class _MainAppState extends State<MainApp> {
   late final GoRouter router;
 

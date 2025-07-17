@@ -66,7 +66,6 @@ class MapPage extends StatefulWidget {
 }
 
 /// {@template map_page_state}
-/// A state class that represents mappage state.
 /// {@endtemplate}
 class _MapPageState extends State<MapPage> {
   @override

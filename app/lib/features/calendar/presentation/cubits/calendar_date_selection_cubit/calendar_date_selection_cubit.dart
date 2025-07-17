@@ -5,11 +5,7 @@ import 'package:location_history/features/calendar/presentation/cubits/calendar_
 import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_type_state.dart';
 import 'package:location_history/features/calendar/presentation/widgets/calendar_composite/calendar_composite.dart';
 
-/// {@template calendar_date_selection_cubit}
-/// A cubit that manages calendardateselection state.
-/// {@endtemplate}
 class CalendarDateSelectionCubit extends Cubit<CalendarDateSelectionState> {
-/// {@macro calendar_date_selection_cubit}
   CalendarDateSelectionCubit()
     : super(CalendarDaySelected(selectedDate: DTU.startOfDay(DateTime.now())));
 

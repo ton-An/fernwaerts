@@ -7,7 +7,6 @@ class _ServerUrlForm extends StatefulWidget {
   State<_ServerUrlForm> createState() => _ServerUrlFormState();
 }
 
-/// A state class that represents serverurlform state.
 class _ServerUrlFormState extends State<_ServerUrlForm> {
   late TextEditingController _urlEditController;
 

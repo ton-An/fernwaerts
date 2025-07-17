@@ -34,11 +34,7 @@ part '_switch.dart';
 
 
 
-/// {@template calendar_stepper}
-/// A stepper widget that handles calendar navigation.
-/// {@endtemplate}
 class CalendarStepper extends StatelessWidget {
-  /// {@macro calendar_stepper}
   const CalendarStepper({super.key});
 
   /// The fixed height of the calendar stepper.

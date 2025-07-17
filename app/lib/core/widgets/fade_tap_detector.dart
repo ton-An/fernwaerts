@@ -36,7 +36,6 @@ class FadeTapDetector extends StatefulWidget {
 }
 
 /// {@template fade_tap_detector_state}
-/// A state class that represents fadetapdetector state.
 /// {@endtemplate}
 class _FadeTapDetectorState extends State<FadeTapDetector>
     with SingleTickerProviderStateMixin {

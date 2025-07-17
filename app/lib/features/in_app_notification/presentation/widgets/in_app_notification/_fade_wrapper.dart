@@ -9,7 +9,6 @@ class _FadeWrapper extends StatefulWidget {
   State<_FadeWrapper> createState() => _FadeWrapperState();
 }
 
-/// A state class that represents fadewrapper state.
 class _FadeWrapperState extends State<_FadeWrapper>
     with SingleTickerProviderStateMixin {
   late Animation _fadeOutAnimation;
