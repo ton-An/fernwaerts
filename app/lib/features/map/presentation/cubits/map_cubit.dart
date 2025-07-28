@@ -6,6 +6,11 @@ import 'package:location_history/features/location_tracking/domain/usecases/get_
 import 'package:location_history/features/map/presentation/cubits/map_states.dart';
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
 
+/*
+  To-Do:
+    - [ ] Add tests
+*/
+
 /// {@template map_cubit}
 /// Manages the state of the [MapPage]:
 /// - Loads and displays location data based on a date range.

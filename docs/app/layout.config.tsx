@@ -12,7 +12,7 @@ export const baseOptions: BaseLayoutProps = {
   nav: {
     title: (
       <>
-        <Image src="images/app_icon_transparent_bg.png" alt="" width={32} height={32} />
+        <Image src="/images/app_icon_transparent_bg.png" alt="" width={32} height={32} />
         Fernwärts
       </>
     ),

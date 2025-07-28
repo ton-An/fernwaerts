@@ -21,10 +21,14 @@ export default function Features() {
 
 function SmallFeature({ icon, title, description }: { icon: string, title: string; description: string }) {
     return (
-        <div className="w-64 h-64 p-4 flex flex-col items-center rounded-3xl shadow-lg backdrop-blur-2xl bg-white/60 dark:bg-white/10">
-            <h1 className='pt-8 text-5xl'>{icon}</h1>
-            <h2 className='pt-8 text-3xl font-bold'>{title}</h2>
-            <p className="pt-2 text-base">{description}</p>
+        <div className="w-72 h-74 p-4 flex flex-col justify-end items-center rounded-3xl shadow-lg backdrop-blur-2xl bg-white/60 dark:bg-white/10">
+
+            <div className="h-full flex flex-col justify-center"><h1 className='text-6xl'>{icon}</h1></div>
+            <div className='px-4 py-6 rounded-2xl bg-black/5 dark:bg-white/10 text-black/70 dark:text-white/95'>
+                <h2 className='text-3xl font-bold'>{title}</h2>
+                <p className="pt-2 text-base">{description}</p>
+            </div>
+
         </div>
     )
 }
