@@ -4,6 +4,9 @@
 //     - Use activity data to save battery
 // - should get the current location if the activity is still
 
+import 'dart:async';
+import 'dart:math';
+
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
@@ -84,7 +87,9 @@ class InitBackgroundLocationTracking {
     final Stream<RecordedLocation> locationStream =
         locationTrackingRepository.locationChangeStream();
 
-    locationStream.listen((RecordedLocation recordedLocation) {
+    Timer? distanceFilterTimeout;
+
+    locationStream.listen((RecordedLocation recordedLocation) async {
       final Location location = Location.fromRecordedLocation(
         recordedLocation: recordedLocation,
         userId: userId,
@@ -95,7 +100,56 @@ class InitBackgroundLocationTracking {
         isDeviceCharging: false,
       );
 
+      distanceFilterTimeout = await _updateDistanceFilter(
+        location: location,
+        distanceFilterTimeout: distanceFilterTimeout,
+      );
+
       locationDataRepository.saveLocation(location: location);
     });
+  }
+
+  /// Updates the distance filter dynamically based on the device's current speed,
+  /// and returns a timer that triggers a fallback re-initialization of location tracking
+  /// if no location update is received within the expected time window.
+  Future<Timer> _updateDistanceFilter({
+    required Location location,
+    required Timer? distanceFilterTimeout,
+  }) async {
+    distanceFilterTimeout?.cancel();
+
+    final double speedInMetersPerSecond = location.speed.toDouble();
+
+    double distanceFilterInMeters = _calculateDistanceFilter(
+      speedInMetersPerSecond: speedInMetersPerSecond,
+    );
+
+    double secondsUntilFilterTimeout =
+        distanceFilterInMeters / speedInMetersPerSecond * .03;
+
+    Timer newDistanceFilterTimeout = Timer(
+      Duration(seconds: secondsUntilFilterTimeout.ceil()),
+      () async {
+        await locationTrackingRepository.initTracking();
+      },
+    );
+
+    await locationTrackingRepository.updateDistanceFilter(
+      distanceFilter: distanceFilterInMeters,
+    );
+
+    return newDistanceFilterTimeout;
+  }
+
+  double _calculateDistanceFilter({required double speedInMetersPerSecond}) {
+    final double speedInKmh = speedInMetersPerSecond * 3.6;
+
+    const double maxDistanceInMeters = 10000;
+    const double growthFactor = 0.008;
+    const double levelOffFactor = 2.2;
+
+    return maxDistanceInMeters *
+            pow(1 - pow(e, -growthFactor * speedInKmh), levelOffFactor) +
+        100;
   }
 }

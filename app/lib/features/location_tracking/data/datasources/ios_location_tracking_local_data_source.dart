@@ -20,24 +20,27 @@ abstract class IOSLocationTrackingLocalDataSource {
   /// Emits:
   /// - [RecordedLocation] the current location of the user
   Stream<RecordedLocation> locationChangeStream();
+
+  /// Updates the distance filter for the tracking service
+  ///
+  /// Parameters:
+  /// - [distanceFilter] the distance in meters that must be traveled before a new location is recorded
+  Future<void> updateDistanceFilter({required double distanceFilter});
 }
 
 class IOSLocationTrackingLocalDataSourceImpl
     extends IOSLocationTrackingLocalDataSource {
   @override
   Future<void> initTracking() async {
-    print("1");
     await BackgroundLocation.stopLocationService();
-    print("2");
     await BackgroundLocation.startLocationService(
-      distanceFilter: 10,
+      distanceFilter: 100,
       fastestInterval: 0,
       interval: 0,
       startOnBoot: true,
       backgroundCallback: (_) => "",
       priority: LocationPriority.priorityHighAccuracy,
     );
-    print("3");
   }
 
   @override
@@ -58,5 +61,10 @@ class IOSLocationTrackingLocalDataSourceImpl
     });
 
     return locationChangeStreamController.stream;
+  }
+
+  @override
+  Future<void> updateDistanceFilter({required double distanceFilter}) async {
+    await BackgroundLocation.updateDistanceFilter(distanceFilter);
   }
 }
