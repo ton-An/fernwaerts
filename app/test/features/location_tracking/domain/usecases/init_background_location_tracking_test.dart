@@ -9,7 +9,7 @@ import '../../../../fixtures.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late InitBackgroundLocationTracking locationTrackingHandler;
+  late InitBackgroundLocationTracking initBackgroundLocationTracking;
   late MockInitializeSavedServerConnection mockInitializeSavedServerConnection;
   late MockAuthenticationRepository mockAuthenticationRepository;
   late MockDeviceRepository mockDeviceRepository;
@@ -22,7 +22,7 @@ void main() {
     mockDeviceRepository = MockDeviceRepository();
     mockLocationTrackingRepository = MockLocationTrackingRepository();
     mockLocationDataRepository = MockLocationDataRepository();
-    locationTrackingHandler = InitBackgroundLocationTracking(
+    initBackgroundLocationTracking = InitBackgroundLocationTracking(
       authenticationRepository: mockAuthenticationRepository,
       deviceRepository: mockDeviceRepository,
       locationTrackingRepository: mockLocationTrackingRepository,
@@ -43,7 +43,12 @@ void main() {
     ).thenAnswer((_) async => const Right(tDeviceId));
     when(
       () => mockLocationTrackingRepository.initTracking(),
-    ).thenAnswer((_) async => const Right(None()));
+    ).thenAnswer((_) async => Future.value());
+    when(
+      () => mockLocationTrackingRepository.updateDistanceFilter(
+        distanceFilter: any(named: 'distanceFilter'),
+      ),
+    ).thenAnswer((_) async => Future.value());
     when(
       () => mockLocationTrackingRepository.locationChangeStream(),
     ).thenAnswer(
@@ -53,7 +58,7 @@ void main() {
       () => mockLocationDataRepository.saveLocation(
         location: any(named: 'location'),
       ),
-    ).thenAnswer((_) async => const Right(None()));
+    ).thenAnswer((_) async => Future.value());
   });
 
   setUpAll(() {
@@ -62,7 +67,7 @@ void main() {
 
   test('should init the saved server connection', () async {
     // act
-    await locationTrackingHandler();
+    await initBackgroundLocationTracking();
 
     // assert
     verify(() => mockInitializeSavedServerConnection());
@@ -75,7 +80,7 @@ void main() {
     ).thenAnswer((_) async => const Left(StorageReadFailure()));
 
     // act
-    final result = await locationTrackingHandler();
+    final result = await initBackgroundLocationTracking();
 
     // assert
     expect(result, const Left(StorageReadFailure()));
@@ -83,7 +88,7 @@ void main() {
 
   test('should get the current user', () async {
     // act
-    await locationTrackingHandler();
+    await initBackgroundLocationTracking();
 
     // assert
     verify(() => mockAuthenticationRepository.getCurrentUserId());
@@ -96,7 +101,7 @@ void main() {
     ).thenAnswer((_) async => const Left(StorageReadFailure()));
 
     // act
-    final result = await locationTrackingHandler();
+    final result = await initBackgroundLocationTracking();
 
     // assert
     expect(result, const Left(StorageReadFailure()));
@@ -104,7 +109,7 @@ void main() {
 
   test('should get the device info', () async {
     // act
-    await locationTrackingHandler();
+    await initBackgroundLocationTracking();
 
     // assert
     verify(() => mockDeviceRepository.getDeviceIdFromStorage());
@@ -117,7 +122,7 @@ void main() {
     ).thenAnswer((_) async => const Left(StorageReadFailure()));
 
     // act
-    final result = await locationTrackingHandler();
+    final result = await initBackgroundLocationTracking();
 
     // assert
     expect(result, const Left(StorageReadFailure()));
@@ -125,27 +130,99 @@ void main() {
 
   test('should initialize tracking', () async {
     // act
-    await locationTrackingHandler();
+    await initBackgroundLocationTracking();
 
     // assert
     verify(() => mockLocationTrackingRepository.initTracking());
   });
 
+  test('should listen for location changes', () async {
+    // act
+    await initBackgroundLocationTracking();
+    await Future.delayed(const Duration(seconds: 1));
+
+    // assert
+    verify(() => mockLocationTrackingRepository.locationChangeStream());
+  });
+
+  test('should update the distance filter', () async {
+    // act
+    await initBackgroundLocationTracking();
+    await Future.delayed(const Duration(seconds: 1));
+
+    // assert
+    verify(
+      () => mockLocationTrackingRepository.updateDistanceFilter(
+        distanceFilter: any(
+          named: 'distanceFilter',
+          that: inInclusiveRange(100, 120),
+        ),
+      ),
+    );
+    verify(
+      () => mockLocationTrackingRepository.updateDistanceFilter(
+        distanceFilter: any(
+          named: 'distanceFilter',
+          that: inInclusiveRange(400, 550),
+        ),
+      ),
+    );
+    verify(
+      () => mockLocationTrackingRepository.updateDistanceFilter(
+        distanceFilter: any(
+          named: 'distanceFilter',
+          that: inInclusiveRange(3600, 4600),
+        ),
+      ),
+    );
+    verify(
+      () => mockLocationTrackingRepository.updateDistanceFilter(
+        distanceFilter: any(
+          named: 'distanceFilter',
+          that: inInclusiveRange(9000, 10100),
+        ),
+      ),
+    );
+  });
+
+  test('should save locations to the database', () async {
+    // act
+    await initBackgroundLocationTracking();
+    await Future.delayed(const Duration(seconds: 1));
+
+    // assert
+    verify(
+      () => mockLocationDataRepository.saveLocation(location: tLocations[0]),
+    );
+    verify(
+      () => mockLocationDataRepository.saveLocation(location: tLocations[1]),
+    );
+    verify(
+      () => mockLocationDataRepository.saveLocation(location: tLocations[2]),
+    );
+    verify(
+      () => mockLocationDataRepository.saveLocation(location: tLocations[3]),
+    );
+  });
+
   test(
-    'should listen for location changes and save them to the database',
+    'should trigger re-initialization of location services if the distance filter timeout is exceeded',
     () async {
+      // arrange
+      when(
+        () => mockLocationTrackingRepository.locationChangeStream(),
+      ).thenAnswer(
+        (_) =>
+            Stream<RecordedLocation>.fromIterable(tSlowSpeedRecordedLocations),
+      );
+
       // act
-      await locationTrackingHandler();
-      await Future.delayed(const Duration(seconds: 1));
+      await initBackgroundLocationTracking();
+      await Future.delayed(const Duration(seconds: 10));
 
       // assert
-      verify(() => mockLocationTrackingRepository.locationChangeStream());
-      verify(
-        () => mockLocationDataRepository.saveLocation(location: tLocations[0]),
-      );
-      verify(
-        () => mockLocationDataRepository.saveLocation(location: tLocations[1]),
-      );
+      verify(() => mockLocationTrackingRepository.initTracking()).called(2);
     },
+    timeout: const Timeout(Duration(seconds: 100)),
   );
 }

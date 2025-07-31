@@ -18,4 +18,12 @@ abstract class LocationTrackingRepository {
   /// Emits:
   /// - [RecordedLocation] the current location of the user
   Stream<RecordedLocation> locationChangeStream();
+
+  /// Updates the distance filter for the tracking service.
+  ///
+  /// #### Needs [initTracking] to be called before this
+  ///
+  /// Parameters:
+  /// - [distanceFilter] the distance in meters that must be traveled before a new location is recorded
+  Future<void> updateDistanceFilter({required double distanceFilter});
 }

@@ -1,6 +1,4 @@
-import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
-    as bg;
-import 'package:location_history/features/location_tracking/domain/enums/activity_type.dart';
+import 'package:background_location_2/background_location.dart' as bg;
 
 /* 
   To-Do:
@@ -19,10 +17,6 @@ class RecordedLocation {
     required this.headingAccuracy,
     required this.ellipsoidalAltitude,
     required this.altitudeAccuracy,
-    required this.activityType,
-    required this.activityConfidence,
-    required this.batteryLevel,
-    required this.isDeviceCharging,
   });
 
   final DateTime timestamp;
@@ -40,40 +34,20 @@ class RecordedLocation {
   final num ellipsoidalAltitude;
   final num altitudeAccuracy;
 
-  final ActivityType activityType;
-  final num activityConfidence;
-
-  final num batteryLevel;
-  final bool isDeviceCharging;
-
-  static RecordedLocation fromBGLocation(bg.Location bgLocation) {
+  static RecordedLocation fromBGLocation({required bg.Location bgLocation}) {
     return RecordedLocation(
-      timestamp: timestampFromBGLocation(
-        timestamp: bgLocation.timestamp,
-        age: bgLocation.age,
+      timestamp: DateTime.fromMicrosecondsSinceEpoch(
+        bgLocation.time.floor() * 1000,
       ),
-      latitude: bgLocation.coords.latitude,
-      longitude: bgLocation.coords.longitude,
-      coordinatesAccuracy: bgLocation.coords.accuracy,
-      speed: bgLocation.coords.speed,
-      speedAccuracy: bgLocation.coords.speedAccuracy,
-      heading: bgLocation.coords.heading,
-      headingAccuracy: bgLocation.coords.headingAccuracy,
-      ellipsoidalAltitude: bgLocation.coords.altitude,
-      altitudeAccuracy: bgLocation.coords.altitudeAccuracy,
-      activityType: ActivityType.fromBGActivityType(
-        bgActivityType: bgLocation.activity.type,
-      ),
-      activityConfidence: bgLocation.activity.confidence.toDouble(),
-      batteryLevel: bgLocation.battery.level,
-      isDeviceCharging: bgLocation.battery.isCharging,
+      latitude: bgLocation.latitude,
+      longitude: bgLocation.longitude,
+      coordinatesAccuracy: bgLocation.accuracy,
+      speed: bgLocation.speed,
+      speedAccuracy: bgLocation.speedAccuracy,
+      heading: bgLocation.bearing,
+      headingAccuracy: bgLocation.bearingAccuracy,
+      ellipsoidalAltitude: bgLocation.ellipsoidalAltitude,
+      altitudeAccuracy: bgLocation.altitudeAccuracy,
     );
-  }
-
-  static DateTime timestampFromBGLocation({
-    required String timestamp,
-    required int age,
-  }) {
-    return DateTime.parse(timestamp).subtract(Duration(milliseconds: age));
   }
 }

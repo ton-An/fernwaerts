@@ -75,6 +75,10 @@ class Location extends OfflineFirstWithSupabaseModel with EquatableMixin {
     required RecordedLocation recordedLocation,
     required String userId,
     required String deviceId,
+    required ActivityType activityType,
+    required double activityConfidence,
+    required double batteryLevel,
+    required bool isDeviceCharging,
   }) {
     return Location(
       userId: userId,
@@ -89,10 +93,10 @@ class Location extends OfflineFirstWithSupabaseModel with EquatableMixin {
       headingAccuracy: recordedLocation.headingAccuracy,
       ellipsoidalAltitude: recordedLocation.ellipsoidalAltitude,
       altitudeAccuracy: recordedLocation.altitudeAccuracy,
-      activityType: recordedLocation.activityType,
-      activityConfidence: recordedLocation.activityConfidence,
-      batteryLevel: recordedLocation.batteryLevel,
-      isDeviceCharging: recordedLocation.isDeviceCharging,
+      activityType: activityType,
+      activityConfidence: activityConfidence,
+      batteryLevel: batteryLevel,
+      isDeviceCharging: isDeviceCharging,
     );
   }
 

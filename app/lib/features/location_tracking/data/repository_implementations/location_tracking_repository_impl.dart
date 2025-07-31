@@ -23,4 +23,11 @@ class LocationTrackingRepositoryImpl extends LocationTrackingRepository {
   Stream<RecordedLocation> locationChangeStream() {
     return iosLocationTrackingLocalDataSource.locationChangeStream();
   }
+
+  @override
+  Future<void> updateDistanceFilter({required double distanceFilter}) async {
+    await iosLocationTrackingLocalDataSource.updateDistanceFilter(
+      distanceFilter: distanceFilter,
+    );
+  }
 }

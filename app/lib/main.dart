@@ -38,6 +38,7 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
     - [ ] Standardize docs and fix possible errors (using an llm might be a good idea)
     - [ ] Add permissions request screen
     - [ ] Add log settings page
+    - [ ] Add final keyword to function arguments
 */
 
 void main() async {
@@ -60,6 +61,7 @@ void main() async {
     },
     (exception, stackTrace) {
       getIt<Talker>().handle(exception, stackTrace, 'Uncaught Exception');
+      Error.throwWithStackTrace(exception, stackTrace);
     },
   );
 }

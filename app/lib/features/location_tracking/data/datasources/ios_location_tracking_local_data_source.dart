@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
-    as bg;
+import 'package:background_location_2/background_location.dart';
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
 
 /*
@@ -21,29 +20,32 @@ abstract class IOSLocationTrackingLocalDataSource {
   /// Emits:
   /// - [RecordedLocation] the current location of the user
   Stream<RecordedLocation> locationChangeStream();
+
+  /// Updates the distance filter for the tracking service
+  ///
+  /// Parameters:
+  /// - [distanceFilter] the distance in meters that must be traveled before a new location is recorded
+  Future<void> updateDistanceFilter({required double distanceFilter});
 }
 
 class IOSLocationTrackingLocalDataSourceImpl
     extends IOSLocationTrackingLocalDataSource {
   @override
   Future<void> initTracking() async {
-    await bg.BackgroundGeolocation.ready(
-      bg.Config(
-        desiredAccuracy: bg.Config.DESIRED_ACCURACY_HIGH,
-        stationaryRadius: 200,
-        elasticityMultiplier: 18,
-        stopOnStationary: true,
-        stopOnTerminate: false,
-        startOnBoot: true,
-        showsBackgroundLocationIndicator: true,
-      ),
+    await BackgroundLocation.stopLocationService();
+    await BackgroundLocation.startLocationService(
+      distanceFilter: 100,
+      fastestInterval: 0,
+      interval: 0,
+      startOnBoot: true,
+      backgroundCallback: (_) => "",
+      priority: LocationPriority.priorityHighAccuracy,
     );
-    bg.BackgroundGeolocation.start();
   }
 
   @override
   Future<void> stopTracking() async {
-    await bg.BackgroundGeolocation.stop();
+    await BackgroundLocation.stopLocationService();
   }
 
   @override
@@ -51,18 +53,18 @@ class IOSLocationTrackingLocalDataSourceImpl
     final StreamController<RecordedLocation> locationChangeStreamController =
         StreamController();
 
-    bg.BackgroundGeolocation.onLocation((bg.Location bgLocation) {
-      if (bgLocation.sample) {
-        return;
-      }
-
+    BackgroundLocation.getLocationUpdates((Location bgLocation) {
       final RecordedLocation location = RecordedLocation.fromBGLocation(
-        bgLocation,
+        bgLocation: bgLocation,
       );
-
       locationChangeStreamController.add(location);
     });
 
     return locationChangeStreamController.stream;
+  }
+
+  @override
+  Future<void> updateDistanceFilter({required double distanceFilter}) async {
+    await BackgroundLocation.updateDistanceFilter(distanceFilter);
   }
 }
