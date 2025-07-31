@@ -9,10 +9,16 @@ import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/authentication/domain/repositories/device_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_saved_server_connection.dart';
+import 'package:location_history/features/location_tracking/domain/enums/activity_type.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.model.dart';
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
+
+/* 
+  To-Do:
+    - [ ] Add activity and battery data
+*/
 
 class InitBackgroundLocationTracking {
   InitBackgroundLocationTracking({
@@ -83,6 +89,10 @@ class InitBackgroundLocationTracking {
         recordedLocation: recordedLocation,
         userId: userId,
         deviceId: deviceId,
+        activityType: ActivityType.unknown,
+        activityConfidence: -1,
+        batteryLevel: -1,
+        isDeviceCharging: false,
       );
 
       locationDataRepository.saveLocation(location: location);

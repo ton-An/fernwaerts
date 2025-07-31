@@ -60,6 +60,7 @@ void main() async {
     },
     (exception, stackTrace) {
       getIt<Talker>().handle(exception, stackTrace, 'Uncaught Exception');
+      Error.throwWithStackTrace(exception, stackTrace);
     },
   );
 }

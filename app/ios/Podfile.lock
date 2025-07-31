@@ -1,20 +1,12 @@
 PODS:
   - app_links (0.0.2):
     - Flutter
-  - background_fetch (1.3.8):
+  - background_location_2 (0.0.1):
     - Flutter
-  - background_locator_2 (0.0.1):
-    - Flutter
-  - CocoaLumberjack (3.8.5):
-    - CocoaLumberjack/Core (= 3.8.5)
-  - CocoaLumberjack/Core (3.8.5)
   - device_info_plus (0.0.1):
     - Flutter
   - Flutter (1.0.0)
   - flutter_activity_recognition (0.0.1):
-    - Flutter
-  - flutter_background_geolocation (4.16.9):
-    - CocoaLumberjack (~> 3.8.5)
     - Flutter
   - flutter_secure_storage (6.0.0):
     - Flutter
@@ -43,12 +35,10 @@ PODS:
 
 DEPENDENCIES:
   - app_links (from `.symlinks/plugins/app_links/ios`)
-  - background_fetch (from `.symlinks/plugins/background_fetch/ios`)
-  - background_locator_2 (from `.symlinks/plugins/background_locator_2/ios`)
+  - background_location_2 (from `.symlinks/plugins/background_location_2/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - Flutter (from `Flutter`)
   - flutter_activity_recognition (from `.symlinks/plugins/flutter_activity_recognition/ios`)
-  - flutter_background_geolocation (from `.symlinks/plugins/flutter_background_geolocation/ios`)
   - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
@@ -60,25 +50,17 @@ DEPENDENCIES:
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
 
-SPEC REPOS:
-  trunk:
-    - CocoaLumberjack
-
 EXTERNAL SOURCES:
   app_links:
     :path: ".symlinks/plugins/app_links/ios"
-  background_fetch:
-    :path: ".symlinks/plugins/background_fetch/ios"
-  background_locator_2:
-    :path: ".symlinks/plugins/background_locator_2/ios"
+  background_location_2:
+    :path: ".symlinks/plugins/background_location_2/ios"
   device_info_plus:
     :path: ".symlinks/plugins/device_info_plus/ios"
   Flutter:
     :path: Flutter
   flutter_activity_recognition:
     :path: ".symlinks/plugins/flutter_activity_recognition/ios"
-  flutter_background_geolocation:
-    :path: ".symlinks/plugins/flutter_background_geolocation/ios"
   flutter_secure_storage:
     :path: ".symlinks/plugins/flutter_secure_storage/ios"
   package_info_plus:
@@ -102,13 +84,10 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   app_links: 76b66b60cc809390ca1ad69bfd66b998d2387ac7
-  background_fetch: 851122c99dc3f25a011a6aebec5379ccdf4ab5eb
-  background_locator_2: bee147151ed151802ee8f1cc02f55ee14f77a2e3
-  CocoaLumberjack: 6a459bc897d6d80bd1b8c78482ec7ad05dffc3f0
+  background_location_2: dd430299478e1db012bd3db4f29f321b1fdbb92d
   device_info_plus: 21fcca2080fbcd348be798aa36c3e5ed849eefbe
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_activity_recognition: 52dfad4c1e9cec99f0841b3ed0efcc9d424b3deb
-  flutter_background_geolocation: 5b84413a1bf24012c9c03bd0bf90a890f941ec29
   flutter_secure_storage: 1ed9476fba7e7a782b22888f956cce43e2c62f13
   package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564

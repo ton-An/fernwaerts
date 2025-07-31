@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
-    as bg;
+import 'package:background_location_2/background_location.dart';
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
 
 /*
@@ -27,23 +26,23 @@ class IOSLocationTrackingLocalDataSourceImpl
     extends IOSLocationTrackingLocalDataSource {
   @override
   Future<void> initTracking() async {
-    await bg.BackgroundGeolocation.ready(
-      bg.Config(
-        desiredAccuracy: bg.Config.DESIRED_ACCURACY_HIGH,
-        stationaryRadius: 200,
-        elasticityMultiplier: 18,
-        stopOnStationary: true,
-        stopOnTerminate: false,
-        startOnBoot: true,
-        showsBackgroundLocationIndicator: true,
-      ),
+    print("1");
+    await BackgroundLocation.stopLocationService();
+    print("2");
+    await BackgroundLocation.startLocationService(
+      distanceFilter: 10,
+      fastestInterval: 0,
+      interval: 0,
+      startOnBoot: true,
+      backgroundCallback: (_) => "",
+      priority: LocationPriority.priorityHighAccuracy,
     );
-    bg.BackgroundGeolocation.start();
+    print("3");
   }
 
   @override
   Future<void> stopTracking() async {
-    await bg.BackgroundGeolocation.stop();
+    await BackgroundLocation.stopLocationService();
   }
 
   @override
@@ -51,15 +50,10 @@ class IOSLocationTrackingLocalDataSourceImpl
     final StreamController<RecordedLocation> locationChangeStreamController =
         StreamController();
 
-    bg.BackgroundGeolocation.onLocation((bg.Location bgLocation) {
-      if (bgLocation.sample) {
-        return;
-      }
-
+    BackgroundLocation.getLocationUpdates((Location bgLocation) {
       final RecordedLocation location = RecordedLocation.fromBGLocation(
-        bgLocation,
+        bgLocation: bgLocation,
       );
-
       locationChangeStreamController.add(location);
     });
 

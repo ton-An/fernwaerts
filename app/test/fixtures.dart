@@ -125,10 +125,6 @@ List<RecordedLocation> tRecordedLocations = [
     headingAccuracy: 19.73,
     ellipsoidalAltitude: 369.16,
     altitudeAccuracy: 5.81,
-    activityType: ActivityType.onFoot,
-    activityConfidence: 1,
-    batteryLevel: 0.6000000238418579,
-    isDeviceCharging: false,
   ),
   RecordedLocation(
     timestamp: DateTime(2025, 5, 5),
@@ -141,10 +137,6 @@ List<RecordedLocation> tRecordedLocations = [
     headingAccuracy: 19.73,
     ellipsoidalAltitude: 369.16,
     altitudeAccuracy: 5.81,
-    activityType: ActivityType.onFoot,
-    activityConfidence: 1,
-    batteryLevel: 0.6000000238418579,
-    isDeviceCharging: false,
   ),
 ];
 
@@ -153,11 +145,19 @@ List<Location> tLocations = [
     recordedLocation: tRecordedLocations[0],
     userId: tUserId,
     deviceId: tDeviceId,
+    activityType: ActivityType.onFoot,
+    activityConfidence: 1,
+    batteryLevel: 0.6000000238418579,
+    isDeviceCharging: false,
   ),
   Location.fromRecordedLocation(
     recordedLocation: tRecordedLocations[1],
     userId: tUserId,
     deviceId: tDeviceId,
+    activityType: ActivityType.onFoot,
+    activityConfidence: 1,
+    batteryLevel: 0.6000000238418579,
+    isDeviceCharging: false,
   ),
 ];
 

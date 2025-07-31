@@ -51,13 +51,11 @@ dependencies:
   #   git:
   #     url: https://github.com/josxha/flutter-maplibre
   #     ref: ios
-  background_locator_2:
-    git:
-      url: https://github.com/devappsteam/background_locator_2_flutter_3_29
   flutter_activity_recognition: ^4.0.0
-  flutter_background_geolocation: ^4.16.9
   flutter_map: ^8.1.1
   latlong2: ^0.9.1
+  background_location_2: 
+    git: https://github.com/ton-An/background_location
   
   # Networking
   dio: ^5.8.0+1
@@ -82,11 +80,13 @@ dependencies:
   package_info_plus: ^8.3.0
   uuid: ^4.5.1
   super_keyboard: ^0.1.1
-  permission_handler: ^12.0.0+1
+  permission_handler: ^11.4.0
   device_info_plus: ^11.4.0
   talker: ^4.7.9
   talker_flutter: ^4.7.9
   talker_bloc_logger: ^4.7.9
+  
+
 
 dev_dependencies:
   # Testing
