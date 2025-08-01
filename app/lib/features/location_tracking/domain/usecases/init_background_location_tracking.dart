@@ -1,9 +1,3 @@
-// Stream of significant location changes
-// Includes:
-// - Starting/stopping fine grained tracking
-//     - Use activity data to save battery
-// - should get the current location if the activity is still
-
 import 'dart:async';
 import 'dart:math';
 
@@ -104,8 +98,7 @@ class InitBackgroundLocationTracking {
         location: location,
         distanceFilterTimeout: distanceFilterTimeout,
       );
-
-      locationDataRepository.saveLocation(location: location);
+      await locationDataRepository.saveLocation(location: location);
     });
   }
 
@@ -120,12 +113,20 @@ class InitBackgroundLocationTracking {
 
     final double speedInMetersPerSecond = location.speed.toDouble();
 
-    double distanceFilterInMeters = _calculateDistanceFilter(
-      speedInMetersPerSecond: speedInMetersPerSecond,
-    );
+    late final double distanceFilterInMeters;
+    late final double secondsUntilFilterTimeout;
 
-    double secondsUntilFilterTimeout =
-        distanceFilterInMeters / speedInMetersPerSecond * .03;
+    if (speedInMetersPerSecond <= 0.0) {
+      distanceFilterInMeters = 500;
+      secondsUntilFilterTimeout = 1000;
+    } else {
+      distanceFilterInMeters = _calculateDistanceFilter(
+        speedInMetersPerSecond: speedInMetersPerSecond,
+      );
+
+      secondsUntilFilterTimeout =
+          distanceFilterInMeters / speedInMetersPerSecond * 1.5;
+    }
 
     Timer newDistanceFilterTimeout = Timer(
       Duration(seconds: secondsUntilFilterTimeout.ceil()),
@@ -141,6 +142,8 @@ class InitBackgroundLocationTracking {
     return newDistanceFilterTimeout;
   }
 
+  /// The curve of the distance filter starts off slow, then increases exponentially
+  /// until it levels off at the maximum distance.
   double _calculateDistanceFilter({required double speedInMetersPerSecond}) {
     final double speedInKmh = speedInMetersPerSecond * 3.6;
 

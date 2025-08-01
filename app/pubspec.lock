@@ -86,7 +86,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: f46cf123461184ded27c8d515511f06561983488
+      resolved-ref: "8ddafd3830ad2acb1413ab8703f40c96a022d48d"
       url: "https://github.com/ton-An/background_location"
     source: git
     version: "0.16.3"
