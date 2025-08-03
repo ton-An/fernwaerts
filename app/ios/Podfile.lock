@@ -17,6 +17,10 @@ PODS:
     - FlutterMacOS
   - permission_handler_apple (9.3.0):
     - Flutter
+  - powersync-sqlite-core (0.4.2)
+  - powersync_flutter_libs (0.0.1):
+    - Flutter
+    - powersync-sqlite-core (~> 0.4.2)
   - share_plus (0.0.1):
     - Flutter
   - shared_preferences_foundation (0.0.1):
@@ -25,6 +29,31 @@ PODS:
   - sqflite_darwin (0.0.4):
     - Flutter
     - FlutterMacOS
+  - sqlite3 (3.50.3):
+    - sqlite3/common (= 3.50.3)
+  - sqlite3/common (3.50.3)
+  - sqlite3/dbstatvtab (3.50.3):
+    - sqlite3/common
+  - sqlite3/fts5 (3.50.3):
+    - sqlite3/common
+  - sqlite3/math (3.50.3):
+    - sqlite3/common
+  - sqlite3/perf-threadsafe (3.50.3):
+    - sqlite3/common
+  - sqlite3/rtree (3.50.3):
+    - sqlite3/common
+  - sqlite3/session (3.50.3):
+    - sqlite3/common
+  - sqlite3_flutter_libs (0.0.1):
+    - Flutter
+    - FlutterMacOS
+    - sqlite3 (~> 3.50.3)
+    - sqlite3/dbstatvtab
+    - sqlite3/fts5
+    - sqlite3/math
+    - sqlite3/perf-threadsafe
+    - sqlite3/rtree
+    - sqlite3/session
   - super_keyboard (0.0.1):
     - Flutter
   - url_launcher_ios (0.0.1):
@@ -43,12 +72,19 @@ DEPENDENCIES:
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
+  - powersync_flutter_libs (from `.symlinks/plugins/powersync_flutter_libs/ios`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
+  - sqlite3_flutter_libs (from `.symlinks/plugins/sqlite3_flutter_libs/darwin`)
   - super_keyboard (from `.symlinks/plugins/super_keyboard/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
+
+SPEC REPOS:
+  trunk:
+    - powersync-sqlite-core
+    - sqlite3
 
 EXTERNAL SOURCES:
   app_links:
@@ -69,12 +105,16 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
+  powersync_flutter_libs:
+    :path: ".symlinks/plugins/powersync_flutter_libs/ios"
   share_plus:
     :path: ".symlinks/plugins/share_plus/ios"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
   sqflite_darwin:
     :path: ".symlinks/plugins/sqflite_darwin/darwin"
+  sqlite3_flutter_libs:
+    :path: ".symlinks/plugins/sqlite3_flutter_libs/darwin"
   super_keyboard:
     :path: ".symlinks/plugins/super_keyboard/ios"
   url_launcher_ios:
@@ -92,9 +132,13 @@ SPEC CHECKSUMS:
   package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
   permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
+  powersync-sqlite-core: a58efd88833861f0a8bb636c171bdf0ed55c9801
+  powersync_flutter_libs: 881187a07f70ecabaf802fce45b186485464d618
   share_plus: 50da8cb520a8f0f65671c6c6a99b3617ed10a58a
   shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
   sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
+  sqlite3: 83105acd294c9137c026e2da1931c30b4588ab81
+  sqlite3_flutter_libs: 616267f2fca40e9c6af8c5d82324e05667040b6e
   super_keyboard: 016de6ce9ab826f9a0b185608209d6a3b556d577
   url_launcher_ios: 694010445543906933d732453a59da0a173ae33d
   video_player_avfoundation: 2cef49524dd1f16c5300b9cd6efd9611ce03639b
