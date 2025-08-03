@@ -29,6 +29,65 @@ services:
       - ${FERNWAERTS_FOLDER}/functions:/functions
     restart: "no"
 
+  powersync-migrator:
+    privileged: true # required to run the daemon
+    container_name: fernwaerts-powersync-migrator
+    image: antonswebfabrik/fernwaerts-powersync-migrator:dev
+    volumes:
+      - ${FERNWAERTS_FOLDER}/powersync:/powersync
+    restart: "no"
+
+  powersync:
+    depends_on:
+      powersync-postgres:
+        condition: service_healthy
+      supabase-vendor-migrator:
+        condition: service_completed_successfully
+      migrator:
+        condition: service_completed_successfully
+      powersync-migrator:
+        condition: service_completed_successfully
+    image: journeyapps/powersync-service:latest
+    command: ["start", "-r", "unified"]
+    volumes:
+      - ${FERNWAERTS_FOLDER}/powersync/config:/config
+    environment:
+      POWERSYNC_CONFIG_PATH: /config/powersync.yaml
+
+      PS_DATABASE_TYPE: postgresql
+      PS_DATA_SOURCE_URI: postgresql://postgres:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+      PS_STORAGE_SOURCE_URI: postgres://${PS_POSTGRES_USER}:${PS_POSTGRES_PASSWORD}@${PS_POSTGRES_HOST}:${PS_POSTGRES_PORT}/postgres 
+
+      # The port which the PowerSync API server should run on
+      PS_PORT: ${PS_PORT}
+
+      PS_SUPABASE_JWT_SECRET: ${JWT_SECRET}
+
+    ports:
+      - ${PS_PORT}:${PS_PORT}
+
+
+  powersync-postgres:
+    image: "postgres:17.5"
+    restart: unless-stopped
+    stop_signal: SIGINT
+    depends_on:
+      powersync-migrator:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${PS_POSTGRES_USER}", "-h", "localhost"]
+    volumes:
+      - ${FERNWAERTS_FOLDER}/powersync_db/data:/var/lib/postgresql/data
+      - ${FERNWAERTS_FOLDER}/powersync/migrations/init-user.sh:/docker-entrypoint-initdb.d/init-user.sh
+
+    environment:
+      - POSTGRES_HOST=${PS_POSTGRES_HOST}
+      - POSTGRES_DB=${PS_POSTGRES_DB}
+      - POSTGRES_USER=${PS_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${PS_POSTGRES_PASSWORD}
+      - POSTGRES_PORT=${PS_POSTGRES_PORT}
+      - PS_STORAGE_PASSWORD=${PS_STORAGE_PASSWORD}
+
   studio:
     container_name: supabase-studio
     image: supabase/studio:20250317-6955350
