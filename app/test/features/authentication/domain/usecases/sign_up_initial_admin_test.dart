@@ -40,7 +40,7 @@ void main() {
   });
 
   setUpAll(() {
-    registerFallbackValue(tServerInfo);
+    registerFallbackValue(tSupabaseInfo);
   });
 
   test(
