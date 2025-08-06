@@ -254,4 +254,27 @@ void main() {
       );
     });
   });
+
+  group('getSyncServerInfo', () {
+    // ToDo: uncomment this test when the mock_supabase_http_client package supports mocking edge functions
+
+    // setUp(() {
+    //   mockSupabaseHttpClient.registerEdgeFunction('get_sync_server_url', (
+    //     body,
+    //     queryParams,
+    //     method,
+    //     tables,
+    //   ) {
+    //     return tGetSyncServerUrlResponse;
+    //   });
+    // });
+
+    // test('should get the sync server info from the supabase server', () async {
+    //   // act
+    //   final result = await authRemoteDataSourceImpl.getSyncServerInfo();
+
+    //   // assert
+    //   expect(result, tPowersyncUrl);
+    // });
+  });
 }

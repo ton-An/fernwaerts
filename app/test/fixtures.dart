@@ -32,6 +32,12 @@ const ServerInfo tServerInfo = ServerInfo(
   supabaseInfo: tSupabaseInfo,
   powersyncInfo: tPowersyncInfo,
 );
+final FunctionResponse tGetSyncServerUrlResponse = FunctionResponse(
+  status: 200,
+  data: {
+    'data': {'sync_server_url'},
+  },
+);
 
 final Uri tServerUrl = Uri.parse(tServerUrlString + tServerCallPath);
 

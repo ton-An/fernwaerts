@@ -119,6 +119,12 @@ abstract class AuthenticationRemoteDataSource {
   /// Throws:
   /// - [NotSignedInFailure]
   Future<String> getCurrentUserId();
+
+  /// Gets the sync server's URL
+  ///
+  /// Returns:
+  /// - [PowersyncInfo] containing the sync server's URL
+  Future<PowersyncInfo> getSyncServerInfo();
 }
 
 class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
@@ -269,5 +275,20 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
     final String currentUserId = currentUser.id;
 
     return currentUserId;
+  }
+
+  @override
+  Future<PowersyncInfo> getSyncServerInfo() async {
+    final SupabaseClient supabaseClient = await supabaseHandler.client;
+
+    final FunctionResponse response = await supabaseClient.functions.invoke(
+      'get_sync_server_url',
+    );
+
+    final String syncServerUrl = response.data['data']['sync_server_url'];
+
+    final PowersyncInfo powersyncInfo = PowersyncInfo(url: syncServerUrl);
+
+    return powersyncInfo;
   }
 }

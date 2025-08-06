@@ -247,6 +247,9 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
   @override
   Future<Either<Failure, PowersyncInfo>> getSyncServerInfo() async {
-    return const Right(PowersyncInfo(url: 'http://192.168.0.83:7901'));
+    final PowersyncInfo powersyncInfo =
+        await authRemoteDataSource.getSyncServerInfo();
+
+    return Right(powersyncInfo);
   }
 }
