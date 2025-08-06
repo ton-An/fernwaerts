@@ -174,6 +174,10 @@ void main() {
 
   group('deleteLocalDBCache()', () {
     setUp(() async {
+      TestWidgetsFlutterBinding.ensureInitialized();
+
+      PathProviderPlatform.instance = FakePathProviderPlatform();
+
       final Directory appDirectory = await getApplicationSupportDirectory();
       final String dbCacheFilePath = join(
         appDirectory.path,
@@ -186,10 +190,6 @@ void main() {
     });
 
     test('should delete the local db cache', () async {
-      TestWidgetsFlutterBinding.ensureInitialized();
-
-      PathProviderPlatform.instance = FakePathProviderPlatform();
-
       // act
       await authenticationLocalDataSource.deleteLocalDBCache();
     });
