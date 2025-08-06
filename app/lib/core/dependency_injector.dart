@@ -21,7 +21,7 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 import 'package:location_history/features/authentication/domain/repositories/device_repository.dart';
 import 'package:location_history/features/authentication/domain/repositories/permissions_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/has_server_connection_saved.dart';
-import 'package:location_history/features/authentication/domain/usecases/initialize_new_server_connection.dart';
+import 'package:location_history/features/authentication/domain/usecases/initialize_new_supabase_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_saved_server_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_server_set_up.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_signed_in.dart';
@@ -97,7 +97,7 @@ void registerAuthenticationDependencies() {
   // -- Presentation -- //
   getIt.registerFactory(
     () => AuthenticationCubit(
-      initializeServerConnection: getIt(),
+      initializeNewSupabaseConnection: getIt(),
       isServerSetUp: getIt(),
       signUpInitialAdmin: getIt(),
       signInUsecase: getIt(),
@@ -117,7 +117,7 @@ void registerAuthenticationDependencies() {
 
   // -- Domain -- //
   getIt.registerLazySingleton(
-    () => InitializeNewServerConnection(authenticationRepository: getIt()),
+    () => InitializeNewSupabaseConnection(authenticationRepository: getIt()),
   );
   getIt.registerLazySingleton(
     () => IsServerSetUp(authenticationRepository: getIt()),

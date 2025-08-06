@@ -3,19 +3,19 @@ import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
-import 'package:location_history/features/authentication/domain/usecases/initialize_new_server_connection.dart';
+import 'package:location_history/features/authentication/domain/usecases/initialize_new_supabase_connection.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../fixtures.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late InitializeNewServerConnection initializeServerConnection;
+  late InitializeNewSupabaseConnection initializeNewSupabaseConnection;
   late MockAuthenticationRepository mockAuthenticationRepository;
 
   setUp(() {
     mockAuthenticationRepository = MockAuthenticationRepository();
-    initializeServerConnection = InitializeNewServerConnection(
+    initializeNewSupabaseConnection = InitializeNewSupabaseConnection(
       authenticationRepository: mockAuthenticationRepository,
     );
 
@@ -44,7 +44,7 @@ void main() {
 
   test('should check if server connection is valid', () async {
     // act
-    await initializeServerConnection(serverUrl: tServerUrlString);
+    await initializeNewSupabaseConnection(serverUrl: tServerUrlString);
 
     // assert
     verify(
@@ -65,7 +65,7 @@ void main() {
       ).thenAnswer((_) async => const Left(InvalidUrlFormatFailure()));
 
       // act
-      final result = await initializeServerConnection(
+      final result = await initializeNewSupabaseConnection(
         serverUrl: tServerUrlString,
       );
 
@@ -76,7 +76,7 @@ void main() {
 
   test('should get the anon key from the server', () async {
     // act
-    await initializeServerConnection(serverUrl: tServerUrlString);
+    await initializeNewSupabaseConnection(serverUrl: tServerUrlString);
 
     // assert
     verify(
@@ -95,7 +95,7 @@ void main() {
     ).thenAnswer((_) async => const Left(ConnectionFailure()));
 
     // act
-    final result = await initializeServerConnection(
+    final result = await initializeNewSupabaseConnection(
       serverUrl: tServerUrlString,
     );
 
@@ -107,7 +107,7 @@ void main() {
     'should initialize the connection to the server and return the server info',
     () async {
       // act
-      final result = await initializeServerConnection(
+      final result = await initializeNewSupabaseConnection(
         serverUrl: tServerUrlString,
       );
 
@@ -130,7 +130,7 @@ void main() {
     ).thenAnswer((_) async => const Left(SendTimeoutFailure()));
 
     // act
-    final result = await initializeServerConnection(
+    final result = await initializeNewSupabaseConnection(
       serverUrl: tServerUrlString,
     );
 

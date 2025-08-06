@@ -11,8 +11,8 @@ import 'package:location_history/features/authentication/domain/repositories/aut
     - [ ] dynamically fetch powersync url
 */
 
-/// {@template initialize_new_server_connection}
-/// Initializes a new connection with a server
+/// {@template initialize_new_supabase_connection}
+/// Initializes a new connection with a fernwaerts supabase server
 ///
 /// Parameters:
 /// - [Uri] serverUrl: The URL of the server
@@ -26,13 +26,15 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 /// - [ConnectionFailure]
 /// - [LikelyConfigurationIssueFailure]
 /// {@endtemplate}
-class InitializeNewServerConnection {
-  /// {@macro initialize_server_connection}
-  const InitializeNewServerConnection({required this.authenticationRepository});
+class InitializeNewSupabaseConnection {
+  /// {@macro initialize_new_supabase_connection}
+  const InitializeNewSupabaseConnection({
+    required this.authenticationRepository,
+  });
 
   final AuthenticationRepository authenticationRepository;
 
-  /// {@macro initialize_server_connection}
+  /// {@macro initialize_new_supabase_connection}
   Future<Either<Failure, SupabaseInfo>> call({
     required String serverUrl,
   }) async {

@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/authentication/domain/models/supabase_info.dart';
-import 'package:location_history/features/authentication/domain/usecases/initialize_new_server_connection.dart';
+import 'package:location_history/features/authentication/domain/usecases/initialize_new_supabase_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_server_set_up.dart';
 import 'package:location_history/features/authentication/domain/usecases/request_necessary_permissions.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
@@ -26,7 +26,7 @@ import 'package:location_history/features/location_tracking/domain/usecases/init
 class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
   /// {@macro authentication_cubit}
   AuthenticationCubit({
-    required this.initializeServerConnection,
+    required this.initializeNewSupabaseConnection,
     required this.isServerSetUp,
     required this.signUpInitialAdmin,
     required this.signInUsecase,
@@ -34,7 +34,7 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
     required this.initBackgroundLocationTracking,
   }) : super(const AuthenticationInitial());
 
-  final InitializeNewServerConnection initializeServerConnection;
+  final InitializeNewSupabaseConnection initializeNewSupabaseConnection;
   final IsServerSetUp isServerSetUp;
   final SignUpInitialAdmin signUpInitialAdmin;
   final SignIn signInUsecase;
@@ -61,10 +61,10 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
   void toAuthDetails({required String serverUrl}) async {
     emit(const AuthenticationLoading());
 
-    final Either<Failure, SupabaseInfo> initializeServerConnectionEither =
-        await initializeServerConnection(serverUrl: serverUrl);
+    final Either<Failure, SupabaseInfo> initializeNewSupabaseConnectionEither =
+        await initializeNewSupabaseConnection(serverUrl: serverUrl);
 
-    initializeServerConnectionEither.fold(
+    initializeNewSupabaseConnectionEither.fold(
       (Failure failure) {
         emit(AuthenticationFailure(failure: failure));
       },
