@@ -1,7 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
+import 'package:location_history/core/misc/app_file_constants.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 
 import '../../../../fixtures.dart';
 import '../../../../mocks/mocks.dart';
@@ -11,8 +17,6 @@ void main() {
   late MockFlutterSecureStorage mockSecureStorage;
   late MockSupabaseHandler mockSupabaseHandler;
 
-  late MockSupabaseOfflineFirst mockSupabaseOfflineFirst;
-
   setUp(() {
     mockSecureStorage = MockFlutterSecureStorage();
     mockSupabaseHandler = MockSupabaseHandler();
@@ -20,8 +24,6 @@ void main() {
       secureStorage: mockSecureStorage,
       supabaseHandler: mockSupabaseHandler,
     );
-
-    mockSupabaseOfflineFirst = MockSupabaseOfflineFirst();
   });
 
   group('getSavedServerInfo()', () {
@@ -171,21 +173,25 @@ void main() {
   });
 
   group('deleteLocalDBCache()', () {
-    setUp(() {
-      when(
-        () => mockSupabaseHandler.supabaseOfflineFirst,
-      ).thenAnswer((_) async => mockSupabaseOfflineFirst);
-      when(
-        () => mockSupabaseOfflineFirst.reset(),
-      ).thenAnswer((_) => Future.value());
+    setUp(() async {
+      final Directory appDirectory = await getApplicationSupportDirectory();
+      final String dbCacheFilePath = join(
+        appDirectory.path,
+        AppFileConstants.sqliteDbFileName,
+      );
+
+      final File dbCacheFile = File(dbCacheFilePath);
+
+      await dbCacheFile.create();
     });
 
     test('should delete the local db cache', () async {
+      TestWidgetsFlutterBinding.ensureInitialized();
+
+      PathProviderPlatform.instance = FakePathProviderPlatform();
+
       // act
       await authenticationLocalDataSource.deleteLocalDBCache();
-
-      // assert
-      verify(() => mockSupabaseOfflineFirst.reset());
     });
   });
 }

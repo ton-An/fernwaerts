@@ -97,8 +97,8 @@ void main() {
   group('initializeServerConnection()', () {
     setUp(() {
       when(
-        () => mockSupabaseHandler.initialize(
-          serverInfo: any(named: 'serverInfo'),
+        () => mockSupabaseHandler.initializeSupabase(
+          supabaseInfo: any(named: 'supabaseInfo'),
         ),
       ).thenAnswer((_) async => tMockSupabase);
       when(
@@ -109,7 +109,7 @@ void main() {
     test('should dispose the old server connection', () async {
       // act
       await authRemoteDataSourceImpl.initializeServerConnection(
-        serverInfo: tServerInfo,
+        supabaseInfo: tSupabaseInfo,
       );
 
       // assert
@@ -119,11 +119,14 @@ void main() {
     test('should initialize the new server connection', () async {
       // act
       await authRemoteDataSourceImpl.initializeServerConnection(
-        serverInfo: tServerInfo,
+        supabaseInfo: tSupabaseInfo,
       );
 
       // assert
-      verify(() => mockSupabaseHandler.initialize(serverInfo: tServerInfo));
+      verify(
+        () =>
+            mockSupabaseHandler.initializeSupabase(supabaseInfo: tSupabaseInfo),
+      );
     });
 
     test(
@@ -132,11 +135,15 @@ void main() {
         when(() => mockSupabaseHandler.dispose()).thenThrow(Exception());
         // act
         await authRemoteDataSourceImpl.initializeServerConnection(
-          serverInfo: tServerInfo,
+          supabaseInfo: tSupabaseInfo,
         );
 
         // assert
-        verify(() => mockSupabaseHandler.initialize(serverInfo: tServerInfo));
+        verify(
+          () => mockSupabaseHandler.initializeSupabase(
+            supabaseInfo: tSupabaseInfo,
+          ),
+        );
       },
     );
   });

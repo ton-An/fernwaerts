@@ -44,7 +44,11 @@ void main() {
 
   test('should sign in the user', () async {
     // act
-    await signIn(serverInfo: tServerInfo, email: tEmail, password: tPassword);
+    await signIn(
+      supabaseInfo: tSupabaseInfo,
+      email: tEmail,
+      password: tPassword,
+    );
 
     // assert
     verify(
@@ -66,7 +70,7 @@ void main() {
 
     // act
     final result = await signIn(
-      serverInfo: tServerInfo,
+      supabaseInfo: tSupabaseInfo,
       email: tEmail,
       password: tPassword,
     );
@@ -77,7 +81,11 @@ void main() {
 
   test('should save the server info', () async {
     // act
-    await signIn(serverInfo: tServerInfo, email: tEmail, password: tPassword);
+    await signIn(
+      supabaseInfo: tSupabaseInfo,
+      email: tEmail,
+      password: tPassword,
+    );
 
     // assert
     verify(
@@ -96,7 +104,7 @@ void main() {
 
     // act
     final result = await signIn(
-      serverInfo: tServerInfo,
+      supabaseInfo: tSupabaseInfo,
       email: tEmail,
       password: tPassword,
     );
@@ -108,7 +116,7 @@ void main() {
   test('should save the device info and return None', () async {
     // act
     final result = await signIn(
-      serverInfo: tServerInfo,
+      supabaseInfo: tSupabaseInfo,
       email: tEmail,
       password: tPassword,
     );
@@ -125,7 +133,7 @@ void main() {
 
     // act
     final result = await signIn(
-      serverInfo: tServerInfo,
+      supabaseInfo: tSupabaseInfo,
       email: tEmail,
       password: tPassword,
     );

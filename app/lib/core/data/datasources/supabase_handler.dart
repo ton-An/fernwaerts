@@ -4,6 +4,7 @@ import 'package:drift_sqlite_async/drift_sqlite_async.dart';
 import 'package:location_history/core/data/datasources/ps_backend_connector.dart';
 import 'package:location_history/core/drift/drift_database.dart';
 import 'package:location_history/core/drift/schema.dart';
+import 'package:location_history/core/misc/app_file_constants.dart';
 import 'package:location_history/features/authentication/domain/models/powersync_info.dart';
 import 'package:location_history/features/authentication/domain/models/supabase_info.dart';
 import 'package:path/path.dart';
@@ -17,9 +18,6 @@ class SupabaseHandler {
   final Completer<SupabaseClient> _clientCompleter =
       Completer<SupabaseClient>();
 
-  final Completer<PsBackendConnector> _psBackendConnectorCompleter =
-      Completer<PsBackendConnector>();
-
   final Completer<DriftAppDatabase> _driftDatabaseCompleter =
       Completer<DriftAppDatabase>();
 
@@ -30,14 +28,6 @@ class SupabaseHandler {
       return Future.value(Supabase.instance.client);
     } else {
       return _clientCompleter.future;
-    }
-  }
-
-  Future<PsBackendConnector> get psBackendConnector {
-    if (_psBackendConnectorCompleter.isCompleted) {
-      return Future.value(PsBackendConnector());
-    } else {
-      return _psBackendConnectorCompleter.future;
     }
   }
 
@@ -64,7 +54,7 @@ class SupabaseHandler {
     required PowersyncInfo powersyncInfo,
   }) async {
     final dir = await getApplicationSupportDirectory();
-    final path = join(dir.path, 'powersync-dart.db');
+    final path = join(dir.path, AppFileConstants.sqliteDbFileName);
 
     PowerSyncDatabase powersyncDb = PowerSyncDatabase(
       schema: schema,
@@ -82,15 +72,9 @@ class SupabaseHandler {
 
     _driftDatabase = DriftAppDatabase(SqliteAsyncDriftConnection(powersyncDb));
 
-    if (!_psBackendConnectorCompleter.isCompleted) {
-      _psBackendConnectorCompleter.complete(psBackendConnector);
-    }
-
     if (!_driftDatabaseCompleter.isCompleted) {
       _driftDatabaseCompleter.complete(_driftDatabase);
     }
-
-    await psBackendConnector.uploadData(powersyncDb);
   }
 
   Future<void> dispose() async {

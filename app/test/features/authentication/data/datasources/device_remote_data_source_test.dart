@@ -1,56 +1,52 @@
-import 'package:brick_supabase/testing.dart';
+import 'package:drift/drift.dart';
+import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:location_history/brick/brick.g.dart';
+import 'package:location_history/core/drift/drift_database.dart';
 import 'package:location_history/features/authentication/data/datasources/device_remote_data_source.dart';
-import 'package:location_history/features/authentication/domain/models/device.model.dart';
+import 'package:location_history/features/authentication/domain/models/device.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../fixtures.dart';
-import '../../../../mocks/mock_supabase_offline_first_repository.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
   late DeviceRemoteDataSourceImpl deviceRemoteDataSourceImpl;
   late MockSupabaseHandler mockSupabaseHandler;
-  late SupabaseMockServer mockSupabaseServer;
-  late MockSupabaseOfflineFirstRepository mockSupabaseOfflineFirstRepository;
+
+  late DriftAppDatabase mockDriftDatabase;
 
   setUp(() async {
-    mockSupabaseServer = SupabaseMockServer(
-      modelDictionary: supabaseModelDictionary,
-    );
-    await mockSupabaseServer.setUp();
-    mockSupabaseOfflineFirstRepository =
-        MockSupabaseOfflineFirstRepository.configure(
-          mockSupabaseServer: mockSupabaseServer,
-        );
-    await mockSupabaseOfflineFirstRepository.initialize();
     mockSupabaseHandler = MockSupabaseHandler();
     deviceRemoteDataSourceImpl = DeviceRemoteDataSourceImpl(
       supabaseHandler: mockSupabaseHandler,
     );
 
+    mockDriftDatabase = DriftAppDatabase(
+      DatabaseConnection(
+        NativeDatabase.memory(),
+        closeStreamsSynchronously: true,
+      ),
+    );
+
     when(
-      () => mockSupabaseHandler.supabaseOfflineFirst,
-    ).thenAnswer((_) async => mockSupabaseOfflineFirstRepository);
+      () => mockSupabaseHandler.driftDatabase,
+    ).thenAnswer((_) async => mockDriftDatabase);
   });
 
   tearDown(() async {
-    await mockSupabaseServer.tearDown();
-    await mockSupabaseOfflineFirstRepository.reset();
+    await mockDriftDatabase.close();
   });
 
   group('saveDeviceToDB', () {
-    setUp(() async {
-      mockSupabaseServer.handle({});
-    });
     test('should save device to DB', () async {
       // act
       await deviceRemoteDataSourceImpl.saveDeviceInfoToDB(device: tDevice);
 
       // assert
       final Device deviceInDB =
-          (await mockSupabaseOfflineFirstRepository.get<Device>()).first;
+          (await mockDriftDatabase
+              .select(mockDriftDatabase.devices)
+              .getSingle());
       expect(deviceInDB, tDevice);
     });
   });

@@ -5,7 +5,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:location_history/core/data/datasources/platform_wrapper.dart';
 import 'package:location_history/core/data/datasources/server_remote_handler.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
-import 'package:location_history/core/data/datasources/supabase_offline_first.dart';
 import 'package:location_history/core/data/repository/repository_failure_handler.dart';
 import 'package:location_history/features/authentication/data/datasources/android_device_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
@@ -26,6 +25,8 @@ import 'package:location_history/features/location_tracking/domain/repositories/
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
+import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 // -- Third Party -- //
@@ -52,6 +53,15 @@ class MockDeviceInfoPlugin extends Mock implements DeviceInfoPlugin {}
 
 class MockPackageInfo extends Mock implements PackageInfo {}
 
+class FakePathProviderPlatform extends Fake
+    with MockPlatformInterfaceMixin
+    implements PathProviderPlatform {
+  @override
+  Future<String?> getApplicationSupportPath() async {
+    return './test';
+  }
+}
+
 // -- Core -- //
 class MockServerRemoteHandler extends Mock implements ServerRemoteHandler {}
 
@@ -61,8 +71,6 @@ class MockRepositoryFailureHandler extends Mock
 class MockSupabaseHandler extends Mock implements SupabaseHandler {}
 
 class MockPlatformWrapper extends Mock implements PlatformWrapper {}
-
-class MockSupabaseOfflineFirst extends Mock implements SupabaseOfflineFirst {}
 
 // -- Authentication
 class MockDeviceRemoteDataSource extends Mock

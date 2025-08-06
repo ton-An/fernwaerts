@@ -23,7 +23,7 @@ void main() {
     ).thenAnswer((_) async => const Right(tServerInfo));
     when(
       () => mockAuthenticationRepository.initializeServerConnection(
-        serverInfo: any(named: 'serverInfo'),
+        supabaseInfo: any(named: 'supabaseInfo'),
       ),
     ).thenAnswer((_) async => const Right(None()));
   });
@@ -75,7 +75,7 @@ void main() {
     // assert
     verify(
       () => mockAuthenticationRepository.initializeServerConnection(
-        serverInfo: tServerInfo,
+        supabaseInfo: tSupabaseInfo,
       ),
     );
     expect(result, const Right(None()));
@@ -85,7 +85,7 @@ void main() {
     // arrange
     when(
       () => mockAuthenticationRepository.initializeServerConnection(
-        serverInfo: any(named: 'serverInfo'),
+        supabaseInfo: any(named: 'supabaseInfo'),
       ),
     ).thenAnswer((_) async => const Left(SendTimeoutFailure()));
 

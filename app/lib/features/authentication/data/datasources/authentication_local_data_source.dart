@@ -3,13 +3,18 @@
     - [ ] Standardize error handling and server calls
 */
 
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
+import 'package:location_history/core/misc/app_file_constants.dart';
 import 'package:location_history/features/authentication/domain/models/powersync_info.dart';
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
 import 'package:location_history/features/authentication/domain/models/supabase_info.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
 abstract class AuthenticationLocalDataSource {
   const AuthenticationLocalDataSource();
@@ -107,10 +112,15 @@ class AuthLocalDataSourceImpl extends AuthenticationLocalDataSource {
 
   @override
   Future<void> deleteLocalDBCache() async {
-    // final PsBackendConnector psBackendConnector =
-    //     await supabaseHandler.psBackendConnector;
+    final Directory appDirectory = await getApplicationSupportDirectory();
+    final String dbCacheFilePath = join(
+      appDirectory.path,
+      AppFileConstants.sqliteDbFileName,
+    );
 
-    // await psBackendConnector.powersyncDb.
+    final File dbCacheFile = File(dbCacheFilePath);
+
+    await dbCacheFile.delete();
   }
 
   @override
