@@ -321,3 +321,9 @@ entrypoint = "./functions/sign_up_initial_admin/index.ts"
 # Specifies static files to be bundled with the function. Supports glob patterns.
 # For example, if you want to serve static HTML pages in your function:
 # static_files = [ "./functions/sign_up_initial_admin/*.html" ]
+
+[functions.get_sync_server_url]
+enabled = true
+verify_jwt = true
+import_map = "./functions/get_sync_server_url/deno.json"
+entrypoint = "./functions/get_sync_server_url/index.ts"
