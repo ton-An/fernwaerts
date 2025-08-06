@@ -52,7 +52,7 @@ class InitializeSavedServerConnection {
     required ServerInfo serverInfo,
   }) async {
     final Either<Failure, None> initServerConnectionEither =
-        await authenticationRepository.initializeServerConnection(
+        await authenticationRepository.initializeSupabaseConnection(
           supabaseInfo: serverInfo.supabaseInfo,
         );
 

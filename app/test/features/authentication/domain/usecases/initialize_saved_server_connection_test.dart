@@ -22,14 +22,20 @@ void main() {
       () => mockAuthenticationRepository.getSavedServerInfo(),
     ).thenAnswer((_) async => const Right(tServerInfo));
     when(
-      () => mockAuthenticationRepository.initializeServerConnection(
+      () => mockAuthenticationRepository.initializeSupabaseConnection(
         supabaseInfo: any(named: 'supabaseInfo'),
+      ),
+    ).thenAnswer((_) async => const Right(None()));
+    when(
+      () => mockAuthenticationRepository.initializeSyncServerConnection(
+        powersyncInfo: any(named: 'powersyncInfo'),
       ),
     ).thenAnswer((_) async => const Right(None()));
   });
 
   setUpAll(() {
-    registerFallbackValue(tServerInfo);
+    registerFallbackValue(tSupabaseInfo);
+    registerFallbackValue(tPowersyncInfo);
   });
 
   test(
@@ -68,31 +74,67 @@ void main() {
     expect(result, const Left(StorageReadFailure()));
   });
 
-  test('should initialize the server and return None', () async {
+  test('should initialize the supabase server connection', () async {
     // act
-    final result = await initializeSavedServerConnection();
+    await initializeSavedServerConnection();
 
     // assert
     verify(
-      () => mockAuthenticationRepository.initializeServerConnection(
+      () => mockAuthenticationRepository.initializeSupabaseConnection(
         supabaseInfo: tSupabaseInfo,
       ),
     );
-    expect(result, const Right(None()));
   });
 
-  test('should relay Failures from initializing the server', () async {
-    // arrange
-    when(
-      () => mockAuthenticationRepository.initializeServerConnection(
-        supabaseInfo: any(named: 'supabaseInfo'),
-      ),
-    ).thenAnswer((_) async => const Left(SendTimeoutFailure()));
+  test(
+    'should relay Failures from initializing the supabase server connection',
+    () async {
+      // arrange
+      when(
+        () => mockAuthenticationRepository.initializeSupabaseConnection(
+          supabaseInfo: any(named: 'supabaseInfo'),
+        ),
+      ).thenAnswer((_) async => const Left(SendTimeoutFailure()));
 
-    // act
-    final result = await initializeSavedServerConnection();
+      // act
+      final result = await initializeSavedServerConnection();
 
-    // assert
-    expect(result, const Left(SendTimeoutFailure()));
-  });
+      // assert
+      expect(result, const Left(SendTimeoutFailure()));
+    },
+  );
+
+  test(
+    'should initialize the sync server connection and return None',
+    () async {
+      // act
+      final result = await initializeSavedServerConnection();
+
+      // assert
+      verify(
+        () => mockAuthenticationRepository.initializeSyncServerConnection(
+          powersyncInfo: tPowersyncInfo,
+        ),
+      );
+      expect(result, const Right(None()));
+    },
+  );
+
+  test(
+    'should relay Failures from initializing the sync server connection',
+    () async {
+      // arrange
+      when(
+        () => mockAuthenticationRepository.initializeSyncServerConnection(
+          powersyncInfo: any(named: 'powersyncInfo'),
+        ),
+      ).thenAnswer((_) async => const Left(SendTimeoutFailure()));
+
+      // act
+      final result = await initializeSavedServerConnection();
+
+      // assert
+      expect(result, const Left(SendTimeoutFailure()));
+    },
+  );
 }
