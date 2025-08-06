@@ -51,14 +51,11 @@ class InitializeSavedServerConnection {
   Future<Either<Failure, None>> _initializeServerConnection({
     required ServerInfo serverInfo,
   }) async {
-    final Either<Failure, None> initServerConnectionEither =
-        await authenticationRepository.initializeSupabaseConnection(
-          supabaseInfo: serverInfo.supabaseInfo,
-        );
+    await authenticationRepository.initializeSupabaseConnection(
+      supabaseInfo: serverInfo.supabaseInfo,
+    );
 
-    return initServerConnectionEither.fold(Left.new, (None none) {
-      return _initializeSyncServerConnection(serverInfo: serverInfo);
-    });
+    return _initializeSyncServerConnection(serverInfo: serverInfo);
   }
 
   Future<Either<Failure, None>> _initializeSyncServerConnection({

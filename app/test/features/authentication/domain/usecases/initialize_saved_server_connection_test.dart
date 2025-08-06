@@ -25,7 +25,7 @@ void main() {
       () => mockAuthenticationRepository.initializeSupabaseConnection(
         supabaseInfo: any(named: 'supabaseInfo'),
       ),
-    ).thenAnswer((_) async => const Right(None()));
+    ).thenAnswer((_) async => Future.value());
     when(
       () => mockAuthenticationRepository.initializeSyncServerConnection(
         powersyncInfo: any(named: 'powersyncInfo'),
@@ -85,24 +85,6 @@ void main() {
       ),
     );
   });
-
-  test(
-    'should relay Failures from initializing the supabase server connection',
-    () async {
-      // arrange
-      when(
-        () => mockAuthenticationRepository.initializeSupabaseConnection(
-          supabaseInfo: any(named: 'supabaseInfo'),
-        ),
-      ).thenAnswer((_) async => const Left(SendTimeoutFailure()));
-
-      // act
-      final result = await initializeSavedServerConnection();
-
-      // assert
-      expect(result, const Left(SendTimeoutFailure()));
-    },
-  );
 
   test(
     'should initialize the sync server connection and return None',

@@ -84,13 +84,10 @@ class InitializeNewSupabaseConnection {
       anonKey: anonKey,
     );
 
-    final Either<Failure, None> serverInitEither =
-        await authenticationRepository.initializeSupabaseConnection(
-          supabaseInfo: supabaseInfo,
-        );
+    await authenticationRepository.initializeSupabaseConnection(
+      supabaseInfo: supabaseInfo,
+    );
 
-    return serverInitEither.fold(Left.new, (None none) {
-      return Right(supabaseInfo);
-    });
+    return Right(supabaseInfo);
   }
 }

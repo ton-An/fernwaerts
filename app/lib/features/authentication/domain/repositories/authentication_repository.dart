@@ -43,7 +43,7 @@ abstract class AuthenticationRepository {
   ///
   /// Parameters:
   /// - [SupabaseInfo] supabaseInfo: The URL of the server to connect to.
-  Future<Either<Failure, None>> initializeSupabaseConnection({
+  Future<void> initializeSupabaseConnection({
     required SupabaseInfo supabaseInfo,
   });
 

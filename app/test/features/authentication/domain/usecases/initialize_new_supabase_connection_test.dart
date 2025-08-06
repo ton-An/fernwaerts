@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
-import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_new_supabase_connection.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -23,7 +22,7 @@ void main() {
       () => mockAuthenticationRepository.initializeSupabaseConnection(
         supabaseInfo: any(named: 'supabaseInfo'),
       ),
-    ).thenAnswer((_) async => const Right(None()));
+    ).thenAnswer((_) async => Future.value());
 
     when(
       () => mockAuthenticationRepository.getAnonKeyFromServer(
@@ -120,21 +119,4 @@ void main() {
       expect(result, const Right(tSupabaseInfo));
     },
   );
-
-  test('should relay Failures of connection initialization', () async {
-    // arrange
-    when(
-      () => mockAuthenticationRepository.initializeSupabaseConnection(
-        supabaseInfo: any(named: 'supabaseInfo'),
-      ),
-    ).thenAnswer((_) async => const Left(SendTimeoutFailure()));
-
-    // act
-    final result = await initializeNewSupabaseConnection(
-      serverUrl: tServerUrlString,
-    );
-
-    // assert
-    expect(result, const Left(SendTimeoutFailure()));
-  });
 }
