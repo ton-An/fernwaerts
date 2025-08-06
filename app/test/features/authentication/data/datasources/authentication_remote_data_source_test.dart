@@ -41,7 +41,7 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(tServerUrl);
-    registerFallbackValue(tServerInfo);
+    registerFallbackValue(tSupabaseInfo);
   });
 
   tearDown(() {
