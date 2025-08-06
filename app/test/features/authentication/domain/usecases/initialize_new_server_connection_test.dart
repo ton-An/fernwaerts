@@ -39,7 +39,7 @@ void main() {
   });
 
   setUpAll(() {
-    registerFallbackValue(tServerInfo);
+    registerFallbackValue(tSupabaseInfo);
   });
 
   test('should check if server connection is valid', () async {
@@ -117,7 +117,7 @@ void main() {
           supabaseInfo: tSupabaseInfo,
         ),
       );
-      expect(result, const Right(tServerInfo));
+      expect(result, const Right(tSupabaseInfo));
     },
   );
 
