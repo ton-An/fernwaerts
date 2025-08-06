@@ -57,6 +57,16 @@ void main() {
       verify(() => mockSecureStorage.read(key: 'anon_key'));
     });
 
+    test('should read the power sync url from storage', () async {
+      // arrange
+
+      // act
+      await authenticationLocalDataSource.getSavedServerInfo();
+
+      // assert
+      verify(() => mockSecureStorage.read(key: 'powersync_url'));
+    });
+
     test(
       'should throw a NoSavedServerFailure if the server url is null ',
       () async {
@@ -79,6 +89,22 @@ void main() {
         // arrange
         when(
           () => mockSecureStorage.read(key: 'anon_key'),
+        ).thenAnswer((_) async => null);
+
+        // act & assert
+        expect(
+          () async => await authenticationLocalDataSource.getSavedServerInfo(),
+          throwsA(const NoSavedServerFailure()),
+        );
+      },
+    );
+
+    test(
+      'should throw a NoSavedServerFailure if the anon key is null ',
+      () async {
+        // arrange
+        when(
+          () => mockSecureStorage.read(key: 'powersync_url'),
         ).thenAnswer((_) async => null);
 
         // act & assert
@@ -114,12 +140,20 @@ void main() {
       verify(() => mockSecureStorage.delete(key: 'server_url'));
     });
 
-    test('should delete the aon key', () async {
+    test('should delete the anon key', () async {
       // act
       await authenticationLocalDataSource.removeSavedServer();
 
       // assert
       verify(() => mockSecureStorage.delete(key: 'anon_key'));
+    });
+
+    test('should delete the powersync url', () async {
+      // act
+      await authenticationLocalDataSource.removeSavedServer();
+
+      // assert
+      verify(() => mockSecureStorage.delete(key: 'powersync_url'));
     });
   });
 
@@ -154,6 +188,19 @@ void main() {
 
       // assert
       verify(() => mockSecureStorage.write(key: 'anon_key', value: tAnonKey));
+    });
+
+    test('should save the power sync url', () async {
+      // act
+      await authenticationLocalDataSource.saveServerInfo(
+        serverInfo: tServerInfo,
+      );
+
+      // assert
+      verify(
+        () =>
+            mockSecureStorage.write(key: 'powersync_url', value: tPowersyncUrl),
+      );
     });
   });
 
