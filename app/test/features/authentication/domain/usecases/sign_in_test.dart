@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
+import 'package:location_history/core/failures/networking/receive_timeout_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
@@ -36,10 +37,19 @@ void main() {
     when(
       () => mockSaveDeviceInfo(),
     ).thenAnswer((_) async => const Right(None()));
+    when(
+      () => mockAuthenticationRepository.getSyncServerInfo(),
+    ).thenAnswer((_) async => const Right(tPowersyncInfo));
+    when(
+      () => mockAuthenticationRepository.initializeSyncServerConnection(
+        powersyncInfo: any(named: 'powersyncInfo'),
+      ),
+    ).thenAnswer((_) async => const Right(None()));
   });
 
   setUpAll(() {
     registerFallbackValue(tServerInfo);
+    registerFallbackValue(tPowersyncInfo);
   });
 
   test('should sign in the user', () async {
@@ -78,6 +88,73 @@ void main() {
     // assert
     expect(result, const Left(SendTimeoutFailure()));
   });
+
+  test('should get the sync server info', () async {
+    // act
+    await signIn(
+      supabaseInfo: tSupabaseInfo,
+      email: tEmail,
+      password: tPassword,
+    );
+
+    // assert
+    verify(() => mockAuthenticationRepository.getSyncServerInfo());
+  });
+
+  test('should relay Failures from getting the sync server info', () async {
+    // arrange
+    when(
+      () => mockAuthenticationRepository.getSyncServerInfo(),
+    ).thenAnswer((_) async => const Left(SendTimeoutFailure()));
+
+    // act
+    final result = await signIn(
+      supabaseInfo: tSupabaseInfo,
+      email: tEmail,
+      password: tPassword,
+    );
+
+    // assert
+    expect(result, const Left(SendTimeoutFailure()));
+  });
+
+  test('should init the connection to the sync server', () async {
+    // act
+    await signIn(
+      supabaseInfo: tSupabaseInfo,
+      email: tEmail,
+      password: tPassword,
+    );
+
+    // assert
+    verify(
+      () => mockAuthenticationRepository.initializeSyncServerConnection(
+        powersyncInfo: tPowersyncInfo,
+      ),
+    );
+  });
+
+  test(
+    'should relay Failures from initializing the connection to the sync server',
+    () async {
+      // arrange
+      when(
+        () => mockAuthenticationRepository.initializeSyncServerConnection(
+          powersyncInfo: any(named: 'powersyncInfo'),
+        ),
+      ).thenAnswer((_) async => const Left(ReceiveTimeoutFailure()));
+
+      // act
+      final result = await signIn(
+        supabaseInfo: tSupabaseInfo,
+        email: tEmail,
+        password: tPassword,
+      );
+
+      // assert
+      expect(result, const Left(ReceiveTimeoutFailure()));
+    },
+  );
 
   test('should save the server info', () async {
     // act

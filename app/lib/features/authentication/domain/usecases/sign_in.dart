@@ -86,7 +86,6 @@ class SignIn {
   Future<Either<Failure, None>> _initializeSyncServer({
     required ServerInfo serverInfo,
   }) async {
-    print(2);
     final Either<Failure, None> initSyncServerEither =
         await authenticationRepository.initializeSyncServerConnection(
           powersyncInfo: serverInfo.powersyncInfo,
