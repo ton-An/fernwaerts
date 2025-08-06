@@ -39,17 +39,17 @@ abstract class AuthenticationRepository {
   /// - [ConnectionFailure]
   Future<Either<Failure, bool>> isServerSetUp();
 
-  /// Initializes the connection to the server
+  /// Initializes the connection to the supabase server
   ///
   /// Parameters:
   /// - [SupabaseInfo] supabaseInfo: The URL of the server to connect to.
-  Future<Either<Failure, None>> initializeServerConnection({
+  Future<Either<Failure, None>> initializeSupabaseConnection({
     required SupabaseInfo supabaseInfo,
   });
 
   /// Initializes the connection to the sync server
   ///
-  /// #### ! [initializeServerConnection] needs to be called before this method !
+  /// #### ! [initializeSupabaseConnection] needs to be called before this method !
   ///
   /// Parameters:
   /// - [PowersyncInfo] powerSyncInfo: The info of the sync server to connect to.

@@ -85,7 +85,7 @@ class InitializeNewSupabaseConnection {
     );
 
     final Either<Failure, None> serverInitEither =
-        await authenticationRepository.initializeServerConnection(
+        await authenticationRepository.initializeSupabaseConnection(
           supabaseInfo: supabaseInfo,
         );
 

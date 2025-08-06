@@ -71,10 +71,10 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, None>> initializeServerConnection({
+  Future<Either<Failure, None>> initializeSupabaseConnection({
     required SupabaseInfo supabaseInfo,
   }) async {
-    await authRemoteDataSource.initializeServerConnection(
+    await authRemoteDataSource.initializeSupabaseConnection(
       supabaseInfo: supabaseInfo,
     );
 

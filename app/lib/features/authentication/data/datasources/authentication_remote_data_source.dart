@@ -39,11 +39,13 @@ abstract class AuthenticationRemoteDataSource {
   /// - [PostgrestException]
   Future<bool> isServerSetUp();
 
-  /// Initializes the connection to the server
+  /// Initializes the connection to the supabase server
   ///
   /// Parameters:
   /// - [SupabaseInfo] supabaseInfo: The info of the server to connect to
-  Future<void> initializeServerConnection({required SupabaseInfo supabaseInfo});
+  Future<void> initializeSupabaseConnection({
+    required SupabaseInfo supabaseInfo,
+  });
 
   /// Initializes the connection to the sync server
   ///
@@ -154,7 +156,7 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
   }
 
   @override
-  Future<void> initializeServerConnection({
+  Future<void> initializeSupabaseConnection({
     required SupabaseInfo supabaseInfo,
   }) async {
     try {

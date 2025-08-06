@@ -20,7 +20,7 @@ void main() {
     );
 
     when(
-      () => mockAuthenticationRepository.initializeServerConnection(
+      () => mockAuthenticationRepository.initializeSupabaseConnection(
         supabaseInfo: any(named: 'supabaseInfo'),
       ),
     ).thenAnswer((_) async => const Right(None()));
@@ -113,7 +113,7 @@ void main() {
 
       // assert
       verify(
-        () => mockAuthenticationRepository.initializeServerConnection(
+        () => mockAuthenticationRepository.initializeSupabaseConnection(
           supabaseInfo: tSupabaseInfo,
         ),
       );
@@ -124,7 +124,7 @@ void main() {
   test('should relay Failures of connection initialization', () async {
     // arrange
     when(
-      () => mockAuthenticationRepository.initializeServerConnection(
+      () => mockAuthenticationRepository.initializeSupabaseConnection(
         supabaseInfo: any(named: 'supabaseInfo'),
       ),
     ).thenAnswer((_) async => const Left(SendTimeoutFailure()));

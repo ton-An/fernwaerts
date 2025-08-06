@@ -108,7 +108,7 @@ void main() {
 
     test('should dispose the old server connection', () async {
       // act
-      await authRemoteDataSourceImpl.initializeServerConnection(
+      await authRemoteDataSourceImpl.initializeSupabaseConnection(
         supabaseInfo: tSupabaseInfo,
       );
 
@@ -118,7 +118,7 @@ void main() {
 
     test('should initialize the new server connection', () async {
       // act
-      await authRemoteDataSourceImpl.initializeServerConnection(
+      await authRemoteDataSourceImpl.initializeSupabaseConnection(
         supabaseInfo: tSupabaseInfo,
       );
 
@@ -134,7 +134,7 @@ void main() {
       () async {
         when(() => mockSupabaseHandler.dispose()).thenThrow(Exception());
         // act
-        await authRemoteDataSourceImpl.initializeServerConnection(
+        await authRemoteDataSourceImpl.initializeSupabaseConnection(
           supabaseInfo: tSupabaseInfo,
         );
 
