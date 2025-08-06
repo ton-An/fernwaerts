@@ -3,8 +3,13 @@ import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
 import 'package:location_history/core/failures/networking/likely_configuration_failure.dart';
-import 'package:location_history/features/authentication/domain/models/server_info.dart';
+import 'package:location_history/features/authentication/domain/models/supabase_info.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
+
+/* 
+  To-Do:
+    - [ ] dynamically fetch powersync url
+*/
 
 /// {@template initialize_new_server_connection}
 /// Initializes a new connection with a server
@@ -28,11 +33,13 @@ class InitializeNewServerConnection {
   final AuthenticationRepository authenticationRepository;
 
   /// {@macro initialize_server_connection}
-  Future<Either<Failure, ServerInfo>> call({required String serverUrl}) async {
+  Future<Either<Failure, SupabaseInfo>> call({
+    required String serverUrl,
+  }) async {
     return _isServerConnectionValid(serverUrl: serverUrl);
   }
 
-  Future<Either<Failure, ServerInfo>> _isServerConnectionValid({
+  Future<Either<Failure, SupabaseInfo>> _isServerConnectionValid({
     required String serverUrl,
   }) async {
     final Either<Failure, None> isConnectionValidEither =
@@ -50,7 +57,7 @@ class InitializeNewServerConnection {
     );
   }
 
-  Future<Either<Failure, ServerInfo>> _getAnonKeyFromServer({
+  Future<Either<Failure, SupabaseInfo>> _getAnonKeyFromServer({
     required String serverUrl,
   }) async {
     final Either<Failure, String> serverInfoEither =
@@ -66,19 +73,22 @@ class InitializeNewServerConnection {
     });
   }
 
-  Future<Either<Failure, ServerInfo>> _initializeServerConnection({
+  Future<Either<Failure, SupabaseInfo>> _initializeServerConnection({
     required String serverUrl,
     required String anonKey,
   }) async {
-    final ServerInfo serverInfo = ServerInfo(url: serverUrl, anonKey: anonKey);
+    final SupabaseInfo supabaseInfo = SupabaseInfo(
+      url: serverUrl,
+      anonKey: anonKey,
+    );
 
     final Either<Failure, None> serverInitEither =
         await authenticationRepository.initializeServerConnection(
-          serverInfo: serverInfo,
+          supabaseInfo: supabaseInfo,
         );
 
     return serverInitEither.fold(Left.new, (None none) {
-      return Right(serverInfo);
+      return Right(supabaseInfo);
     });
   }
 }

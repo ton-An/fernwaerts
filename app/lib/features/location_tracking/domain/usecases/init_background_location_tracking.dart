@@ -7,7 +7,7 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 import 'package:location_history/features/authentication/domain/repositories/device_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_saved_server_connection.dart';
 import 'package:location_history/features/location_tracking/domain/enums/activity_type.dart';
-import 'package:location_history/features/location_tracking/domain/models/location.model.dart';
+import 'package:location_history/features/location_tracking/domain/models/location.dart';
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';

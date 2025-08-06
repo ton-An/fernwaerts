@@ -1,5 +1,5 @@
 import 'package:location_history/core/failures/failure.dart';
-import 'package:location_history/features/location_tracking/domain/models/location.model.dart';
+import 'package:location_history/features/location_tracking/domain/models/location.dart';
 
 abstract class MapState {
   const MapState();

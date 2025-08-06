@@ -6,11 +6,13 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
 import 'package:location_history/features/authentication/domain/enums/operating_system.dart';
-import 'package:location_history/features/authentication/domain/models/device.model.dart';
+import 'package:location_history/features/authentication/domain/models/device.dart';
+import 'package:location_history/features/authentication/domain/models/powersync_info.dart';
 import 'package:location_history/features/authentication/domain/models/raw_device.dart';
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
+import 'package:location_history/features/authentication/domain/models/supabase_info.dart';
 import 'package:location_history/features/location_tracking/domain/enums/activity_type.dart';
-import 'package:location_history/features/location_tracking/domain/models/location.model.dart';
+import 'package:location_history/features/location_tracking/domain/models/location.dart';
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -18,10 +20,17 @@ import 'mocks/mocks.dart';
 
 const String tServerUrlString = 'https://coolness_checks.com';
 const String tServerCallPath = '/is_ted_cool';
+const String tPowersyncUrl = 'https://very.powerful.eu';
 const String tAnonKey = 'psssttttt';
-const ServerInfo tServerInfo = ServerInfo(
+
+const SupabaseInfo tSupabaseInfo = SupabaseInfo(
   url: tServerUrlString,
   anonKey: tAnonKey,
+);
+const PowersyncInfo tPowersyncInfo = PowersyncInfo(url: tPowersyncUrl);
+const ServerInfo tServerInfo = ServerInfo(
+  supabaseInfo: tSupabaseInfo,
+  powersyncInfo: tPowersyncInfo,
 );
 
 final Uri tServerUrl = Uri.parse(tServerUrlString + tServerCallPath);
@@ -262,11 +271,12 @@ final IosDeviceInfo tIOSDeviceInfo = IosDeviceInfo.setMockInitialValues(
 );
 
 final Device tDevice = Device(
+  id: "uuid",
   userId: tUserId,
   name: "Ted's iPhone",
   model: 'iPhone Ultra Max Pro',
   manufacturer: 'Apple',
-  os: OperatingSystem.ios,
+  operatingSystem: OperatingSystem.ios,
   osVersion: '18.4.1',
   appVersion: '0.0.1',
   createdAt: tStartDate,

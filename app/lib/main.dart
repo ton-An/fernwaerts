@@ -31,7 +31,7 @@ import 'package:talker_bloc_logger/talker_bloc_logger.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
-/* 
+/*
   General To-Dos:
     - [ ] Standardize animation durations
     - [ ] Delete cached data on sign out and potentially when auth check on splash screen fails
@@ -48,7 +48,10 @@ void main() async {
 
       initGetIt();
 
+
       SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+
 
       await getIt.isReady<PackageInfo>();
 

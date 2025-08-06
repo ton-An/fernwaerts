@@ -4,7 +4,7 @@ import 'package:location_history/core/failures/authentication/no_saved_device_fa
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
-import 'package:location_history/features/authentication/domain/models/device.model.dart';
+import 'package:location_history/features/authentication/domain/models/device.dart';
 import 'package:location_history/features/authentication/domain/models/raw_device.dart';
 
 abstract class DeviceRepository {

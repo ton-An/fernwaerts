@@ -1,4 +1,3 @@
-import 'package:brick_offline_first_with_supabase/brick_offline_first_with_supabase.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_activity_recognition/flutter_activity_recognition.dart';
@@ -85,9 +84,7 @@ void registerCoreDependencies() {
     () => ServerRemoteHandlerImpl(dio: getIt()),
   );
   getIt.registerLazySingleton<SupabaseHandler>(() => SupabaseHandler());
-  getIt.registerSingletonAsync<
-    OfflineFirstWithSupabaseRepository<OfflineFirstWithSupabaseModel>
-  >(() async => await getIt<SupabaseHandler>().supabaseOfflineFirst);
+
   getIt.registerLazySingleton(() => const PlatformWrapper());
 }
 

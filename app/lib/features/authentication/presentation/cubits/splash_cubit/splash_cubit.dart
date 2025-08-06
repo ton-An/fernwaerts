@@ -69,7 +69,6 @@ class SplashCubit extends Cubit<SplashState> {
     if (failure is! NoSavedServerFailure) {
       emit(SplashFailure(failure: failure));
     }
-
     emit(const SplashAuthenticationRequired());
   }
 

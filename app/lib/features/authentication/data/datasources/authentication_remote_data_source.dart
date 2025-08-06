@@ -7,7 +7,8 @@ import 'package:location_history/core/failures/authentication/not_signed_in_fail
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/misc/url_path_constants.dart';
 import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
-import 'package:location_history/features/authentication/domain/models/server_info.dart';
+import 'package:location_history/features/authentication/domain/models/powersync_info.dart';
+import 'package:location_history/features/authentication/domain/models/supabase_info.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
@@ -41,8 +42,16 @@ abstract class AuthenticationRemoteDataSource {
   /// Initializes the connection to the server
   ///
   /// Parameters:
-  /// - [ServerInfo] serverInfo: The info of the server to connect to
-  Future<void> initializeServerConnection({required ServerInfo serverInfo});
+  /// - [SupabaseInfo] supabaseInfo: The info of the server to connect to
+  Future<void> initializeServerConnection({required SupabaseInfo supabaseInfo});
+
+  /// Initializes the connection to the sync server
+  ///
+  /// Parameters:
+  /// - [PowersyncInfo] powersyncInfo: The info of the server to connect to
+  Future<void> initializeSyncServerConnection({
+    required PowersyncInfo powersyncInfo,
+  });
 
   /// Signs up the initial admin user
   ///
@@ -146,13 +155,20 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
 
   @override
   Future<void> initializeServerConnection({
-    required ServerInfo serverInfo,
+    required SupabaseInfo supabaseInfo,
   }) async {
     try {
       await supabaseHandler.dispose();
     } catch (_) {}
 
-    await supabaseHandler.initialize(serverInfo: serverInfo);
+    await supabaseHandler.initializeSupabase(supabaseInfo: supabaseInfo);
+  }
+
+  @override
+  Future<void> initializeSyncServerConnection({
+    required PowersyncInfo powersyncInfo,
+  }) async {
+    await supabaseHandler.initializePowerSync(powersyncInfo: powersyncInfo);
   }
 
   @override

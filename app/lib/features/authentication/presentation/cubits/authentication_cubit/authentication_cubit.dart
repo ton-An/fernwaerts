@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
-import 'package:location_history/features/authentication/domain/models/server_info.dart';
+import 'package:location_history/features/authentication/domain/models/supabase_info.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_new_server_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_server_set_up.dart';
 import 'package:location_history/features/authentication/domain/usecases/request_necessary_permissions.dart';
@@ -41,7 +41,7 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
   final RequestNecessaryPermissions requestNecessaryPermissions;
   final InitBackgroundLocationTracking initBackgroundLocationTracking;
 
-  late ServerInfo serverInfo;
+  late SupabaseInfo supabaseInfo;
 
   /// Emits [EnterServerDetails] to prompt the user to enter server details.
   ///
@@ -61,15 +61,15 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
   void toAuthDetails({required String serverUrl}) async {
     emit(const AuthenticationLoading());
 
-    final Either<Failure, ServerInfo> isServerReachableEither =
+    final Either<Failure, SupabaseInfo> initializeServerConnectionEither =
         await initializeServerConnection(serverUrl: serverUrl);
 
-    isServerReachableEither.fold(
+    initializeServerConnectionEither.fold(
       (Failure failure) {
         emit(AuthenticationFailure(failure: failure));
       },
-      (ServerInfo serverInfo) async {
-        this.serverInfo = serverInfo;
+      (SupabaseInfo supabaseInfo) async {
+        this.supabaseInfo = supabaseInfo;
 
         _checkServerSetupStatus();
       },
@@ -91,7 +91,7 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
     emit(const AuthenticationLoading());
 
     final Either<Failure, None> signUpEither = await signUpInitialAdmin(
-      serverInfo: serverInfo,
+      supabaseInfo: supabaseInfo,
       username: username,
       email: email,
       password: password,
@@ -119,7 +119,7 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
     emit(const AuthenticationLoading());
 
     final Either<Failure, None> signInEither = await signInUsecase(
-      serverInfo: serverInfo,
+      supabaseInfo: supabaseInfo,
       email: email,
       password: password,
     );

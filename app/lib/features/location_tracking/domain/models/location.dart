@@ -1,17 +1,51 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:brick_offline_first_with_supabase/brick_offline_first_with_supabase.dart';
-import 'package:brick_sqlite/brick_sqlite.dart';
-import 'package:brick_supabase/brick_supabase.dart';
 import 'package:equatable/equatable.dart';
 import 'package:location_history/features/location_tracking/domain/enums/activity_type.dart';
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
 import 'package:uuid/uuid.dart';
 
-@ConnectOfflineFirstWithSupabase(
-  supabaseConfig: SupabaseSerializable(tableName: 'raw_location_data'),
-)
-class Location extends OfflineFirstWithSupabaseModel with EquatableMixin {
+class Location extends Equatable {
+  factory Location.fromDb({
+    required String id,
+    required String userId,
+    required String deviceId,
+    required DateTime timestamp,
+    required double latitude,
+    required double longitude,
+    required double coordinatesAccuracy,
+    required double speed,
+    required double speedAccuracy,
+    required double heading,
+    required double headingAccuracy,
+    required double ellipsoidalAltitude,
+    required double altitudeAccuracy,
+    required ActivityType activityType,
+    required double activityConfidence,
+    required double batteryLevel,
+    required bool isDeviceCharging,
+  }) {
+    return Location(
+      id: id,
+      userId: userId,
+      deviceId: deviceId,
+      timestamp: timestamp,
+      latitude: latitude,
+      longitude: longitude,
+      coordinatesAccuracy: coordinatesAccuracy,
+      speed: speed,
+      speedAccuracy: speedAccuracy,
+      heading: heading,
+      headingAccuracy: headingAccuracy,
+      ellipsoidalAltitude: ellipsoidalAltitude,
+      altitudeAccuracy: altitudeAccuracy,
+      activityType: activityType,
+      activityConfidence: activityConfidence,
+      batteryLevel: batteryLevel,
+      isDeviceCharging: isDeviceCharging,
+    );
+  }
+
   Location({
     String? id,
     required this.userId,
@@ -32,8 +66,6 @@ class Location extends OfflineFirstWithSupabaseModel with EquatableMixin {
     required this.isDeviceCharging,
   }) : id = id ?? (const Uuid()).v4();
 
-  @Sqlite(unique: true)
-  @Supabase(unique: true)
   final String id;
 
   final String userId;
@@ -41,34 +73,23 @@ class Location extends OfflineFirstWithSupabaseModel with EquatableMixin {
 
   final DateTime timestamp;
 
-  final num latitude;
-  final num longitude;
-  final num coordinatesAccuracy;
+  final double latitude;
+  final double longitude;
+  final double coordinatesAccuracy;
 
-  final num speed;
-  final num speedAccuracy;
+  final double speed;
+  final double speedAccuracy;
 
-  final num heading;
-  final num headingAccuracy;
+  final double heading;
+  final double headingAccuracy;
 
-  final num ellipsoidalAltitude;
-  final num altitudeAccuracy;
+  final double ellipsoidalAltitude;
+  final double altitudeAccuracy;
 
-  @Supabase(
-    name: 'activity_type_id',
-    enumAsString: true,
-    fromGenerator: '''
-    ActivityType.values.firstWhere((value) {
-      if(value.toString() == %DATA_PROPERTY%) return true;
-
-      return false;
-    }, orElse: () => throw ArgumentError.value(%DATA_PROPERTY%, "name", "No enum value with that name"))''',
-    toGenerator: '%INSTANCE_PROPERTY%.toString()',
-  )
   final ActivityType activityType;
-  final num activityConfidence;
+  final double activityConfidence;
 
-  final num batteryLevel;
+  final double batteryLevel;
   final bool isDeviceCharging;
 
   static Location fromRecordedLocation({
@@ -102,6 +123,7 @@ class Location extends OfflineFirstWithSupabaseModel with EquatableMixin {
 
   @override
   List<Object?> get props => [
+    id,
     userId,
     deviceId,
     timestamp,

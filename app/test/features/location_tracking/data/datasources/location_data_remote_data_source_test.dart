@@ -2,7 +2,7 @@ import 'package:brick_supabase/testing.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:location_history/brick/brick.g.dart';
 import 'package:location_history/features/location_tracking/data/datasources/location_data_remote_data_source.dart';
-import 'package:location_history/features/location_tracking/domain/models/location.model.dart';
+import 'package:location_history/features/location_tracking/domain/models/location.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../fixtures.dart';

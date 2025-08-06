@@ -11,7 +11,9 @@ import 'package:location_history/core/failures/storage/storage_write_failure.dar
 import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
+import 'package:location_history/features/authentication/domain/models/powersync_info.dart';
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
+import 'package:location_history/features/authentication/domain/models/supabase_info.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 /*
@@ -70,10 +72,21 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
   @override
   Future<Either<Failure, None>> initializeServerConnection({
-    required ServerInfo serverInfo,
+    required SupabaseInfo supabaseInfo,
   }) async {
     await authRemoteDataSource.initializeServerConnection(
-      serverInfo: serverInfo,
+      supabaseInfo: supabaseInfo,
+    );
+
+    return const Right(None());
+  }
+
+  @override
+  Future<Either<Failure, None>> initializeSyncServerConnection({
+    required PowersyncInfo powersyncInfo,
+  }) async {
+    await authRemoteDataSource.initializeSyncServerConnection(
+      powersyncInfo: powersyncInfo,
     );
 
     return const Right(None());
@@ -232,5 +245,10 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     } on PlatformException {
       return const Left(StorageWriteFailure());
     }
+  }
+
+  @override
+  Future<Either<Failure, PowersyncInfo>> getSyncServerInfo() async {
+    return const Right(PowersyncInfo(url: 'http://192.168.0.83:7901'));
   }
 }

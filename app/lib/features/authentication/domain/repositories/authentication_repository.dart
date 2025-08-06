@@ -8,7 +8,9 @@ import 'package:location_history/core/failures/networking/connection_failure.dar
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
+import 'package:location_history/features/authentication/domain/models/powersync_info.dart';
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
+import 'package:location_history/features/authentication/domain/models/supabase_info.dart';
 
 abstract class AuthenticationRepository {
   /// Checks if the server is reachable.
@@ -40,15 +42,35 @@ abstract class AuthenticationRepository {
   /// Initializes the connection to the server
   ///
   /// Parameters:
-  /// - [ServerInfo] serverInfo: The URL of the server to connect to.
+  /// - [SupabaseInfo] supabaseInfo: The URL of the server to connect to.
   Future<Either<Failure, None>> initializeServerConnection({
-    required ServerInfo serverInfo,
+    required SupabaseInfo supabaseInfo,
   });
+
+  /// Initializes the connection to the sync server
+  ///
+  /// #### ! [initializeServerConnection] needs to be called before this method !
+  ///
+  /// Parameters:
+  /// - [PowersyncInfo] powerSyncInfo: The info of the sync server to connect to.
+  Future<Either<Failure, None>> initializeSyncServerConnection({
+    required PowersyncInfo powersyncInfo,
+  });
+
+  /// Gets sync server info
+  ///
+  /// Returns:
+  /// - [PowersyncInfo] powerSyncInfo: The URL of the server to connect to.
+  ///
+  /// Failures:
+  /// - TBD
+  ///
+  Future<Either<Failure, PowersyncInfo>> getSyncServerInfo();
 
   /// Signs up the initial admin user
   ///
   /// Parameters:
-  /// - [ServerInfo] serverInfo: The URL of the server to connect to
+  /// - [String] serverUrl: The URL of the server to connect to
   /// - [String] username: The username of the admin user
   /// - [String] email: The email of the admin user
   /// - [String] password: The password of the admin user

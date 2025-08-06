@@ -1,6 +1,6 @@
-import 'package:brick_offline_first_with_supabase/brick_offline_first_with_supabase.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
-import 'package:location_history/features/authentication/domain/models/device.model.dart';
+import 'package:location_history/core/drift/drift_database.dart';
+import 'package:location_history/features/authentication/domain/models/device.dart';
 
 abstract class DeviceRemoteDataSource {
   /// Saves the device's information to the database
@@ -17,9 +17,10 @@ class DeviceRemoteDataSourceImpl implements DeviceRemoteDataSource {
 
   @override
   Future<void> saveDeviceInfoToDB({required Device device}) async {
-    final OfflineFirstWithSupabaseRepository supabaseOfflineFirst =
-        await supabaseHandler.supabaseOfflineFirst;
+    final DriftAppDatabase driftDatabase = await supabaseHandler.driftDatabase;
 
-    await supabaseOfflineFirst.upsert(device);
+    await driftDatabase
+        .into(driftDatabase.devices)
+        .insert(device.toInsertable());
   }
 }
