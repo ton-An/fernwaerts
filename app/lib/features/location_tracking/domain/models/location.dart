@@ -123,7 +123,6 @@ class Location extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
     userId,
     deviceId,
     timestamp,
