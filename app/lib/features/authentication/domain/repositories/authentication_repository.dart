@@ -53,6 +53,9 @@ abstract class AuthenticationRepository {
   ///
   /// Parameters:
   /// - [PowersyncInfo] powerSyncInfo: The info of the sync server to connect to.
+  ///
+  /// Failures:
+  /// - TBD
   Future<Either<Failure, None>> initializeSyncServerConnection({
     required PowersyncInfo powersyncInfo,
   });
@@ -64,7 +67,6 @@ abstract class AuthenticationRepository {
   ///
   /// Failures:
   /// - TBD
-  ///
   Future<Either<Failure, PowersyncInfo>> getSyncServerInfo();
 
   /// Signs up the initial admin user
