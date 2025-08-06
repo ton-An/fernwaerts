@@ -34,11 +34,12 @@ void main() {
       when(
         () => mockSecureStorage.read(key: 'anon_key'),
       ).thenAnswer((_) async => tAnonKey);
+      when(
+        () => mockSecureStorage.read(key: 'powersync_url'),
+      ).thenAnswer((_) async => tPowersyncUrl);
     });
 
     test('should read the server url key from storage', () async {
-      // arrange
-
       // act
       await authenticationLocalDataSource.getSavedServerInfo();
 
