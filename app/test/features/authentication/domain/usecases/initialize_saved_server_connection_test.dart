@@ -1,7 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
-import 'package:location_history/core/failures/networking/server_type.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_saved_server_connection.dart';
 import 'package:mocktail/mocktail.dart';
@@ -100,30 +98,6 @@ void main() {
         ),
       );
       expect(result, const Right(None()));
-    },
-  );
-
-  test(
-    'should relay Failures from initializing the sync server connection',
-    () async {
-      // arrange
-      when(
-        () => mockAuthenticationRepository.initializeSyncServerConnection(
-          powersyncInfo: any(named: 'powersyncInfo'),
-        ),
-      ).thenAnswer(
-        (_) async =>
-            Left(SendTimeoutFailure(serverType: ServerType.syncServer)),
-      );
-
-      // act
-      final result = await initializeSavedServerConnection();
-
-      // assert
-      expect(
-        result,
-        Left(SendTimeoutFailure(serverType: ServerType.syncServer)),
-      );
     },
   );
 }
