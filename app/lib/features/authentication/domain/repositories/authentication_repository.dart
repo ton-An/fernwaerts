@@ -53,10 +53,8 @@ abstract class AuthenticationRepository {
   ///
   /// Parameters:
   /// - [PowersyncInfo] powerSyncInfo: The info of the sync server to connect to.
-  ///
-  /// Failures:
-  /// - TBD
-  Future<Either<Failure, None>> initializeSyncServerConnection({
+
+  Future<void> initializeSyncServerConnection({
     required PowersyncInfo powersyncInfo,
   });
 
@@ -66,7 +64,8 @@ abstract class AuthenticationRepository {
   /// - [PowersyncInfo] powerSyncInfo: The URL of the server to connect to.
   ///
   /// Failures:
-  /// {@macro converted_dio_exceptions}
+  /// {@macro converted_client_exceptions}
+  /// {@macro converted_supabase_functions_exception}
   Future<Either<Failure, PowersyncInfo>> getSyncServerInfo();
 
   /// Signs up the initial admin user
@@ -171,4 +170,18 @@ abstract class AuthenticationRepository {
   /// Failures:
   /// - [NotSignedInFailure]
   Future<Either<Failure, String>> getCurrentUserId();
+
+  /// Checks if the sync server is reachable.
+  ///
+  /// Parameters:
+  /// - [String] syncServerUrl: The URL of the sync server to connect to
+  ///
+  /// Return:
+  /// - [None] if the server is reachable.
+  ///
+  /// Failures:
+  /// {@macro converted_dio_exceptions}
+  Future<Either<Failure, None>> isSyncServerConnectionValid({
+    required String syncServerUrl,
+  });
 }

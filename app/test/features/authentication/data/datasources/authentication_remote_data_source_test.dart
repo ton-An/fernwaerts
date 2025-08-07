@@ -73,7 +73,7 @@ void main() {
       // assert
       verify(
         () => mockServerRemoteHandler.get(
-          url: Uri.parse(tServerUrlString + UrlPathConstants.health),
+          url: Uri.parse(tServerUrlString + UrlPathConstants.supabaseHealth),
           serverType: ServerType.supabase,
         ),
       );
@@ -263,6 +263,32 @@ void main() {
       expect(
         () async => await authRemoteDataSourceImpl.getCurrentUserId(),
         throwsA(isA<NotSignedInFailure>()),
+      );
+    });
+  });
+
+  group('isSyncServerConnectionValid()', () {
+    setUp(() {
+      when(
+        () => mockServerRemoteHandler.get(
+          url: any(named: 'url'),
+          serverType: any(named: 'serverType'),
+        ),
+      ).thenAnswer((_) async => {});
+    });
+
+    test('should check if the connection to the server is valid', () async {
+      // act
+      await authRemoteDataSourceImpl.isSyncServerConnectionValid(
+        syncServerUrl: tPowersyncUrl,
+      );
+
+      // assert
+      verify(
+        () => mockServerRemoteHandler.get(
+          url: Uri.parse(tPowersyncUrl + UrlPathConstants.powersyncHealth),
+          serverType: ServerType.syncServer,
+        ),
       );
     });
   });

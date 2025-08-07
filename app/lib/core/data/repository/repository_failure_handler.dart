@@ -79,7 +79,7 @@ abstract class RepositoryFailureHandler {
   /// - [ServerType]: type of the server the request was sent to
   ///
   /// Returns:
-  /// {@template converted_client_exceptions}
+  /// {@template converted_supabase_functions_exception}
   /// - [StatusCodeNotOkFailure]
   /// {@endtemplate}
   Failure supabaseFunctionExceptionConverter({

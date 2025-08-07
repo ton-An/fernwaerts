@@ -42,6 +42,11 @@ void main() {
       () => mockAuthenticationRepository.getSyncServerInfo(),
     ).thenAnswer((_) async => const Right(tPowersyncInfo));
     when(
+      () => mockAuthenticationRepository.isSyncServerConnectionValid(
+        syncServerUrl: any(named: 'syncServerUrl'),
+      ),
+    ).thenAnswer((_) async => const Right(None()));
+    when(
       () => mockAuthenticationRepository.initializeSyncServerConnection(
         powersyncInfo: any(named: 'powersyncInfo'),
       ),
@@ -121,6 +126,43 @@ void main() {
     expect(result, Left(SendTimeoutFailure(serverType: ServerType.supabase)));
   });
 
+  test('should check if the sync server connection is valid', () async {
+    // act
+    await signIn(
+      supabaseInfo: tSupabaseInfo,
+      email: tEmail,
+      password: tPassword,
+    );
+
+    // assert
+    verify(
+      () => mockAuthenticationRepository.isSyncServerConnectionValid(
+        syncServerUrl: tPowersyncUrl,
+      ),
+    );
+  });
+
+  test('should relay Failures from getting the sync server info', () async {
+    // arrange
+    when(
+      () => mockAuthenticationRepository.isSyncServerConnectionValid(
+        syncServerUrl: any(named: 'syncServerUrl'),
+      ),
+    ).thenAnswer(
+      (_) async => Left(SendTimeoutFailure(serverType: ServerType.syncServer)),
+    );
+
+    // act
+    final result = await signIn(
+      supabaseInfo: tSupabaseInfo,
+      email: tEmail,
+      password: tPassword,
+    );
+
+    // assert
+    expect(result, Left(SendTimeoutFailure(serverType: ServerType.syncServer)));
+  });
+
   test('should init the connection to the sync server', () async {
     // act
     await signIn(
@@ -142,8 +184,8 @@ void main() {
     () async {
       // arrange
       when(
-        () => mockAuthenticationRepository.initializeSyncServerConnection(
-          powersyncInfo: any(named: 'powersyncInfo'),
+        () => mockAuthenticationRepository.isSyncServerConnectionValid(
+          syncServerUrl: any(named: 'syncServerUrl'),
         ),
       ).thenAnswer(
         (_) async =>

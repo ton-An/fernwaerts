@@ -61,15 +61,12 @@ class InitializeSavedServerConnection {
   Future<Either<Failure, None>> _initializeSyncServerConnection({
     required ServerInfo serverInfo,
   }) async {
-    final Either<Failure, None> initSyncServerConnectionEither =
-        await authenticationRepository.initializeSyncServerConnection(
-          powersyncInfo: serverInfo.powersyncInfo,
-        );
+    await authenticationRepository.initializeSyncServerConnection(
+      powersyncInfo: serverInfo.powersyncInfo,
+    );
 
-    return initSyncServerConnectionEither.fold(Left.new, (None none) {
-      _isServerSetUp = true;
+    _isServerSetUp = true;
 
-      return const Right(None());
-    });
+    return const Right(None());
   }
 }

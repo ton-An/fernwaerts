@@ -83,14 +83,12 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, None>> initializeSyncServerConnection({
+  Future<void> initializeSyncServerConnection({
     required PowersyncInfo powersyncInfo,
   }) async {
     await authRemoteDataSource.initializeSyncServerConnection(
       powersyncInfo: powersyncInfo,
     );
-
-    return const Right(None());
   }
 
   @override
@@ -272,6 +270,28 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
             functionException: functionException,
           );
 
+      return Left(failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, None>> isSyncServerConnectionValid({
+    required String syncServerUrl,
+  }) async {
+    try {
+      await authRemoteDataSource.isSyncServerConnectionValid(
+        syncServerUrl: syncServerUrl,
+      );
+
+      return const Right(None());
+    } on DioException catch (dioException) {
+      final Failure failure = repositoryFailureHandler.dioExceptionMapper(
+        dioException: dioException,
+        serverType: ServerType.syncServer,
+      );
+
+      return Left(failure);
+    } on Failure catch (failure) {
       return Left(failure);
     }
   }

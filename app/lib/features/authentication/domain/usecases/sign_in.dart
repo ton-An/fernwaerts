@@ -79,21 +79,32 @@ class SignIn {
         powersyncInfo: powersyncInfo,
       );
 
-      return _initializeSyncServer(serverInfo: serverInfo);
+      return _isSyncServerConnectionValid(serverInfo: serverInfo);
     });
+  }
+
+  Future<Either<Failure, None>> _isSyncServerConnectionValid({
+    required ServerInfo serverInfo,
+  }) async {
+    final Either<Failure, None> isSyncServerConnectionValidEither =
+        await authenticationRepository.isSyncServerConnectionValid(
+          syncServerUrl: serverInfo.powersyncInfo.url,
+        );
+
+    return isSyncServerConnectionValidEither.fold(
+      Left.new,
+      (None none) => _initializeSyncServer(serverInfo: serverInfo),
+    );
   }
 
   Future<Either<Failure, None>> _initializeSyncServer({
     required ServerInfo serverInfo,
   }) async {
-    final Either<Failure, None> initSyncServerEither =
-        await authenticationRepository.initializeSyncServerConnection(
-          powersyncInfo: serverInfo.powersyncInfo,
-        );
+    await authenticationRepository.initializeSyncServerConnection(
+      powersyncInfo: serverInfo.powersyncInfo,
+    );
 
-    return initSyncServerEither.fold(Left.new, (None none) {
-      return _saveServerInfo(serverInfo: serverInfo);
-    });
+    return _saveServerInfo(serverInfo: serverInfo);
   }
 
   Future<Either<Failure, None>> _saveServerInfo({

@@ -126,6 +126,15 @@ abstract class AuthenticationRemoteDataSource {
   /// Returns:
   /// - [PowersyncInfo] containing the sync server's URL
   Future<PowersyncInfo> getSyncServerInfo();
+
+  /// Checks if the sync server is reachable.
+  ///
+  /// Parameters:
+  /// - [String] serverUrl: The URL of the server to connect to
+  ///
+  /// Throws:
+  /// {@macro server_remote_handler_exceptions}
+  Future<void> isSyncServerConnectionValid({required String syncServerUrl});
 }
 
 class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
@@ -158,7 +167,7 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
   @override
   Future<void> isServerConnectionValid({required String serverUrl}) async {
     await serverRemoteHandler.get(
-      url: Uri.parse(serverUrl + UrlPathConstants.health),
+      url: Uri.parse(serverUrl + UrlPathConstants.supabaseHealth),
       serverType: ServerType.supabase,
     );
   }
@@ -294,5 +303,15 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
     final PowersyncInfo powersyncInfo = PowersyncInfo(url: syncServerUrl);
 
     return powersyncInfo;
+  }
+
+  @override
+  Future<void> isSyncServerConnectionValid({
+    required String syncServerUrl,
+  }) async {
+    await serverRemoteHandler.get(
+      url: Uri.parse(syncServerUrl + UrlPathConstants.powersyncHealth),
+      serverType: ServerType.syncServer,
+    );
   }
 }

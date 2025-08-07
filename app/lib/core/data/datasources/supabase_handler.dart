@@ -68,7 +68,7 @@ class SupabaseHandler {
       powersyncUrl: powersyncInfo.url,
     );
 
-    powersyncDb.connect(connector: psBackendConnector);
+    await powersyncDb.connect(connector: psBackendConnector);
 
     _driftDatabase = DriftAppDatabase(SqliteAsyncDriftConnection(powersyncDb));
 

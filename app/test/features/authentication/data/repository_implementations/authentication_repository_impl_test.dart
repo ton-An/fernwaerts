@@ -8,6 +8,7 @@ import 'package:location_history/core/failures/networking/connection_failure.dar
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/core/failures/networking/server_type.dart';
 import 'package:location_history/core/failures/networking/status_code_not_ok_failure.dart';
+import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/data/repository_implementations/authentication_repository_impl.dart';
@@ -680,5 +681,77 @@ void main() {
         );
       },
     );
+  });
+
+  group('isSyncServerConnectionValid()', () {
+    setUp(() {
+      when(
+        () => mockAuthRemoteDataSource.isSyncServerConnectionValid(
+          syncServerUrl: any(named: 'syncServerUrl'),
+        ),
+      ).thenAnswer((_) => Future.value());
+    });
+
+    test('should check if the server is reachable and return None', () async {
+      // act
+      final result = await authenticationRepositoryImpl
+          .isSyncServerConnectionValid(syncServerUrl: tPowersyncUrl);
+
+      // assert
+      verify(
+        () => mockAuthRemoteDataSource.isSyncServerConnectionValid(
+          syncServerUrl: tPowersyncUrl,
+        ),
+      );
+      expect(result, const Right<Failure, None>(None()));
+    });
+
+    test('should convert DioExceptions to Failures', () async {
+      // arrange
+      when(
+        () => mockAuthRemoteDataSource.isSyncServerConnectionValid(
+          syncServerUrl: any(named: 'syncServerUrl'),
+        ),
+      ).thenThrow(tBadResponseDioException);
+      when(
+        () => mockRepositoryFailureHandler.dioExceptionMapper(
+          dioException: any(named: 'dioException'),
+          serverType: any(named: 'serverType'),
+        ),
+      ).thenReturn(BadResponseFailure(serverType: ServerType.syncServer));
+
+      // act
+      final result = await authenticationRepositoryImpl
+          .isSyncServerConnectionValid(syncServerUrl: tPowersyncUrl);
+
+      // assert
+      expect(
+        result,
+        Left<Failure, bool>(
+          BadResponseFailure(serverType: ServerType.syncServer),
+        ),
+      );
+    });
+
+    test('should relay Failures', () async {
+      // arrange
+      when(
+        () => mockAuthRemoteDataSource.isSyncServerConnectionValid(
+          syncServerUrl: any(named: 'syncServerUrl'),
+        ),
+      ).thenThrow(UnknownRequestFailure(serverType: ServerType.syncServer));
+
+      // act
+      final result = await authenticationRepositoryImpl
+          .isSyncServerConnectionValid(syncServerUrl: tPowersyncUrl);
+
+      // assert
+      expect(
+        result,
+        Left<Failure, bool>(
+          UnknownRequestFailure(serverType: ServerType.syncServer),
+        ),
+      );
+    });
   });
 }
