@@ -51,10 +51,7 @@ class PsBackendConnector extends PowerSyncBackendConnector {
     // This function is called whenever there is data to upload, whether the
     // device is online or offline.
     // If this call throws an error, it is retried periodically.
-    print("!!!!!!!!!!!!");
     final transaction = await database.getNextCrudTransaction();
-
-    print(transaction);
 
     if (transaction == null) {
       return;
