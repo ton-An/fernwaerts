@@ -1,0 +1,10 @@
+# ToDo: apply proper permissions and allow rootless
+
+FROM node:latest
+
+# Set working directory
+WORKDIR /ps
+
+COPY ./powersync/ powersync/
+
+CMD ["sh", "-c", "cp -r powersync/. /powersync/  && chmod -R a+rX /powersync/"]

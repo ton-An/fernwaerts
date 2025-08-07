@@ -1,9 +1,21 @@
 import 'dart:async';
 
-import 'package:brick_offline_first_with_supabase/brick_offline_first_with_supabase.dart';
-import 'package:location_history/core/data/datasources/supabase_offline_first.dart';
-import 'package:location_history/features/authentication/domain/models/server_info.dart';
+import 'package:drift_sqlite_async/drift_sqlite_async.dart';
+import 'package:location_history/core/data/datasources/ps_backend_connector.dart';
+import 'package:location_history/core/drift/drift_database.dart';
+import 'package:location_history/core/drift/schema.dart';
+import 'package:location_history/core/misc/app_file_constants.dart';
+import 'package:location_history/features/authentication/domain/models/powersync_info.dart';
+import 'package:location_history/features/authentication/domain/models/supabase_info.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:powersync/powersync.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+/*
+  To-Do:
+    - [ ] fix late already initialized exception
+*/
 
 class SupabaseHandler {
   SupabaseHandler();
@@ -11,8 +23,10 @@ class SupabaseHandler {
   final Completer<SupabaseClient> _clientCompleter =
       Completer<SupabaseClient>();
 
-  final Completer<OfflineFirstWithSupabaseRepository> _offlineFirstCompleter =
-      Completer<OfflineFirstWithSupabaseRepository>();
+  final Completer<DriftAppDatabase> _driftDatabaseCompleter =
+      Completer<DriftAppDatabase>();
+
+  late final DriftAppDatabase _driftDatabase;
 
   Future<SupabaseClient> get client {
     if (_clientCompleter.isCompleted) {
@@ -22,27 +36,49 @@ class SupabaseHandler {
     }
   }
 
-  Future<OfflineFirstWithSupabaseRepository> get supabaseOfflineFirst {
-    if (_clientCompleter.isCompleted) {
-      return Future.value(SupabaseOfflineFirst());
+  Future<DriftAppDatabase> get driftDatabase {
+    if (_driftDatabaseCompleter.isCompleted) {
+      return Future.value(_driftDatabase);
     } else {
-      return _offlineFirstCompleter.future;
+      return _driftDatabaseCompleter.future;
     }
   }
 
-  Future<void> initialize({required ServerInfo serverInfo}) async {
-    await SupabaseOfflineFirst.initializeSupabaseAndConfigure(
-      supabaseUrl: serverInfo.url,
-      supabaseAnonKey: serverInfo.anonKey,
+  Future<void> initializeSupabase({required SupabaseInfo supabaseInfo}) async {
+    final Supabase supabase = await Supabase.initialize(
+      url: supabaseInfo.url,
+      anonKey: supabaseInfo.anonKey,
     );
 
-    await SupabaseOfflineFirst().initialize();
-
-    if (!_offlineFirstCompleter.isCompleted) {
-      _offlineFirstCompleter.complete(SupabaseOfflineFirst());
-    }
     if (!_clientCompleter.isCompleted) {
-      _clientCompleter.complete(Supabase.instance.client);
+      _clientCompleter.complete(supabase.client);
+    }
+  }
+
+  Future<void> initializePowerSync({
+    required PowersyncInfo powersyncInfo,
+  }) async {
+    final dir = await getApplicationSupportDirectory();
+    final path = join(dir.path, AppFileConstants.sqliteDbFileName);
+
+    PowerSyncDatabase powersyncDb = PowerSyncDatabase(
+      schema: schema,
+      path: path,
+    );
+
+    final SupabaseClient supabaseClient = Supabase.instance.client;
+
+    PsBackendConnector psBackendConnector = PsBackendConnector.init(
+      supabaseClient: supabaseClient,
+      powersyncUrl: powersyncInfo.url,
+    );
+
+    await powersyncDb.connect(connector: psBackendConnector);
+
+    _driftDatabase = DriftAppDatabase(SqliteAsyncDriftConnection(powersyncDb));
+
+    if (!_driftDatabaseCompleter.isCompleted) {
+      _driftDatabaseCompleter.complete(_driftDatabase);
     }
   }
 

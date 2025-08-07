@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://unpkg.com/@powersync/service-sync-rules@latest/schema/sync_rules.json
+#
+# See Documentation for more information:
+# https://docs.powersync.com/usage/sync-rules
+#
+# Note that changes to this file are not watched.
+# The service needs to be restarted for changes to take effect.
+
+bucket_definitions:
+  public_info:
+    data:
+    - SELECT * from public_info
+
+  general_info:
+    data:
+    - SELECT * from activity_types
+    - SELECT * from operating_systems
+  
+  user_data:
+    parameters: SELECT request.user_id() as user_id
+    data:
+      - SELECT * FROM users WHERE users.id = bucket.user_id
+      - SELECT * FROM activities WHERE activities.user_id = bucket.user_id
+      - SELECT * FROM devices WHERE devices.user_id = bucket.user_id
+      - SELECT * FROM raw_location_data WHERE raw_location_data.user_id = bucket.user_id
+      - SELECT * FROM significant_location_changes WHERE significant_location_changes.user_id = bucket.user_id

@@ -6,6 +6,9 @@ import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/bad_response_failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
+import 'package:location_history/core/failures/networking/server_type.dart';
+import 'package:location_history/core/failures/networking/status_code_not_ok_failure.dart';
+import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/data/repository_implementations/authentication_repository_impl.dart';
@@ -37,6 +40,8 @@ void main() {
     registerFallbackValue(tBadResponseDioException);
     registerFallbackValue(tTimeoutClientException);
     registerFallbackValue(tStackTrace);
+    registerFallbackValue(ServerType.supabase);
+    registerFallbackValue(tFunctionException);
   });
 
   group('isServerSetUp()', () {
@@ -69,8 +74,9 @@ void main() {
           () => mockRepositoryFailureHandler.clientExceptionConverter(
             clientException: any(named: 'clientException'),
             stackTrace: any(named: 'stackTrace'),
+            serverType: any(named: 'serverType'),
           ),
-        ).thenReturn(const SendTimeoutFailure());
+        ).thenReturn(SendTimeoutFailure(serverType: ServerType.supabase));
 
         // act
         final result = await authenticationRepositoryImpl.isServerSetUp();
@@ -80,9 +86,13 @@ void main() {
           () => mockRepositoryFailureHandler.clientExceptionConverter(
             clientException: tTimeoutClientException,
             stackTrace: any(named: 'stackTrace'),
+            serverType: ServerType.supabase,
           ),
         );
-        expect(result, const Left(SendTimeoutFailure()));
+        expect(
+          result,
+          Left(SendTimeoutFailure(serverType: ServerType.supabase)),
+        );
       },
     );
 
@@ -96,7 +106,10 @@ void main() {
       final result = await authenticationRepositoryImpl.isServerSetUp();
 
       // assert
-      expect(result, const Left<Failure, bool>(ConnectionFailure()));
+      expect(
+        result,
+        Left<Failure, bool>(ConnectionFailure(serverType: ServerType.supabase)),
+      );
     });
   });
 
@@ -134,8 +147,9 @@ void main() {
       when(
         () => mockRepositoryFailureHandler.dioExceptionMapper(
           dioException: any(named: 'dioException'),
+          serverType: any(named: 'serverType'),
         ),
-      ).thenReturn(const BadResponseFailure());
+      ).thenReturn(BadResponseFailure(serverType: ServerType.supabase));
 
       // act
       final result = await authenticationRepositoryImpl.isServerConnectionValid(
@@ -143,7 +157,12 @@ void main() {
       );
 
       // assert
-      expect(result, const Left<Failure, bool>(BadResponseFailure()));
+      expect(
+        result,
+        Left<Failure, bool>(
+          BadResponseFailure(serverType: ServerType.supabase),
+        ),
+      );
     });
 
     test('should relay Failures', () async {
@@ -160,7 +179,7 @@ void main() {
       );
 
       // assert
-      expect(result, const Left<Failure, bool>(tUnknownRequestFailure));
+      expect(result, Left<Failure, bool>(tUnknownRequestFailure));
     });
   });
 
@@ -212,8 +231,9 @@ void main() {
       when(
         () => mockRepositoryFailureHandler.dioExceptionMapper(
           dioException: any(named: 'dioException'),
+          serverType: any(named: 'serverType'),
         ),
-      ).thenReturn(const BadResponseFailure());
+      ).thenReturn(BadResponseFailure(serverType: ServerType.supabase));
 
       // act
       final result = await authenticationRepositoryImpl.signUpInitialAdmin(
@@ -224,7 +244,12 @@ void main() {
       );
 
       // assert
-      expect(result, const Left<Failure, bool>(BadResponseFailure()));
+      expect(
+        result,
+        Left<Failure, bool>(
+          BadResponseFailure(serverType: ServerType.supabase),
+        ),
+      );
     });
 
     test('should relay Failures', () async {
@@ -247,7 +272,7 @@ void main() {
       );
 
       // assert
-      expect(result, const Left<Failure, bool>(tUnknownRequestFailure));
+      expect(result, Left<Failure, bool>(tUnknownRequestFailure));
     });
   });
 
@@ -334,8 +359,9 @@ void main() {
           () => mockRepositoryFailureHandler.clientExceptionConverter(
             clientException: any(named: 'clientException'),
             stackTrace: any(named: 'stackTrace'),
+            serverType: any(named: 'serverType'),
           ),
-        ).thenReturn(const SendTimeoutFailure());
+        ).thenReturn(SendTimeoutFailure(serverType: ServerType.supabase));
 
         // act
         final result = await authenticationRepositoryImpl.signIn(
@@ -348,9 +374,13 @@ void main() {
           () => mockRepositoryFailureHandler.clientExceptionConverter(
             clientException: tTimeoutClientException,
             stackTrace: any(named: 'stackTrace'),
+            serverType: ServerType.supabase,
           ),
         );
-        expect(result, const Left(SendTimeoutFailure()));
+        expect(
+          result,
+          Left(SendTimeoutFailure(serverType: ServerType.supabase)),
+        );
       },
     );
   });
@@ -465,8 +495,9 @@ void main() {
       when(
         () => mockRepositoryFailureHandler.dioExceptionMapper(
           dioException: any(named: 'dioException'),
+          serverType: any(named: 'serverType'),
         ),
-      ).thenReturn(const BadResponseFailure());
+      ).thenReturn(BadResponseFailure(serverType: ServerType.supabase));
 
       // act
       final result = await authenticationRepositoryImpl.getAnonKeyFromServer(
@@ -474,7 +505,12 @@ void main() {
       );
 
       // assert
-      expect(result, const Left<Failure, bool>(BadResponseFailure()));
+      expect(
+        result,
+        Left<Failure, bool>(
+          BadResponseFailure(serverType: ServerType.supabase),
+        ),
+      );
     });
 
     test('should relay Failures', () async {
@@ -491,7 +527,7 @@ void main() {
       );
 
       // assert
-      expect(result, const Left<Failure, bool>(tUnknownRequestFailure));
+      expect(result, Left<Failure, bool>(tUnknownRequestFailure));
     });
   });
 
@@ -556,5 +592,166 @@ void main() {
         expect(result, const Left(StorageWriteFailure()));
       },
     );
+  });
+
+  group('getSyncServerInfo', () {
+    setUp(() {
+      when(
+        () => mockAuthRemoteDataSource.getSyncServerInfo(),
+      ).thenAnswer((_) async => tPowersyncInfo);
+    });
+
+    test('should get the sync server info and return it', () async {
+      // act
+      final result = await authenticationRepositoryImpl.getSyncServerInfo();
+
+      // assert
+      verify(() => mockAuthRemoteDataSource.getSyncServerInfo());
+      expect(result, const Right(tPowersyncInfo));
+    });
+
+    test(
+      'should convert client exceptions and return return the resulting failure',
+      () async {
+        // arrange
+        when(
+          () => mockAuthRemoteDataSource.getSyncServerInfo(),
+        ).thenThrow(tTimeoutClientException);
+        when(
+          () => mockRepositoryFailureHandler.clientExceptionConverter(
+            clientException: any(named: 'clientException'),
+            stackTrace: any(named: 'stackTrace'),
+            serverType: any(named: 'serverType'),
+          ),
+        ).thenReturn(ConnectionFailure(serverType: ServerType.supabase));
+
+        // act
+        final result = await authenticationRepositoryImpl.getSyncServerInfo();
+
+        // assert
+        expect(
+          result,
+          Left(ConnectionFailure(serverType: ServerType.supabase)),
+        );
+        verify(
+          () => mockRepositoryFailureHandler.clientExceptionConverter(
+            clientException: tTimeoutClientException,
+            stackTrace: any(named: 'stackTrace'),
+            serverType: ServerType.supabase,
+          ),
+        );
+      },
+    );
+
+    test(
+      'should convert supabase function exceptions and return the resulting failure',
+      () async {
+        // arrange
+        when(
+          () => mockAuthRemoteDataSource.getSyncServerInfo(),
+        ).thenThrow(tFunctionException);
+        when(
+          () => mockRepositoryFailureHandler.supabaseFunctionExceptionConverter(
+            functionException: any(named: 'functionException'),
+          ),
+        ).thenReturn(
+          StatusCodeNotOkFailure(
+            statusCode: 500,
+            serverType: ServerType.supabase,
+          ),
+        );
+
+        // act
+        final result = await authenticationRepositoryImpl.getSyncServerInfo();
+
+        // assert
+        expect(
+          result,
+          Left(
+            StatusCodeNotOkFailure(
+              serverType: ServerType.supabase,
+              statusCode: 500,
+            ),
+          ),
+        );
+        verify(
+          () => mockRepositoryFailureHandler.supabaseFunctionExceptionConverter(
+            functionException: tFunctionException,
+          ),
+        );
+      },
+    );
+  });
+
+  group('isSyncServerConnectionValid()', () {
+    setUp(() {
+      when(
+        () => mockAuthRemoteDataSource.isSyncServerConnectionValid(
+          syncServerUrl: any(named: 'syncServerUrl'),
+        ),
+      ).thenAnswer((_) => Future.value());
+    });
+
+    test('should check if the server is reachable and return None', () async {
+      // act
+      final result = await authenticationRepositoryImpl
+          .isSyncServerConnectionValid(syncServerUrl: tPowersyncUrl);
+
+      // assert
+      verify(
+        () => mockAuthRemoteDataSource.isSyncServerConnectionValid(
+          syncServerUrl: tPowersyncUrl,
+        ),
+      );
+      expect(result, const Right<Failure, None>(None()));
+    });
+
+    test('should convert DioExceptions to Failures', () async {
+      // arrange
+      when(
+        () => mockAuthRemoteDataSource.isSyncServerConnectionValid(
+          syncServerUrl: any(named: 'syncServerUrl'),
+        ),
+      ).thenThrow(tBadResponseDioException);
+      when(
+        () => mockRepositoryFailureHandler.dioExceptionMapper(
+          dioException: any(named: 'dioException'),
+          serverType: any(named: 'serverType'),
+        ),
+      ).thenReturn(BadResponseFailure(serverType: ServerType.syncServer));
+
+      // act
+      final result = await authenticationRepositoryImpl
+          .isSyncServerConnectionValid(syncServerUrl: tPowersyncUrl);
+
+      // assert
+      expect(
+        result,
+        Left<Failure, bool>(
+          BadResponseFailure(serverType: ServerType.syncServer),
+        ),
+      );
+    });
+
+    test('should relay Failures', () async {
+      // arrange
+      when(
+        () => mockAuthRemoteDataSource.isSyncServerConnectionValid(
+          syncServerUrl: any(named: 'syncServerUrl'),
+        ),
+      ).thenThrow(UnknownRequestFailure(serverType: ServerType.syncServer));
+
+      // act
+      final result = await authenticationRepositoryImpl
+          .isSyncServerConnectionValid(syncServerUrl: tPowersyncUrl);
+
+      // assert
+      expect(
+        result,
+        Left<Failure, bool>(
+          UnknownRequestFailure(serverType: ServerType.syncServer),
+        ),
+      );
+    });
   });
 }

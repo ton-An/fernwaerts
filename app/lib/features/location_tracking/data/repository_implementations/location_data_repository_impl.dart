@@ -1,5 +1,5 @@
 import 'package:location_history/features/location_tracking/data/datasources/location_data_remote_data_source.dart';
-import 'package:location_history/features/location_tracking/domain/models/location.model.dart';
+import 'package:location_history/features/location_tracking/domain/models/location.dart';
 import 'package:location_history/features/location_tracking/domain/models/movement_segment.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 

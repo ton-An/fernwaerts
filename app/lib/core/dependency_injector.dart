@@ -1,4 +1,3 @@
-import 'package:brick_offline_first_with_supabase/brick_offline_first_with_supabase.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_activity_recognition/flutter_activity_recognition.dart';
@@ -22,7 +21,7 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 import 'package:location_history/features/authentication/domain/repositories/device_repository.dart';
 import 'package:location_history/features/authentication/domain/repositories/permissions_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/has_server_connection_saved.dart';
-import 'package:location_history/features/authentication/domain/usecases/initialize_new_server_connection.dart';
+import 'package:location_history/features/authentication/domain/usecases/initialize_new_supabase_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_saved_server_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_server_set_up.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_signed_in.dart';
@@ -85,9 +84,7 @@ void registerCoreDependencies() {
     () => ServerRemoteHandlerImpl(dio: getIt()),
   );
   getIt.registerLazySingleton<SupabaseHandler>(() => SupabaseHandler());
-  getIt.registerSingletonAsync<
-    OfflineFirstWithSupabaseRepository<OfflineFirstWithSupabaseModel>
-  >(() async => await getIt<SupabaseHandler>().supabaseOfflineFirst);
+
   getIt.registerLazySingleton(() => const PlatformWrapper());
 }
 
@@ -100,7 +97,7 @@ void registerAuthenticationDependencies() {
   // -- Presentation -- //
   getIt.registerFactory(
     () => AuthenticationCubit(
-      initializeServerConnection: getIt(),
+      initializeNewSupabaseConnection: getIt(),
       isServerSetUp: getIt(),
       signUpInitialAdmin: getIt(),
       signInUsecase: getIt(),
@@ -120,7 +117,7 @@ void registerAuthenticationDependencies() {
 
   // -- Domain -- //
   getIt.registerLazySingleton(
-    () => InitializeNewServerConnection(authenticationRepository: getIt()),
+    () => InitializeNewSupabaseConnection(authenticationRepository: getIt()),
   );
   getIt.registerLazySingleton(
     () => IsServerSetUp(authenticationRepository: getIt()),

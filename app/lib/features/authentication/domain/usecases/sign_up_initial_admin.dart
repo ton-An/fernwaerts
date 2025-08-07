@@ -2,7 +2,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/authentication/password_mismatch_failure.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
-import 'package:location_history/features/authentication/domain/models/server_info.dart';
+import 'package:location_history/features/authentication/domain/models/supabase_info.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
 
@@ -33,7 +33,7 @@ class SignUpInitialAdmin {
   final SignIn signIn;
 
   Future<Either<Failure, None>> call({
-    required ServerInfo serverInfo,
+    required SupabaseInfo supabaseInfo,
     required String username,
     required String email,
     required String password,
@@ -48,12 +48,12 @@ class SignUpInitialAdmin {
       email: email,
       password: password,
       repeatedPassword: repeatedPassword,
-      serverInfo: serverInfo,
+      supabaseInfo: supabaseInfo,
     );
   }
 
   Future<Either<Failure, None>> _signUpInitialAdmin({
-    required ServerInfo serverInfo,
+    required SupabaseInfo supabaseInfo,
     required String username,
     required String email,
     required String password,
@@ -61,22 +61,26 @@ class SignUpInitialAdmin {
   }) async {
     final Either<Failure, None> signUpEither = await authenticationRepository
         .signUpInitialAdmin(
-          serverUrl: serverInfo.url,
+          serverUrl: supabaseInfo.url,
           username: username,
           email: email,
           password: password,
         );
 
     return signUpEither.fold(Left.new, (None none) {
-      return _signIn(email: email, password: password, serverInfo: serverInfo);
+      return _signIn(
+        email: email,
+        password: password,
+        supabaseInfo: supabaseInfo,
+      );
     });
   }
 
   Future<Either<Failure, None>> _signIn({
-    required ServerInfo serverInfo,
+    required SupabaseInfo supabaseInfo,
     required String email,
     required String password,
   }) {
-    return signIn(email: email, password: password, serverInfo: serverInfo);
+    return signIn(email: email, password: password, supabaseInfo: supabaseInfo);
   }
 }

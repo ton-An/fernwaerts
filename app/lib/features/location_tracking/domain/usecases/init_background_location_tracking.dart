@@ -7,7 +7,7 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 import 'package:location_history/features/authentication/domain/repositories/device_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_saved_server_connection.dart';
 import 'package:location_history/features/location_tracking/domain/enums/activity_type.dart';
-import 'package:location_history/features/location_tracking/domain/models/location.model.dart';
+import 'package:location_history/features/location_tracking/domain/models/location.dart';
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
@@ -15,6 +15,8 @@ import 'package:location_history/features/location_tracking/domain/repositories/
 /* 
   To-Do:
     - [ ] Add activity and battery data
+    - [ ] Maybe split usecase
+    - [ ] Improve stationary device handling (e.g. app requests location when user walks around the house)
 */
 
 class InitBackgroundLocationTracking {

@@ -1,12 +1,11 @@
-import 'package:location_history/core/failures/failure.dart';
-import 'package:location_history/core/failures/failure_constants.dart';
+import 'package:location_history/core/failures/networking/network_failure.dart';
 
-class UnknownRequestFailure extends Failure {
-  const UnknownRequestFailure()
+class UnknownRequestFailure extends NetworkFailure {
+  UnknownRequestFailure({required super.serverType})
     : super(
         name: 'Unknown Request Failure',
-        message: 'The request failed for an unknown reason',
-        categoryCode: FailureCategoryConstants.networking,
+        message:
+            'The request to the ${serverType.name} server failed for an unknown reason',
         code: 'unknown_request_failure',
       );
 }

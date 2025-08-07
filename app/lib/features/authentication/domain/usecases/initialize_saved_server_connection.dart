@@ -35,26 +35,38 @@ class InitializeSavedServerConnection {
   }
 
   Future<Either<Failure, None>> _getSavedServerInfo() async {
-    final Either<Failure, ServerInfo> savedUrlEither =
+    final Either<Failure, ServerInfo> savedServerEither =
         await authenticationRepository.getSavedServerInfo();
 
-    return savedUrlEither.fold(Left.new, (ServerInfo serverInfo) {
-      return _initializeServerConnection(serverInfo: serverInfo);
-    });
+    return savedServerEither.fold(
+      (Failure failure) {
+        return Left(failure);
+      },
+      (ServerInfo serverInfo) {
+        return _initializeServerConnection(serverInfo: serverInfo);
+      },
+    );
   }
 
   Future<Either<Failure, None>> _initializeServerConnection({
     required ServerInfo serverInfo,
   }) async {
-    final Either<Failure, None> initServerConnectionEither =
-        await authenticationRepository.initializeServerConnection(
-          serverInfo: serverInfo,
-        );
+    await authenticationRepository.initializeSupabaseConnection(
+      supabaseInfo: serverInfo.supabaseInfo,
+    );
 
-    return initServerConnectionEither.fold(Left.new, (None none) {
-      _isServerSetUp = true;
+    return _initializeSyncServerConnection(serverInfo: serverInfo);
+  }
 
-      return const Right(None());
-    });
+  Future<Either<Failure, None>> _initializeSyncServerConnection({
+    required ServerInfo serverInfo,
+  }) async {
+    await authenticationRepository.initializeSyncServerConnection(
+      powersyncInfo: serverInfo.powersyncInfo,
+    );
+
+    _isServerSetUp = true;
+
+    return const Right(None());
   }
 }

@@ -1,12 +1,11 @@
-import 'package:location_history/core/failures/failure.dart';
-import 'package:location_history/core/failures/failure_constants.dart';
+import 'package:location_history/core/failures/networking/network_failure.dart';
 
-class SendTimeoutFailure extends Failure {
-  const SendTimeoutFailure()
+class SendTimeoutFailure extends NetworkFailure {
+  SendTimeoutFailure({required super.serverType})
     : super(
         name: 'Send Timeout',
-        message: 'The request took too long to send.',
-        categoryCode: FailureCategoryConstants.networking,
+        message:
+            'The request to the ${serverType.name} server took too long to send.',
         code: 'send_timeout',
       );
 }

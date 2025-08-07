@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_saved_server_connection.dart';
 import 'package:mocktail/mocktail.dart';
@@ -22,14 +21,20 @@ void main() {
       () => mockAuthenticationRepository.getSavedServerInfo(),
     ).thenAnswer((_) async => const Right(tServerInfo));
     when(
-      () => mockAuthenticationRepository.initializeServerConnection(
-        serverInfo: any(named: 'serverInfo'),
+      () => mockAuthenticationRepository.initializeSupabaseConnection(
+        supabaseInfo: any(named: 'supabaseInfo'),
+      ),
+    ).thenAnswer((_) async => Future.value());
+    when(
+      () => mockAuthenticationRepository.initializeSyncServerConnection(
+        powersyncInfo: any(named: 'powersyncInfo'),
       ),
     ).thenAnswer((_) async => const Right(None()));
   });
 
   setUpAll(() {
-    registerFallbackValue(tServerInfo);
+    registerFallbackValue(tSupabaseInfo);
+    registerFallbackValue(tPowersyncInfo);
   });
 
   test(
@@ -68,31 +73,31 @@ void main() {
     expect(result, const Left(StorageReadFailure()));
   });
 
-  test('should initialize the server and return None', () async {
+  test('should initialize the supabase server connection', () async {
     // act
-    final result = await initializeSavedServerConnection();
+    await initializeSavedServerConnection();
 
     // assert
     verify(
-      () => mockAuthenticationRepository.initializeServerConnection(
-        serverInfo: tServerInfo,
+      () => mockAuthenticationRepository.initializeSupabaseConnection(
+        supabaseInfo: tSupabaseInfo,
       ),
     );
-    expect(result, const Right(None()));
   });
 
-  test('should relay Failures from initializing the server', () async {
-    // arrange
-    when(
-      () => mockAuthenticationRepository.initializeServerConnection(
-        serverInfo: any(named: 'serverInfo'),
-      ),
-    ).thenAnswer((_) async => const Left(SendTimeoutFailure()));
+  test(
+    'should initialize the sync server connection and return None',
+    () async {
+      // act
+      final result = await initializeSavedServerConnection();
 
-    // act
-    final result = await initializeSavedServerConnection();
-
-    // assert
-    expect(result, const Left(SendTimeoutFailure()));
-  });
+      // assert
+      verify(
+        () => mockAuthenticationRepository.initializeSyncServerConnection(
+          powersyncInfo: tPowersyncInfo,
+        ),
+      );
+      expect(result, const Right(None()));
+    },
+  );
 }

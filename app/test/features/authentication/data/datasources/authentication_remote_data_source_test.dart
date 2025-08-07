@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
+import 'package:location_history/core/failures/networking/server_type.dart';
 import 'package:location_history/core/misc/url_path_constants.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:mock_supabase_http_client/mock_supabase_http_client.dart';
@@ -41,7 +42,8 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(tServerUrl);
-    registerFallbackValue(tServerInfo);
+    registerFallbackValue(tSupabaseInfo);
+    registerFallbackValue(ServerType.supabase);
   });
 
   tearDown(() {
@@ -55,7 +57,10 @@ void main() {
   group('isServerConnectionValid()', () {
     setUp(() {
       when(
-        () => mockServerRemoteHandler.get(url: any(named: 'url')),
+        () => mockServerRemoteHandler.get(
+          url: any(named: 'url'),
+          serverType: any(named: 'serverType'),
+        ),
       ).thenAnswer((_) async => tGetAnonKeyResponseData);
     });
 
@@ -68,7 +73,8 @@ void main() {
       // assert
       verify(
         () => mockServerRemoteHandler.get(
-          url: Uri.parse(tServerUrlString + UrlPathConstants.health),
+          url: Uri.parse(tServerUrlString + UrlPathConstants.supabaseHealth),
+          serverType: ServerType.supabase,
         ),
       );
     });
@@ -97,8 +103,8 @@ void main() {
   group('initializeServerConnection()', () {
     setUp(() {
       when(
-        () => mockSupabaseHandler.initialize(
-          serverInfo: any(named: 'serverInfo'),
+        () => mockSupabaseHandler.initializeSupabase(
+          supabaseInfo: any(named: 'supabaseInfo'),
         ),
       ).thenAnswer((_) async => tMockSupabase);
       when(
@@ -108,8 +114,8 @@ void main() {
 
     test('should dispose the old server connection', () async {
       // act
-      await authRemoteDataSourceImpl.initializeServerConnection(
-        serverInfo: tServerInfo,
+      await authRemoteDataSourceImpl.initializeSupabaseConnection(
+        supabaseInfo: tSupabaseInfo,
       );
 
       // assert
@@ -118,12 +124,15 @@ void main() {
 
     test('should initialize the new server connection', () async {
       // act
-      await authRemoteDataSourceImpl.initializeServerConnection(
-        serverInfo: tServerInfo,
+      await authRemoteDataSourceImpl.initializeSupabaseConnection(
+        supabaseInfo: tSupabaseInfo,
       );
 
       // assert
-      verify(() => mockSupabaseHandler.initialize(serverInfo: tServerInfo));
+      verify(
+        () =>
+            mockSupabaseHandler.initializeSupabase(supabaseInfo: tSupabaseInfo),
+      );
     });
 
     test(
@@ -131,12 +140,16 @@ void main() {
       () async {
         when(() => mockSupabaseHandler.dispose()).thenThrow(Exception());
         // act
-        await authRemoteDataSourceImpl.initializeServerConnection(
-          serverInfo: tServerInfo,
+        await authRemoteDataSourceImpl.initializeSupabaseConnection(
+          supabaseInfo: tSupabaseInfo,
         );
 
         // assert
-        verify(() => mockSupabaseHandler.initialize(serverInfo: tServerInfo));
+        verify(
+          () => mockSupabaseHandler.initializeSupabase(
+            supabaseInfo: tSupabaseInfo,
+          ),
+        );
       },
     );
   });
@@ -147,6 +160,7 @@ void main() {
         () => mockServerRemoteHandler.post(
           url: any(named: 'url'),
           body: any(named: 'body'),
+          serverType: any(named: 'serverType'),
         ),
       ).thenAnswer((_) async => tNullResponseData);
     });
@@ -167,6 +181,7 @@ void main() {
             tServerUrlString + UrlPathConstants.signUpInitialAdmin,
           ),
           body: {'username': tUsername, 'email': tEmail, 'password': tPassword},
+          serverType: ServerType.supabase,
         ),
       );
     });
@@ -210,7 +225,10 @@ void main() {
   group('getAnonKeyFromServer()', () {
     setUp(() {
       when(
-        () => mockServerRemoteHandler.get(url: any(named: 'url')),
+        () => mockServerRemoteHandler.get(
+          url: any(named: 'url'),
+          serverType: ServerType.supabase,
+        ),
       ).thenAnswer((_) async => tGetAnonKeyResponseData);
     });
 
@@ -224,6 +242,7 @@ void main() {
       verify(
         () => mockServerRemoteHandler.get(
           url: Uri.parse(tServerUrlString + UrlPathConstants.getAnonKey),
+          serverType: ServerType.supabase,
         ),
       );
     });
@@ -247,4 +266,53 @@ void main() {
       );
     });
   });
+
+  group('isSyncServerConnectionValid()', () {
+    setUp(() {
+      when(
+        () => mockServerRemoteHandler.get(
+          url: any(named: 'url'),
+          serverType: any(named: 'serverType'),
+        ),
+      ).thenAnswer((_) async => {});
+    });
+
+    test('should check if the connection to the server is valid', () async {
+      // act
+      await authRemoteDataSourceImpl.isSyncServerConnectionValid(
+        syncServerUrl: tPowersyncUrl,
+      );
+
+      // assert
+      verify(
+        () => mockServerRemoteHandler.get(
+          url: Uri.parse(tPowersyncUrl + UrlPathConstants.powersyncHealth),
+          serverType: ServerType.syncServer,
+        ),
+      );
+    });
+  });
+
+  // group('getSyncServerInfo', () {
+  // ToDo: uncomment this test when the mock_supabase_http_client package supports mocking edge functions
+
+  // setUp(() {
+  //   mockSupabaseHttpClient.registerEdgeFunction('get_sync_server_url', (
+  //     body,
+  //     queryParams,
+  //     method,
+  //     tables,
+  //   ) {
+  //     return tGetSyncServerUrlResponse;
+  //   });
+  // });
+
+  // test('should get the sync server info from the supabase server', () async {
+  //   // act
+  //   final result = await authRemoteDataSourceImpl.getSyncServerInfo();
+
+  //   // assert
+  //   expect(result, tPowersyncUrl);
+  // });
+  // });
 }

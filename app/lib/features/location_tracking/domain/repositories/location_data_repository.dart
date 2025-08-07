@@ -1,5 +1,5 @@
 import 'package:location_history/core/failures/storage/database_read_failure.dart';
-import 'package:location_history/features/location_tracking/domain/models/location.model.dart';
+import 'package:location_history/features/location_tracking/domain/models/location.dart';
 import 'package:location_history/features/location_tracking/domain/models/movement_segment.dart';
 
 abstract class LocationDataRepository {

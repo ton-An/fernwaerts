@@ -1,7 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
+import 'package:location_history/core/failures/networking/receive_timeout_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
+import 'package:location_history/core/failures/networking/server_type.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
 import 'package:mocktail/mocktail.dart';
@@ -36,15 +38,33 @@ void main() {
     when(
       () => mockSaveDeviceInfo(),
     ).thenAnswer((_) async => const Right(None()));
+    when(
+      () => mockAuthenticationRepository.getSyncServerInfo(),
+    ).thenAnswer((_) async => const Right(tPowersyncInfo));
+    when(
+      () => mockAuthenticationRepository.isSyncServerConnectionValid(
+        syncServerUrl: any(named: 'syncServerUrl'),
+      ),
+    ).thenAnswer((_) async => const Right(None()));
+    when(
+      () => mockAuthenticationRepository.initializeSyncServerConnection(
+        powersyncInfo: any(named: 'powersyncInfo'),
+      ),
+    ).thenAnswer((_) async => const Right(None()));
   });
 
   setUpAll(() {
     registerFallbackValue(tServerInfo);
+    registerFallbackValue(tPowersyncInfo);
   });
 
   test('should sign in the user', () async {
     // act
-    await signIn(serverInfo: tServerInfo, email: tEmail, password: tPassword);
+    await signIn(
+      supabaseInfo: tSupabaseInfo,
+      email: tEmail,
+      password: tPassword,
+    );
 
     // assert
     verify(
@@ -62,22 +82,138 @@ void main() {
         email: any(named: 'email'),
         password: any(named: 'password'),
       ),
-    ).thenAnswer((_) async => const Left(SendTimeoutFailure()));
+    ).thenAnswer(
+      (_) async => Left(SendTimeoutFailure(serverType: ServerType.supabase)),
+    );
 
     // act
     final result = await signIn(
-      serverInfo: tServerInfo,
+      supabaseInfo: tSupabaseInfo,
       email: tEmail,
       password: tPassword,
     );
 
     // assert
-    expect(result, const Left(SendTimeoutFailure()));
+    expect(result, Left(SendTimeoutFailure(serverType: ServerType.supabase)));
   });
+
+  test('should get the sync server info', () async {
+    // act
+    await signIn(
+      supabaseInfo: tSupabaseInfo,
+      email: tEmail,
+      password: tPassword,
+    );
+
+    // assert
+    verify(() => mockAuthenticationRepository.getSyncServerInfo());
+  });
+
+  test('should relay Failures from getting the sync server info', () async {
+    // arrange
+    when(() => mockAuthenticationRepository.getSyncServerInfo()).thenAnswer(
+      (_) async => Left(SendTimeoutFailure(serverType: ServerType.supabase)),
+    );
+
+    // act
+    final result = await signIn(
+      supabaseInfo: tSupabaseInfo,
+      email: tEmail,
+      password: tPassword,
+    );
+
+    // assert
+    expect(result, Left(SendTimeoutFailure(serverType: ServerType.supabase)));
+  });
+
+  test('should check if the sync server connection is valid', () async {
+    // act
+    await signIn(
+      supabaseInfo: tSupabaseInfo,
+      email: tEmail,
+      password: tPassword,
+    );
+
+    // assert
+    verify(
+      () => mockAuthenticationRepository.isSyncServerConnectionValid(
+        syncServerUrl: tPowersyncUrl,
+      ),
+    );
+  });
+
+  test('should relay Failures from getting the sync server info', () async {
+    // arrange
+    when(
+      () => mockAuthenticationRepository.isSyncServerConnectionValid(
+        syncServerUrl: any(named: 'syncServerUrl'),
+      ),
+    ).thenAnswer(
+      (_) async => Left(SendTimeoutFailure(serverType: ServerType.syncServer)),
+    );
+
+    // act
+    final result = await signIn(
+      supabaseInfo: tSupabaseInfo,
+      email: tEmail,
+      password: tPassword,
+    );
+
+    // assert
+    expect(result, Left(SendTimeoutFailure(serverType: ServerType.syncServer)));
+  });
+
+  test('should init the connection to the sync server', () async {
+    // act
+    await signIn(
+      supabaseInfo: tSupabaseInfo,
+      email: tEmail,
+      password: tPassword,
+    );
+
+    // assert
+    verify(
+      () => mockAuthenticationRepository.initializeSyncServerConnection(
+        powersyncInfo: tPowersyncInfo,
+      ),
+    );
+  });
+
+  test(
+    'should relay Failures from initializing the connection to the sync server',
+    () async {
+      // arrange
+      when(
+        () => mockAuthenticationRepository.isSyncServerConnectionValid(
+          syncServerUrl: any(named: 'syncServerUrl'),
+        ),
+      ).thenAnswer(
+        (_) async =>
+            Left(ReceiveTimeoutFailure(serverType: ServerType.syncServer)),
+      );
+
+      // act
+      final result = await signIn(
+        supabaseInfo: tSupabaseInfo,
+        email: tEmail,
+        password: tPassword,
+      );
+
+      // assert
+      expect(
+        result,
+        Left(ReceiveTimeoutFailure(serverType: ServerType.syncServer)),
+      );
+    },
+  );
 
   test('should save the server info', () async {
     // act
-    await signIn(serverInfo: tServerInfo, email: tEmail, password: tPassword);
+    await signIn(
+      supabaseInfo: tSupabaseInfo,
+      email: tEmail,
+      password: tPassword,
+    );
 
     // assert
     verify(
@@ -96,7 +232,7 @@ void main() {
 
     // act
     final result = await signIn(
-      serverInfo: tServerInfo,
+      supabaseInfo: tSupabaseInfo,
       email: tEmail,
       password: tPassword,
     );
@@ -108,7 +244,7 @@ void main() {
   test('should save the device info and return None', () async {
     // act
     final result = await signIn(
-      serverInfo: tServerInfo,
+      supabaseInfo: tSupabaseInfo,
       email: tEmail,
       password: tPassword,
     );
@@ -125,7 +261,7 @@ void main() {
 
     // act
     final result = await signIn(
-      serverInfo: tServerInfo,
+      supabaseInfo: tSupabaseInfo,
       email: tEmail,
       password: tPassword,
     );

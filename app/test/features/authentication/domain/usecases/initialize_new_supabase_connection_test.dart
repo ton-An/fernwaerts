@@ -2,28 +2,28 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
-import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
-import 'package:location_history/features/authentication/domain/usecases/initialize_new_server_connection.dart';
+import 'package:location_history/core/failures/networking/server_type.dart';
+import 'package:location_history/features/authentication/domain/usecases/initialize_new_supabase_connection.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../fixtures.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
-  late InitializeNewServerConnection initializeServerConnection;
+  late InitializeNewSupabaseConnection initializeNewSupabaseConnection;
   late MockAuthenticationRepository mockAuthenticationRepository;
 
   setUp(() {
     mockAuthenticationRepository = MockAuthenticationRepository();
-    initializeServerConnection = InitializeNewServerConnection(
+    initializeNewSupabaseConnection = InitializeNewSupabaseConnection(
       authenticationRepository: mockAuthenticationRepository,
     );
 
     when(
-      () => mockAuthenticationRepository.initializeServerConnection(
-        serverInfo: any(named: 'serverInfo'),
+      () => mockAuthenticationRepository.initializeSupabaseConnection(
+        supabaseInfo: any(named: 'supabaseInfo'),
       ),
-    ).thenAnswer((_) async => const Right(None()));
+    ).thenAnswer((_) async => Future.value());
 
     when(
       () => mockAuthenticationRepository.getAnonKeyFromServer(
@@ -39,12 +39,12 @@ void main() {
   });
 
   setUpAll(() {
-    registerFallbackValue(tServerInfo);
+    registerFallbackValue(tSupabaseInfo);
   });
 
   test('should check if server connection is valid', () async {
     // act
-    await initializeServerConnection(serverUrl: tServerUrlString);
+    await initializeNewSupabaseConnection(serverUrl: tServerUrlString);
 
     // assert
     verify(
@@ -62,21 +62,27 @@ void main() {
         () => mockAuthenticationRepository.isServerConnectionValid(
           serverUrl: any(named: 'serverUrl'),
         ),
-      ).thenAnswer((_) async => const Left(InvalidUrlFormatFailure()));
+      ).thenAnswer(
+        (_) async =>
+            Left(InvalidUrlFormatFailure(serverType: ServerType.supabase)),
+      );
 
       // act
-      final result = await initializeServerConnection(
+      final result = await initializeNewSupabaseConnection(
         serverUrl: tServerUrlString,
       );
 
       // assert
-      expect(result, const Left(InvalidUrlFormatFailure()));
+      expect(
+        result,
+        Left(InvalidUrlFormatFailure(serverType: ServerType.supabase)),
+      );
     },
   );
 
   test('should get the anon key from the server', () async {
     // act
-    await initializeServerConnection(serverUrl: tServerUrlString);
+    await initializeNewSupabaseConnection(serverUrl: tServerUrlString);
 
     // assert
     verify(
@@ -92,49 +98,34 @@ void main() {
       () => mockAuthenticationRepository.getAnonKeyFromServer(
         serverUrl: any(named: 'serverUrl'),
       ),
-    ).thenAnswer((_) async => const Left(ConnectionFailure()));
+    ).thenAnswer(
+      (_) async => Left(ConnectionFailure(serverType: ServerType.supabase)),
+    );
 
     // act
-    final result = await initializeServerConnection(
+    final result = await initializeNewSupabaseConnection(
       serverUrl: tServerUrlString,
     );
 
     // assert
-    expect(result, const Left(ConnectionFailure()));
+    expect(result, Left(ConnectionFailure(serverType: ServerType.supabase)));
   });
 
   test(
     'should initialize the connection to the server and return the server info',
     () async {
       // act
-      final result = await initializeServerConnection(
+      final result = await initializeNewSupabaseConnection(
         serverUrl: tServerUrlString,
       );
 
       // assert
       verify(
-        () => mockAuthenticationRepository.initializeServerConnection(
-          serverInfo: tServerInfo,
+        () => mockAuthenticationRepository.initializeSupabaseConnection(
+          supabaseInfo: tSupabaseInfo,
         ),
       );
-      expect(result, const Right(tServerInfo));
+      expect(result, const Right(tSupabaseInfo));
     },
   );
-
-  test('should relay Failures of connection initialization', () async {
-    // arrange
-    when(
-      () => mockAuthenticationRepository.initializeServerConnection(
-        serverInfo: any(named: 'serverInfo'),
-      ),
-    ).thenAnswer((_) async => const Left(SendTimeoutFailure()));
-
-    // act
-    final result = await initializeServerConnection(
-      serverUrl: tServerUrlString,
-    );
-
-    // assert
-    expect(result, const Left(SendTimeoutFailure()));
-  });
 }

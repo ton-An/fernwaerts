@@ -2,7 +2,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/authentication/device_info_platform_not_supported_failure.dart';
 import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
-import 'package:location_history/features/authentication/domain/models/device.model.dart';
+import 'package:location_history/features/authentication/domain/models/device.dart';
 import 'package:location_history/features/authentication/domain/models/raw_device.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/authentication/domain/repositories/device_repository.dart';

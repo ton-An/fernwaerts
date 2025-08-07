@@ -4,7 +4,9 @@ import 'package:location_history/core/failures/authentication/invalid_credential
 import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
+import 'package:location_history/features/authentication/domain/models/powersync_info.dart';
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
+import 'package:location_history/features/authentication/domain/models/supabase_info.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/save_device_info_to_db.dart';
 
@@ -41,22 +43,68 @@ class SignIn {
   Future<Either<Failure, None>> call({
     required String email,
     required String password,
-    required ServerInfo serverInfo,
+    required SupabaseInfo supabaseInfo,
   }) {
-    return _signIn(email: email, password: password, serverInfo: serverInfo);
+    return _signIn(
+      email: email,
+      password: password,
+      supabaseInfo: supabaseInfo,
+    );
   }
 
   Future<Either<Failure, None>> _signIn({
     required String email,
     required String password,
-    required ServerInfo serverInfo,
+    required SupabaseInfo supabaseInfo,
   }) async {
     final Either<Failure, None> signInEither = await authenticationRepository
         .signIn(email: email, password: password);
 
     return signInEither.fold(Left.new, (None none) {
-      return _saveServerInfo(serverInfo: serverInfo);
+      return _getSyncServerInfo(supabaseInfo: supabaseInfo);
     });
+  }
+
+  Future<Either<Failure, None>> _getSyncServerInfo({
+    required SupabaseInfo supabaseInfo,
+  }) async {
+    final Either<Failure, PowersyncInfo> getSyncServerInfoEither =
+        await authenticationRepository.getSyncServerInfo();
+
+    return getSyncServerInfoEither.fold(Left.new, (
+      PowersyncInfo powersyncInfo,
+    ) {
+      final ServerInfo serverInfo = ServerInfo(
+        supabaseInfo: supabaseInfo,
+        powersyncInfo: powersyncInfo,
+      );
+
+      return _isSyncServerConnectionValid(serverInfo: serverInfo);
+    });
+  }
+
+  Future<Either<Failure, None>> _isSyncServerConnectionValid({
+    required ServerInfo serverInfo,
+  }) async {
+    final Either<Failure, None> isSyncServerConnectionValidEither =
+        await authenticationRepository.isSyncServerConnectionValid(
+          syncServerUrl: serverInfo.powersyncInfo.url,
+        );
+
+    return isSyncServerConnectionValidEither.fold(
+      Left.new,
+      (None none) => _initializeSyncServer(serverInfo: serverInfo),
+    );
+  }
+
+  Future<Either<Failure, None>> _initializeSyncServer({
+    required ServerInfo serverInfo,
+  }) async {
+    await authenticationRepository.initializeSyncServerConnection(
+      powersyncInfo: serverInfo.powersyncInfo,
+    );
+
+    return _saveServerInfo(serverInfo: serverInfo);
   }
 
   Future<Either<Failure, None>> _saveServerInfo({

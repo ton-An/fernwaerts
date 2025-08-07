@@ -1,53 +1,51 @@
-import 'package:brick_supabase/testing.dart';
+import 'package:drift/drift.dart';
+import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:location_history/brick/brick.g.dart';
+import 'package:location_history/core/drift/drift_database.dart';
 import 'package:location_history/features/location_tracking/data/datasources/location_data_remote_data_source.dart';
-import 'package:location_history/features/location_tracking/domain/models/location.model.dart';
+import 'package:location_history/features/location_tracking/domain/models/location.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../fixtures.dart';
-import '../../../../mocks/mock_supabase_offline_first_repository.dart';
 import '../../../../mocks/mocks.dart';
 
 void main() {
   late LocationDataRemoteDataSourceImpl locationDataRemoteDataSource;
   late MockSupabaseHandler mockSupabaseHandler;
-  late SupabaseMockServer mockSupabaseServer;
-  late MockSupabaseOfflineFirstRepository mockSupabaseOfflineFirstRepository;
+
+  late DriftAppDatabase mockDriftDatabase;
 
   setUp(() async {
-    mockSupabaseServer = SupabaseMockServer(
-      modelDictionary: supabaseModelDictionary,
-    );
-    await mockSupabaseServer.setUp();
-    mockSupabaseOfflineFirstRepository =
-        MockSupabaseOfflineFirstRepository.configure(
-          mockSupabaseServer: mockSupabaseServer,
-        );
-    await mockSupabaseOfflineFirstRepository.initialize();
     mockSupabaseHandler = MockSupabaseHandler();
 
     locationDataRemoteDataSource = LocationDataRemoteDataSourceImpl(
       supabaseHandler: mockSupabaseHandler,
     );
+
+    mockDriftDatabase = DriftAppDatabase(
+      DatabaseConnection(
+        NativeDatabase.memory(),
+        closeStreamsSynchronously: true,
+      ),
+    );
+
     when(
-      () => mockSupabaseHandler.supabaseOfflineFirst,
-    ).thenAnswer((_) async => mockSupabaseOfflineFirstRepository);
+      () => mockSupabaseHandler.driftDatabase,
+    ).thenAnswer((_) async => mockDriftDatabase);
   });
 
   tearDown(() async {
-    await mockSupabaseServer.tearDown();
-    await mockSupabaseOfflineFirstRepository.reset();
+    await mockDriftDatabase.close();
   });
 
   group('getLocationsByDate()', () {
     setUp(() async {
-      const request = SupabaseRequest<Location>();
-      final response = SupabaseResponse([
-        await mockSupabaseServer.serialize(tLocations[0]),
-        await mockSupabaseServer.serialize(tLocations[1]),
-      ]);
-      mockSupabaseServer.handle({request: response});
+      await mockDriftDatabase
+          .into(mockDriftDatabase.locations)
+          .insert(tLocations[0].toInsertable());
+      await mockDriftDatabase
+          .into(mockDriftDatabase.locations)
+          .insert(tLocations[1].toInsertable());
     });
 
     test(
@@ -66,16 +64,13 @@ void main() {
   });
 
   group('saveLocation()', () {
-    setUp(() async {
-      mockSupabaseServer.handle({});
-    });
     test('should save location to supabase', () async {
       // act
       await locationDataRemoteDataSource.saveLocation(location: tLocations[0]);
 
       // assert
       final List<Location> locationsInDB =
-          await mockSupabaseOfflineFirstRepository.get<Location>();
+          await mockDriftDatabase.select(mockDriftDatabase.locations).get();
       expect(locationsInDB, hasLength(1));
     });
   });

@@ -9,11 +9,13 @@
     "Fernwärts",
     "fpdart",
     "github",
+    "Insertable",
     "junitreport",
     "latlong",
     "linux",
     "maplibre",
     "monday",
+    "powersync",
     "pubspec",
     "SHORTWEEKDAYS",
     "sqflite",
@@ -26,7 +28,9 @@
     "uuid",
     "Webfabrik"
   ],
-  "deno.enablePaths": ["supabase/functions"],
+  "deno.enablePaths": [
+    "supabase/functions"
+  ],
   "deno.lint": true,
   "deno.unstable": [
     "bare-node-builtins",

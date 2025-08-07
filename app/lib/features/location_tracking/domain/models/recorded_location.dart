@@ -21,18 +21,18 @@ class RecordedLocation {
 
   final DateTime timestamp;
 
-  final num latitude;
-  final num longitude;
-  final num coordinatesAccuracy;
+  final double latitude;
+  final double longitude;
+  final double coordinatesAccuracy;
 
-  final num speed;
-  final num speedAccuracy;
+  final double speed;
+  final double speedAccuracy;
 
-  final num heading;
-  final num headingAccuracy;
+  final double heading;
+  final double headingAccuracy;
 
-  final num ellipsoidalAltitude;
-  final num altitudeAccuracy;
+  final double ellipsoidalAltitude;
+  final double altitudeAccuracy;
 
   static RecordedLocation fromBGLocation({required bg.Location bgLocation}) {
     return RecordedLocation(

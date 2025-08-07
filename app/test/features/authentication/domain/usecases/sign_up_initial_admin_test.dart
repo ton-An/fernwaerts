@@ -3,6 +3,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/authentication/password_mismatch_failure.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
+import 'package:location_history/core/failures/networking/server_type.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_up_initial_admin.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -32,7 +33,7 @@ void main() {
     ).thenAnswer((_) async => const Right(None()));
     when(
       () => mockSignIn(
-        serverInfo: any(named: 'serverInfo'),
+        supabaseInfo: any(named: 'supabaseInfo'),
         email: any(named: 'email'),
         password: any(named: 'password'),
       ),
@@ -40,7 +41,7 @@ void main() {
   });
 
   setUpAll(() {
-    registerFallbackValue(tServerInfo);
+    registerFallbackValue(tSupabaseInfo);
   });
 
   test(
@@ -48,7 +49,7 @@ void main() {
     () async {
       // act
       final result = await signUpInitialAdmin(
-        serverInfo: tServerInfo,
+        supabaseInfo: tSupabaseInfo,
         username: tUsername,
         email: tEmail,
         password: tPassword,
@@ -63,7 +64,7 @@ void main() {
   test('should sign up the initial admin user', () async {
     // act
     await signUpInitialAdmin(
-      serverInfo: tServerInfo,
+      supabaseInfo: tSupabaseInfo,
       username: tUsername,
       email: tEmail,
       password: tPassword,
@@ -95,7 +96,7 @@ void main() {
 
       // act
       final result = await signUpInitialAdmin(
-        serverInfo: tServerInfo,
+        supabaseInfo: tSupabaseInfo,
         username: tUsername,
         email: tEmail,
         password: tPassword,
@@ -110,7 +111,7 @@ void main() {
   test('should sign in the newly created user and return None', () async {
     // act
     final result = await signUpInitialAdmin(
-      serverInfo: tServerInfo,
+      supabaseInfo: tSupabaseInfo,
       username: tUsername,
       email: tEmail,
       password: tPassword,
@@ -120,7 +121,7 @@ void main() {
     // assert
     verify(
       () => mockSignIn(
-        serverInfo: tServerInfo,
+        supabaseInfo: tSupabaseInfo,
         email: tEmail,
         password: tPassword,
       ),
@@ -131,15 +132,17 @@ void main() {
   test('should relay Failures from signing in', () async {
     when(
       () => mockSignIn(
-        serverInfo: tServerInfo,
+        supabaseInfo: tSupabaseInfo,
         email: any(named: 'email'),
         password: any(named: 'password'),
       ),
-    ).thenAnswer((_) async => const Left(SendTimeoutFailure()));
+    ).thenAnswer(
+      (_) async => Left(SendTimeoutFailure(serverType: ServerType.supabase)),
+    );
 
     // act
     final result = await signUpInitialAdmin(
-      serverInfo: tServerInfo,
+      supabaseInfo: tSupabaseInfo,
       username: tUsername,
       email: tEmail,
       password: tPassword,
@@ -147,6 +150,6 @@ void main() {
     );
 
     // assert
-    expect(result, const Left(SendTimeoutFailure()));
+    expect(result, Left(SendTimeoutFailure(serverType: ServerType.supabase)));
   });
 }

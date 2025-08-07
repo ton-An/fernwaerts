@@ -1,8 +1,7 @@
-import 'package:brick_offline_first/brick_offline_first.dart';
-import 'package:brick_offline_first_with_supabase/brick_offline_first_with_supabase.dart';
+import 'package:drift/drift.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
-import 'package:location_history/core/misc/date_time_extensions.dart';
-import 'package:location_history/features/location_tracking/domain/models/location.model.dart';
+import 'package:location_history/core/drift/drift_database.dart';
+import 'package:location_history/features/location_tracking/domain/models/location.dart';
 
 abstract class LocationDataRemoteDataSource {
   /// Save location
@@ -30,39 +29,28 @@ class LocationDataRemoteDataSourceImpl implements LocationDataRemoteDataSource {
 
   final SupabaseHandler supabaseHandler;
 
-  static const String _timestampColumnName = 'timestamp';
-
   @override
   Future<List<Location>> getLocationsByDate({
     required DateTime start,
     required DateTime end,
   }) async {
-    final OfflineFirstWithSupabaseRepository supabaseOfflineFirst =
-        await supabaseHandler.supabaseOfflineFirst;
+    final DriftAppDatabase driftDatabase = await supabaseHandler.driftDatabase;
 
-    final String startIsoString = start.toIso8601StringWithTz();
-    final String endIsoString = end.toIso8601StringWithTz();
-
-    final Query query = Query(
-      where: [
-        const Where(_timestampColumnName).isGreaterThan(startIsoString),
-        const Where(_timestampColumnName).isLessThan(endIsoString),
-      ],
-    );
-
-    final List<Location> locations = await supabaseOfflineFirst.get<Location>(
-      query: query,
-      policy: OfflineFirstGetPolicy.awaitRemote,
-    );
+    List<Location> locations =
+        await (driftDatabase.select(driftDatabase.locations)..where(
+          (location) =>
+              location.timestamp.isBetween(Variable(start), Variable(end)),
+        )).get();
 
     return locations;
   }
 
   @override
   Future<void> saveLocation({required Location location}) async {
-    final OfflineFirstWithSupabaseRepository supabaseOfflineFirst =
-        await supabaseHandler.supabaseOfflineFirst;
+    final DriftAppDatabase driftDatabase = await supabaseHandler.driftDatabase;
 
-    await supabaseOfflineFirst.upsert<Location>(location);
+    await driftDatabase
+        .into(driftDatabase.locations)
+        .insert(location.toInsertable());
   }
 }

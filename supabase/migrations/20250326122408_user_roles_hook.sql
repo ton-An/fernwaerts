@@ -10,7 +10,7 @@ as $$
     user_role public.app_role;
   begin
     -- Fetch the user role in the user_roles table
-    select role into user_role from public.user_roles where user_id = (event->>'user_id')::uuid;
+    select role into user_role from public.user_roles where user_id = (event->>'user_id')::text;
 
     claims := event->'claims';
 

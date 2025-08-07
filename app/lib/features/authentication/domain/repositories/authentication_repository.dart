@@ -8,7 +8,9 @@ import 'package:location_history/core/failures/networking/connection_failure.dar
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
+import 'package:location_history/features/authentication/domain/models/powersync_info.dart';
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
+import 'package:location_history/features/authentication/domain/models/supabase_info.dart';
 
 abstract class AuthenticationRepository {
   /// Checks if the server is reachable.
@@ -37,18 +39,39 @@ abstract class AuthenticationRepository {
   /// - [ConnectionFailure]
   Future<Either<Failure, bool>> isServerSetUp();
 
-  /// Initializes the connection to the server
+  /// Initializes the connection to the supabase server
   ///
   /// Parameters:
-  /// - [ServerInfo] serverInfo: The URL of the server to connect to.
-  Future<Either<Failure, None>> initializeServerConnection({
-    required ServerInfo serverInfo,
+  /// - [SupabaseInfo] supabaseInfo: The URL of the server to connect to.
+  Future<void> initializeSupabaseConnection({
+    required SupabaseInfo supabaseInfo,
   });
+
+  /// Initializes the connection to the sync server
+  ///
+  /// #### ! [initializeSupabaseConnection] needs to be called before this method !
+  ///
+  /// Parameters:
+  /// - [PowersyncInfo] powerSyncInfo: The info of the sync server to connect to.
+
+  Future<void> initializeSyncServerConnection({
+    required PowersyncInfo powersyncInfo,
+  });
+
+  /// Gets sync server info
+  ///
+  /// Returns:
+  /// - [PowersyncInfo] powerSyncInfo: The URL of the server to connect to.
+  ///
+  /// Failures:
+  /// {@macro converted_client_exceptions}
+  /// {@macro converted_supabase_functions_exception}
+  Future<Either<Failure, PowersyncInfo>> getSyncServerInfo();
 
   /// Signs up the initial admin user
   ///
   /// Parameters:
-  /// - [ServerInfo] serverInfo: The URL of the server to connect to
+  /// - [String] serverUrl: The URL of the server to connect to
   /// - [String] username: The username of the admin user
   /// - [String] email: The email of the admin user
   /// - [String] password: The password of the admin user
@@ -147,4 +170,18 @@ abstract class AuthenticationRepository {
   /// Failures:
   /// - [NotSignedInFailure]
   Future<Either<Failure, String>> getCurrentUserId();
+
+  /// Checks if the sync server is reachable.
+  ///
+  /// Parameters:
+  /// - [String] syncServerUrl: The URL of the sync server to connect to
+  ///
+  /// Return:
+  /// - [None] if the server is reachable.
+  ///
+  /// Failures:
+  /// {@macro converted_dio_exceptions}
+  Future<Either<Failure, None>> isSyncServerConnectionValid({
+    required String syncServerUrl,
+  });
 }

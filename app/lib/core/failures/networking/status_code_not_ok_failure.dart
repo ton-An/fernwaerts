@@ -1,12 +1,11 @@
-import 'package:location_history/core/failures/failure.dart';
-import 'package:location_history/core/failures/failure_constants.dart';
+import 'package:location_history/core/failures/networking/network_failure.dart';
 
-class StatusCodeNotOkFailure extends Failure {
-  const StatusCodeNotOkFailure({required int statusCode})
+class StatusCodeNotOkFailure extends NetworkFailure {
+  StatusCodeNotOkFailure({required super.serverType, required int statusCode})
     : super(
         name: 'Status Code Not OK',
-        message: 'The provided status code is $statusCode',
-        categoryCode: FailureCategoryConstants.networking,
+        message:
+            'The returned status code from the ${serverType.name} server is $statusCode',
         code: 'status_code_not_ok',
       );
 }

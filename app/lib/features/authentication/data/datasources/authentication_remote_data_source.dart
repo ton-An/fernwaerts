@@ -5,9 +5,11 @@ import 'package:location_history/core/data/datasources/server_remote_handler.dar
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
+import 'package:location_history/core/failures/networking/server_type.dart';
 import 'package:location_history/core/misc/url_path_constants.dart';
 import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
-import 'package:location_history/features/authentication/domain/models/server_info.dart';
+import 'package:location_history/features/authentication/domain/models/powersync_info.dart';
+import 'package:location_history/features/authentication/domain/models/supabase_info.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
@@ -38,11 +40,21 @@ abstract class AuthenticationRemoteDataSource {
   /// - [PostgrestException]
   Future<bool> isServerSetUp();
 
-  /// Initializes the connection to the server
+  /// Initializes the connection to the supabase server
   ///
   /// Parameters:
-  /// - [ServerInfo] serverInfo: The info of the server to connect to
-  Future<void> initializeServerConnection({required ServerInfo serverInfo});
+  /// - [SupabaseInfo] supabaseInfo: The info of the server to connect to
+  Future<void> initializeSupabaseConnection({
+    required SupabaseInfo supabaseInfo,
+  });
+
+  /// Initializes the connection to the sync server
+  ///
+  /// Parameters:
+  /// - [PowersyncInfo] powersyncInfo: The info of the server to connect to
+  Future<void> initializeSyncServerConnection({
+    required PowersyncInfo powersyncInfo,
+  });
 
   /// Signs up the initial admin user
   ///
@@ -108,6 +120,21 @@ abstract class AuthenticationRemoteDataSource {
   /// Throws:
   /// - [NotSignedInFailure]
   Future<String> getCurrentUserId();
+
+  /// Gets the sync server's URL
+  ///
+  /// Returns:
+  /// - [PowersyncInfo] containing the sync server's URL
+  Future<PowersyncInfo> getSyncServerInfo();
+
+  /// Checks if the sync server is reachable.
+  ///
+  /// Parameters:
+  /// - [String] serverUrl: The URL of the server to connect to
+  ///
+  /// Throws:
+  /// {@macro server_remote_handler_exceptions}
+  Future<void> isSyncServerConnectionValid({required String syncServerUrl});
 }
 
 class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
@@ -140,19 +167,27 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
   @override
   Future<void> isServerConnectionValid({required String serverUrl}) async {
     await serverRemoteHandler.get(
-      url: Uri.parse(serverUrl + UrlPathConstants.health),
+      url: Uri.parse(serverUrl + UrlPathConstants.supabaseHealth),
+      serverType: ServerType.supabase,
     );
   }
 
   @override
-  Future<void> initializeServerConnection({
-    required ServerInfo serverInfo,
+  Future<void> initializeSupabaseConnection({
+    required SupabaseInfo supabaseInfo,
   }) async {
     try {
       await supabaseHandler.dispose();
     } catch (_) {}
 
-    await supabaseHandler.initialize(serverInfo: serverInfo);
+    await supabaseHandler.initializeSupabase(supabaseInfo: supabaseInfo);
+  }
+
+  @override
+  Future<void> initializeSyncServerConnection({
+    required PowersyncInfo powersyncInfo,
+  }) async {
+    await supabaseHandler.initializePowerSync(powersyncInfo: powersyncInfo);
   }
 
   @override
@@ -165,6 +200,7 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
     final Map<String, dynamic>? response = await serverRemoteHandler.post(
       url: Uri.parse(serverUrl + UrlPathConstants.signUpInitialAdmin),
       body: {'username': username, 'email': email, 'password': password},
+      serverType: ServerType.supabase,
     );
 
     if (response == null) {
@@ -231,6 +267,7 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
   Future<String> getAnonKeyFromServer({required String serverUrl}) async {
     final Map<String, dynamic>? response = await serverRemoteHandler.get(
       url: Uri.parse(serverUrl + UrlPathConstants.getAnonKey),
+      serverType: ServerType.supabase,
     );
 
     final String anonKey = response!['data']['anon_key'];
@@ -251,5 +288,30 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
     final String currentUserId = currentUser.id;
 
     return currentUserId;
+  }
+
+  @override
+  Future<PowersyncInfo> getSyncServerInfo() async {
+    final SupabaseClient supabaseClient = await supabaseHandler.client;
+
+    final FunctionResponse response = await supabaseClient.functions.invoke(
+      'get_sync_server_url',
+    );
+
+    final String syncServerUrl = response.data['data']['sync_server_url'];
+
+    final PowersyncInfo powersyncInfo = PowersyncInfo(url: syncServerUrl);
+
+    return powersyncInfo;
+  }
+
+  @override
+  Future<void> isSyncServerConnectionValid({
+    required String syncServerUrl,
+  }) async {
+    await serverRemoteHandler.get(
+      url: Uri.parse(syncServerUrl + UrlPathConstants.powersyncHealth),
+      serverType: ServerType.syncServer,
+    );
   }
 }

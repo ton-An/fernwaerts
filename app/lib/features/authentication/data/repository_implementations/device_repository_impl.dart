@@ -9,7 +9,7 @@ import 'package:location_history/features/authentication/data/datasources/androi
 import 'package:location_history/features/authentication/data/datasources/base_device_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/device_remote_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/ios_device_local_data_source.dart';
-import 'package:location_history/features/authentication/domain/models/device.model.dart';
+import 'package:location_history/features/authentication/domain/models/device.dart';
 import 'package:location_history/features/authentication/domain/models/raw_device.dart';
 import 'package:location_history/features/authentication/domain/repositories/device_repository.dart';
 

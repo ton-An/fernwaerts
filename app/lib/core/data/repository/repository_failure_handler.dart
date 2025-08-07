@@ -9,7 +9,10 @@ import 'package:location_history/core/failures/networking/host_lookup_failure.da
 import 'package:location_history/core/failures/networking/receive_timeout_failure.dart';
 import 'package:location_history/core/failures/networking/request_cancelled_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
+import 'package:location_history/core/failures/networking/server_type.dart';
+import 'package:location_history/core/failures/networking/status_code_not_ok_failure.dart';
 import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 /* 
   To-Dos:
@@ -27,6 +30,7 @@ abstract class RepositoryFailureHandler {
   ///
   /// Parameters:
   /// - [DioException]: exception
+  /// - [ServerType]: type of the server the request was sent to
   ///
   /// Returns:
   /// {@template converted_dio_exceptions}
@@ -39,7 +43,10 @@ abstract class RepositoryFailureHandler {
   /// - [ConnectionFailure]
   /// - [UnknownRequestFailure]
   /// {@endtemplate}
-  Failure dioExceptionMapper({required DioException dioException});
+  Failure dioExceptionMapper({
+    required DioException dioException,
+    required ServerType serverType,
+  });
 
   /// Converts [ClientException]s to [Failure]s
   ///
@@ -48,15 +55,35 @@ abstract class RepositoryFailureHandler {
   /// Parameters:
   /// - [ClientException]: exception
   /// - [StackTrace]: stack trace
+  /// - [ServerType]: type of the server the request was sent to
   ///
   /// Returns:
   /// {@template converted_client_exceptions}
   /// - [HostLookupFailure]
+  /// - [ConnectionFailure]
   /// - [SendTimeoutFailure]
   /// {@endtemplate}
   Failure clientExceptionConverter({
     required ClientException clientException,
     required StackTrace stackTrace,
+    required ServerType serverType,
+  });
+
+  /// Converts [FunctionException]s to [Failure]s
+  ///
+  /// If the exception is not handled, it will be rethrown with the original stack trace.
+  ///
+  /// Parameters:
+  /// - [FunctionException]: exception
+  /// - [StackTrace]: stack trace
+  /// - [ServerType]: type of the server the request was sent to
+  ///
+  /// Returns:
+  /// {@template converted_supabase_functions_exception}
+  /// - [StatusCodeNotOkFailure]
+  /// {@endtemplate}
+  Failure supabaseFunctionExceptionConverter({
+    required FunctionException functionException,
   });
 }
 
@@ -66,24 +93,27 @@ class RepositoryFailureHandlerImpl extends RepositoryFailureHandler {
   const RepositoryFailureHandlerImpl();
 
   @override
-  Failure dioExceptionMapper({required DioException dioException}) {
+  Failure dioExceptionMapper({
+    required DioException dioException,
+    required ServerType serverType,
+  }) {
     switch (dioException.type) {
       case DioExceptionType.connectionTimeout:
-        return const ConnectionTimeoutFailure();
+        return ConnectionTimeoutFailure(serverType: serverType);
       case DioExceptionType.sendTimeout:
-        return const SendTimeoutFailure();
+        return SendTimeoutFailure(serverType: serverType);
       case DioExceptionType.receiveTimeout:
-        return const ReceiveTimeoutFailure();
+        return ReceiveTimeoutFailure(serverType: serverType);
       case DioExceptionType.badCertificate:
-        return const BadCertificateFailure();
+        return BadCertificateFailure(serverType: serverType);
       case DioExceptionType.badResponse:
-        return const BadResponseFailure();
+        return BadResponseFailure(serverType: serverType);
       case DioExceptionType.cancel:
-        return const RequestCancelledFailure();
+        return RequestCancelledFailure(serverType: serverType);
       case DioExceptionType.connectionError:
-        return const ConnectionFailure();
+        return ConnectionFailure(serverType: serverType);
       case DioExceptionType.unknown:
-        return const UnknownRequestFailure();
+        return UnknownRequestFailure(serverType: serverType);
     }
   }
 
@@ -91,21 +121,39 @@ class RepositoryFailureHandlerImpl extends RepositoryFailureHandler {
   Failure clientExceptionConverter({
     required ClientException clientException,
     required StackTrace stackTrace,
+    required ServerType serverType,
   }) {
+    //Host is down missing
     final isTimeout = clientException.message.contains('Operation timed out');
 
     if (isTimeout) {
-      return const SendTimeoutFailure();
+      return SendTimeoutFailure(serverType: serverType);
     }
 
-    final hasFailedHostLookup = clientException.message.contains(
+    final bool hasFailedHostLookup = clientException.message.contains(
       'Failed host lookup',
     );
 
     if (hasFailedHostLookup) {
-      return const HostLookupFailure();
+      return HostLookupFailure(serverType: serverType);
+    }
+
+    final bool isHostDown = clientException.message.contains('Host is down');
+
+    if (isHostDown) {
+      return ConnectionFailure(serverType: serverType);
     }
 
     Error.throwWithStackTrace(clientException, stackTrace);
+  }
+
+  @override
+  Failure supabaseFunctionExceptionConverter({
+    required FunctionException functionException,
+  }) {
+    return StatusCodeNotOkFailure(
+      serverType: ServerType.supabase,
+      statusCode: functionException.status,
+    );
   }
 }

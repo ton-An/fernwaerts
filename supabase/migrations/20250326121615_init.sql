@@ -24,7 +24,7 @@ select
 -- USER ROLES
 create table
   public.user_roles (
-    id uuid default gen_random_uuid () primary key,
+    id text default gen_random_uuid () primary key,
     user_id uuid references public.users on delete cascade not null,
     role app_role not null,
     unique (user_id, role)
@@ -37,7 +37,7 @@ create index ix_user_roles_user_id on public.user_roles (user_id);
 -- Public Info
 create table
   public.public_info (
-    id uuid default gen_random_uuid () primary key,
+    id text default gen_random_uuid () primary key,
     name text not null,
     value jsonb not null
   );
@@ -77,7 +77,7 @@ values
 -- Devices
 create table
   public.devices (
-    id uuid default gen_random_uuid () primary key,
+    id text default gen_random_uuid () primary key,
     user_id uuid references public.users on delete cascade not null,
     name text not null,
     model text not null,
@@ -124,9 +124,9 @@ values
 -- Raw Location Data
 create table
   public.raw_location_data (
-    id uuid default gen_random_uuid () primary key,
+    id text default gen_random_uuid () primary key,
     user_id uuid references public.users on delete cascade not null,
-    device_id uuid references devices (id),
+    device_id text references devices (id),
     latitude double precision not null,
     longitude double precision not null,
     coordinates_accuracy double precision not null,
@@ -158,11 +158,11 @@ with
 -- ToDo: Could add the confidence. Though the level usually changes during the activity.
 create table
   public.activities (
-    id uuid default gen_random_uuid () primary key,
+    id text default gen_random_uuid () primary key,
     user_id uuid references public.users on delete cascade not null,
     activity_type_id text references activity_types (id),
-    start_location_id uuid references raw_location_data (id),
-    end_location_id uuid references raw_location_data (id)
+    start_location_id text references raw_location_data (id),
+    end_location_id text references raw_location_data (id)
   );
 
 alter table public.activities enable row level security;
@@ -179,9 +179,9 @@ with
 -- Significant Location Changes
 create table
   public.significant_location_changes (
-    id uuid default gen_random_uuid () primary key,
+    id text default gen_random_uuid () primary key,
     user_id uuid references public.users on delete cascade not null,
-    location_id uuid references raw_location_data (id)
+    location_id text references raw_location_data (id)
   );
 
 alter table public.significant_location_changes enable row level security;
@@ -194,3 +194,6 @@ create policy "Enable full access for user himself" on public.significant_locati
 )
 with
   check (auth.uid () = user_id);
+
+-- Powersync
+create publication powersync for all tables

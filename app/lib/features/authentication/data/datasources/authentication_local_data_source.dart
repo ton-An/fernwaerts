@@ -3,12 +3,18 @@
     - [ ] Standardize error handling and server calls
 */
 
-import 'package:brick_offline_first_with_supabase/brick_offline_first_with_supabase.dart';
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
+import 'package:location_history/core/misc/app_file_constants.dart';
+import 'package:location_history/features/authentication/domain/models/powersync_info.dart';
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
+import 'package:location_history/features/authentication/domain/models/supabase_info.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
 abstract class AuthenticationLocalDataSource {
   const AuthenticationLocalDataSource();
@@ -59,17 +65,24 @@ class AuthLocalDataSourceImpl extends AuthenticationLocalDataSource {
 
   static const String _serverUrlKey = 'server_url';
   static const String _anonKey = 'anon_key';
+  static const String _powersyncUrlKey = 'powersync_url';
 
   @override
   Future<ServerInfo> getSavedServerInfo() async {
     final String? serverUrl = await secureStorage.read(key: _serverUrlKey);
     final String? anonKey = await secureStorage.read(key: _anonKey);
+    final String? powersyncUrl = await secureStorage.read(
+      key: _powersyncUrlKey,
+    );
 
-    if (serverUrl == null || anonKey == null) {
+    if (serverUrl == null || anonKey == null || powersyncUrl == null) {
       throw const NoSavedServerFailure();
     }
 
-    final ServerInfo serverInfo = ServerInfo(url: serverUrl, anonKey: anonKey);
+    final ServerInfo serverInfo = ServerInfo(
+      supabaseInfo: SupabaseInfo(url: serverUrl, anonKey: anonKey),
+      powersyncInfo: PowersyncInfo(url: powersyncUrl),
+    );
 
     return serverInfo;
   }
@@ -78,20 +91,36 @@ class AuthLocalDataSourceImpl extends AuthenticationLocalDataSource {
   Future<void> removeSavedServer() async {
     await secureStorage.delete(key: _serverUrlKey);
     await secureStorage.delete(key: _anonKey);
+    await secureStorage.delete(key: _powersyncUrlKey);
   }
 
   @override
   Future<void> saveServerInfo({required ServerInfo serverInfo}) async {
-    await secureStorage.write(key: _serverUrlKey, value: serverInfo.url);
-    await secureStorage.write(key: _anonKey, value: serverInfo.anonKey);
+    await secureStorage.write(
+      key: _serverUrlKey,
+      value: serverInfo.supabaseInfo.url,
+    );
+    await secureStorage.write(
+      key: _anonKey,
+      value: serverInfo.supabaseInfo.anonKey,
+    );
+    await secureStorage.write(
+      key: _powersyncUrlKey,
+      value: serverInfo.powersyncInfo.url,
+    );
   }
 
   @override
   Future<void> deleteLocalDBCache() async {
-    final OfflineFirstWithSupabaseRepository supabaseOfflineFirst =
-        await supabaseHandler.supabaseOfflineFirst;
+    final Directory appDirectory = await getApplicationSupportDirectory();
+    final String dbCacheFilePath = join(
+      appDirectory.path,
+      AppFileConstants.sqliteDbFileName,
+    );
 
-    await supabaseOfflineFirst.reset();
+    final File dbCacheFile = File(dbCacheFilePath);
+
+    await dbCacheFile.delete();
   }
 
   @override

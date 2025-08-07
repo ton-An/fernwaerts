@@ -6,12 +6,15 @@ import 'package:location_history/core/data/repository/repository_failure_handler
 import 'package:location_history/core/failures/authentication/invalid_credentials_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
+import 'package:location_history/core/failures/networking/server_type.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_remote_data_source.dart';
 import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
+import 'package:location_history/features/authentication/domain/models/powersync_info.dart';
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
+import 'package:location_history/features/authentication/domain/models/supabase_info.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 /*
@@ -41,11 +44,12 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       final Failure failure = repositoryFailureHandler.clientExceptionConverter(
         clientException: exception,
         stackTrace: stackTrace,
+        serverType: ServerType.supabase,
       );
 
       return Left(failure);
     } on PostgrestException {
-      return const Left(ConnectionFailure());
+      return Left(ConnectionFailure(serverType: ServerType.supabase));
     }
   }
 
@@ -60,6 +64,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     } on DioException catch (dioException) {
       final Failure failure = repositoryFailureHandler.dioExceptionMapper(
         dioException: dioException,
+        serverType: ServerType.supabase,
       );
 
       return Left(failure);
@@ -69,14 +74,21 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
-  Future<Either<Failure, None>> initializeServerConnection({
-    required ServerInfo serverInfo,
+  Future<void> initializeSupabaseConnection({
+    required SupabaseInfo supabaseInfo,
   }) async {
-    await authRemoteDataSource.initializeServerConnection(
-      serverInfo: serverInfo,
+    await authRemoteDataSource.initializeSupabaseConnection(
+      supabaseInfo: supabaseInfo,
     );
+  }
 
-    return const Right(None());
+  @override
+  Future<void> initializeSyncServerConnection({
+    required PowersyncInfo powersyncInfo,
+  }) async {
+    await authRemoteDataSource.initializeSyncServerConnection(
+      powersyncInfo: powersyncInfo,
+    );
   }
 
   @override
@@ -98,6 +110,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     } on DioException catch (dioException) {
       final Failure failure = repositoryFailureHandler.dioExceptionMapper(
         dioException: dioException,
+        serverType: ServerType.supabase,
       );
 
       return Left(failure);
@@ -151,6 +164,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       final Failure failure = repositoryFailureHandler.clientExceptionConverter(
         clientException: clientException,
         stackTrace: stackTrace,
+        serverType: ServerType.supabase,
       );
 
       return Left(failure);
@@ -199,6 +213,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     } on DioException catch (dioException) {
       final Failure failure = repositoryFailureHandler.dioExceptionMapper(
         dioException: dioException,
+        serverType: ServerType.supabase,
       );
 
       return Left(failure);
@@ -231,6 +246,53 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       return const Right(None());
     } on PlatformException {
       return const Left(StorageWriteFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, PowersyncInfo>> getSyncServerInfo() async {
+    try {
+      final PowersyncInfo powersyncInfo =
+          await authRemoteDataSource.getSyncServerInfo();
+
+      return Right(powersyncInfo);
+    } on ClientException catch (clientException, stackTrace) {
+      final Failure failure = repositoryFailureHandler.clientExceptionConverter(
+        clientException: clientException,
+        stackTrace: stackTrace,
+        serverType: ServerType.supabase,
+      );
+
+      return Left(failure);
+    } on FunctionException catch (functionException) {
+      final Failure failure = repositoryFailureHandler
+          .supabaseFunctionExceptionConverter(
+            functionException: functionException,
+          );
+
+      return Left(failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, None>> isSyncServerConnectionValid({
+    required String syncServerUrl,
+  }) async {
+    try {
+      await authRemoteDataSource.isSyncServerConnectionValid(
+        syncServerUrl: syncServerUrl,
+      );
+
+      return const Right(None());
+    } on DioException catch (dioException) {
+      final Failure failure = repositoryFailureHandler.dioExceptionMapper(
+        dioException: dioException,
+        serverType: ServerType.syncServer,
+      );
+
+      return Left(failure);
+    } on Failure catch (failure) {
+      return Left(failure);
     }
   }
 }

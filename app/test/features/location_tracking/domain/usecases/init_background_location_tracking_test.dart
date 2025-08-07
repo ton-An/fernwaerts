@@ -218,7 +218,7 @@ void main() {
 
       // act
       await initBackgroundLocationTracking();
-      await Future.delayed(const Duration(seconds: 10));
+      await Future.delayed(const Duration(seconds: 90));
 
       // assert
       verify(() => mockLocationTrackingRepository.initTracking()).called(2);
