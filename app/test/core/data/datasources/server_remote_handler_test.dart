@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:location_history/core/data/datasources/server_remote_handler.dart';
+import 'package:location_history/core/failures/networking/server_type.dart';
 import 'package:location_history/core/failures/networking/status_code_not_ok_failure.dart';
 import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
 import 'package:mocktail/mocktail.dart';
@@ -22,7 +23,11 @@ void main() {
 
   group('get()', () {
     _dioTests(
-      toBeTestedFunction: () => serverRemoteHandlerImpl.get(url: tServerUrl),
+      toBeTestedFunction:
+          () => serverRemoteHandlerImpl.get(
+            url: tServerUrl,
+            serverType: ServerType.supabase,
+          ),
       toBeMockedFunction: () => mockDio.getUri(any()),
     );
   });
@@ -30,8 +35,11 @@ void main() {
   group('post()', () {
     _dioTests(
       toBeTestedFunction:
-          () =>
-              serverRemoteHandlerImpl.post(url: tServerUrl, body: tRequestBody),
+          () => serverRemoteHandlerImpl.post(
+            url: tServerUrl,
+            body: tRequestBody,
+            serverType: ServerType.supabase,
+          ),
       toBeMockedFunction:
           () => mockDio.postUri(any(), data: any(named: 'data')),
     );

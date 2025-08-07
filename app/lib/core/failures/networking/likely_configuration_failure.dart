@@ -1,13 +1,11 @@
-import 'package:location_history/core/failures/failure.dart';
-import 'package:location_history/core/failures/failure_constants.dart';
+import 'package:location_history/core/failures/networking/network_failure.dart';
 
-class LikelyConfigurationIssueFailure extends Failure {
-  const LikelyConfigurationIssueFailure()
+class LikelyConfigurationIssueFailure extends NetworkFailure {
+  LikelyConfigurationIssueFailure({required super.serverType})
     : super(
         name: 'Likely Configuration Issue',
         message:
-            'The entered port might be wrong or there might be security (RLS) issues',
-        categoryCode: FailureCategoryConstants.networking,
+            'One likely reason could be that the port of the ${serverType.name} server is wrong',
         code: 'likely_configuration_issue',
       );
 }

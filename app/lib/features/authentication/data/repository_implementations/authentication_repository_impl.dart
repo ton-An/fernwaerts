@@ -6,6 +6,7 @@ import 'package:location_history/core/data/repository/repository_failure_handler
 import 'package:location_history/core/failures/authentication/invalid_credentials_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
+import 'package:location_history/core/failures/networking/server_type.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/data/datasources/authentication_local_data_source.dart';
@@ -43,11 +44,12 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       final Failure failure = repositoryFailureHandler.clientExceptionConverter(
         clientException: exception,
         stackTrace: stackTrace,
+        serverType: ServerType.supabase,
       );
 
       return Left(failure);
     } on PostgrestException {
-      return const Left(ConnectionFailure());
+      return Left(ConnectionFailure(serverType: ServerType.supabase));
     }
   }
 
@@ -62,6 +64,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     } on DioException catch (dioException) {
       final Failure failure = repositoryFailureHandler.dioExceptionMapper(
         dioException: dioException,
+        serverType: ServerType.supabase,
       );
 
       return Left(failure);
@@ -109,6 +112,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     } on DioException catch (dioException) {
       final Failure failure = repositoryFailureHandler.dioExceptionMapper(
         dioException: dioException,
+        serverType: ServerType.supabase,
       );
 
       return Left(failure);
@@ -162,6 +166,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       final Failure failure = repositoryFailureHandler.clientExceptionConverter(
         clientException: clientException,
         stackTrace: stackTrace,
+        serverType: ServerType.supabase,
       );
 
       return Left(failure);
@@ -210,6 +215,7 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     } on DioException catch (dioException) {
       final Failure failure = repositoryFailureHandler.dioExceptionMapper(
         dioException: dioException,
+        serverType: ServerType.supabase,
       );
 
       return Left(failure);

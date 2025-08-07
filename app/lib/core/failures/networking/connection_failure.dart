@@ -1,12 +1,11 @@
-import 'package:location_history/core/failures/failure.dart';
-import 'package:location_history/core/failures/failure_constants.dart';
+import 'package:location_history/core/failures/networking/network_failure.dart';
 
-class ConnectionFailure extends Failure {
-  const ConnectionFailure()
+class ConnectionFailure extends NetworkFailure {
+  ConnectionFailure({required super.serverType})
     : super(
         name: 'Connection Failure',
-        message: 'Failed to establish a connection with the server.',
-        categoryCode: FailureCategoryConstants.networking,
+        message:
+            'Failed to establish a connection with the ${serverType.name} server.',
         code: 'connection_failure',
       );
 }

@@ -4,6 +4,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:location_history/core/failures/networking/server_type.dart';
 import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
 import 'package:location_history/features/authentication/domain/enums/operating_system.dart';
 import 'package:location_history/features/authentication/domain/models/device.dart';
@@ -83,7 +84,9 @@ final DioException tBadResponseDioException = DioException.badResponse(
   response: Response(requestOptions: RequestOptions()),
 );
 
-const UnknownRequestFailure tUnknownRequestFailure = UnknownRequestFailure();
+final UnknownRequestFailure tUnknownRequestFailure = UnknownRequestFailure(
+  serverType: ServerType.supabase,
+);
 
 final Map<String, dynamic> tPublicSettingsMap = {
   'name': 'is_set_up',

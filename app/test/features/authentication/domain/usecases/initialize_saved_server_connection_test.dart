@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
+import 'package:location_history/core/failures/networking/server_type.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_saved_server_connection.dart';
 import 'package:mocktail/mocktail.dart';
@@ -110,13 +111,19 @@ void main() {
         () => mockAuthenticationRepository.initializeSyncServerConnection(
           powersyncInfo: any(named: 'powersyncInfo'),
         ),
-      ).thenAnswer((_) async => const Left(SendTimeoutFailure()));
+      ).thenAnswer(
+        (_) async =>
+            Left(SendTimeoutFailure(serverType: ServerType.syncServer)),
+      );
 
       // act
       final result = await initializeSavedServerConnection();
 
       // assert
-      expect(result, const Left(SendTimeoutFailure()));
+      expect(
+        result,
+        Left(SendTimeoutFailure(serverType: ServerType.syncServer)),
+      );
     },
   );
 }

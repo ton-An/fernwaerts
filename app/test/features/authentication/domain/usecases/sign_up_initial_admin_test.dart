@@ -3,6 +3,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/authentication/password_mismatch_failure.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
+import 'package:location_history/core/failures/networking/server_type.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_up_initial_admin.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -135,7 +136,9 @@ void main() {
         email: any(named: 'email'),
         password: any(named: 'password'),
       ),
-    ).thenAnswer((_) async => const Left(SendTimeoutFailure()));
+    ).thenAnswer(
+      (_) async => Left(SendTimeoutFailure(serverType: ServerType.supabase)),
+    );
 
     // act
     final result = await signUpInitialAdmin(
@@ -147,6 +150,6 @@ void main() {
     );
 
     // assert
-    expect(result, const Left(SendTimeoutFailure()));
+    expect(result, Left(SendTimeoutFailure(serverType: ServerType.supabase)));
   });
 }

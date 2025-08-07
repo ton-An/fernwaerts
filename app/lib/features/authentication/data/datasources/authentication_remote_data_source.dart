@@ -5,6 +5,7 @@ import 'package:location_history/core/data/datasources/server_remote_handler.dar
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
+import 'package:location_history/core/failures/networking/server_type.dart';
 import 'package:location_history/core/misc/url_path_constants.dart';
 import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
 import 'package:location_history/features/authentication/domain/models/powersync_info.dart';
@@ -158,6 +159,7 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
   Future<void> isServerConnectionValid({required String serverUrl}) async {
     await serverRemoteHandler.get(
       url: Uri.parse(serverUrl + UrlPathConstants.health),
+      serverType: ServerType.supabase,
     );
   }
 
@@ -189,6 +191,7 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
     final Map<String, dynamic>? response = await serverRemoteHandler.post(
       url: Uri.parse(serverUrl + UrlPathConstants.signUpInitialAdmin),
       body: {'username': username, 'email': email, 'password': password},
+      serverType: ServerType.supabase,
     );
 
     if (response == null) {
@@ -255,6 +258,7 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
   Future<String> getAnonKeyFromServer({required String serverUrl}) async {
     final Map<String, dynamic>? response = await serverRemoteHandler.get(
       url: Uri.parse(serverUrl + UrlPathConstants.getAnonKey),
+      serverType: ServerType.supabase,
     );
 
     final String anonKey = response!['data']['anon_key'];

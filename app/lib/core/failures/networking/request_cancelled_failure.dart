@@ -1,12 +1,11 @@
-import 'package:location_history/core/failures/failure.dart';
-import 'package:location_history/core/failures/failure_constants.dart';
+import 'package:location_history/core/failures/networking/network_failure.dart';
 
-class RequestCancelledFailure extends Failure {
-  const RequestCancelledFailure()
+class RequestCancelledFailure extends NetworkFailure {
+  RequestCancelledFailure({required super.serverType})
     : super(
         name: 'Request Cancelled',
-        message: 'The network request was cancelled.',
-        categoryCode: FailureCategoryConstants.networking,
+        message:
+            'The network request to the ${serverType.name} server was cancelled.',
         code: 'request_cancelled',
       );
 }

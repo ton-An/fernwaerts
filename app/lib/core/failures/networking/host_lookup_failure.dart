@@ -1,12 +1,10 @@
-import 'package:location_history/core/failures/failure.dart';
-import 'package:location_history/core/failures/failure_constants.dart';
+import 'package:location_history/core/failures/networking/network_failure.dart';
 
-class HostLookupFailure extends Failure {
-  const HostLookupFailure()
+class HostLookupFailure extends NetworkFailure {
+  HostLookupFailure({required super.serverType})
     : super(
         name: 'Host Lookup Failure',
-        message: 'The host lookup failed.',
-        categoryCode: FailureCategoryConstants.networking,
+        message: 'The host lookup of the ${serverType.name} server failed.',
         code: 'host_lookup_failure',
       );
 }

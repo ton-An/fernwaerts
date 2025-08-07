@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
+import 'package:location_history/core/failures/networking/server_type.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_new_supabase_connection.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -61,7 +62,10 @@ void main() {
         () => mockAuthenticationRepository.isServerConnectionValid(
           serverUrl: any(named: 'serverUrl'),
         ),
-      ).thenAnswer((_) async => const Left(InvalidUrlFormatFailure()));
+      ).thenAnswer(
+        (_) async =>
+            Left(InvalidUrlFormatFailure(serverType: ServerType.supabase)),
+      );
 
       // act
       final result = await initializeNewSupabaseConnection(
@@ -69,7 +73,10 @@ void main() {
       );
 
       // assert
-      expect(result, const Left(InvalidUrlFormatFailure()));
+      expect(
+        result,
+        Left(InvalidUrlFormatFailure(serverType: ServerType.supabase)),
+      );
     },
   );
 
@@ -91,7 +98,9 @@ void main() {
       () => mockAuthenticationRepository.getAnonKeyFromServer(
         serverUrl: any(named: 'serverUrl'),
       ),
-    ).thenAnswer((_) async => const Left(ConnectionFailure()));
+    ).thenAnswer(
+      (_) async => Left(ConnectionFailure(serverType: ServerType.supabase)),
+    );
 
     // act
     final result = await initializeNewSupabaseConnection(
@@ -99,7 +108,7 @@ void main() {
     );
 
     // assert
-    expect(result, const Left(ConnectionFailure()));
+    expect(result, Left(ConnectionFailure(serverType: ServerType.supabase)));
   });
 
   test(

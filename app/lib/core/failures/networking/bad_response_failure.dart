@@ -1,12 +1,10 @@
-import 'package:location_history/core/failures/failure.dart';
-import 'package:location_history/core/failures/failure_constants.dart';
+import 'package:location_history/core/failures/networking/network_failure.dart';
 
-class BadResponseFailure extends Failure {
-  const BadResponseFailure()
+class BadResponseFailure extends NetworkFailure {
+  BadResponseFailure({required super.serverType})
     : super(
         name: 'Invalid Response',
-        message: 'The server returned an invalid response.',
-        categoryCode: FailureCategoryConstants.networking,
+        message: 'The ${serverType.name} server returned an invalid response.',
         code: 'bad_response',
       );
 }

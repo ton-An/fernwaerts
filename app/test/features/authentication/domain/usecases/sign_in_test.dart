@@ -3,6 +3,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
 import 'package:location_history/core/failures/networking/receive_timeout_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
+import 'package:location_history/core/failures/networking/server_type.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
 import 'package:mocktail/mocktail.dart';
@@ -76,7 +77,9 @@ void main() {
         email: any(named: 'email'),
         password: any(named: 'password'),
       ),
-    ).thenAnswer((_) async => const Left(SendTimeoutFailure()));
+    ).thenAnswer(
+      (_) async => Left(SendTimeoutFailure(serverType: ServerType.supabase)),
+    );
 
     // act
     final result = await signIn(
@@ -86,7 +89,7 @@ void main() {
     );
 
     // assert
-    expect(result, const Left(SendTimeoutFailure()));
+    expect(result, Left(SendTimeoutFailure(serverType: ServerType.supabase)));
   });
 
   test('should get the sync server info', () async {
@@ -103,9 +106,9 @@ void main() {
 
   test('should relay Failures from getting the sync server info', () async {
     // arrange
-    when(
-      () => mockAuthenticationRepository.getSyncServerInfo(),
-    ).thenAnswer((_) async => const Left(SendTimeoutFailure()));
+    when(() => mockAuthenticationRepository.getSyncServerInfo()).thenAnswer(
+      (_) async => Left(SendTimeoutFailure(serverType: ServerType.supabase)),
+    );
 
     // act
     final result = await signIn(
@@ -115,7 +118,7 @@ void main() {
     );
 
     // assert
-    expect(result, const Left(SendTimeoutFailure()));
+    expect(result, Left(SendTimeoutFailure(serverType: ServerType.supabase)));
   });
 
   test('should init the connection to the sync server', () async {
@@ -142,7 +145,10 @@ void main() {
         () => mockAuthenticationRepository.initializeSyncServerConnection(
           powersyncInfo: any(named: 'powersyncInfo'),
         ),
-      ).thenAnswer((_) async => const Left(ReceiveTimeoutFailure()));
+      ).thenAnswer(
+        (_) async =>
+            Left(ReceiveTimeoutFailure(serverType: ServerType.syncServer)),
+      );
 
       // act
       final result = await signIn(
@@ -152,7 +158,10 @@ void main() {
       );
 
       // assert
-      expect(result, const Left(ReceiveTimeoutFailure()));
+      expect(
+        result,
+        Left(ReceiveTimeoutFailure(serverType: ServerType.syncServer)),
+      );
     },
   );
 
