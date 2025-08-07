@@ -253,9 +253,26 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
   @override
   Future<Either<Failure, PowersyncInfo>> getSyncServerInfo() async {
-    final PowersyncInfo powersyncInfo =
-        await authRemoteDataSource.getSyncServerInfo();
+    try {
+      final PowersyncInfo powersyncInfo =
+          await authRemoteDataSource.getSyncServerInfo();
 
-    return Right(powersyncInfo);
+      return Right(powersyncInfo);
+    } on ClientException catch (clientException, stackTrace) {
+      final Failure failure = repositoryFailureHandler.clientExceptionConverter(
+        clientException: clientException,
+        stackTrace: stackTrace,
+        serverType: ServerType.supabase,
+      );
+
+      return Left(failure);
+    } on FunctionException catch (functionException) {
+      final Failure failure = repositoryFailureHandler
+          .supabaseFunctionExceptionConverter(
+            functionException: functionException,
+          );
+
+      return Left(failure);
+    }
   }
 }

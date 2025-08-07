@@ -10,7 +10,9 @@ import 'package:location_history/core/failures/networking/receive_timeout_failur
 import 'package:location_history/core/failures/networking/request_cancelled_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/core/failures/networking/server_type.dart';
+import 'package:location_history/core/failures/networking/status_code_not_ok_failure.dart';
 import 'package:location_history/core/failures/networking/unknown_request_failure.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 /* 
   To-Dos:
@@ -58,12 +60,30 @@ abstract class RepositoryFailureHandler {
   /// Returns:
   /// {@template converted_client_exceptions}
   /// - [HostLookupFailure]
+  /// - [ConnectionFailure]
   /// - [SendTimeoutFailure]
   /// {@endtemplate}
   Failure clientExceptionConverter({
     required ClientException clientException,
     required StackTrace stackTrace,
     required ServerType serverType,
+  });
+
+  /// Converts [FunctionException]s to [Failure]s
+  ///
+  /// If the exception is not handled, it will be rethrown with the original stack trace.
+  ///
+  /// Parameters:
+  /// - [FunctionException]: exception
+  /// - [StackTrace]: stack trace
+  /// - [ServerType]: type of the server the request was sent to
+  ///
+  /// Returns:
+  /// {@template converted_client_exceptions}
+  /// - [StatusCodeNotOkFailure]
+  /// {@endtemplate}
+  Failure supabaseFunctionExceptionConverter({
+    required FunctionException functionException,
   });
 }
 
@@ -103,13 +123,14 @@ class RepositoryFailureHandlerImpl extends RepositoryFailureHandler {
     required StackTrace stackTrace,
     required ServerType serverType,
   }) {
+    //Host is down missing
     final isTimeout = clientException.message.contains('Operation timed out');
 
     if (isTimeout) {
       return SendTimeoutFailure(serverType: serverType);
     }
 
-    final hasFailedHostLookup = clientException.message.contains(
+    final bool hasFailedHostLookup = clientException.message.contains(
       'Failed host lookup',
     );
 
@@ -117,6 +138,22 @@ class RepositoryFailureHandlerImpl extends RepositoryFailureHandler {
       return HostLookupFailure(serverType: serverType);
     }
 
+    final bool isHostDown = clientException.message.contains('Host is down');
+
+    if (isHostDown) {
+      return ConnectionFailure(serverType: serverType);
+    }
+
     Error.throwWithStackTrace(clientException, stackTrace);
+  }
+
+  @override
+  Failure supabaseFunctionExceptionConverter({
+    required FunctionException functionException,
+  }) {
+    return StatusCodeNotOkFailure(
+      serverType: ServerType.supabase,
+      statusCode: functionException.status,
+    );
   }
 }

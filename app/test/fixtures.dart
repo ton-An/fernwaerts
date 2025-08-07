@@ -100,6 +100,8 @@ final http.ClientException tTimeoutClientException = http.ClientException(
   tServerUrl,
 );
 
+const FunctionException tFunctionException = FunctionException(status: 500);
+
 const StackTrace tStackTrace = StackTrace.empty;
 
 final http.ClientException tUnknownClientException = http.ClientException(

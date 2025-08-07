@@ -7,6 +7,7 @@ import 'package:location_history/core/failures/networking/bad_response_failure.d
 import 'package:location_history/core/failures/networking/connection_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/core/failures/networking/server_type.dart';
+import 'package:location_history/core/failures/networking/status_code_not_ok_failure.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/data/repository_implementations/authentication_repository_impl.dart';
@@ -39,6 +40,7 @@ void main() {
     registerFallbackValue(tTimeoutClientException);
     registerFallbackValue(tStackTrace);
     registerFallbackValue(ServerType.supabase);
+    registerFallbackValue(tFunctionException);
   });
 
   group('isServerSetUp()', () {
@@ -83,7 +85,7 @@ void main() {
           () => mockRepositoryFailureHandler.clientExceptionConverter(
             clientException: tTimeoutClientException,
             stackTrace: any(named: 'stackTrace'),
-            serverType: any(named: 'serverType'),
+            serverType: ServerType.supabase,
           ),
         );
         expect(
@@ -371,7 +373,7 @@ void main() {
           () => mockRepositoryFailureHandler.clientExceptionConverter(
             clientException: tTimeoutClientException,
             stackTrace: any(named: 'stackTrace'),
-            serverType: any(named: 'serverType'),
+            serverType: ServerType.supabase,
           ),
         );
         expect(
@@ -587,6 +589,95 @@ void main() {
 
         // assert
         expect(result, const Left(StorageWriteFailure()));
+      },
+    );
+  });
+
+  group('getSyncServerInfo', () {
+    setUp(() {
+      when(
+        () => mockAuthRemoteDataSource.getSyncServerInfo(),
+      ).thenAnswer((_) async => tPowersyncInfo);
+    });
+
+    test('should get the sync server info and return it', () async {
+      // act
+      final result = await authenticationRepositoryImpl.getSyncServerInfo();
+
+      // assert
+      verify(() => mockAuthRemoteDataSource.getSyncServerInfo());
+      expect(result, const Right(tPowersyncInfo));
+    });
+
+    test(
+      'should convert client exceptions and return return the resulting failure',
+      () async {
+        // arrange
+        when(
+          () => mockAuthRemoteDataSource.getSyncServerInfo(),
+        ).thenThrow(tTimeoutClientException);
+        when(
+          () => mockRepositoryFailureHandler.clientExceptionConverter(
+            clientException: any(named: 'clientException'),
+            stackTrace: any(named: 'stackTrace'),
+            serverType: any(named: 'serverType'),
+          ),
+        ).thenReturn(ConnectionFailure(serverType: ServerType.supabase));
+
+        // act
+        final result = await authenticationRepositoryImpl.getSyncServerInfo();
+
+        // assert
+        expect(
+          result,
+          Left(ConnectionFailure(serverType: ServerType.supabase)),
+        );
+        verify(
+          () => mockRepositoryFailureHandler.clientExceptionConverter(
+            clientException: tTimeoutClientException,
+            stackTrace: any(named: 'stackTrace'),
+            serverType: ServerType.supabase,
+          ),
+        );
+      },
+    );
+
+    test(
+      'should convert supabase function exceptions and return the resulting failure',
+      () async {
+        // arrange
+        when(
+          () => mockAuthRemoteDataSource.getSyncServerInfo(),
+        ).thenThrow(tFunctionException);
+        when(
+          () => mockRepositoryFailureHandler.supabaseFunctionExceptionConverter(
+            functionException: any(named: 'functionException'),
+          ),
+        ).thenReturn(
+          StatusCodeNotOkFailure(
+            statusCode: 500,
+            serverType: ServerType.supabase,
+          ),
+        );
+
+        // act
+        final result = await authenticationRepositoryImpl.getSyncServerInfo();
+
+        // assert
+        expect(
+          result,
+          Left(
+            StatusCodeNotOkFailure(
+              serverType: ServerType.supabase,
+              statusCode: 500,
+            ),
+          ),
+        );
+        verify(
+          () => mockRepositoryFailureHandler.supabaseFunctionExceptionConverter(
+            functionException: tFunctionException,
+          ),
+        );
       },
     );
   });

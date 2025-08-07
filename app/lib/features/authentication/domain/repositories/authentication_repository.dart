@@ -66,7 +66,7 @@ abstract class AuthenticationRepository {
   /// - [PowersyncInfo] powerSyncInfo: The URL of the server to connect to.
   ///
   /// Failures:
-  /// - TBD
+  /// {@macro converted_dio_exceptions}
   Future<Either<Failure, PowersyncInfo>> getSyncServerInfo();
 
   /// Signs up the initial admin user
