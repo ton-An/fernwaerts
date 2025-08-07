@@ -7,6 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
     - [ ] add proper implementation of upload data
     - [ ] add expired token handling (https://github.com/powersync-ja/powersync.dart/blob/main/demos/supabase-todolist/lib/powersync.dart)
     - [ ] add user not logged in
+    - [ ] surface error from this class in the ui. (probably like: last sync was x days ago)
 */
 
 class PsBackendConnector extends PowerSyncBackendConnector {
