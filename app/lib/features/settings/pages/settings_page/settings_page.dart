@@ -19,6 +19,7 @@ part '_version_tag.dart';
 /*
   To-Do:
     - [ ] Find right style for list items and buttons
+    - [ ] Implement proper log out flow
 */
 
 /// {@template settings_page}

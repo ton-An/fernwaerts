@@ -13,6 +13,7 @@ import 'package:talker_flutter/talker_flutter.dart';
   To-Do:
     - [ ] Add unit tests
     - [ ] Failures from _requestNecessaryPermissions probably won't be displayed in the ui as the splash screen will already be disposed
+    - [ ] Improve handling if there is server info in local storage but user isn't signed in (some unwanted services get initialized in that case)
 */
 
 /// {@template splash_cubit}

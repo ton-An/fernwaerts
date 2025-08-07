@@ -1,5 +1,10 @@
 import 'package:equatable/equatable.dart';
 
+/*
+  To-Do:
+    - [ ] Add error logging and source ids for failures
+*/
+
 abstract class Failure extends Equatable {
   const Failure({
     required this.name,
