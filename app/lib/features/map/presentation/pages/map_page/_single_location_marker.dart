@@ -35,10 +35,33 @@ class _SingleLocationMarker extends Marker {
                        maxHeight: double.infinity,
                        alignment: Alignment.center,
                        child: Center(
-                         child: Icon(
-                           Icons.arrow_drop_up_rounded,
-                           size: 60,
-                           color: color,
+                         child: Builder(
+                           builder: (context) {
+                             final HSLColor hslColor = HSLColor.fromColor(
+                               color,
+                             );
+
+                             const double lightnessChangeAmount = .15;
+
+                             final bool isDark = hslColor.lightness < 0.5;
+                             final double adjustedLightness = (isDark
+                                     ? hslColor.lightness +
+                                         lightnessChangeAmount
+                                     : hslColor.lightness -
+                                         lightnessChangeAmount)
+                                 .clamp(0.0, 1.0);
+
+                             final Color lighterColor =
+                                 hslColor
+                                     .withLightness(adjustedLightness)
+                                     .toColor();
+
+                             return Icon(
+                               Icons.arrow_drop_up_rounded,
+                               size: 60,
+                               color: lighterColor,
+                             );
+                           },
                          ),
                        ),
                      ),
