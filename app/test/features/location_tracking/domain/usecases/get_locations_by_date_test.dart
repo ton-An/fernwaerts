@@ -42,25 +42,26 @@ void main() {
     ).thenAnswer((_) async => tLocationsStreamController.stream);
   });
 
-  test('should get the users id', () {
+  test('should get the users id', () async {
     // act
-    getLocationsByDate(start: tStartDate, end: tEndDate);
+    final stream = getLocationsByDate(start: tStartDate, end: tEndDate);
 
     // assert
+    await expectLater(stream, emits(Right(tLocations)));
     verify(() => mockAuthenticationRepository.getCurrentUserId());
   });
 
-  test('should relay failures from getting the users id', () {
+  test('should relay failures from getting the users id', () async {
     // arrange
     when(
       () => mockAuthenticationRepository.getCurrentUserId(),
     ).thenAnswer((_) async => const Left(StorageReadFailure()));
 
     // act
-    final result = getLocationsByDate(start: tStartDate, end: tEndDate);
+    final stream = getLocationsByDate(start: tStartDate, end: tEndDate);
 
     // assert
-    expect(result, const Left(StorageReadFailure()));
+    await expectLater(stream, emits(Left(StorageReadFailure())));
   });
 
   test(
