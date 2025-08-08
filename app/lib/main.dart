@@ -48,10 +48,7 @@ void main() async {
 
       initGetIt();
 
-
       SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
-
 
       await getIt.isReady<PackageInfo>();
 
@@ -60,7 +57,7 @@ void main() async {
         settings: const TalkerBlocLoggerSettings(printChanges: true),
       );
 
-      runApp(MainApp());
+      runApp(const MainApp());
     },
     (exception, stackTrace) {
       getIt<Talker>().handle(exception, stackTrace, 'Uncaught Exception');
