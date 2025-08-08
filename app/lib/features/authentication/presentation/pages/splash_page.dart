@@ -52,19 +52,19 @@ class _SplashPageState extends State<SplashPage> {
 
     return BlocListener<SplashCubit, SplashState>(
       listener: (context, state) {
-        // if (state is SplashFailure) {
-        //   context.read<InAppNotificationCubit>().sendFailureNotification(
-        //     state.failure,
-        //   );
-        // }
+        if (state is SplashFailure) {
+          context.read<InAppNotificationCubit>().sendFailureNotification(
+            state.failure,
+          );
+        }
 
-        // if (state is SplashAuthenticationComplete) {
-        //   context.go(MapPage.route);
-        // }
+        if (state is SplashAuthenticationComplete) {
+          context.go(MapPage.route);
+        }
 
-        // if (state is SplashAuthenticationRequired) {
-        //   context.go(AuthenticationPage.route);
-        // }
+        if (state is SplashAuthenticationRequired) {
+          context.go(AuthenticationPage.route);
+        }
       },
       child: Container(
         color: Colors.black,
