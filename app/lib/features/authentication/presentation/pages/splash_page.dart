@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/features/authentication/presentation/cubits/splash_cubit/splash_cubit.dart';
 import 'package:location_history/features/authentication/presentation/cubits/splash_cubit/splash_states.dart';
 import 'package:location_history/features/authentication/presentation/pages/authentication_page/authentication_page.dart';
@@ -32,10 +33,17 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  bool _showLogPageHint = false;
+
   @override
   void initState() {
     super.initState();
     context.read<SplashCubit>().determineInitialAppState();
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() {
+        _showLogPageHint = true;
+      });
+    });
   }
 
   @override
@@ -44,19 +52,19 @@ class _SplashPageState extends State<SplashPage> {
 
     return BlocListener<SplashCubit, SplashState>(
       listener: (context, state) {
-        if (state is SplashFailure) {
-          context.read<InAppNotificationCubit>().sendFailureNotification(
-            state.failure,
-          );
-        }
+        // if (state is SplashFailure) {
+        //   context.read<InAppNotificationCubit>().sendFailureNotification(
+        //     state.failure,
+        //   );
+        // }
 
-        if (state is SplashAuthenticationComplete) {
-          context.go(MapPage.route);
-        }
+        // if (state is SplashAuthenticationComplete) {
+        //   context.go(MapPage.route);
+        // }
 
-        if (state is SplashAuthenticationRequired) {
-          context.go(AuthenticationPage.route);
-        }
+        // if (state is SplashAuthenticationRequired) {
+        //   context.go(AuthenticationPage.route);
+        // }
       },
       child: Container(
         color: Colors.black,
@@ -67,8 +75,21 @@ class _SplashPageState extends State<SplashPage> {
           },
           child: Container(
             padding: EdgeInsets.all(theme.spacing.large),
-            alignment: Alignment.center,
-            child: const LoadingIndicator(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const LoadingIndicator(),
+                const SizedBox(height: 16),
+                AnimatedOpacity(
+                  opacity: _showLogPageHint ? 1 : 0,
+                  duration: theme.durations.short,
+                  child: Text(
+                    AppLocalizations.of(context)!.doubleTapToOpenLogPage,
+                    style: theme.text.body.copyWith(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -116,4 +116,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get debugger => 'Debugger';
+
+  @override
+  String get doubleTapToOpenLogPage => 'Double tap to open log page';
 }

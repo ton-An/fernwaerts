@@ -303,6 +303,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Debugger'**
   String get debugger;
+
+  /// No description provided for @doubleTapToOpenLogPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Double tap to open log page'**
+  String get doubleTapToOpenLogPage;
 }
 
 class _AppLocalizationsDelegate
