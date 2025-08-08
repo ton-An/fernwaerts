@@ -16,7 +16,7 @@ import 'package:location_history/features/authentication/data/datasources/permis
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/authentication/domain/repositories/device_repository.dart';
 import 'package:location_history/features/authentication/domain/repositories/permissions_repository.dart';
-import 'package:location_history/features/authentication/domain/usecases/initialize_saved_server_connection.dart';
+import 'package:location_history/features/authentication/domain/usecases/initialize_app.dart';
 import 'package:location_history/features/authentication/domain/usecases/save_device_info_to_db.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
 import 'package:location_history/features/location_tracking/data/datasources/location_data_remote_data_source.dart';
@@ -100,8 +100,7 @@ class MockDeviceRepository extends Mock implements DeviceRepository {}
 
 class MockPermissionsRepository extends Mock implements PermissionsRepository {}
 
-class MockInitializeSavedServerConnection extends Mock
-    implements InitializeSavedServerConnection {}
+class MockInitializeApp extends Mock implements InitializeApp {}
 
 class MockSignIn extends Mock implements SignIn {}
 

@@ -10,14 +10,14 @@ import '../../../../mocks/mocks.dart';
 
 void main() {
   late InitBackgroundLocationTracking initBackgroundLocationTracking;
-  late MockInitializeSavedServerConnection mockInitializeSavedServerConnection;
+  late MockInitializeApp mockInitializeApp;
   late MockAuthenticationRepository mockAuthenticationRepository;
   late MockDeviceRepository mockDeviceRepository;
   late MockLocationTrackingRepository mockLocationTrackingRepository;
   late MockLocationDataRepository mockLocationDataRepository;
 
   setUp(() {
-    mockInitializeSavedServerConnection = MockInitializeSavedServerConnection();
+    mockInitializeApp = MockInitializeApp();
     mockAuthenticationRepository = MockAuthenticationRepository();
     mockDeviceRepository = MockDeviceRepository();
     mockLocationTrackingRepository = MockLocationTrackingRepository();
@@ -27,13 +27,13 @@ void main() {
       deviceRepository: mockDeviceRepository,
       locationTrackingRepository: mockLocationTrackingRepository,
       locationDataRepository: mockLocationDataRepository,
-      initializeSavedServerConnection: mockInitializeSavedServerConnection,
+      initializeApp: mockInitializeApp,
     );
   });
 
   setUp(() {
     when(
-      () => mockInitializeSavedServerConnection(),
+      () => mockInitializeApp(),
     ).thenAnswer((_) async => const Right(None()));
     when(
       () => mockAuthenticationRepository.getCurrentUserId(),
@@ -65,18 +65,18 @@ void main() {
     registerFallbackValue(tLocations[0]);
   });
 
-  test('should init the saved server connection', () async {
+  test('should init the app', () async {
     // act
     await initBackgroundLocationTracking();
 
     // assert
-    verify(() => mockInitializeSavedServerConnection());
+    verify(() => mockInitializeApp());
   });
 
   test('should relay failures from init the saved server connection', () async {
     // arrange
     when(
-      () => mockInitializeSavedServerConnection(),
+      () => mockInitializeApp(),
     ).thenAnswer((_) async => const Left(StorageReadFailure()));
 
     // act

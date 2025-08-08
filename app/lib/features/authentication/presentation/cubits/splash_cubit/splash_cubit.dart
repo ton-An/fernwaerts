@@ -1,9 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
-import 'package:location_history/features/authentication/domain/usecases/initialize_saved_server_connection.dart';
-import 'package:location_history/features/authentication/domain/usecases/is_signed_in.dart';
+import 'package:location_history/features/authentication/domain/usecases/initialize_app.dart';
 import 'package:location_history/features/authentication/domain/usecases/request_necessary_permissions.dart';
 import 'package:location_history/features/authentication/presentation/cubits/splash_cubit/splash_states.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/init_background_location_tracking.dart';
@@ -23,15 +21,13 @@ import 'package:talker_flutter/talker_flutter.dart';
 class SplashCubit extends Cubit<SplashState> {
   /// {@macro splash_cubit}
   SplashCubit({
-    required this.initSavedServerConnection,
-    required this.isSignedInUsecase,
+    required this.initializeApp,
     required this.requestNecessaryPermissions,
     required this.initBackgroundLocationTracking,
     required this.talker,
   }) : super(const SplashLoading());
 
-  final InitializeSavedServerConnection initSavedServerConnection;
-  final IsSignedIn isSignedInUsecase;
+  final InitializeApp initializeApp;
   final RequestNecessaryPermissions requestNecessaryPermissions;
   final InitBackgroundLocationTracking initBackgroundLocationTracking;
   final Talker talker;
@@ -56,34 +52,20 @@ class SplashCubit extends Cubit<SplashState> {
     emit(const SplashLoading());
 
     final Either<Failure, None> initSavedConnectionEither =
-        await initSavedServerConnection();
+        await initializeApp();
 
-    initSavedConnectionEither.fold(_handleConnectionFailure, (None none) async {
-      talker.debug('Init saved server succeeded');
-      _checkAuthentication();
-    });
-  }
+    initSavedConnectionEither.fold(
+      (Failure failure) {
+        talker.debug('Init saved server failed with Failure: $failure');
 
-  void _handleConnectionFailure(Failure failure) {
-    talker.debug('Init saved server failed with Failure: $failure');
-
-    if (failure is! NoSavedServerFailure) {
-      emit(SplashFailure(failure: failure));
-    }
-    emit(const SplashAuthenticationRequired());
-  }
-
-  void _checkAuthentication() async {
-    bool isSignedIn = await isSignedInUsecase();
-
-    talker.debug('Is User signed in: $isSignedIn');
-
-    if (isSignedIn) {
-      emit(const SplashAuthenticationComplete());
-      _requestNecessaryPermissions();
-    } else {
-      emit(const SplashAuthenticationRequired());
-    }
+        emit(const SplashAuthenticationRequired());
+      },
+      (None none) async {
+        talker.debug('Init saved server succeeded');
+        emit(const SplashAuthenticationComplete());
+        _requestNecessaryPermissions();
+      },
+    );
   }
 
   void _requestNecessaryPermissions() async {

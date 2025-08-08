@@ -21,10 +21,9 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 import 'package:location_history/features/authentication/domain/repositories/device_repository.dart';
 import 'package:location_history/features/authentication/domain/repositories/permissions_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/has_server_connection_saved.dart';
+import 'package:location_history/features/authentication/domain/usecases/initialize_app.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_new_supabase_connection.dart';
-import 'package:location_history/features/authentication/domain/usecases/initialize_saved_server_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_server_set_up.dart';
-import 'package:location_history/features/authentication/domain/usecases/is_signed_in.dart';
 import 'package:location_history/features/authentication/domain/usecases/request_necessary_permissions.dart';
 import 'package:location_history/features/authentication/domain/usecases/save_device_info_to_db.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
@@ -107,8 +106,7 @@ void registerAuthenticationDependencies() {
   );
   getIt.registerFactory(
     () => SplashCubit(
-      initSavedServerConnection: getIt(),
-      isSignedInUsecase: getIt(),
+      initializeApp: getIt(),
       requestNecessaryPermissions: getIt(),
       initBackgroundLocationTracking: getIt(),
       talker: getIt(),
@@ -139,11 +137,9 @@ void registerAuthenticationDependencies() {
     () => HasServerConnectionSaved(authenticationRepository: getIt()),
   );
   getIt.registerLazySingleton(
-    () => InitializeSavedServerConnection(authenticationRepository: getIt()),
+    () => InitializeApp(authenticationRepository: getIt()),
   );
-  getIt.registerLazySingleton(
-    () => IsSignedIn(authenticationRepository: getIt()),
-  );
+
   getIt.registerLazySingleton(
     () => RequestNecessaryPermissions(permissionsRepository: getIt()),
   );
@@ -224,7 +220,7 @@ void registerLocationTrackingDependencies() {
   // -- Domain -- //
   getIt.registerLazySingleton(
     () => InitBackgroundLocationTracking(
-      initializeSavedServerConnection: getIt(),
+      initializeApp: getIt(),
       authenticationRepository: getIt(),
       deviceRepository: getIt(),
       locationTrackingRepository: getIt(),

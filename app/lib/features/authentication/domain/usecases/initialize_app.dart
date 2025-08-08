@@ -1,5 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
+import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
@@ -7,7 +8,7 @@ import 'package:location_history/core/failures/storage/storage_read_failure.dart
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 
-/// {@template initialize_saved_server_connection}
+/// {@template initialize_app}
 /// Initializes the server connection saved by the app
 ///
 /// Failures:
@@ -17,20 +18,16 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 /// - [InvalidUrlFormatFailure]
 /// - [ConnectionFailure]
 /// {@endtemplate}
-class InitializeSavedServerConnection {
-  /// {@macro initialize_saved_server_connection}
-  InitializeSavedServerConnection({required this.authenticationRepository});
+class InitializeApp {
+  /// {@macro initialize_app}
+  InitializeApp({required this.authenticationRepository});
 
   final AuthenticationRepository authenticationRepository;
 
   bool _isServerSetUp = false;
 
-  /// {@macro initialize_saved_server_connection}
+  /// {@macro initialize_app}
   Future<Either<Failure, None>> call() async {
-    if (_isServerSetUp) {
-      return const Right(None());
-    }
-
     return _getSavedServerInfo();
   }
 
@@ -54,6 +51,22 @@ class InitializeSavedServerConnection {
     await authenticationRepository.initializeSupabaseConnection(
       supabaseInfo: serverInfo.supabaseInfo,
     );
+
+    return _isSignedIn(serverInfo: serverInfo);
+  }
+
+  Future<Either<Failure, None>> _isSignedIn({
+    required ServerInfo serverInfo,
+  }) async {
+    final bool isSignedIn = await authenticationRepository.isSignedIn();
+
+    if (!isSignedIn) {
+      return const Left(NotSignedInFailure());
+    }
+
+    if (_isServerSetUp) {
+      return const Right(None());
+    }
 
     return _initializeSyncServerConnection(serverInfo: serverInfo);
   }
