@@ -17,6 +17,7 @@ import 'package:location_history/features/location_tracking/domain/repositories/
     - [ ] Add activity and battery data
     - [ ] Maybe split usecase
     - [ ] Improve stationary device handling (e.g. app requests location when user walks around the house)
+    - [ ] Add docs
 */
 
 class InitBackgroundLocationTracking {

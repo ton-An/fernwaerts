@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
+import 'package:location_history/features/location_tracking/domain/models/location.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/get_locations_by_date.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -21,7 +24,12 @@ void main() {
     );
   });
 
+  late StreamController<List<Location>> tLocationsStreamController;
+
   setUp(() {
+    tLocationsStreamController = StreamController();
+    tLocationsStreamController.add(tLocations);
+
     when(
       () => mockAuthenticationRepository.getCurrentUserId(),
     ).thenAnswer((_) async => const Right(tUserId));
@@ -31,40 +39,45 @@ void main() {
         start: any(named: 'start'),
         end: any(named: 'end'),
       ),
-    ).thenAnswer((_) async => tLocations);
+    ).thenAnswer((_) async => tLocationsStreamController.stream);
   });
 
-  test('should get the users id', () async {
+  test('should get the users id', () {
     // act
-    await getLocationsByDate(start: tStartDate, end: tEndDate);
+    getLocationsByDate(start: tStartDate, end: tEndDate);
 
     // assert
     verify(() => mockAuthenticationRepository.getCurrentUserId());
   });
 
-  test('should relay failures from getting the users id', () async {
+  test('should relay failures from getting the users id', () {
     // arrange
     when(
       () => mockAuthenticationRepository.getCurrentUserId(),
     ).thenAnswer((_) async => const Left(StorageReadFailure()));
 
     // act
-    final result = await getLocationsByDate(start: tStartDate, end: tEndDate);
+    final result = getLocationsByDate(start: tStartDate, end: tEndDate);
 
     // assert
     expect(result, const Left(StorageReadFailure()));
   });
 
-  test('should get locations by date from location data repository', () async {
-    // act
-    await getLocationsByDate(start: tStartDate, end: tEndDate);
+  test(
+    'should get locations by date from location repo and return them as a stream',
+    () async {
+      // act
+      final stream = getLocationsByDate(start: tStartDate, end: tEndDate);
 
-    // assert
-    verify(
-      () => mockLocationDataRepository.getLocationsByDate(
-        start: tStartDate,
-        end: tEndDate,
-      ),
-    );
-  });
+      // assert
+      await expectLater(stream, emits(Right(tLocations)));
+
+      verify(
+        () => mockLocationDataRepository.getLocationsByDate(
+          start: tStartDate,
+          end: tEndDate,
+        ),
+      );
+    },
+  );
 }

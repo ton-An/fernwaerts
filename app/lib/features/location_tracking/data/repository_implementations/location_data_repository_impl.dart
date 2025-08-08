@@ -3,13 +3,18 @@ import 'package:location_history/features/location_tracking/domain/models/locati
 import 'package:location_history/features/location_tracking/domain/models/movement_segment.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 
+/*
+  To-Do:
+    - [ ] add failures to methods
+*/
+
 class LocationDataRepositoryImpl extends LocationDataRepository {
   const LocationDataRepositoryImpl({required this.locationRemoteDataSource});
 
   final LocationDataRemoteDataSource locationRemoteDataSource;
 
   @override
-  Future<List<Location>> getLocationsByDate({
+  Future<Stream<List<Location>>> getLocationsByDate({
     required DateTime start,
     required DateTime end,
   }) {

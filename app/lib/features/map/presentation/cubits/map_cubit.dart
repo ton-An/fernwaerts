@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
@@ -21,6 +23,8 @@ class MapCubit extends Cubit<MapState> {
 
   final GetLocationsByDate getLocationData;
 
+  StreamSubscription? locationsStreamSubscription;
+
   /// Loads locations based on the provided date range.
   ///
   /// Parameters:
@@ -34,12 +38,20 @@ class MapCubit extends Cubit<MapState> {
     required DateTime start,
     required DateTime end,
   }) async {
-    final Either<Failure, List<Location>> locationsEither =
-        await getLocationData(start: start, end: end);
+    locationsStreamSubscription?.cancel();
 
-    locationsEither.fold(
-      (failure) => emit(MapLocationsError(failure: failure)),
-      (locations) => emit(MapLocationsLoaded(locations: locations)),
-    );
+    final Stream<Either<Failure, List<Location>>> locationsEitherStream =
+        getLocationData(start: start, end: end);
+
+    locationsStreamSubscription = locationsEitherStream.listen((
+      Either<Failure, List<Location>> locationsEither,
+    ) {
+      locationsEither.fold(
+        (Failure failure) => emit(MapLocationsError(failure: failure)),
+        (List<Location> locations) {
+          emit(MapLocationsLoaded(locations: locations));
+        },
+      );
+    });
   }
 }

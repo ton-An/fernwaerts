@@ -18,11 +18,8 @@ abstract class LocationDataRepository {
   /// - [DateTime] the end date of the range
   ///
   /// Returns:
-  /// - List of [Location]s within the date range
-  ///
-  /// Failures:
-  /// - [DatabaseReadFailure]
-  Future<List<Location>> getLocationsByDate({
+  /// - Stream of Lists of [Location]s within the date range
+  Future<Stream<List<Location>>> getLocationsByDate({
     required DateTime start,
     required DateTime end,
   });
