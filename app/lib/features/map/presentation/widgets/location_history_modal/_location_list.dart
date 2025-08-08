@@ -10,23 +10,57 @@ class _LocationList extends StatelessWidget {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
     return EdgeFade(
       bottomOptions: const EdgeFadeOptions(enabled: false),
-      child: ListView.builder(
-        padding: EdgeInsets.all(theme.spacing.xMedium),
-        shrinkWrap: true,
-        itemCount: mockLocationHistoryItems.length,
-        controller: scrollController,
-        itemBuilder: (context, index) {
-          if (mockLocationHistoryItems[index] is Activity) {
-            return _ActivityListItem(
-              activity: mockLocationHistoryItems[index] as Activity,
+      child: BlocBuilder<MapCubit, MapState>(
+        builder: (BuildContext context, MapState state) {
+          if (state is MapLocationsLoaded) {
+            if (state.locations.isEmpty) {
+              return ListView(
+                padding: EdgeInsets.all(theme.spacing.xMedium),
+                shrinkWrap: true,
+                controller: scrollController,
+                children: [
+                  Center(
+                    child: Text(
+                      'No Data :)',
+                      style: theme.text.title3.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: theme.colors.text.withValues(alpha: .4),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            }
+
+            return ListView.builder(
+              padding: EdgeInsets.all(theme.spacing.xMedium),
+              shrinkWrap: true,
+              itemCount: state.locations.length,
+              controller: scrollController,
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    _LocationListItem(location: state.locations[index]),
+                    if (index != state.locations.length - 1)
+                      Container(
+                        margin: EdgeInsets.only(
+                          left: theme.spacing.xMedium - theme.spacing.tiny,
+                        ),
+                        alignment: Alignment.centerLeft,
+                        child: const _DottedHistoryLine(),
+                      ),
+                  ],
+                );
+              },
             );
-          } else if (mockLocationHistoryItems[index] is Place) {
-            return _PlaceListItem(
-              place: mockLocationHistoryItems[index] as Place,
-            );
-          } else {
-            return const SizedBox();
           }
+
+          return ListView(
+            padding: EdgeInsets.all(theme.spacing.xMedium),
+            shrinkWrap: true,
+            controller: scrollController,
+            children: const [],
+          );
         },
       ),
     );

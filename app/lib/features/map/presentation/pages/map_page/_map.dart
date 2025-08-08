@@ -37,24 +37,8 @@ class _MapState extends State<_Map> {
             urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
             userAgentPackageName: appPackageName ?? 'location_history',
           ),
+
           _LocationMarkers(points: _points),
-          // ToDo: remove after may 15th + 1 month - keep for debugging until then
-          // MarkerLayer(
-          //   markers: [
-          //     for (int i = 0; i < _points.length; i++)
-          //       Marker(
-          //         width: 24,
-          //         height: 24,
-          //         point: _points[i],
-          //         child: Padding(
-          //           padding: EdgeInsets.only(
-          //             top: Random().nextInt(12).toDouble(),
-          //           ),
-          //           child: Text(i.toString(), style: TextStyle(fontSize: 10)),
-          //         ),
-          //       ),
-          //   ],
-          // ),
         ],
       ),
     );

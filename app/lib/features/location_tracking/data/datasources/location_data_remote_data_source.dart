@@ -17,8 +17,8 @@ abstract class LocationDataRemoteDataSource {
   /// - [DateTime] the end date of the range
   ///
   /// Returns:
-  /// - List of [Location]s within the date range
-  Future<List<Location>> getLocationsByDate({
+  /// - Stream of Lists of [Location]s within the date range
+  Future<Stream<List<Location>>> getLocationsByDate({
     required DateTime start,
     required DateTime end,
   });
@@ -30,19 +30,19 @@ class LocationDataRemoteDataSourceImpl implements LocationDataRemoteDataSource {
   final SupabaseHandler supabaseHandler;
 
   @override
-  Future<List<Location>> getLocationsByDate({
+  Future<Stream<List<Location>>> getLocationsByDate({
     required DateTime start,
     required DateTime end,
   }) async {
     final DriftAppDatabase driftDatabase = await supabaseHandler.driftDatabase;
 
-    List<Location> locations =
-        await (driftDatabase.select(driftDatabase.locations)..where(
+    Stream<List<Location>> locationStream =
+        (driftDatabase.select(driftDatabase.locations)..where(
           (location) =>
               location.timestamp.isBetween(Variable(start), Variable(end)),
-        )).get();
+        )).watch();
 
-    return locations;
+    return locationStream;
   }
 
   @override

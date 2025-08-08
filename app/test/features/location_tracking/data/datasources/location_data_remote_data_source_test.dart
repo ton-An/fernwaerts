@@ -49,16 +49,16 @@ void main() {
     });
 
     test(
-      'should get locations by date range from supabase and return them',
+      'should get locations by date range from supabase and emit them as a stream',
       () async {
         // act
-        final result = await locationDataRemoteDataSource.getLocationsByDate(
+        final stream = await locationDataRemoteDataSource.getLocationsByDate(
           start: tStartDate,
           end: tEndDate,
         );
 
         // assert
-        expect(result, [tLocations[1]]);
+        await expectLater(stream, emits([tLocations[1]]));
       },
     );
   });

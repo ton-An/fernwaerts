@@ -4,6 +4,11 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 
+/* 
+  To-Do:
+    - [ ] add docs
+*/
+
 class GetLocationsByDate {
   const GetLocationsByDate({
     required this.authenticationRepository,
@@ -13,33 +18,40 @@ class GetLocationsByDate {
   final AuthenticationRepository authenticationRepository;
   final LocationDataRepository locationDataRepository;
 
-  Future<Either<Failure, List<Location>>> call({
+  Stream<Either<Failure, List<Location>>> call({
     required DateTime start,
     required DateTime end,
-  }) async {
+  }) {
     return _getCurrentUserId(start: start, end: end);
   }
 
-  Future<Either<Failure, List<Location>>> _getCurrentUserId({
+  Stream<Either<Failure, List<Location>>> _getCurrentUserId({
     required DateTime start,
     required DateTime end,
-  }) async {
+  }) async* {
     final Either<Failure, String> userIdEither =
         await authenticationRepository.getCurrentUserId();
 
-    return userIdEither.fold(Left.new, (String userId) async {
-      return _getLocationsByDate(start: start, end: end, userId: userId);
-    });
+    yield* userIdEither.fold(
+      (Failure failure) async* {
+        yield Left(failure);
+      },
+      (String userId) async* {
+        yield* _getLocationsByDate(start: start, end: end, userId: userId);
+      },
+    );
   }
 
-  Future<Either<Failure, List<Location>>> _getLocationsByDate({
+  Stream<Either<Failure, List<Location>>> _getLocationsByDate({
     required DateTime start,
     required DateTime end,
     required String userId,
-  }) async {
-    final List<Location> locations = await locationDataRepository
+  }) async* {
+    final Stream<List<Location>> locationsStream = await locationDataRepository
         .getLocationsByDate(start: start, end: end);
 
-    return Right(locations);
+    await for (List<Location> locations in locationsStream) {
+      yield Right(locations);
+    }
   }
 }

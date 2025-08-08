@@ -9,15 +9,26 @@ class _LocationMarkers extends StatelessWidget {
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    final List<Marker> markers = _generateMarkers(
+    final (List<Marker>, List<Polyline>) points = _generateMarkers(
       gradientColors: theme.colors.timelineGradient,
     );
 
-    return MarkerLayer(markers: markers.reversed.toList());
+    final List<Marker> markers = points.$1.reversed.toList();
+    final List<Polyline> polylines = points.$2;
+
+    return Stack(
+      children: [
+        PolylineLayer(polylines: polylines),
+        MarkerLayer(markers: markers.reversed.toList()),
+      ],
+    );
   }
 
-  List<Marker> _generateMarkers({required List<Color> gradientColors}) {
+  (List<Marker>, List<Polyline>) _generateMarkers({
+    required List<Color> gradientColors,
+  }) {
     final List<Marker> markers = [];
+    final List<Polyline> polylines = [];
 
     for (int i = 0; i < points.length; i++) {
       final bool isLastPoint = i == points.length - 1;
@@ -41,7 +52,7 @@ class _LocationMarkers extends StatelessWidget {
 
       final bool isNextPointIdentical =
           isLastPoint
-              ? false
+              ? true
               : _isNextPointIdentical(
                 point: points[i],
                 nextPoint: points[i + 1],
@@ -56,9 +67,19 @@ class _LocationMarkers extends StatelessWidget {
           displayArrow: !isNextPointIdentical,
         ),
       );
+
+      if (!isLastPoint) {
+        polylines.add(
+          Polyline(
+            points: [points[i], points[i + 1]],
+            color: markerColor.withValues(alpha: .6),
+            strokeWidth: 14,
+          ),
+        );
+      }
     }
 
-    return markers;
+    return (markers, polylines);
   }
 
   double _calculateAngleToNextPoint({
