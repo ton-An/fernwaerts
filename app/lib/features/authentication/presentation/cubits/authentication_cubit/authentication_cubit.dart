@@ -14,6 +14,8 @@ import 'package:location_history/features/location_tracking/domain/usecases/init
 /* 
   To-Do:
     - [ ] Add tests
+    - [ ] Think of way to propagate failures from requesting permission (not possible with
+          commented out solution because auth bloc is closed by then
 */
 
 /// {@template authentication_cubit}
@@ -153,17 +155,17 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
   }
 
   void _requestNecessaryPermissions() async {
-    final Either<Failure, None> requestPermissionsEither =
-        await requestNecessaryPermissions();
+    // final Either<Failure, None> requestPermissionsEither =
+    await requestNecessaryPermissions();
 
-    requestPermissionsEither.fold(
-      (Failure failure) {
-        emit(AuthenticationFailure(failure: failure));
-      },
-      (None none) {
-        _initBackgroundLocationTracking();
-      },
-    );
+    // requestPermissionsEither.fold(
+    //   (Failure failure) {
+    //     emit(AuthenticationFailure(failure: failure));
+    //   },
+    //   (None none) {
+    _initBackgroundLocationTracking();
+    //   },
+    // );
   }
 
   void _initBackgroundLocationTracking() async {
