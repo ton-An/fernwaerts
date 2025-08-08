@@ -262,6 +262,8 @@ const RawDevice tIOSRawDevice = RawDevice(
 );
 
 final IosDeviceInfo tIOSDeviceInfo = IosDeviceInfo.setMockInitialValues(
+  freeDiskSize: 1000,
+  totalDiskSize: 10000,
   name: tIOSRawDevice.name,
   systemName: 'ios',
   systemVersion: tIOSRawDevice.osVersion,
@@ -304,6 +306,8 @@ const RawDevice tAndroidRawDevice = RawDevice(
 
 final AndroidDeviceInfo tAndroidDeviceInfo =
     AndroidDeviceInfo.setMockInitialValues(
+      freeDiskSize: 1000,
+      totalDiskSize: 10000,
       name: tAndroidRawDevice.name,
       model: tAndroidRawDevice.model,
       manufacturer: tAndroidRawDevice.manufacturer,
