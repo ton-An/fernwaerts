@@ -40,9 +40,11 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
     context.read<SplashCubit>().determineInitialAppState();
     Future.delayed(const Duration(seconds: 2), () {
-      setState(() {
-        _showLogPageHint = true;
-      });
+      if (mounted) {
+        setState(() {
+          _showLogPageHint = true;
+        });
+      }
     });
   }
 
