@@ -309,6 +309,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Double tap to open log page'**
   String get doubleTapToOpenLogPage;
+
+  /// No description provided for @signOutQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Out?'**
+  String get signOutQuestion;
+
+  /// No description provided for @signOutMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You’ll be signed out of your account. You can sign back in anytime :)'**
+  String get signOutMessage;
+
+  /// No description provided for @yes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yes;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
 }
 
 class _AppLocalizationsDelegate

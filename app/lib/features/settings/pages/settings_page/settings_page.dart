@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location_history/core/dependency_injector.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
+import 'package:location_history/core/widgets/custom_dialog/custom_dialog.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_out.dart';
 import 'package:location_history/features/authentication/presentation/pages/authentication_page/authentication_page.dart';
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
@@ -66,24 +67,25 @@ class SettingsPage extends StatelessWidget {
               topOptions: const EdgeFadeOptions(enabled: false),
               child: ListView(
                 padding: EdgeInsets.only(
+                  top: theme.spacing.medium,
+                  bottom: theme.spacing.large,
                   left: theme.spacing.medium,
-                  top: MediaQuery.of(context).padding.top,
                   right: theme.spacing.medium,
-                  bottom: theme.spacing.xMedium,
                 ),
                 children: [
                   _SectionTitle(title: AppLocalizations.of(context)!.general),
                   const _SubPageLink(),
-                  const _SubPageLink(),
-                  const _SubPageLink(),
+
                   const XXMediumGap(),
                   const OSSInfo(),
                   const XXMediumGap(),
 
                   CustomCupertinoTextButton(
                     text: AppLocalizations.of(context)!.signOut,
-                    textColor: theme.colors.backgroundContrast,
-                    color: theme.colors.primaryTranslucent,
+                    textColor: theme.colors.backgroundContrast.withValues(
+                      alpha: .75,
+                    ),
+                    color: theme.colors.primary.withValues(alpha: .7),
                     onPressed: () => _signOut(context),
                   ),
                   const XXMediumGap(),
@@ -100,7 +102,20 @@ class SettingsPage extends StatelessWidget {
   }
 
   void _signOut(BuildContext context) {
-    getIt<SignOut>().call();
-    context.go(AuthenticationPage.route);
+    CustomDialog.show(
+      context: context,
+      title: AppLocalizations.of(context)!.signOutQuestion,
+      message: AppLocalizations.of(context)!.signOutMessage,
+      submitButtonLabel: AppLocalizations.of(context)!.yes,
+      cancelButtonLabel: AppLocalizations.of(context)!.cancel,
+      onSubmit: () {
+        getIt<SignOut>().call();
+        context.pop();
+        context.go(AuthenticationPage.route);
+      },
+      onCancel: () {
+        context.pop();
+      },
+    );
   }
 }

@@ -119,4 +119,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get doubleTapToOpenLogPage => 'Double tap to open log page';
+
+  @override
+  String get signOutQuestion => 'Sign Out?';
+
+  @override
+  String get signOutMessage =>
+      'You’ll be signed out of your account. You can sign back in anytime :)';
+
+  @override
+  String get yes => 'Yes';
+
+  @override
+  String get cancel => 'Cancel';
 }

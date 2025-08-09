@@ -34,5 +34,10 @@
     "proudlyOpenSource": "Proudly Open Source",
     "openSourceExplanation": "This means that the source code is publicly available. You are invited to contribute, report bugs or suggest new features.",
     "debugger": "Debugger",
-    "doubleTapToOpenLogPage": "Double tap to open log page"
+    "doubleTapToOpenLogPage": "Double tap to open log page",
+    "signOutQuestion": "Sign Out?",
+    "signOutMessage": "You’ll be signed out of your account. You can sign back in anytime :)",
+    "yes": "Yes",
+    "cancel": "Cancel"
+
 }
