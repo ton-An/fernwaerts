@@ -32,18 +32,49 @@ class PsBackendConnector extends PowerSyncBackendConnector {
   final SupabaseClient supabaseClient;
   final String powersyncUrl;
 
+  Future<void>? _refreshFuture;
+
   @override
   Future<PowerSyncCredentials?> fetchCredentials() async {
-    final String? token = supabaseClient.auth.currentSession?.accessToken;
+    await _refreshFuture;
 
-    if (token == null) {
+    final session = Supabase.instance.client.auth.currentSession;
+    if (session == null) {
       return null;
     }
 
+    final token = session.accessToken;
+
+    final userId = session.user.id;
+    final expiresAt =
+        session.expiresAt == null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(session.expiresAt! * 1000);
     return PowerSyncCredentials(
       endpoint: powersyncUrl,
-      token: supabaseClient.auth.currentSession!.accessToken,
+      token: token,
+      userId: userId,
+      expiresAt: expiresAt,
     );
+  }
+
+  @override
+  void invalidateCredentials() {
+    // Trigger a session refresh if auth fails on PowerSync.
+    // Generally, sessions should be refreshed automatically by Supabase.
+    // However, in some cases it can be a while before the session refresh is
+    // retried. We attempt to trigger the refresh as soon as we get an auth
+    // failure on PowerSync.
+    //
+    // This could happen if the device was offline for a while and the session
+    // expired, and nothing else attempt to use the session it in the meantime.
+    //
+    // Timeout the refresh call to avoid waiting for long retries,
+    // and ignore any errors. Errors will surface as expired tokens.
+    _refreshFuture = Supabase.instance.client.auth
+        .refreshSession()
+        .timeout(const Duration(seconds: 5))
+        .then((response) => null, onError: (error) => null);
   }
 
   @override
