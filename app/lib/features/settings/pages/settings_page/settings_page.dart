@@ -85,7 +85,8 @@ class SettingsPage extends StatelessWidget {
                     textColor: theme.colors.backgroundContrast.withValues(
                       alpha: .75,
                     ),
-                    color: theme.colors.primary.withValues(alpha: .7),
+                    color: theme.colors.translucentBackgroundContrast
+                        .withValues(alpha: .16),
                     onPressed: () => _signOut(context),
                   ),
                   const XXMediumGap(),
