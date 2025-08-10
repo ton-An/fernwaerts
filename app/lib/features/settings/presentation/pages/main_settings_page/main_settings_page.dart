@@ -7,12 +7,12 @@ import 'package:location_history/core/widgets/small_text_button.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_out.dart';
 import 'package:location_history/features/authentication/presentation/pages/authentication_page/authentication_page.dart';
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
-import 'package:location_history/features/settings/pages/account_settings_page/account_settings_page.dart';
-import 'package:location_history/features/settings/pages/debug_page.dart';
-import 'package:location_history/features/settings/widgets/oss_info.dart';
-import 'package:location_history/features/settings/widgets/settings_list_view.dart';
-import 'package:location_history/features/settings/widgets/settings_section_title.dart';
-import 'package:location_history/features/settings/widgets/sub_page_link.dart';
+import 'package:location_history/features/settings/presentation/pages/account_settings_page/account_settings_page.dart';
+import 'package:location_history/features/settings/presentation/pages/debug_page.dart';
+import 'package:location_history/features/settings/presentation/widgets/oss_info.dart';
+import 'package:location_history/features/settings/presentation/widgets/settings_list_view.dart';
+import 'package:location_history/features/settings/presentation/widgets/settings_section_title.dart';
+import 'package:location_history/features/settings/presentation/widgets/sub_page_link.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
-import 'package:location_history/features/settings/pages/main_settings_page/main_settings_page.dart';
-import 'package:location_history/features/settings/widgets/settings_list_view.dart';
-import 'package:location_history/features/settings/widgets/settings_section_title.dart';
-import 'package:location_history/features/settings/widgets/sub_page_link.dart';
+import 'package:location_history/features/settings/presentation/pages/main_settings_page/main_settings_page.dart';
+import 'package:location_history/features/settings/presentation/widgets/settings_list_view.dart';
+import 'package:location_history/features/settings/presentation/widgets/settings_section_title.dart';
+import 'package:location_history/features/settings/presentation/widgets/sub_page_link.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 class AccountSettingsPage extends StatelessWidget {

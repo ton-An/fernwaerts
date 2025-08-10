@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
-import 'package:location_history/features/settings/pages/debug_page.dart';
+import 'package:location_history/features/settings/presentation/pages/debug_page.dart';
 import 'package:super_keyboard/super_keyboard.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 

@@ -7,7 +7,7 @@ import 'package:location_history/features/authentication/presentation/cubits/spl
 import 'package:location_history/features/authentication/presentation/pages/authentication_page/authentication_page.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
-import 'package:location_history/features/settings/pages/debug_page.dart';
+import 'package:location_history/features/settings/presentation/pages/debug_page.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 /// {@template splash_page}

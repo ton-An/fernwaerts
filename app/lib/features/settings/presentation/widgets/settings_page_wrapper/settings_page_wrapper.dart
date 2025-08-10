@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
-import 'package:location_history/features/settings/pages/account_settings_page/account_settings_page.dart';
-import 'package:location_history/features/settings/pages/main_settings_page/main_settings_page.dart';
+import 'package:location_history/features/settings/presentation/pages/account_settings_page/account_settings_page.dart';
+import 'package:location_history/features/settings/presentation/pages/main_settings_page/main_settings_page.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_footer.dart';

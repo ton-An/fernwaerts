@@ -11,7 +11,7 @@ import 'package:location_history/features/map/domain/models/activity.dart';
 import 'package:location_history/features/map/domain/models/place.dart';
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
 import 'package:location_history/features/map/presentation/cubits/map_states.dart';
-import 'package:location_history/features/settings/pages/main_settings_page/main_settings_page.dart';
+import 'package:location_history/features/settings/presentation/pages/main_settings_page/main_settings_page.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_activity_icon.dart';
