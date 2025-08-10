@@ -40,16 +40,13 @@ class MainSettingsPage extends StatelessWidget {
       children: [
         SettingsSectionTitle(title: AppLocalizations.of(context)!.account),
         SubSettingsPageLink(
-          title: AppLocalizations.of(context)!.personalInformation,
-          onPressed: () {},
-        ),
-        SubSettingsPageLink(
           title: AppLocalizations.of(context)!.authentication,
           onPressed: () {
             context.go(AccountSettingsPage.route);
           },
         ),
         const XXMediumGap(),
+
         SettingsSectionTitle(title: AppLocalizations.of(context)!.admin),
         SubSettingsPageLink(
           title: AppLocalizations.of(context)!.userManagement,
