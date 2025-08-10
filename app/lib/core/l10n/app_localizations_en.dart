@@ -132,4 +132,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancel => 'Cancel';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get accountDetails => 'Account Details';
+
+  @override
+  String get authentication => 'Authentication';
+
+  @override
+  String get userManagement => 'User Management';
+
+  @override
+  String get personalInformation => 'Personal Information';
+
+  @override
+  String get authenticationDescription =>
+      'Change your password or email address.';
+
+  @override
+  String get changePassword => 'Change Password';
+
+  @override
+  String get oldPassword => 'Old Password';
+
+  @override
+  String get newPassword => 'New Password';
+
+  @override
+  String get confirmNewPassword => 'Confirm New Password';
 }

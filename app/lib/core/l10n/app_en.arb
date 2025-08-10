@@ -38,6 +38,16 @@
     "signOutQuestion": "Sign Out?",
     "signOutMessage": "You’ll be signed out of your account. You can sign back in anytime :)",
     "yes": "Yes",
-    "cancel": "Cancel"
-
+    "cancel": "Cancel",
+    "save": "Save",
+    "accountDetails": "Account Details",
+    "authentication": "Authentication",
+    "admin": "Admin",
+    "userManagement": "User Management",
+    "personalInformation": "Personal Information",
+    "authenticationDescription": "Change your password or email address.",
+    "changePassword": "Change Password",
+    "oldPassword": "Old Password",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password"
 }
