@@ -74,6 +74,7 @@ class _FadeTapDetectorState extends State<FadeTapDetector>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onLongPress: widget.onLongPress,
       onTapDown: (_) => _onTapDown(),
       onTapUp: (_) => _onTapUp(),
