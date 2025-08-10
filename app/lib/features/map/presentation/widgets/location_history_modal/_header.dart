@@ -32,7 +32,7 @@ class _Header extends StatelessWidget {
               SmallIconButton(
                 icon: CupertinoIcons.settings,
                 onPressed: () {
-                  context.go(SettingsPage.route);
+                  context.go(MainSettingsPage.route);
                 },
               ),
             ],

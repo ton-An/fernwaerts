@@ -24,8 +24,11 @@ import 'package:location_history/features/in_app_notification/presentation/cubit
 import 'package:location_history/features/in_app_notification/presentation/widgets/in_app_notification_listener.dart';
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
+import 'package:location_history/features/settings/page_routes/settings_slide_transition_page.dart';
+import 'package:location_history/features/settings/pages/account_settings_page/account_settings_page.dart';
 import 'package:location_history/features/settings/pages/debug_page.dart';
-import 'package:location_history/features/settings/pages/settings_page/settings_page.dart';
+import 'package:location_history/features/settings/pages/main_settings_page/main_settings_page.dart';
+import 'package:location_history/features/settings/widgets/settings_page_wrapper/settings_page_wrapper.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:talker_bloc_logger/talker_bloc_logger.dart';
 import 'package:talker_flutter/talker_flutter.dart';
@@ -208,13 +211,36 @@ class _MainAppState extends State<MainApp> {
                     );
                   },
                   routes: [
-                    GoRoute(
-                      path: SettingsPage.pageName,
-                      pageBuilder: (context, state) {
+                    ShellRoute(
+                      pageBuilder: (context, state, child) {
                         return DialogPage(
-                          builder: (context) => const SettingsPage(),
+                          child: SettingsPageWrapper(
+                            pagePath: state.fullPath,
+                            child: child,
+                          ),
                         );
                       },
+
+                      routes: [
+                        GoRoute(
+                          path: MainSettingsPage.pageName,
+                          pageBuilder: (context, state) {
+                            return const SettingsSlideTransitionPage(
+                              child: MainSettingsPage(),
+                            );
+                          },
+                          routes: [
+                            GoRoute(
+                              path: AccountSettingsPage.pageName,
+                              pageBuilder:
+                                  (context, state) =>
+                                      const SettingsSlideTransitionPage(
+                                        child: AccountSettingsPage(),
+                                      ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ],
                 ),

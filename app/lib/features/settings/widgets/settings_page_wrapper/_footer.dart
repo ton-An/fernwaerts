@@ -1,7 +1,10 @@
-part of 'settings_page.dart';
+part of 'settings_page_wrapper.dart';
 
 class _Footer extends StatelessWidget {
-  const _Footer();
+  const _Footer({required this.title, required this.isMainPage});
+
+  final String title;
+  final bool isMainPage;
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +31,14 @@ class _Footer extends StatelessWidget {
               context.pop();
             },
             child: SmallIconButton(
-              icon: CupertinoIcons.back,
+              icon: isMainPage ? CupertinoIcons.clear : CupertinoIcons.back,
               onPressed: () {
                 context.pop();
               },
             ),
           ),
           Text(
-            AppLocalizations.of(context)!.settings,
+            title,
             style: theme.text.title1.copyWith(fontWeight: FontWeight.w600),
           ),
           const SizedBox(width: 28),
