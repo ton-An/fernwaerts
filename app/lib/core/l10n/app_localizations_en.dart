@@ -146,6 +146,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get userManagement => 'User Management';
 
   @override
+  String get userManagementDescription =>
+      'Manage your users and create new ones';
+
+  @override
   String get personalInformation => 'Personal Information';
 
   @override
@@ -163,4 +167,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirmNewPassword => 'Confirm New Password';
+
+  @override
+  String get createNewUser => 'Create new User';
+
+  @override
+  String get yourUsers => 'Your Users';
+
+  @override
+  String get users => 'Users';
 }

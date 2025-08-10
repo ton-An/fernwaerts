@@ -28,6 +28,7 @@ import 'package:location_history/features/settings/presentation/page_routes/sett
 import 'package:location_history/features/settings/presentation/pages/account_settings_page/account_settings_page.dart';
 import 'package:location_history/features/settings/presentation/pages/debug_page.dart';
 import 'package:location_history/features/settings/presentation/pages/main_settings_page/main_settings_page.dart';
+import 'package:location_history/features/settings/presentation/pages/user_management_settings_page/user_management_settings_page.dart';
 import 'package:location_history/features/settings/presentation/widgets/settings_page_wrapper/settings_page_wrapper.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:talker_bloc_logger/talker_bloc_logger.dart';
@@ -236,6 +237,14 @@ class _MainAppState extends State<MainApp> {
                                   (context, state) =>
                                       const SettingsSlideTransitionPage(
                                         child: AccountSettingsPage(),
+                                      ),
+                            ),
+                            GoRoute(
+                              path: UserManagementSettingsPage.pageName,
+                              pageBuilder:
+                                  (context, state) =>
+                                      const SettingsSlideTransitionPage(
+                                        child: UserManagementSettingsPage(),
                                       ),
                             ),
                           ],

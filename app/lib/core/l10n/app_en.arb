@@ -44,10 +44,14 @@
     "authentication": "Authentication",
     "admin": "Admin",
     "userManagement": "User Management",
+    "userManagementDescription": "Manage your users and create new ones",
     "personalInformation": "Personal Information",
     "authenticationDescription": "Change your password or email address.",
     "changePassword": "Change Password",
     "oldPassword": "Old Password",
     "newPassword": "New Password",
-    "confirmNewPassword": "Confirm New Password"
+    "confirmNewPassword": "Confirm New Password",
+    "createNewUser": "Create new User",
+    "yourUsers": "Your Users",
+    "users": "Users"
 }

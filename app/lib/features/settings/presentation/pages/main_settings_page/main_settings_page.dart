@@ -9,6 +9,7 @@ import 'package:location_history/features/authentication/presentation/pages/auth
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
 import 'package:location_history/features/settings/presentation/pages/account_settings_page/account_settings_page.dart';
 import 'package:location_history/features/settings/presentation/pages/debug_page.dart';
+import 'package:location_history/features/settings/presentation/pages/user_management_settings_page/user_management_settings_page.dart';
 import 'package:location_history/features/settings/presentation/widgets/oss_info.dart';
 import 'package:location_history/features/settings/presentation/widgets/settings_list_view.dart';
 import 'package:location_history/features/settings/presentation/widgets/settings_section_title.dart';
@@ -52,7 +53,9 @@ class MainSettingsPage extends StatelessWidget {
         SettingsSectionTitle(title: AppLocalizations.of(context)!.admin),
         SubSettingsPageLink(
           title: AppLocalizations.of(context)!.userManagement,
-          onPressed: () {},
+          onPressed: () {
+            context.go(UserManagementSettingsPage.route);
+          },
         ),
         const XXMediumGap(),
         const OSSInfo(),
@@ -67,7 +70,6 @@ class MainSettingsPage extends StatelessWidget {
         ),
         const XXMediumGap(),
         const _VersionTag(),
-        const LargeGap(),
       ],
     );
   }

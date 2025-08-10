@@ -358,6 +358,12 @@ abstract class AppLocalizations {
   /// **'User Management'**
   String get userManagement;
 
+  /// No description provided for @userManagementDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your users and create new ones'**
+  String get userManagementDescription;
+
   /// No description provided for @personalInformation.
   ///
   /// In en, this message translates to:
@@ -393,6 +399,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Confirm New Password'**
   String get confirmNewPassword;
+
+  /// No description provided for @createNewUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Create new User'**
+  String get createNewUser;
+
+  /// No description provided for @yourUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Users'**
+  String get yourUsers;
+
+  /// No description provided for @users.
+  ///
+  /// In en, this message translates to:
+  /// **'Users'**
+  String get users;
 }
 
 class _AppLocalizationsDelegate

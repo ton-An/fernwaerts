@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/features/settings/presentation/pages/account_settings_page/account_settings_page.dart';
 import 'package:location_history/features/settings/presentation/pages/main_settings_page/main_settings_page.dart';
+import 'package:location_history/features/settings/presentation/pages/user_management_settings_page/user_management_settings_page.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_footer.dart';
@@ -61,6 +62,8 @@ class SettingsPageWrapper extends StatelessWidget {
   String _getPageTitle({required BuildContext context}) {
     if (pagePath == AccountSettingsPage.route) {
       return AppLocalizations.of(context)!.account;
+    } else if (pagePath == UserManagementSettingsPage.route) {
+      return AppLocalizations.of(context)!.users;
     }
 
     return AppLocalizations.of(context)!.settings;

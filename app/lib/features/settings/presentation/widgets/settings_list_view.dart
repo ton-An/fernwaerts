@@ -17,6 +17,7 @@ class SettingsListView extends StatelessWidget {
         left: theme.spacing.medium,
         right: theme.spacing.medium,
       ),
+      physics: const BouncingScrollPhysics(),
       children: children,
     );
   }

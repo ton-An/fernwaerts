@@ -27,7 +27,7 @@ class SettingsSectionTitle extends StatelessWidget {
             description!,
             style: theme.text.body.copyWith(color: theme.colors.hint),
           ),
-          const SmallGap(),
+          const MediumGap(),
         ],
       ],
     );
