@@ -60,7 +60,10 @@ class CustomDialog extends StatelessWidget {
                       child: _Button(
                         label: cancelButtonLabel,
                         highlight: false,
-                        onPressed: onCancel,
+                        onPressed: () async {
+                          await Future.delayed(theme.durations.xTiny);
+                          onCancel();
+                        },
                       ),
                     ),
                     const XXSmallGap(),
@@ -68,7 +71,10 @@ class CustomDialog extends StatelessWidget {
                       child: _Button(
                         label: submitButtonLabel,
                         highlight: true,
-                        onPressed: onSubmit,
+                        onPressed: () async {
+                          await Future.delayed(theme.durations.short);
+                          onSubmit();
+                        },
                       ),
                     ),
                   ],
@@ -100,7 +106,7 @@ class CustomDialog extends StatelessWidget {
         final curvedAnimation = CurvedAnimation(
           parent: animation,
           curve: Curves.easeOutCubic,
-          reverseCurve: Curves.easeIn,
+          reverseCurve: Curves.easeInCubic,
         );
 
         final Animation scaleAnimation = Tween<double>(
