@@ -49,6 +49,5 @@
     "changePassword": "Change Password",
     "oldPassword": "Old Password",
     "newPassword": "New Password",
-    "confirmNewPassword": "Confirm New Password",
-    
+    "confirmNewPassword": "Confirm New Password"
 }
