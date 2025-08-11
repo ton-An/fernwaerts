@@ -1,3 +1,4 @@
+import 'package:http/http.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -7,6 +8,14 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 */
 
 abstract class SettingsRemoteDataSource {
+  /// Updates the email address of the current user.
+  ///
+  /// Parameters:
+  /// - [String]: new email address to update to
+  ///
+  /// Throws:
+  /// - [AuthException]
+  /// - [ClientException]
   Future<void> updateEmail({required String newEmail});
 }
 
