@@ -284,7 +284,7 @@ final IosDeviceInfo tIOSDeviceInfo = IosDeviceInfo.setMockInitialValues(
 );
 
 final Device tDevice = Device(
-  id: "uuid",
+  id: 'uuid',
   userId: tUserId,
   name: "Ted's iPhone",
   model: 'iPhone Ultra Max Pro',

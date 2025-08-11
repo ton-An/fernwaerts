@@ -61,7 +61,7 @@ void main() {
     final stream = getLocationsByDate(start: tStartDate, end: tEndDate);
 
     // assert
-    await expectLater(stream, emits(Left(StorageReadFailure())));
+    await expectLater(stream, emits(const Left(StorageReadFailure())));
   });
 
   test(

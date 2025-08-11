@@ -44,7 +44,7 @@ class UserManagementSettingsPage extends StatelessWidget {
   }
 }
 
-List<User> _mockUsers = [
+List<User> _mockUsers = const [
   User(id: '1', username: 'Moni', email: 'moni@example.com'),
   User(id: '2', username: 'Olli', email: 'olli@example.com'),
 ];

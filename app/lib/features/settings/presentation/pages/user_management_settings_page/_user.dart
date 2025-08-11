@@ -1,7 +1,7 @@
 part of 'user_management_settings_page.dart';
 
 class _User extends StatelessWidget {
-  const _User({super.key, required this.user});
+  const _User({required this.user});
 
   final User user;
 

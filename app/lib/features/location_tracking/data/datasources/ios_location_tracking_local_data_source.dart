@@ -38,7 +38,7 @@ class IOSLocationTrackingLocalDataSourceImpl
       fastestInterval: 0,
       interval: 0,
       startOnBoot: true,
-      backgroundCallback: (_) => "",
+      backgroundCallback: (_) => '',
       priority: LocationPriority.priorityHighAccuracy,
     );
   }
