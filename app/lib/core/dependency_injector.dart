@@ -46,6 +46,9 @@ import 'package:location_history/features/location_tracking/domain/repositories/
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/get_locations_by_date.dart';
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
+import 'package:location_history/features/settings/data/datasources/settings_remote_data_source.dart';
+import 'package:location_history/features/settings/data/repository_implementations/settings_repository_impl.dart';
+import 'package:location_history/features/settings/domain/repositories/settings_repository.dart';
 import 'package:location_history/features/settings/domain/usecases/update_email.dart';
 import 'package:location_history/features/settings/presentation/cubits/account_settings_cubit/account_settings_cubit.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -261,5 +264,16 @@ void registerSettingsDependencies() {
   );
 
   //-- Domain -- //
-  getIt.registerLazySingleton(() => UpdateEmail());
+  getIt.registerLazySingleton(() => UpdateEmail(settingsRepository: getIt()));
+
+  //-- Data -- //
+  getIt.registerLazySingleton<SettingsRepository>(
+    () => SettingsRepositoryImpl(
+      settingsRemoteDataSource: getIt(),
+      repositoryFailureHandler: getIt(),
+    ),
+  );
+  getIt.registerLazySingleton<SettingsRemoteDataSource>(
+    () => SettingsRemoteDataSourceImpl(supabaseHandler: getIt()),
+  );
 }
