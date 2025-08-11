@@ -30,7 +30,7 @@ class AccountSettingsCubit extends Cubit<AccountSettingsState> {
       return;
     }
 
-    emit(AccountSettingsUpdating(user: _user!));
+    emit(SendingVerificationEmail(user: _user!));
 
     final Either<Failure, None> updateEmailEither = await updateEmailUsecase(
       newEmail: newEmail,
@@ -43,7 +43,7 @@ class AccountSettingsCubit extends Cubit<AccountSettingsState> {
       (None none) {
         _user = _user!.copyWith(email: newEmail);
 
-        emit(AccountSettingsUpdated(user: _user!));
+        emit(VerificationEmailSent(user: _user!));
       },
     );
   }

@@ -26,12 +26,12 @@ class AccountSettingsInitialLoaded extends AccountSettingsLoaded {
   const AccountSettingsInitialLoaded({required super.user});
 }
 
-class AccountSettingsUpdating extends AccountSettingsLoaded {
-  const AccountSettingsUpdating({required super.user});
+class SendingVerificationEmail extends AccountSettingsLoaded {
+  const SendingVerificationEmail({required super.user});
 }
 
-class AccountSettingsUpdated extends AccountSettingsLoaded {
-  const AccountSettingsUpdated({required super.user});
+class VerificationEmailSent extends AccountSettingsLoaded {
+  const VerificationEmailSent({required super.user});
 }
 
 class AccountSettingsFailure extends AccountSettingsState {
