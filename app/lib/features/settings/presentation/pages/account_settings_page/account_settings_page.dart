@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
+import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/account_settings_cubit/account_settings_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/account_settings_cubit/account_settings_states.dart';
 import 'package:location_history/features/settings/presentation/pages/main_settings_page/main_settings_page.dart';
@@ -46,8 +47,22 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
     return BlocConsumer<AccountSettingsCubit, AccountSettingsState>(
       listener: (BuildContext context, AccountSettingsState state) {
-        if (state is AccountSettingsLoaded) {
+        if (state is AccountSettingsInitialLoaded) {
           _emailController.text = state.user.email;
+        }
+
+        if (state is VerificationEmailSent) {
+          context.read<InAppNotificationCubit>().sendSuccessNotification(
+            title: AppLocalizations.of(context)!.emailSent,
+            message:
+                AppLocalizations.of(context)!.checkInboxForVerificationMail,
+          );
+        }
+
+        if (state is AccountSettingsFailure) {
+          context.read<InAppNotificationCubit>().sendFailureNotification(
+            state.failure,
+          );
         }
       },
       builder: (BuildContext context, AccountSettingsState state) {
@@ -75,17 +90,24 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
             ),
 
             const XXMediumGap(),
-            CustomCupertinoTextButton(
-              text: AppLocalizations.of(context)!.save,
+            CustomCupertinoButton(
               color: theme.colors.primary,
+              isLoading: state is SendingVerificationEmail,
               onPressed:
                   _allowSave(state: state, newEmail: _emailController.text)
-                      ? null
-                      : () {
+                      ? () {
                         context.read<AccountSettingsCubit>().updateEmail(
                           _emailController.text..trim(),
                         );
-                      },
+                      }
+                      : null,
+              child: Text(
+                AppLocalizations.of(context)!.save,
+                textAlign: TextAlign.center,
+                style: theme.text.headline.copyWith(
+                  color: theme.colors.primaryContrast,
+                ),
+              ),
             ),
           ],
         );
@@ -98,7 +120,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
     required String newEmail,
   }) {
     if (state is AccountSettingsLoaded) {
-      return state.user.email == newEmail;
+      return state.user.email != newEmail;
     }
 
     return true;

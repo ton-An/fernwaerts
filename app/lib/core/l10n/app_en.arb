@@ -53,5 +53,7 @@
     "confirmNewPassword": "Confirm New Password",
     "createNewUser": "Create new User",
     "yourUsers": "Your Users",
-    "users": "Users"
+    "users": "Users",
+    "emailSent": "E-Mail Sent",
+    "checkInboxForVerificationMail": "Check your inbox for the verification email."
 }

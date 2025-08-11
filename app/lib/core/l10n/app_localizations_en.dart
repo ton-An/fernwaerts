@@ -176,4 +176,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get users => 'Users';
+
+  @override
+  String get emailSent => 'E-Mail Sent';
+
+  @override
+  String get checkInboxForVerificationMail =>
+      'Check your inbox for the verification email.';
 }

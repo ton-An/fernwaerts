@@ -417,6 +417,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Users'**
   String get users;
+
+  /// No description provided for @emailSent.
+  ///
+  /// In en, this message translates to:
+  /// **'E-Mail Sent'**
+  String get emailSent;
+
+  /// No description provided for @checkInboxForVerificationMail.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your inbox for the verification email.'**
+  String get checkInboxForVerificationMail;
 }
 
 class _AppLocalizationsDelegate
