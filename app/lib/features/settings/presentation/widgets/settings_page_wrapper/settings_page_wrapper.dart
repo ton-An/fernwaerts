@@ -63,7 +63,7 @@ class SettingsPageWrapper extends StatelessWidget {
     if (pagePath == AccountSettingsPage.route) {
       return AppLocalizations.of(context)!.account;
     } else if (pagePath == UserManagementSettingsPage.route) {
-      return AppLocalizations.of(context)!.userManagement;
+      return AppLocalizations.of(context)!.users;
     } else if (pagePath == MainSettingsPage.route) {}
 
     return AppLocalizations.of(context)!.settings;
