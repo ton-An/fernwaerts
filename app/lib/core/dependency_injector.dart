@@ -46,6 +46,8 @@ import 'package:location_history/features/location_tracking/domain/repositories/
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/get_locations_by_date.dart';
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
+import 'package:location_history/features/settings/domain/usecases/update_email.dart';
+import 'package:location_history/features/settings/presentation/cubits/account_settings_cubit/account_settings_cubit.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
@@ -60,6 +62,7 @@ void initGetIt() {
   registerAuthenticationDependencies();
   registerCalendarDependencies();
   registerLocationTrackingDependencies();
+  registerSettingsDependencies();
 }
 
 void registerThirdPartyDependencies() {
@@ -249,4 +252,14 @@ void registerLocationTrackingDependencies() {
   getIt.registerLazySingleton<LocationDataRemoteDataSource>(
     () => LocationDataRemoteDataSourceImpl(supabaseHandler: getIt()),
   );
+}
+
+void registerSettingsDependencies() {
+  // -- Presentation -- //
+  getIt.registerFactory(
+    () => AccountSettingsCubit(updateEmailUsecase: getIt()),
+  );
+
+  //-- Domain -- //
+  getIt.registerLazySingleton(() => UpdateEmail());
 }

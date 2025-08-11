@@ -24,6 +24,7 @@ import 'package:location_history/features/in_app_notification/presentation/cubit
 import 'package:location_history/features/in_app_notification/presentation/widgets/in_app_notification_listener.dart';
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
+import 'package:location_history/features/settings/presentation/cubits/account_settings_cubit/account_settings_cubit.dart';
 import 'package:location_history/features/settings/presentation/page_routes/settings_slide_transition_page.dart';
 import 'package:location_history/features/settings/presentation/pages/account_settings_page/account_settings_page.dart';
 import 'package:location_history/features/settings/presentation/pages/debug_page.dart';
@@ -215,13 +216,20 @@ class _MainAppState extends State<MainApp> {
                     ShellRoute(
                       pageBuilder: (context, state, child) {
                         return DialogPage(
-                          child: SettingsPageWrapper(
-                            pagePath: state.fullPath,
-                            child: child,
+                          child: MultiBlocProvider(
+                            providers: [
+                              BlocProvider(
+                                create:
+                                    (context) => getIt<AccountSettingsCubit>(),
+                              ),
+                            ],
+                            child: SettingsPageWrapper(
+                              pagePath: state.fullPath,
+                              child: child,
+                            ),
                           ),
                         );
                       },
-
                       routes: [
                         GoRoute(
                           path: MainSettingsPage.pageName,
