@@ -22,6 +22,7 @@ import 'package:location_history/features/authentication/domain/usecases/sign_in
 import 'package:location_history/features/location_tracking/data/datasources/location_data_remote_data_source.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
+import 'package:location_history/features/settings/data/datasources/settings_remote_data_source.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
@@ -115,3 +116,7 @@ class MockLocationDataRepository extends Mock
 
 class MockLocationDataRemoteDataSource extends Mock
     implements LocationDataRemoteDataSource {}
+
+// -- Settings
+class MockSettingsRemoteDataSource extends Mock
+    implements SettingsRemoteDataSource {}
