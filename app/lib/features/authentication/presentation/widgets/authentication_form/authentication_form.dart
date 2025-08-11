@@ -78,10 +78,10 @@ class AuthenticationForm extends StatelessWidget {
             MediaQuery.of(context).viewInsets.bottom,
       ),
       child: SuperKeyboardBuilder(
-        builder: (context, keyboardState) {
+        builder: (BuildContext context, MobileWindowGeometry windowGeometry) {
           final isKeyboardVisible =
-              keyboardState == KeyboardState.open ||
-              keyboardState == KeyboardState.opening;
+              windowGeometry.keyboardState == KeyboardState.open ||
+              windowGeometry.keyboardState == KeyboardState.opening;
 
           return Column(
             mainAxisAlignment: MainAxisAlignment.end,
