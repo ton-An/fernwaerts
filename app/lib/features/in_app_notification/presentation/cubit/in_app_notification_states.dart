@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:location_history/core/failures/failure.dart';
+import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification.dart';
 
 abstract class InAppNotificationState {
   const InAppNotificationState();
@@ -10,9 +10,9 @@ class InAppNotificationInitial extends InAppNotificationState {
 }
 
 class InAppNotificationInitiating extends InAppNotificationState {
-  const InAppNotificationInitiating({required this.failure});
+  const InAppNotificationInitiating({required this.notification});
 
-  final Failure failure;
+  final InAppNotification notification;
 }
 
 class InAppNotificationDelivering extends InAppNotificationState {

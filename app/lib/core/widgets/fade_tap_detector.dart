@@ -18,9 +18,13 @@ class FadeTapDetector extends StatefulWidget {
   const FadeTapDetector({
     super.key,
     required this.child,
+    this.behavior = HitTestBehavior.translucent,
     this.onTap,
     this.onLongPress,
   });
+
+  /// How the gesture detector should behave during hit testing.
+  final HitTestBehavior? behavior;
 
   /// Callback triggered when the widget is tapped.
   final VoidCallback? onTap;
@@ -74,7 +78,7 @@ class _FadeTapDetectorState extends State<FadeTapDetector>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      behavior: HitTestBehavior.translucent,
+      behavior: widget.behavior,
       onLongPress: widget.onLongPress,
       onTapDown: (_) => _onTapDown(),
       onTapUp: (_) => _onTapUp(),

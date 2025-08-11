@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_states.dart';
-import 'package:location_history/features/in_app_notification/presentation/widgets/in_app_notification/in_app_notification.dart';
+import 'package:location_history/features/in_app_notification/presentation/widgets/in_app_notification/in_app_notification_widget.dart';
 
 /// {@template in_app_notification_listener}
 /// A widget that listens to [InAppNotificationCubit] states and displays
@@ -10,7 +10,7 @@ import 'package:location_history/features/in_app_notification/presentation/widge
 ///
 /// This widget wraps its [child] and uses a [BlocListener] to observe
 /// [InAppNotificationState] changes. When an [InAppNotificationInitiating]
-/// state is emitted, it creates an [OverlayEntry] with an [InAppNotification]
+/// state is emitted, it creates an [OverlayEntry] with an [InAppNotificationWidget]
 /// widget and triggers the cubit to deliver it. When an
 /// [InAppNotificationDelivering] state is emitted, it inserts the notification
 /// into the [Overlay].
@@ -29,7 +29,7 @@ class InAppNotificationListener extends StatelessWidget {
         if (state is InAppNotificationInitiating) {
           final OverlayEntry overlayEntry = OverlayEntry(
             builder: (context) {
-              return InAppNotification(failure: state.failure);
+              return InAppNotificationWidget(notification: state.notification);
             },
           );
           context.read<InAppNotificationCubit>().deliverNotification(

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/widgets/fade_tap_detector.dart';
+import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_states.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
@@ -37,20 +38,28 @@ part '_fade_wrapper.dart';
 /// - [_Decoration]: Defines the visual appearance of the notification container.
 /// - [_Content]: Renders the icon and text of the failure message.
 /// {@endtemplate}
-class InAppNotification extends StatelessWidget {
+class InAppNotificationWidget extends StatelessWidget {
   /// {@macro in_app_notification}
-  const InAppNotification({required this.failure, super.key});
+  const InAppNotificationWidget({required this.notification, super.key});
 
   /// The [Failure] object containing the error information to display.
-  final Failure failure;
+  final InAppNotification notification;
 
   @override
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
     return FadeTapDetector(
+      behavior: HitTestBehavior.deferToChild,
       onLongPress: () {
-        Clipboard.setData(ClipboardData(text: failure.toString()));
+        if (notification is InAppFailureNotification) {
+          Clipboard.setData(
+            ClipboardData(
+              text:
+                  (notification as InAppFailureNotification).failure.toString(),
+            ),
+          );
+        }
       },
       child: _FadeWrapper(
         child: Column(
@@ -80,7 +89,7 @@ class InAppNotification extends StatelessWidget {
                         horizontal: theme.spacing.xMedium,
                         vertical: theme.spacing.medium,
                       ),
-                      child: _Content(failure: failure),
+                      child: _Content(notification: notification),
                     ),
                   ),
                 ),
