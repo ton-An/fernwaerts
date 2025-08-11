@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/features/settings/presentation/pages/account_settings_page/account_settings_page.dart';
 import 'package:location_history/features/settings/presentation/pages/main_settings_page/main_settings_page.dart';
+import 'package:location_history/features/settings/presentation/pages/password_change_settings_page/password_change_settings_page.dart';
 import 'package:location_history/features/settings/presentation/pages/user_management_settings_page/user_management_settings_page.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
@@ -64,7 +65,9 @@ class SettingsPageWrapper extends StatelessWidget {
       return AppLocalizations.of(context)!.account;
     } else if (pagePath == UserManagementSettingsPage.route) {
       return AppLocalizations.of(context)!.users;
-    } else if (pagePath == MainSettingsPage.route) {}
+    } else if (pagePath == PasswordChangeSettingsPage.route) {
+      return AppLocalizations.of(context)!.password;
+    }
 
     return AppLocalizations.of(context)!.settings;
   }

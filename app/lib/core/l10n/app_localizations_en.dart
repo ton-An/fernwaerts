@@ -183,4 +183,14 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get checkInboxForVerificationMail =>
       'Check your inbox for the verification email.';
+
+  @override
+  String get newPasswordsDoNotMatch => 'Your new passwords do not match';
+
+  @override
+  String get passwordChange => 'Password Change';
+
+  @override
+  String get passwordChangeDescription =>
+      'Your new password must be at least 8 characters long. It should contain a number, an uppercase letter and a lowercase letter.';
 }

@@ -429,6 +429,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Check your inbox for the verification email.'**
   String get checkInboxForVerificationMail;
+
+  /// No description provided for @newPasswordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Your new passwords do not match'**
+  String get newPasswordsDoNotMatch;
+
+  /// No description provided for @passwordChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Password Change'**
+  String get passwordChange;
+
+  /// No description provided for @passwordChangeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Your new password must be at least 8 characters long. It should contain a number, an uppercase letter and a lowercase letter.'**
+  String get passwordChangeDescription;
 }
 
 class _AppLocalizationsDelegate

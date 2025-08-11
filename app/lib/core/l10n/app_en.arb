@@ -55,5 +55,8 @@
     "yourUsers": "Your Users",
     "users": "Users",
     "emailSent": "E-Mail Sent",
-    "checkInboxForVerificationMail": "Check your inbox for the verification email."
+    "checkInboxForVerificationMail": "Check your inbox for the verification email.",
+    "newPasswordsDoNotMatch": "Your new passwords do not match",
+    "passwordChange": "Password Change",
+    "passwordChangeDescription": "Your new password must be at least 8 characters long. It should contain a number, an uppercase letter and a lowercase letter."
 }
