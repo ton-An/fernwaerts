@@ -110,7 +110,7 @@ class _LocationMarkers extends StatelessWidget {
       nextPoint,
     );
 
-    const int minDistanceInMeters = 10;
+    const int minDistanceInMeters = 5;
 
     return distance < minDistanceInMeters;
   }
