@@ -1,37 +1,23 @@
 import 'package:equatable/equatable.dart';
 import 'package:location_history/core/failures/failure.dart';
-import 'package:location_history/features/authentication/domain/models/user.dart';
 
 abstract class AccountSettingsState extends Equatable {
   const AccountSettingsState();
-}
-
-class AccountSettingsLoading extends AccountSettingsState {
-  const AccountSettingsLoading();
 
   @override
   List<Object> get props => [];
 }
 
-abstract class AccountSettingsLoaded extends AccountSettingsState {
-  const AccountSettingsLoaded({required this.user});
-
-  final User user;
-
-  @override
-  List<Object> get props => [user];
+class AccountSettingsInitial extends AccountSettingsState {
+  const AccountSettingsInitial();
 }
 
-class AccountSettingsInitialLoaded extends AccountSettingsLoaded {
-  const AccountSettingsInitialLoaded({required super.user});
+class SendingVerificationEmail extends AccountSettingsState {
+  const SendingVerificationEmail();
 }
 
-class SendingVerificationEmail extends AccountSettingsLoaded {
-  const SendingVerificationEmail({required super.user});
-}
-
-class VerificationEmailSent extends AccountSettingsLoaded {
-  const VerificationEmailSent({required super.user});
+class VerificationEmailSent extends AccountSettingsState {
+  const VerificationEmailSent();
 }
 
 class AccountSettingsFailure extends AccountSettingsState {

@@ -465,6 +465,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your password has been changed successfully.'**
   String get passwordChangeSuccess;
+
+  /// No description provided for @newEmailAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'New E-Mail Address'**
+  String get newEmailAddress;
 }
 
 class _AppLocalizationsDelegate

@@ -203,4 +203,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get passwordChangeSuccess =>
       'Your password has been changed successfully.';
+
+  @override
+  String get newEmailAddress => 'New E-Mail Address';
 }

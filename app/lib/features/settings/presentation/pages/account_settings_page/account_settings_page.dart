@@ -30,15 +30,6 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
     super.initState();
     _emailController = TextEditingController();
 
-    final AccountSettingsState accountSettingsState =
-        context.read<AccountSettingsCubit>().state;
-
-    if (accountSettingsState is AccountSettingsLoaded) {
-      final String email = accountSettingsState.user.email;
-
-      _emailController.text = email;
-    }
-
     _emailController.addListener(() {
       setState(() {});
     });
@@ -49,10 +40,6 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
     return BlocConsumer<AccountSettingsCubit, AccountSettingsState>(
       listener: (BuildContext context, AccountSettingsState state) {
-        if (state is AccountSettingsInitialLoaded) {
-          _emailController.text = state.user.email;
-        }
-
         if (state is VerificationEmailSent) {
           context.read<InAppNotificationCubit>().sendSuccessNotification(
             title: AppLocalizations.of(context)!.emailSent,
@@ -79,7 +66,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
             const MediumGap(),
 
             CustomCupertinoTextField(
-              hint: AppLocalizations.of(context)!.email,
+              hint: AppLocalizations.of(context)!.newEmailAddress,
               controller: _emailController,
               onChanged: (_) {},
             ),
@@ -98,7 +85,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
               color: theme.colors.primary,
               isLoading: state is SendingVerificationEmail,
               onPressed:
-                  _allowSave(state: state, newEmail: _emailController.text)
+                  _allowSave()
                       ? () {
                         context.read<AccountSettingsCubit>().updateEmail(
                           _emailController.text..trim(),
@@ -119,14 +106,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
     );
   }
 
-  bool _allowSave({
-    required AccountSettingsState state,
-    required String newEmail,
-  }) {
-    if (state is AccountSettingsLoaded) {
-      return state.user.email != newEmail;
-    }
-
-    return true;
+  bool _allowSave() {
+    return _emailController.text.isNotEmpty;
   }
 }

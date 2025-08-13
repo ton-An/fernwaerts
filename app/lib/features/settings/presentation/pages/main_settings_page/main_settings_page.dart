@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location_history/core/dependency_injector.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
@@ -8,7 +7,6 @@ import 'package:location_history/core/widgets/small_text_button.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_out.dart';
 import 'package:location_history/features/authentication/presentation/pages/authentication_page/authentication_page.dart';
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
-import 'package:location_history/features/settings/presentation/cubits/account_settings_cubit/account_settings_cubit.dart';
 import 'package:location_history/features/settings/presentation/pages/account_settings_page/account_settings_page.dart';
 import 'package:location_history/features/settings/presentation/pages/debug_page.dart';
 import 'package:location_history/features/settings/presentation/pages/user_management_settings_page/user_management_settings_page.dart';
@@ -27,24 +25,12 @@ part '_version_tag.dart';
     - [ ] Find right style for list items and buttons
     - [ ] Implement proper log out flow
 */
-class MainSettingsPage extends StatefulWidget {
+class MainSettingsPage extends StatelessWidget {
   /// {@macro settings_page}
   const MainSettingsPage({super.key});
 
   static const String pageName = 'settings';
   static const String route = '${MapPage.route}/$pageName';
-
-  @override
-  State<MainSettingsPage> createState() => _MainSettingsPageState();
-}
-
-class _MainSettingsPageState extends State<MainSettingsPage> {
-  @override
-  void initState() {
-    super.initState();
-
-    context.read<AccountSettingsCubit>().loadUserData();
-  }
 
   @override
   Widget build(BuildContext context) {
