@@ -25,6 +25,7 @@ import 'package:location_history/features/in_app_notification/presentation/widge
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
 import 'package:location_history/features/settings/presentation/cubits/account_settings_cubit/account_settings_cubit.dart';
+import 'package:location_history/features/settings/presentation/cubits/password_change_cubit/password_change_cubit.dart';
 import 'package:location_history/features/settings/presentation/page_routes/settings_slide_transition_page.dart';
 import 'package:location_history/features/settings/presentation/pages/account_settings_page/account_settings_page.dart';
 import 'package:location_history/features/settings/presentation/pages/debug_page.dart';
@@ -222,6 +223,10 @@ class _MainAppState extends State<MainApp> {
                               BlocProvider(
                                 create:
                                     (context) => getIt<AccountSettingsCubit>(),
+                              ),
+                              BlocProvider(
+                                create:
+                                    (context) => getIt<PasswordChangeCubit>(),
                               ),
                             ],
                             child: SettingsPageWrapper(

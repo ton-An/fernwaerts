@@ -120,6 +120,7 @@ final PlatformException tPlatformException = PlatformException(code: 'bad');
 const String tUsername = 'Ted';
 const String tEmail = 'ted@example.com';
 const String tPassword = 'VeryStrongPassword';
+const String tOtp = '424242';
 
 const String tUserId = '1234567890';
 const String tDeviceId = '1234567890';

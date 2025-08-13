@@ -49,8 +49,10 @@ import 'package:location_history/features/map/presentation/cubits/map_cubit.dart
 import 'package:location_history/features/settings/data/datasources/settings_remote_data_source.dart';
 import 'package:location_history/features/settings/data/repository_implementations/settings_repository_impl.dart';
 import 'package:location_history/features/settings/domain/repositories/settings_repository.dart';
+import 'package:location_history/features/settings/domain/usecases/change_password.dart';
 import 'package:location_history/features/settings/domain/usecases/update_email.dart';
 import 'package:location_history/features/settings/presentation/cubits/account_settings_cubit/account_settings_cubit.dart';
+import 'package:location_history/features/settings/presentation/cubits/password_change_cubit/password_change_cubit.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
@@ -262,9 +264,15 @@ void registerSettingsDependencies() {
   getIt.registerFactory(
     () => AccountSettingsCubit(updateEmailUsecase: getIt()),
   );
+  getIt.registerFactory(
+    () => PasswordChangeCubit(changePasswordUseCase: getIt()),
+  );
 
   //-- Domain -- //
   getIt.registerLazySingleton(() => UpdateEmail(settingsRepository: getIt()));
+  getIt.registerLazySingleton(
+    () => ChangePassword(settingsRepository: getIt()),
+  );
 
   //-- Data -- //
   getIt.registerLazySingleton<SettingsRepository>(
