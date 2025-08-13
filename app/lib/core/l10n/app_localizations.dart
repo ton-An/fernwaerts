@@ -447,6 +447,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your new password must be at least 8 characters long. It should contain a number, an uppercase letter and a lowercase letter.'**
   String get passwordChangeDescription;
+
+  /// No description provided for @otpPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'OTP Password'**
+  String get otpPassword;
+
+  /// No description provided for @success.
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get success;
+
+  /// No description provided for @passwordChangeSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Your password has been changed successfully.'**
+  String get passwordChangeSuccess;
 }
 
 class _AppLocalizationsDelegate

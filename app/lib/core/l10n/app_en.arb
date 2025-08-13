@@ -58,5 +58,8 @@
     "checkInboxForVerificationMail": "Check your inbox for the verification email.",
     "newPasswordsDoNotMatch": "Your new passwords do not match",
     "passwordChange": "Password Change",
-    "passwordChangeDescription": "Your new password must be at least 8 characters long. It should contain a number, an uppercase letter and a lowercase letter."
+    "passwordChangeDescription": "Your new password must be at least 8 characters long. It should contain a number, an uppercase letter and a lowercase letter.",
+    "otpPassword": "OTP Password",
+    "success": "Success",
+    "passwordChangeSuccess": "Your password has been changed successfully."
 }

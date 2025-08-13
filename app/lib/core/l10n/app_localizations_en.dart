@@ -193,4 +193,14 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get passwordChangeDescription =>
       'Your new password must be at least 8 characters long. It should contain a number, an uppercase letter and a lowercase letter.';
+
+  @override
+  String get otpPassword => 'OTP Password';
+
+  @override
+  String get success => 'Success';
+
+  @override
+  String get passwordChangeSuccess =>
+      'Your password has been changed successfully.';
 }
