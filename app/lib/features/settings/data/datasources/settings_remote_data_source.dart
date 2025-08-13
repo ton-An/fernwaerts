@@ -17,6 +17,22 @@ abstract class SettingsRemoteDataSource {
   /// - [AuthException]
   /// - [ClientException]
   Future<void> updateEmail({required String newEmail});
+
+  /// Updates the password of the current user.
+  ///
+  /// Parameters:
+  /// - [String]: new password to update to
+  /// - [String?]: otp token (if required)
+  ///
+  /// Throws:
+  /// - TODO: TBD exceptions
+  Future<void> updatePassword({required String newPassword, String? otp});
+
+  /// Requests an OTP token for re-authentication.
+  ///
+  /// Throws:
+  /// - TODO: TBD exceptions
+  Future<void> requestOtp();
 }
 
 class SettingsRemoteDataSourceImpl extends SettingsRemoteDataSource {
@@ -29,5 +45,24 @@ class SettingsRemoteDataSourceImpl extends SettingsRemoteDataSource {
     final SupabaseClient supabaseClient = await supabaseHandler.client;
 
     await supabaseClient.auth.updateUser(UserAttributes(email: newEmail));
+  }
+
+  @override
+  Future<void> requestOtp() async {
+    final SupabaseClient supabaseClient = await supabaseHandler.client;
+
+    await supabaseClient.auth.reauthenticate();
+  }
+
+  @override
+  Future<void> updatePassword({
+    required String newPassword,
+    String? otp,
+  }) async {
+    final SupabaseClient supabaseClient = await supabaseHandler.client;
+
+    await supabaseClient.auth.updateUser(
+      UserAttributes(password: newPassword, nonce: otp),
+    );
   }
 }
