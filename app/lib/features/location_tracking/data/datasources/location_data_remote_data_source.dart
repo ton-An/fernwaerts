@@ -40,7 +40,8 @@ class LocationDataRemoteDataSourceImpl implements LocationDataRemoteDataSource {
         (driftDatabase.select(driftDatabase.locations)..where(
           (location) =>
               location.timestamp.isBetween(Variable(start), Variable(end)),
-        )).watch();
+        )..orderBy([
+          (location) => OrderingTerm.asc( location.timestamp),])).watch();
 
     return locationStream;
   }
