@@ -66,5 +66,6 @@
     "inviteNewUser": "Invite New User",
     "inviteNewUserDescription": "Invite a new user via email.",
     "usersEmail": "Users Email",
-    "invite": "Invite"
+    "invite": "Invite",
+    "inviteNewUserSuccess": "The user has been invited via email."
 }

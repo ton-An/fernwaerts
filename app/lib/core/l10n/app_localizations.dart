@@ -495,6 +495,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Invite'**
   String get invite;
+
+  /// No description provided for @inviteNewUserSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'The user has been invited via email.'**
+  String get inviteNewUserSuccess;
 }
 
 class _AppLocalizationsDelegate

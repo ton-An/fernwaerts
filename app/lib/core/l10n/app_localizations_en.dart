@@ -218,4 +218,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get invite => 'Invite';
+
+  @override
+  String get inviteNewUserSuccess => 'The user has been invited via email.';
 }
