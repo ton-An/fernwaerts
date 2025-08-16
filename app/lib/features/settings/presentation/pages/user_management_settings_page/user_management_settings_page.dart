@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/features/authentication/domain/models/user.dart';
+import 'package:location_history/features/settings/presentation/pages/invite_new_user_settings_page/invite_new_user_settings_page.dart';
 import 'package:location_history/features/settings/presentation/pages/main_settings_page/main_settings_page.dart';
 import 'package:location_history/features/settings/presentation/widgets/settings_list_view.dart';
 import 'package:location_history/features/settings/presentation/widgets/settings_section_title.dart';
@@ -28,7 +30,9 @@ class UserManagementSettingsPage extends StatelessWidget {
 
         SubSettingsPageLink(
           title: AppLocalizations.of(context)!.createNewUser,
-          onPressed: () {},
+          onPressed: () {
+            context.push(InviteNewUserSettingsPage.route);
+          },
         ),
 
         const XXMediumGap(),
