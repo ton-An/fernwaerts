@@ -6,8 +6,9 @@ create type public.app_role as enum ('admin', 'user');
 create table
   public.users (
     id uuid references auth.users not null primary key,
-    username text not null,
-    email text not null unique
+    username text,
+    email text not null unique,
+    is_set_up boolean not null default false
   );
 
 alter table public.users enable row level security;
