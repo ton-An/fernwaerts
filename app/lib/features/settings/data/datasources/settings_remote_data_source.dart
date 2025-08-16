@@ -25,14 +25,26 @@ abstract class SettingsRemoteDataSource {
   /// - [String?]: otp token (if required)
   ///
   /// Throws:
-  /// - TODO: TBD exceptions
+  /// - [AuthException]
+  /// - [ClientException]
   Future<void> updatePassword({required String newPassword, String? otp});
 
   /// Requests an OTP token for re-authentication.
   ///
   /// Throws:
-  /// - TODO: TBD exceptions
+  /// - [AuthException]
+  /// - [ClientException]
   Future<void> requestOtp();
+
+  /// Invites a new user to the app.
+  ///
+  /// Parameters:
+  /// - [String]: email address of the new user
+  ///
+  /// Throws:
+  /// - [FunctionException]
+  /// - [ClientException]
+  Future<void> inviteNewUser({required String email});
 }
 
 class SettingsRemoteDataSourceImpl extends SettingsRemoteDataSource {
@@ -63,6 +75,16 @@ class SettingsRemoteDataSourceImpl extends SettingsRemoteDataSource {
 
     await supabaseClient.auth.updateUser(
       UserAttributes(password: newPassword, nonce: otp),
+    );
+  }
+
+  @override
+  Future<void> inviteNewUser({required String email}) async {
+    final SupabaseClient supabaseClient = await supabaseHandler.client;
+
+    await supabaseClient.functions.invoke(
+      'invite_user',
+      body: {'email': email},
     );
   }
 }

@@ -122,4 +122,42 @@ class SettingsRepositoryImpl extends SettingsRepository {
       return Left(failure);
     }
   }
+
+  @override
+  Future<Either<Failure, None>> inviteNewUser({required String email}) async {
+    try {
+      await settingsRemoteDataSource.inviteNewUser(email: email);
+
+      return const Right(None());
+    } on FunctionException catch (functionException) {
+      final String errorMessage = functionException.details['message'];
+      final String errorCode = functionException.details['code'];
+
+      if (errorMessage.contains('Error sending invite email')) {
+        return const Left(EmailServerConfigFailure());
+      }
+
+      if (errorCode == 'validation_failed') {
+        return const Left(EmailAddressInvalidFailure());
+      }
+
+      if (errorCode == 'email_exists') {
+        return const Left(EmailAddressTakenFailure());
+      }
+
+      if (errorCode == 'over_email_send_rate_limit') {
+        return const Left(EmailRateLimitFailure());
+      }
+
+      rethrow;
+    } on ClientException catch (clientException, stackTrace) {
+      final Failure failure = repositoryFailureHandler.clientExceptionConverter(
+        clientException: clientException,
+        stackTrace: stackTrace,
+        serverType: ServerType.supabase,
+      );
+
+      return Left(failure);
+    }
+  }
 }
