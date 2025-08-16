@@ -5,7 +5,7 @@
     "day": "Day",
     "week": "Week",
     "month": "Month",
-    "year": "Year",    
+    "year": "Year",
     "activityTypeWalking": "Walking",
     "activityTypeCycling": "Cycling",
     "activityTypeRunning": "Running",
@@ -25,7 +25,7 @@
     "signOut": "Sign Out",
     "username": "Username",
     "email": "E-Mail",
-    "password": "Password",    
+    "password": "Password",
     "confirmPassword": "Confirm Password",
     "getStarted": "Get Started",
     "createAdmin": "Create Admin",
@@ -62,5 +62,9 @@
     "otpPassword": "OTP Password",
     "success": "Success",
     "passwordChangeSuccess": "Your password has been changed successfully.",
-    "newEmailAddress": "New E-Mail Address"
+    "newEmailAddress": "New E-Mail Address",
+    "inviteNewUser": "Invite New User",
+    "inviteNewUserDescription": "Invite a new user via email.",
+    "usersEmail": "Users Email",
+    "invite": "Invite"
 }

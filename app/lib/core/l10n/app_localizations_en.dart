@@ -206,4 +206,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get newEmailAddress => 'New E-Mail Address';
+
+  @override
+  String get inviteNewUser => 'Invite New User';
+
+  @override
+  String get inviteNewUserDescription => 'Invite a new user via email.';
+
+  @override
+  String get usersEmail => 'Users Email';
+
+  @override
+  String get invite => 'Invite';
 }

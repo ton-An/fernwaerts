@@ -133,6 +133,26 @@ class _MainAppState extends State<MainApp> {
     router = GoRouter(
       debugLogDiagnostics: true,
       initialLocation: SplashPage.route,
+      redirect: (context, state) {
+        if (state.uri.path == '/sign-up-invite') {
+          if (splashCubit.state is SplashAuthenticationComplete) {
+            Future.delayed(Duration(seconds: 1), () {
+              inAppNotificationCubit.sendFailureNotification(
+                const AlreadySignedInFailure(),
+              );
+            });
+
+            return lastRoute;
+          }
+
+          if
+          lastRoute = state.uri.path;
+          return '/tbd';
+        }
+
+        lastRoute = state.uri.path;
+        return state.fullPath;
+      },
       routes: <RouteBase>[
         ShellRoute(
           builder:
@@ -153,7 +173,7 @@ class _MainAppState extends State<MainApp> {
                   path: SplashPage.pageName,
                   builder:
                       (context, state) => BlocProvider(
-                        create: (context) => getIt<SplashCubit>(),
+                        create: (context) => splashCubit,
                         child: const SplashPage(),
                       ),
                 ),

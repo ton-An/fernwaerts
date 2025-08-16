@@ -471,6 +471,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New E-Mail Address'**
   String get newEmailAddress;
+
+  /// No description provided for @inviteNewUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite New User'**
+  String get inviteNewUser;
+
+  /// No description provided for @inviteNewUserDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite a new user via email.'**
+  String get inviteNewUserDescription;
+
+  /// No description provided for @usersEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Users Email'**
+  String get usersEmail;
+
+  /// No description provided for @invite.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite'**
+  String get invite;
 }
 
 class _AppLocalizationsDelegate
