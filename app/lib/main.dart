@@ -8,10 +8,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location_history/core/dependency_injector.dart';
+import 'package:location_history/core/failures/authentication/already_signed_in_failure.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/core/page_routes/dialog_page.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_cubit.dart';
 import 'package:location_history/features/authentication/presentation/cubits/splash_cubit/splash_cubit.dart';
+import 'package:location_history/features/authentication/presentation/cubits/splash_cubit/splash_states.dart';
 import 'package:location_history/features/authentication/presentation/pages/authentication_page/authentication_page.dart';
 import 'package:location_history/features/authentication/presentation/pages/splash_page.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_cubit.dart';
@@ -25,10 +27,12 @@ import 'package:location_history/features/in_app_notification/presentation/widge
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
 import 'package:location_history/features/settings/presentation/cubits/account_settings_cubit/account_settings_cubit.dart';
+import 'package:location_history/features/settings/presentation/cubits/invite_new_user_cubit/invite_new_user_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/password_change_cubit/password_change_cubit.dart';
 import 'package:location_history/features/settings/presentation/page_routes/settings_slide_transition_page.dart';
 import 'package:location_history/features/settings/presentation/pages/account_settings_page/account_settings_page.dart';
 import 'package:location_history/features/settings/presentation/pages/debug_page.dart';
+import 'package:location_history/features/settings/presentation/pages/invite_new_user_settings_page/invite_new_user_settings_page.dart';
 import 'package:location_history/features/settings/presentation/pages/main_settings_page/main_settings_page.dart';
 import 'package:location_history/features/settings/presentation/pages/password_change_settings_page/password_change_settings_page.dart';
 import 'package:location_history/features/settings/presentation/pages/user_management_settings_page/user_management_settings_page.dart';
@@ -82,10 +86,17 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   late final GoRouter router;
+  late final InAppNotificationCubit inAppNotificationCubit;
+  late final SplashCubit splashCubit;
 
   @override
   void initState() {
     super.initState();
+
+    inAppNotificationCubit = getIt<InAppNotificationCubit>();
+    splashCubit = getIt<SplashCubit>();
+
+    splashCubit.determineInitialAppState();
 
     _initRouter();
   }
@@ -108,9 +119,7 @@ class _MainAppState extends State<MainApp> {
         ),
       ),
       child: MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (context) => getIt<InAppNotificationCubit>()),
-        ],
+        providers: [BlocProvider(create: (context) => inAppNotificationCubit)],
         child: CupertinoApp.router(
           onGenerateTitle:
               (BuildContext context) => AppLocalizations.of(context)!.appName,
@@ -130,13 +139,15 @@ class _MainAppState extends State<MainApp> {
   }
 
   void _initRouter() {
+    String lastRoute = '/';
+
     router = GoRouter(
       debugLogDiagnostics: true,
       initialLocation: SplashPage.route,
       redirect: (context, state) {
         if (state.uri.path == '/sign-up-invite') {
           if (splashCubit.state is SplashAuthenticationComplete) {
-            Future.delayed(Duration(seconds: 1), () {
+            Future.delayed(const Duration(seconds: 1), () {
               inAppNotificationCubit.sendFailureNotification(
                 const AlreadySignedInFailure(),
               );
@@ -145,7 +156,8 @@ class _MainAppState extends State<MainApp> {
             return lastRoute;
           }
 
-          if
+          // if (state.uri.fragment.)
+
           lastRoute = state.uri.path;
           return '/tbd';
         }
@@ -198,6 +210,7 @@ class _MainAppState extends State<MainApp> {
                     );
                   },
                 ),
+
                 GoRoute(
                   path: MapPage.pageName,
                   pageBuilder: (BuildContext context, GoRouterState state) {
@@ -248,6 +261,10 @@ class _MainAppState extends State<MainApp> {
                                 create:
                                     (context) => getIt<PasswordChangeCubit>(),
                               ),
+                              BlocProvider(
+                                create:
+                                    (context) => getIt<InviteNewUserCubit>(),
+                              ),
                             ],
                             child: SettingsPageWrapper(
                               pagePath: state.fullPath,
@@ -290,6 +307,16 @@ class _MainAppState extends State<MainApp> {
                                       const SettingsSlideTransitionPage(
                                         child: UserManagementSettingsPage(),
                                       ),
+                              routes: [
+                                GoRoute(
+                                  path: InviteNewUserSettingsPage.pageName,
+                                  pageBuilder:
+                                      (context, state) =>
+                                          const SettingsSlideTransitionPage(
+                                            child: InviteNewUserSettingsPage(),
+                                          ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
