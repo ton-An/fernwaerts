@@ -47,4 +47,17 @@ abstract class SettingsRepository {
   /// - [EmailRateLimitFailure]
   /// {@macro converted_client_exceptions}
   Future<Either<Failure, None>> requestOtp();
+
+  /// Invites a new user to the application.
+  ///
+  /// Parameters:
+  /// - [String]: email address of the new user
+  ///
+  /// Failures:
+  /// - [EmailServerConfigFailure]
+  /// - [EmailAddressInvalidFailure]
+  /// - [EmailAddressTakenFailure]
+  /// - [EmailRateLimitFailure]
+  /// {@macro converted_client_exceptions}
+  Future<Either<Failure, None>> inviteNewUser({required String email});
 }
