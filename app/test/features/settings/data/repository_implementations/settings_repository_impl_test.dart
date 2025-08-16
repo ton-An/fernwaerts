@@ -338,4 +338,158 @@ void main() {
       );
     });
   });
+
+  group('inviteNewUser', () {
+    setUp(() {
+      when(
+        () => mockSettingsRemoteDataSource.inviteNewUser(
+          email: any(named: 'email'),
+        ),
+      ).thenAnswer((_) async => Future.value());
+    });
+
+    test('should invite the new user and return none', () async {
+      // act
+      final result = await settingsRepositoryImpl.inviteNewUser(email: tEmail);
+
+      // assert
+      expect(result, const Right(None()));
+    });
+
+    test('should convert client exceptions to failures', () async {
+      // arrange
+      when(
+        () => mockSettingsRemoteDataSource.inviteNewUser(
+          email: any(named: 'email'),
+        ),
+      ).thenThrow(tTimeoutClientException);
+      when(
+        () => mockRepositoryFailureHandler.clientExceptionConverter(
+          clientException: any(named: 'clientException'),
+          stackTrace: any(named: 'stackTrace'),
+          serverType: any(named: 'serverType'),
+        ),
+      ).thenReturn(SendTimeoutFailure(serverType: ServerType.supabase));
+
+      // act
+      final result = await settingsRepositoryImpl.inviteNewUser(email: tEmail);
+
+      // assert
+      expect(result, Left(SendTimeoutFailure(serverType: ServerType.supabase)));
+      verify(
+        () => mockRepositoryFailureHandler.clientExceptionConverter(
+          clientException: tTimeoutClientException,
+          stackTrace: any(named: 'stackTrace'),
+          serverType: ServerType.supabase,
+        ),
+      );
+    });
+
+    test(
+      'should return a failure if there was an error sending the email',
+      () async {
+        // arrange
+        when(
+          () => mockSettingsRemoteDataSource.inviteNewUser(
+            email: any(named: 'email'),
+          ),
+        ).thenThrow(
+          const FunctionException(
+            status: 500,
+            details: {
+              'message': 'Error sending invite email',
+              'code': 'unexpected_failure',
+            },
+          ),
+        );
+
+        // act
+        final result = await settingsRepositoryImpl.inviteNewUser(
+          email: tEmail,
+        );
+
+        // assert
+        expect(result, const Left(EmailServerConfigFailure()));
+      },
+    );
+
+    test('should return a failure if the email address is invalid', () async {
+      // arrange
+      when(
+        () => mockSettingsRemoteDataSource.inviteNewUser(
+          email: any(named: 'email'),
+        ),
+      ).thenThrow(
+        const FunctionException(
+          status: 400,
+          details: {
+            'code': 'validation_failed',
+            'message': 'Invalid email address',
+          },
+        ),
+      );
+
+      // act
+      final result = await settingsRepositoryImpl.inviteNewUser(email: tEmail);
+
+      // assert
+      expect(result, const Left(EmailAddressInvalidFailure()));
+    });
+
+    test(
+      'should return a failure if the email address is already in use',
+      () async {
+        // arrange
+        when(
+          () => mockSettingsRemoteDataSource.inviteNewUser(
+            email: any(named: 'email'),
+          ),
+        ).thenThrow(
+          const FunctionException(
+            status: 400,
+            details: {
+              'code': 'email_exists',
+              'message': 'Email address already in use',
+            },
+          ),
+        );
+
+        // act
+        final result = await settingsRepositoryImpl.inviteNewUser(
+          email: tEmail,
+        );
+
+        // assert
+        expect(result, const Left(EmailAddressTakenFailure()));
+      },
+    );
+
+    test(
+      'should return a failure if the email rate limit is exceeded',
+      () async {
+        // arrange
+        when(
+          () => mockSettingsRemoteDataSource.inviteNewUser(
+            email: any(named: 'email'),
+          ),
+        ).thenThrow(
+          const FunctionException(
+            status: 400,
+            details: {
+              'code': 'over_email_send_rate_limit',
+              'message': 'Email rate limit exceeded',
+            },
+          ),
+        );
+
+        // act
+        final result = await settingsRepositoryImpl.inviteNewUser(
+          email: tEmail,
+        );
+
+        // assert
+        expect(result, const Left(EmailRateLimitFailure()));
+      },
+    );
+  });
 }
