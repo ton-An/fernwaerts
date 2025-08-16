@@ -28,7 +28,6 @@ class LocationDataRepositoryImpl extends LocationDataRepository {
 
   @override
   Future<void> saveMovementSegment({required MovementSegment movementSegment}) {
-    // TODO: implement saveMovementSegment
     throw UnimplementedError();
   }
 }

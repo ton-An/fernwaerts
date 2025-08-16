@@ -16,6 +16,7 @@ extension ActivityTypeLocalizationExtension on ActivityType {
   }
 }
 
+// ignore: unused_element
 class _ActivityListItem extends StatelessWidget {
   const _ActivityListItem({required this.activity});
 
