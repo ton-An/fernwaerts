@@ -412,6 +412,8 @@ services:
       # TODO: Allow configuring VERIFY_JWT per function. This PR might help: https://github.com/supabase/cli/pull/786
       VERIFY_JWT: "${FUNCTIONS_VERIFY_JWT}"
       POWERSYNC_URL: ${POWERSYNC_URL}
+      SITE_URL: ${SITE_URL}
+
     command: ["start", "--main-service", "/home/deno/functions/main"]
 
   analytics:
