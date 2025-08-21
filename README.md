@@ -21,6 +21,12 @@
   </a>
 </p>
 
+<div align="center">
+  <a href="https://fernwaerts.eu">Homepage</a> • 
+  <a href="https://sites.plane.so/issues/fbbc1b7173c046db81991272b8f43259">Planning</a> • 
+  <a href="https://www.fernwaerts.eu/docs">Documentation</a>
+</div>
+
 ---
 
 ### 📸 Screenshots
