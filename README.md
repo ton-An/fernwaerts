@@ -14,7 +14,7 @@
     <img src="https://codecov.io/gh/ton-An/fernwaerts/branch/main/graph/badge.svg?token=X5F77OEGXS"/>
   </a>
   <a href="LICENSE">
-    <img src="https://img.shields.io/badge/License-MIT-blue.svg" />
+    <img src="https://img.shields.io/badge/License-AGPL V3-blue.svg" />
   </a>
   <a href="https://github.com/ton-An/fernwaerts/stargazers">
     <img src="https://img.shields.io/github/stars/ton-An/fernwaerts?style=social" />
