@@ -21,42 +21,56 @@ Deno.serve(async (request) => {
   }
 
   const siteUrl = Deno.env.get("SITE_URL");
+  const apiUrl = Deno.env.get("API_EXTERNAL_URL");
 
   if (!siteUrl) {
     throw new Error("Missing SITE_URL environment variable");
   }
 
+  if (!apiUrl) {
+    throw new Error("Missing API_EXTERNAL_URL environment variable");
+  }
+
   const { email: newUserEmail } = await request.json();
 
+  return await inviteNewUser(supabase, siteUrl, apiUrl, newUserEmail);
+});
+
+async function deleteUser(supabase: SupabaseClient, userId: string) {
+  await supabase.from("users").delete().eq("id", userId);
+
+  await supabase.auth.admin.deleteUser(
+    userId,
+  );
+}
+
+async function inviteNewUser(
+  supabase: SupabaseClient,
+  siteUrl: string,
+  apiUrl: string,
+  email: string,
+) {
+  console.log("inviteNewUser", email);
+  const redirectTo = `${siteUrl}/sign-up-invite?serverUrl=${apiUrl}`;
+
   const { data: newUser, error: inviteError } = await supabase.auth.admin
-    .inviteUserByEmail(newUserEmail, {
-      redirectTo: `${siteUrl}/sign-up-invite`,
+    .inviteUserByEmail(email, {
+      redirectTo: redirectTo,
     });
+
+  console.log("newUser", newUser);
+  console.log("inviteError", inviteError);
 
   if (inviteError) {
     const errorCode = inviteError?.code;
 
     if (errorCode == "email_exists") {
-      const user = await getUserByEmail(supabase, newUserEmail);
+      const user = await getUserByEmail(supabase, email);
 
       if (user && !user.is_setup) {
-        const { error: reinviteNewUserError } = await supabase.auth.resend({
-          type: "signup",
-          email: newUserEmail!,
-        });
+        await deleteUser(supabase, user.id);
 
-        if (reinviteNewUserError) {
-          return new Response(
-            JSON.stringify({
-              code: reinviteNewUserError?.code,
-              message: reinviteNewUserError?.message,
-            }),
-            {
-              status: reinviteNewUserError?.status ?? 500,
-              headers: { "Content-Type": "application/json" },
-            },
-          );
-        }
+        return await inviteNewUser(supabase, siteUrl, apiUrl, email);
       }
     }
 
@@ -78,7 +92,7 @@ Deno.serve(async (request) => {
     status: 200,
     headers: { "Content-Type": "application/json" },
   });
-});
+}
 
 async function isAdmin(supabase: SupabaseClient, userId?: string) {
   const { data: roles } = await supabase

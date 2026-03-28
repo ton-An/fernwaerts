@@ -20,6 +20,7 @@ import 'package:location_history/features/authentication/data/repository_impleme
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/authentication/domain/repositories/device_repository.dart';
 import 'package:location_history/features/authentication/domain/repositories/permissions_repository.dart';
+import 'package:location_history/features/authentication/domain/usecases/accept_invite.dart';
 import 'package:location_history/features/authentication/domain/usecases/has_server_connection_saved.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_app.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_new_supabase_connection.dart';
@@ -30,6 +31,7 @@ import 'package:location_history/features/authentication/domain/usecases/sign_in
 import 'package:location_history/features/authentication/domain/usecases/sign_out.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_up_initial_admin.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_cubit.dart';
+import 'package:location_history/features/authentication/presentation/cubits/invite_cubit/invite_cubit.dart';
 import 'package:location_history/features/authentication/presentation/cubits/splash_cubit/splash_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_expansion_cubit/calendar_expansion_cubit.dart';
@@ -122,6 +124,14 @@ void registerAuthenticationDependencies() {
       talker: getIt(),
     ),
   );
+  getIt.registerFactory(
+    () => InviteCubit(
+      initializeNewSupabaseConnection: getIt(),
+      acceptInviteUsecase: getIt(),
+      requestNecessaryPermissions: getIt(),
+      initBackgroundLocationTracking: getIt(),
+    ),
+  );
 
   // -- Domain -- //
   getIt.registerLazySingleton(
@@ -149,7 +159,6 @@ void registerAuthenticationDependencies() {
   getIt.registerLazySingleton(
     () => InitializeApp(authenticationRepository: getIt()),
   );
-
   getIt.registerLazySingleton(
     () => RequestNecessaryPermissions(permissionsRepository: getIt()),
   );
@@ -159,6 +168,7 @@ void registerAuthenticationDependencies() {
       deviceRepository: getIt(),
     ),
   );
+  getIt.registerLazySingleton(() => const AcceptInvite());
 
   // -- Data -- //
   getIt.registerLazySingleton<AuthenticationRepository>(

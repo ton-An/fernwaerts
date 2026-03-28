@@ -12,9 +12,11 @@ import 'package:location_history/core/failures/authentication/already_signed_in_
 import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/core/page_routes/dialog_page.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_cubit.dart';
+import 'package:location_history/features/authentication/presentation/cubits/invite_cubit/invite_cubit.dart';
 import 'package:location_history/features/authentication/presentation/cubits/splash_cubit/splash_cubit.dart';
 import 'package:location_history/features/authentication/presentation/cubits/splash_cubit/splash_states.dart';
 import 'package:location_history/features/authentication/presentation/pages/authentication_page/authentication_page.dart';
+import 'package:location_history/features/authentication/presentation/pages/invite_page/invite_page.dart';
 import 'package:location_history/features/authentication/presentation/pages/splash_page.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_expansion_cubit/calendar_expansion_cubit.dart';
@@ -145,7 +147,11 @@ class _MainAppState extends State<MainApp> {
       debugLogDiagnostics: true,
       initialLocation: SplashPage.route,
       redirect: (context, state) {
-        if (state.uri.path == '/sign-up-invite') {
+        if (state.uri.path.startsWith('/sign-up-invite')) {
+          print(state.fullPath);
+          print(state.uri.queryParameters);
+          print(state.uri.fragment);
+
           if (splashCubit.state is SplashAuthenticationComplete) {
             Future.delayed(const Duration(seconds: 1), () {
               inAppNotificationCubit.sendFailureNotification(
@@ -156,14 +162,14 @@ class _MainAppState extends State<MainApp> {
             return lastRoute;
           }
 
-          // if (state.uri.fragment.)
+          final serverUrl = state.uri.queryParameters['serverUrl']!;
 
-          lastRoute = state.uri.path;
-          return '/tbd';
+          lastRoute = '${InvitePage.route}?serverUrl=$serverUrl';
+          return lastRoute;
         }
 
-        lastRoute = state.uri.path;
-        return state.fullPath;
+        lastRoute = state.uri.toString();
+        return lastRoute;
       },
       routes: <RouteBase>[
         ShellRoute(
@@ -206,6 +212,19 @@ class _MainAppState extends State<MainApp> {
                           ),
                         ],
                         child: const AuthenticationPage(),
+                      ),
+                    );
+                  },
+                ),
+                GoRoute(
+                  path: InvitePage.pageName,
+                  pageBuilder: (BuildContext context, GoRouterState state) {
+                    final serverUrl = state.uri.queryParameters['serverUrl']!;
+
+                    return NoTransitionPage(
+                      child: BlocProvider(
+                        create: (context) => getIt<InviteCubit>(),
+                        child: InvitePage(serverUrl: serverUrl),
                       ),
                     );
                   },

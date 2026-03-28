@@ -15,6 +15,11 @@ import 'package:location_history/features/settings/data/datasources/settings_rem
 import 'package:location_history/features/settings/domain/repositories/settings_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+/*
+    To-Do:
+    - [ ] handle internal server errors for functions (functionException.details is a string in this case)
+*/
+
 class SettingsRepositoryImpl extends SettingsRepository {
   SettingsRepositoryImpl({
     required this.settingsRemoteDataSource,

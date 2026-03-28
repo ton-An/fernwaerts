@@ -36,6 +36,12 @@ class SignOut {
     return _stopTracking();
   }
 
+  // Future<Either<Failure, None>> disposeAuth() async {
+  //   await authenticationRepository.disposeAuth();
+
+  //   return const Right(None());
+  // }
+
   Future<Either<Failure, None>> _stopTracking() async {
     await locationTrackingRepository.stopTracking();
 

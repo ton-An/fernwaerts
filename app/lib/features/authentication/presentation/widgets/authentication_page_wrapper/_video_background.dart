@@ -1,4 +1,4 @@
-part of 'authentication_page.dart';
+part of 'authentication_page_wrapper.dart';
 
 class _VideoBackground extends StatefulWidget {
   const _VideoBackground();

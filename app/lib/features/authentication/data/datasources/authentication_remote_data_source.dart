@@ -218,6 +218,8 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
 
     final Session? currentSession = supabaseClient.auth.currentSession;
 
+    print(supabaseClient.auth.currentUser);
+
     talker.info('Has session: ${currentSession?.accessToken != 'null'}');
     talker.info('Expires at: ${currentSession?.expiresAt}');
 
