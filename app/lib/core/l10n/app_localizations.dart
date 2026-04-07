@@ -501,6 +501,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The user has been invited via email.'**
   String get inviteNewUserSuccess;
+
+  /// No description provided for @acceptInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept Invite'**
+  String get acceptInvite;
+
+  /// No description provided for @acceptInviteDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your username and password to accept the invite.'**
+  String get acceptInviteDescription;
+
+  /// No description provided for @accept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get accept;
 }
 
 class _AppLocalizationsDelegate

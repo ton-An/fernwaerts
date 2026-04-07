@@ -67,5 +67,8 @@
     "inviteNewUserDescription": "Invite a new user via email.",
     "usersEmail": "Users Email",
     "invite": "Invite",
-    "inviteNewUserSuccess": "The user has been invited via email."
+    "inviteNewUserSuccess": "The user has been invited via email.",
+    "acceptInvite": "Accept Invite",
+    "acceptInviteDescription": "Enter your username and password to accept the invite.",
+    "accept": "Accept"
 }

@@ -221,4 +221,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get inviteNewUserSuccess => 'The user has been invited via email.';
+
+  @override
+  String get acceptInvite => 'Accept Invite';
+
+  @override
+  String get acceptInviteDescription =>
+      'Enter your username and password to accept the invite.';
+
+  @override
+  String get accept => 'Accept';
 }
