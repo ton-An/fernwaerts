@@ -67,18 +67,28 @@ class _YearsGrid extends StatelessWidget {
       final DateTime startOfYear = DTU.firstDayOfYear(yearDate);
       final DateTime endOfYear = DTU.lastDayOfYear(yearDate);
 
-      if (_isYearFullySelected(
+      if (_endAndStartInYear(
         startOfYear,
         endOfYear,
+        calendarDateSelectionState,
+      )) {
+        return BigCalendarCellType.partlySelected;
+      }
+
+      if (_isStartDateInYear(yearDate, calendarDateSelectionState)) {
+        return BigCalendarCellType.fullySelected;
+      } else if (_isEndDateInYear(yearDate, calendarDateSelectionState)) {
+        return BigCalendarCellType.fullySelected;
+      } else if (_isEndDateInYearAndStartUnselected(
+        yearDate,
         calendarDateSelectionState,
       )) {
         return BigCalendarCellType.fullySelected;
       }
 
-      if (_isStartDateInYear(yearDate, calendarDateSelectionState)) {
-        return BigCalendarCellType.partlySelected;
-      } else if (_isEndDateInYearAndStartUnselected(
-        yearDate,
+      if (_isYearFullySelected(
+        startOfYear,
+        endOfYear,
         calendarDateSelectionState,
       )) {
         return BigCalendarCellType.partlySelected;
@@ -88,6 +98,21 @@ class _YearsGrid extends StatelessWidget {
     return BigCalendarCellType.unselected;
   }
 
+  bool _endAndStartInYear(
+    DateTime startOfYear,
+    DateTime endOfYear,
+    CalendarRangeSelected calendarRangeSelectedState,
+  ) {
+    return calendarRangeSelectedState.startDate != null &&
+            calendarRangeSelectedState.endDate != null &&
+            (calendarRangeSelectedState.startDate!.isAfter(startOfYear) &&
+                calendarRangeSelectedState.endDate!.isBefore(endOfYear)) ||
+        (calendarRangeSelectedState.startDate!.isAfter(startOfYear) &&
+            calendarRangeSelectedState.endDate!.isAtSameMomentAs(endOfYear)) ||
+        (calendarRangeSelectedState.startDate!.isAtSameMomentAs(startOfYear) &&
+            calendarRangeSelectedState.endDate!.isBefore(endOfYear));
+  }
+
   bool _isYearFullySelected(
     DateTime startOfYear,
     DateTime endOfYear,
@@ -95,28 +120,36 @@ class _YearsGrid extends StatelessWidget {
   ) {
     return calendarRangeSelectedState.startDate != null &&
         calendarRangeSelectedState.endDate != null &&
-        calendarRangeSelectedState.startDate!.day == startOfYear.day &&
-        calendarRangeSelectedState.startDate!.month == startOfYear.month &&
-        calendarRangeSelectedState.startDate!.year == startOfYear.year &&
-        calendarRangeSelectedState.endDate!.day == endOfYear.day &&
-        calendarRangeSelectedState.endDate!.month == endOfYear.month &&
-        calendarRangeSelectedState.endDate!.year == endOfYear.year;
+        (calendarRangeSelectedState.startDate!.isBefore(startOfYear) ||
+            calendarRangeSelectedState.startDate!.isAtSameMomentAs(
+              startOfYear,
+            )) &&
+        (calendarRangeSelectedState.endDate!.isAfter(endOfYear) ||
+            calendarRangeSelectedState.endDate!.isAtSameMomentAs(endOfYear));
   }
 
   bool _isStartDateInYear(
-    DateTime monthDate,
+    DateTime yearDate,
     CalendarRangeSelected calendarRangeSelectedState,
   ) {
     return calendarRangeSelectedState.startDate != null &&
-        calendarRangeSelectedState.startDate!.year == monthDate.year;
+        calendarRangeSelectedState.startDate!.year == yearDate.year;
+  }
+
+  bool _isEndDateInYear(
+    DateTime yearDate,
+    CalendarRangeSelected calendarRangeSelectedState,
+  ) {
+    return calendarRangeSelectedState.endDate != null &&
+        calendarRangeSelectedState.endDate!.year == yearDate.year;
   }
 
   bool _isEndDateInYearAndStartUnselected(
-    DateTime monthDate,
+    DateTime yearDate,
     CalendarRangeSelected calendarRangeSelectedState,
   ) {
-    return calendarRangeSelectedState.endDate == null &&
+    return calendarRangeSelectedState.startDate == null &&
         calendarRangeSelectedState.endDate != null &&
-        calendarRangeSelectedState.endDate!.year == monthDate.year;
+        calendarRangeSelectedState.endDate!.year == yearDate.year;
   }
 }
