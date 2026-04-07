@@ -68,18 +68,28 @@ class _MonthsGrid extends StatelessWidget {
       final DateTime startOfMonth = DTU.firstDayOfMonth(monthDate);
       final DateTime endOfMonth = DTU.lastDayOfMonth(monthDate);
 
-      if (_isMonthFullySelected(
+      if (_endAndStartInMonth(
         startOfMonth,
         endOfMonth,
+        calendarDateSelectionState,
+      )) {
+        return BigCalendarCellType.partlySelected;
+      }
+
+      if (_isStartDateInMonth(monthDate, calendarDateSelectionState)) {
+        return BigCalendarCellType.fullySelected;
+      } else if (_isEndDateInMonth(monthDate, calendarDateSelectionState)) {
+        return BigCalendarCellType.fullySelected;
+      } else if (_isEndDateInMonthAndStartUnselected(
+        monthDate,
         calendarDateSelectionState,
       )) {
         return BigCalendarCellType.fullySelected;
       }
 
-      if (_isStartDateInMonth(monthDate, calendarDateSelectionState)) {
-        return BigCalendarCellType.partlySelected;
-      } else if (_isEndDateInMonthAndStartUnselected(
-        monthDate,
+      if (_isMonthFullySelected(
+        startOfMonth,
+        endOfMonth,
         calendarDateSelectionState,
       )) {
         return BigCalendarCellType.partlySelected;
@@ -89,6 +99,21 @@ class _MonthsGrid extends StatelessWidget {
     return BigCalendarCellType.unselected;
   }
 
+  bool _endAndStartInMonth(
+    DateTime startOfMonth,
+    DateTime endOfMonth,
+    CalendarRangeSelected calendarRangeSelectedState,
+  ) {
+    return calendarRangeSelectedState.startDate != null &&
+            calendarRangeSelectedState.endDate != null &&
+            (calendarRangeSelectedState.startDate!.isAfter(startOfMonth) &&
+                calendarRangeSelectedState.endDate!.isBefore(endOfMonth)) ||
+        (calendarRangeSelectedState.startDate!.isAfter(startOfMonth) &&
+            calendarRangeSelectedState.endDate!.isAtSameMomentAs(endOfMonth)) ||
+        (calendarRangeSelectedState.startDate!.isAtSameMomentAs(startOfMonth) &&
+            calendarRangeSelectedState.endDate!.isBefore(endOfMonth));
+  }
+
   bool _isMonthFullySelected(
     DateTime startOfMonth,
     DateTime endOfMonth,
@@ -96,12 +121,12 @@ class _MonthsGrid extends StatelessWidget {
   ) {
     return calendarRangeSelectedState.startDate != null &&
         calendarRangeSelectedState.endDate != null &&
-        calendarRangeSelectedState.startDate!.day == startOfMonth.day &&
-        calendarRangeSelectedState.startDate!.month == startOfMonth.month &&
-        calendarRangeSelectedState.startDate!.year == startOfMonth.year &&
-        calendarRangeSelectedState.endDate!.day == endOfMonth.day &&
-        calendarRangeSelectedState.endDate!.month == endOfMonth.month &&
-        calendarRangeSelectedState.endDate!.year == endOfMonth.year;
+        (calendarRangeSelectedState.startDate!.isBefore(startOfMonth) ||
+            calendarRangeSelectedState.startDate!.isAtSameMomentAs(
+              startOfMonth,
+            )) &&
+        (calendarRangeSelectedState.endDate!.isAfter(endOfMonth) ||
+            calendarRangeSelectedState.endDate!.isAtSameMomentAs(endOfMonth));
   }
 
   bool _isStartDateInMonth(
@@ -111,6 +136,15 @@ class _MonthsGrid extends StatelessWidget {
     return calendarRangeSelectedState.startDate != null &&
         calendarRangeSelectedState.startDate!.month == monthDate.month &&
         calendarRangeSelectedState.startDate!.year == monthDate.year;
+  }
+
+  bool _isEndDateInMonth(
+    DateTime monthDate,
+    CalendarRangeSelected calendarRangeSelectedState,
+  ) {
+    return calendarRangeSelectedState.endDate != null &&
+        calendarRangeSelectedState.endDate!.month == monthDate.month &&
+        calendarRangeSelectedState.endDate!.year == monthDate.year;
   }
 
   bool _isEndDateInMonthAndStartUnselected(

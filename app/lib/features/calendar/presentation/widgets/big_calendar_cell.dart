@@ -51,6 +51,7 @@ class BigCalendarCell extends StatelessWidget {
             );
           },
           child: Container(
+            margin: EdgeInsets.all(theme.spacing.xTiny),
             decoration: BoxDecoration(
               color: _getBackgroundColor(cellType, theme),
               borderRadius: BorderRadius.circular(theme.radii.small),
