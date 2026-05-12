@@ -12,6 +12,9 @@ Repository-wide guidance for coding agents.
 - Do not revert user changes or unrelated local modifications.
 - Keep changes scoped to the task.
 - Prefer `rg` for search.
+- For Dart and Flutter package, dependency, `pub`, hot reload/restart, and
+  package-source inspection tasks, use the Dart MCP server before shell commands
+  or web search.
 - Use structured tools/parsers for structured files when practical.
 - Do not commit secrets, Supabase keys, local env files, dependency folders,
   build output, local volumes, or device-specific artifacts.
