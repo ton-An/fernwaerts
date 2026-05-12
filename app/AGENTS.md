@@ -4,23 +4,25 @@ Guidance for coding agents working in `app/`.
 
 ## Hard Rules
 
+- Check `git status` from the repository root before editing.
 - Preserve this flow:
   `Widget/Page -> Cubit -> Use Case -> Repository Contract -> Repository Impl -> Data Source`.
 - Cubits call use cases, not repositories or data sources.
 - Use cases contain business logic and depend on repository contracts only.
 - Repository implementations map exceptions into `Failure` values.
 - Data sources own platform, storage, HTTP, Supabase, and PowerSync calls.
-- Feature code stays in `lib/features/<feature>/` unless it is genuinely
-  shared. Shared infrastructure belongs in `lib/core/`.
+- Feature code stays in `lib/features/<feature>/` unless it is genuinely shared.
+  Shared infrastructure belongs in `lib/core/`.
 - Do not manually edit generated files.
 - Do not log location data, tokens, server keys, credentials, or device IDs.
 
 ## Style
 
-- Follow `analysis_options.yaml`: 80-column formatting, single quotes, const/final
-  preferences, sorted constructors, and typed public APIs.
-- Generated files include `*.freezed.dart`, `*.g.dart`, Drift outputs, and generated
-  asset/icon files; update sources and regenerate instead of editing them.
+- Follow `analysis_options.yaml`: 80-column formatting, single quotes,
+  const/final preferences, sorted constructors, and typed public APIs.
+- Generated files include `*.freezed.dart`, `*.g.dart`, Drift outputs, generated
+  localizations, and generated asset/icon files. Update source files and
+  regenerate instead of editing generated output.
 
 ## Layout
 
@@ -56,8 +58,7 @@ Mirror these files when adding similar code:
   - `part` declarations after imports
   - `pageName` and `route` on the page class
   - page doc lists major internal components
-- Private page parts:
-  `lib/features/map/presentation/pages/map_page/_map.dart`,
+- Private page parts: `lib/features/map/presentation/pages/map_page/_map.dart`,
   `lib/features/map/presentation/pages/map_page/_modal.dart`,
   `lib/features/map/presentation/pages/map_page/_location_markers.dart`
   - `part of '<page_file>.dart';` at top
@@ -94,7 +95,7 @@ Only add canonical references when the file is the pattern agents should copy.
 Use labels when relevant: `Parameters:`, `Returns:`, `Failures:`, `Throws:`,
 `Emits:`, `States:`.
 
-## Workflows
+## Change Workflows
 
 Use case:
 
@@ -135,28 +136,26 @@ Synced data:
 
 ## Verification
 
-- Domain-only change: matching use case/model tests.
-- Repository/data source change: matching repository/data source tests plus
-  `flutter analyze`.
-- Routing, DI, or shared core change: `flutter analyze` plus broader
-  `flutter test`.
-- Generated schema/model change: build generation, then analyzer/tests.
-- UI-only change: analyzer and relevant widget tests if present.
+Run commands from `app/`. Prefer focused checks before broad ones.
+
+- Start with the narrowest command that exercises the change. Broaden when the
+  affected surface crosses feature, routing, DI, persistence, or sync
+  boundaries.
+- Domain-only: matching use case/model tests.
+- Repository/data source: matching tests; add `flutter analyze` when contracts,
+  imports, or failure mapping changed.
+- Routing, DI, shared core, or generated schema/model: run generation when
+  needed, `flutter analyze`, and relevant feature tests. Use broader
+  `flutter test` when shared behavior is affected.
+- UI-only: `flutter analyze` and relevant widget tests if present.
 - Use existing `mocktail` mocks, fixtures, and `test/features/...` layout when
   adding tests.
 - If verification cannot run, report the skipped command and reason.
 
-## Commands
-
-Run from `app/`:
-
 ```bash
 flutter pub get
-flutter pub run build_runner build --delete-conflicting-outputs
+dart run build_runner build --delete-conflicting-outputs
 dart format <files>
-flutter analyze
-flutter test
-flutter run --flavor Development
 ```
 
 Focused test examples:
@@ -164,6 +163,12 @@ Focused test examples:
 ```bash
 flutter test test/features/authentication/domain/usecases/sign_in_test.dart
 flutter test test/features/location_tracking/domain/usecases/get_locations_by_date_test.dart
+```
+
+```bash
+flutter analyze
+flutter test
+flutter run --flavor Development
 ```
 
 ## Naming
