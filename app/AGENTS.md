@@ -15,6 +15,13 @@ Guidance for coding agents working in `app/`.
 - Do not manually edit generated files.
 - Do not log location data, tokens, server keys, credentials, or device IDs.
 
+## Style
+
+- Follow `analysis_options.yaml`: 80-column formatting, single quotes, const/final
+  preferences, sorted constructors, and typed public APIs.
+- Generated files include `*.freezed.dart`, `*.g.dart`, Drift outputs, and generated
+  asset/icon files; update sources and regenerate instead of editing them.
+
 ## Layout
 
 - `lib/main.dart`: app entry point and routes.
@@ -116,6 +123,7 @@ Cubit-backed screen:
 5. Register injectable Cubits in `dependency_injector.dart`.
 6. Wire navigable routes in `lib/main.dart`.
 7. Document Cubit states and public methods with emitted states.
+8. Cover state changes with Cubit/widget tests when behavior changes.
 
 Synced data:
 
@@ -134,6 +142,8 @@ Synced data:
   `flutter test`.
 - Generated schema/model change: build generation, then analyzer/tests.
 - UI-only change: analyzer and relevant widget tests if present.
+- Use existing `mocktail` mocks, fixtures, and `test/features/...` layout when
+  adding tests.
 - If verification cannot run, report the skipped command and reason.
 
 ## Commands
