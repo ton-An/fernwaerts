@@ -4,6 +4,12 @@ part of 'map_page.dart';
   To-Do:
     - [ ] Improve arrowOffsetDirection as it doesn't seem accurate over long distances
 */
+
+/// The core map component of the [MapPage].
+///
+/// It renders the base map, listens to [MapCubit] for loaded locations, converts
+/// those locations into map points, and delegates marker rendering to
+/// [_LocationMarkers].
 class _Map extends StatefulWidget {
   const _Map();
 
@@ -44,12 +50,14 @@ class _MapState extends State<_Map> {
     );
   }
 
+  /// Loads the package name used as the map tile user agent.
   Future<void> _setAppPackageName() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
     appPackageName = packageInfo.packageName;
   }
 
+  /// Updates the displayed map points or reports map-loading failures.
   void _mapCubitListener(BuildContext context, MapState mapState) {
     if (mapState is MapLocationsLoaded) {
       final points = <LatLng>[];

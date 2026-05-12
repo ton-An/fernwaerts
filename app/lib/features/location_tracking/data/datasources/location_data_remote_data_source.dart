@@ -3,27 +3,29 @@ import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/drift/drift_database.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
 
+/// Remote data source contract for synced location history data.
 abstract class LocationDataRemoteDataSource {
-  /// Save location
+  /// Saves a recorded location to the synced local database.
   ///
   /// Parameters:
-  /// - [Location] the location to save
+  /// - location: The [Location] to save
   Future<void> saveLocation({required Location location});
 
-  /// Get locations by date range
+  /// Watches locations recorded within a date range.
   ///
   /// Parameters:
-  /// - [DateTime] the start date of the range
-  /// - [DateTime] the end date of the range
+  /// - start: Start [DateTime] of the range
+  /// - end: End [DateTime] of the range
   ///
   /// Returns:
-  /// - Stream of Lists of [Location]s within the date range
+  /// - [Stream] of [List]s of [Location]s within the range
   Future<Stream<List<Location>>> getLocationsByDate({
     required DateTime start,
     required DateTime end,
   });
 }
 
+/// Drift/PowerSync implementation of [LocationDataRemoteDataSource].
 class LocationDataRemoteDataSourceImpl implements LocationDataRemoteDataSource {
   const LocationDataRemoteDataSourceImpl({required this.supabaseHandler});
 
@@ -37,11 +39,15 @@ class LocationDataRemoteDataSourceImpl implements LocationDataRemoteDataSource {
     final DriftAppDatabase driftDatabase = await supabaseHandler.driftDatabase;
 
     Stream<List<Location>> locationStream =
-        (driftDatabase.select(driftDatabase.locations)..where(
-          (location) =>
-              location.timestamp.isBetween(Variable(start), Variable(end)),
-        )..orderBy([
-          (location) => OrderingTerm.asc( location.timestamp),])).watch();
+        (driftDatabase.select(driftDatabase.locations)
+              ..where(
+                (location) => location.timestamp.isBetween(
+                  Variable(start),
+                  Variable(end),
+                ),
+              )
+              ..orderBy([(location) => OrderingTerm.asc(location.timestamp)]))
+            .watch();
 
     return locationStream;
   }

@@ -2,32 +2,33 @@ import 'package:location_history/core/failures/storage/database_read_failure.dar
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
 import 'package:location_history/features/location_tracking/domain/models/movement_segment.dart';
 
+/// Repository contract for persisted location history data.
 abstract class LocationDataRepository {
   const LocationDataRepository();
 
-  /// Save location
+  /// Saves a recorded location.
   ///
   /// Parameters:
-  /// - [Location] the location to save
+  /// - location: The [Location] to save
   Future<void> saveLocation({required Location location});
 
-  /// Get locations by date range
+  /// Gets locations recorded within a date range.
   ///
   /// Parameters:
-  /// - [DateTime] the start date of the range
-  /// - [DateTime] the end date of the range
+  /// - start: Start [DateTime] of the range
+  /// - end: End [DateTime] of the range
   ///
   /// Returns:
-  /// - Stream of Lists of [Location]s within the date range
+  /// - [Stream] of [List]s of [Location]s within the range
   Future<Stream<List<Location>>> getLocationsByDate({
     required DateTime start,
     required DateTime end,
   });
 
-  /// Saves a movement segment
+  /// Saves a movement segment.
   ///
   /// Parameters:
-  /// - [MovementSegment] the segment to save
+  /// - movementSegment: The [MovementSegment] to save
   ///
   /// Failures:
   /// - [DatabaseReadFailure]

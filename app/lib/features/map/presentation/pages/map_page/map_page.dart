@@ -25,31 +25,26 @@ part '_single_location_marker.dart';
 part '_time_gradient_legend.dart';
 
 /// {@template map_page}
-/// The main page of the application, displaying the map, calendar, and location history modal.
+/// The main map page of the application.
 ///
-/// This page integrates several key features:
-/// - **Map View**: Displays a geographical map using `flutter_map` (via `_Map`).
-///   - Shows location markers for the selected date range (via `_LocationMarkers`).
-///   - Includes attribution and time gradient legends (via `_AttributionLegend`, `_TimeGradientLegend`).
-/// - **Calendar**: Allows users to select dates or date ranges for viewing location history (via [CalendarComposite]).
-/// - **Location History Modal**: A draggable bottom sheet that displays detailed location history (via `_Modal` which wraps [LocationHistoryModal]).
+/// This page displays the selected location history on an interactive map,
+/// coordinates date selection through [CalendarComposite], and shows the
+/// selected history in a draggable [LocationHistoryModal].
 ///
-/// State Management:
-/// - Listens to [CalendarDateSelectionCubit] to load location data via [MapCubit] when the selected date changes.
-/// - [MapCubit] manages fetching and providing location data to the map and modal.
+/// State management:
+/// - Listens to [CalendarDateSelectionCubit] and requests location data from
+///   [MapCubit] when the selected date or range changes.
+/// - [MapCubit] provides the map and modal with locations for the active
+///   selection.
 ///
-/// Initialization:
-/// - On `initState`, it triggers an initial load of locations based on the current state of [CalendarDateSelectionCubit].
-///
-/// Sub-components:
+/// The page uses several internal components:
 /// - [_Map]: The core map widget.
 /// - [_LocationMarkers]: Renders markers on the map.
 /// - [_SingleLocationMarker]: Represents an individual marker.
-/// - [_AttributionLegend]: Displays map attribution information.
-/// - [_TimeGradientLegend]: Shows a legend for the time-based color gradient of location markers.
-/// - [_LegendContainer]: A common container for map legends.
-/// - [CalendarComposite]: The interactive calendar widget.
-/// - [_Modal]: Manages the presentation of the [LocationHistoryModal].
+/// - [_Modal]: Hosts the draggable location history modal and map legends.
+/// - [_AttributionLegend]: Displays map attribution.
+/// - [_TimeGradientLegend]: Displays the time-based marker color legend.
+/// - [_LegendContainer]: Provides shared legend styling.
 /// {@endtemplate}
 class MapPage extends StatefulWidget {
   /// {@macro map_page}
@@ -67,8 +62,9 @@ class _MapPageState extends State<MapPage> {
   void initState() {
     super.initState();
 
-    final CalendarDateSelectionState dateSelectionState =
-        context.read<CalendarDateSelectionCubit>().state;
+    final CalendarDateSelectionState dateSelectionState = context
+        .read<CalendarDateSelectionCubit>()
+        .state;
 
     _loadLocations(dateSelectionState);
   }
@@ -78,12 +74,13 @@ class _MapPageState extends State<MapPage> {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
     return BlocListener<CalendarDateSelectionCubit, CalendarDateSelectionState>(
-      listener: (
-        BuildContext context,
-        CalendarDateSelectionState dateSelectionState,
-      ) {
-        _loadLocations(dateSelectionState);
-      },
+      listener:
+          (
+            BuildContext context,
+            CalendarDateSelectionState dateSelectionState,
+          ) {
+            _loadLocations(dateSelectionState);
+          },
       child: Stack(
         children: [
           const Positioned.fill(child: _Map()),

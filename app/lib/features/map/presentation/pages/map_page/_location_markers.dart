@@ -1,8 +1,14 @@
 part of 'map_page.dart';
 
+/// The marker and polyline layer for the [MapPage].
+///
+/// It converts chronological map points into colored markers and connecting
+/// polylines. Marker colors are interpolated across the configured timeline
+/// gradient.
 class _LocationMarkers extends StatelessWidget {
   const _LocationMarkers({required this.points});
 
+  /// The chronological location points to render.
   final List<LatLng> points;
 
   @override
@@ -24,6 +30,7 @@ class _LocationMarkers extends StatelessWidget {
     );
   }
 
+  /// Builds markers and connecting polylines for the current [points].
   (List<Marker>, List<Polyline>) _generateMarkers({
     required List<Color> gradientColors,
   }) {
@@ -50,13 +57,9 @@ class _LocationMarkers extends StatelessWidget {
         i / points.length,
       );
 
-      final bool isNextPointIdentical =
-          isLastPoint
-              ? true
-              : _isNextPointIdentical(
-                point: points[i],
-                nextPoint: points[i + 1],
-              );
+      final bool isNextPointIdentical = isLastPoint
+          ? true
+          : _isNextPointIdentical(point: points[i], nextPoint: points[i + 1]);
 
       markers.add(
         _SingleLocationMarker(
@@ -82,6 +85,7 @@ class _LocationMarkers extends StatelessWidget {
     return (markers, polylines);
   }
 
+  /// Calculates the rotation angle from [point] to [nextPoint].
   double _calculateAngleToNextPoint({
     required LatLng point,
     required LatLng nextPoint,
@@ -98,6 +102,7 @@ class _LocationMarkers extends StatelessWidget {
     return (bearingRad + 2 * pi) % (2 * pi);
   }
 
+  /// Whether [nextPoint] is close enough to [point] to hide the direction arrow.
   bool _isNextPointIdentical({
     required LatLng point,
     required LatLng nextPoint,
@@ -115,6 +120,7 @@ class _LocationMarkers extends StatelessWidget {
     return distance < minDistanceInMeters;
   }
 
+  /// Interpolates the timeline marker color for position [t].
   Color _interpolateColors(List<Color> colors, double t) {
     if (colors.length == 1 || t <= 0) return colors.first;
     if (t >= 1) return colors.last;
