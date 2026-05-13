@@ -35,6 +35,23 @@ Sensitive areas:
 
 Preserve per-user data isolation when changing any of these areas.
 
+## Git Workflow
+
+- Before creating a commit or pull request, inspect recent history and match the
+  repository's existing naming style.
+- Prefer the current repository style for commit messages and PR titles:
+  `[area] type(optional_scope): concise summary`
+- Use the top-level project area in brackets, for example `[app]`, `[docs]`,
+  `[supabase]`, or `[general]` for repository-level maintenance.
+- Use slash-separated combinations such as `[app/supabase]` when a change spans
+  multiple project areas.
+- Use the same change types already present in history, such as `feat`, `fix`,
+  `chore`, `test`, `refactor`, or combinations like `feat/chore` when the PR
+  genuinely spans multiple change types.
+- Do not add tool-specific prefixes such as `[codex]`.
+- Use short snake_case branch names, for example `pre_alpha_polish` or
+  `location_visualization`.
+
 ## Cross-Project Workflows
 
 Database schema change:
