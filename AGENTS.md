@@ -63,6 +63,8 @@ When editing any `AGENTS.md`:
 - Use the same change types already present in history, such as `feat`, `fix`,
   `chore`, `test`, `refactor`, or combinations like `feat/chore` when the PR
   genuinely spans multiple change types.
+- Split unrelated edits into separate commits. Each commit should contain one
+  coherent change, even when the edits were made during the same task.
 - Do not add tool-specific prefixes such as `[codex]`.
 - For commits authored by Codex, add the trailer
   `Co-authored-by: Codex <codex@openai.com>`.
