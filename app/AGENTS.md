@@ -83,7 +83,14 @@ Only add canonical references when the file is the pattern agents should copy.
 - Document public classes, widgets, Cubits, states, use cases, models,
   repository contracts, data source contracts, public methods, and non-obvious
   public fields.
-- Use `{@template name}` and `{@macro name}` for reusable class-level contracts.
+- Public class docs should define a named `{@template ...}` contract. Public
+  constructors for that class should use `{@macro ...}` for the same contract
+  instead of a separate summary.
+- Reuse `{@macro ...}` anywhere the same public contract would otherwise be
+  repeated.
+- Do not add docs for obvious members whose name, type, and initializer already
+  explain them. This includes simple constants, pass-through constructors, and
+  marker/base classes whose purpose is already fully expressed by their name.
 - Repository/data source behavior is documented on the abstract contract.
   Implementations add docs only for differing or non-obvious behavior.
 - Private code gets docs only for non-obvious behavior: workarounds, gestures,
