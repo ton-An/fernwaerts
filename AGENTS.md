@@ -55,11 +55,13 @@ When editing any `AGENTS.md`:
 - Before creating a commit or pull request, inspect recent history and match the
   repository's existing naming style.
 - Prefer the current repository style for commit messages and PR titles:
-  `[area] type(optional_scope): concise summary`
+  `[area] type(scope): concise summary`
 - Use the top-level project area in brackets, for example `[app]`, `[docs]`,
   `[supabase]`, or `[general]` for repository-level maintenance.
 - Use slash-separated combinations such as `[app/supabase]` when a change spans
   multiple project areas.
+- Use the scope for the affected feature or layer, for example
+  `[app] feat(settings): impl update password and request otp in repo and datasource`.
 - Use the same change types already present in history, such as `feat`, `fix`,
   `chore`, `test`, `refactor`, or combinations like `feat/chore` when the PR
   genuinely spans multiple change types.
