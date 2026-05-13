@@ -1,5 +1,9 @@
 part of 'map_page.dart';
 
+/// The draggable location history modal section of the [MapPage].
+///
+/// It hosts [LocationHistoryModal] and fades the map legends based on the
+/// current draggable sheet size.
 class _Modal extends StatefulWidget {
   const _Modal();
 
@@ -37,41 +41,38 @@ class _ModalState extends State<_Modal> {
         ],
         controller: _draggableScrollableController,
         snapAnimationDuration: theme.durations.medium,
-        builder:
-            (context, scrollController) => Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                AnimatedOpacity(
-                  opacity: _shouldDisplayLegend() ? 1 : 0,
-                  duration: theme.durations.short,
-                  curve: Curves.easeOut,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: theme.spacing.medium,
-                    ),
-                    child: const Row(
-                      children: [
-                        Expanded(child: _TimeGradientLegend()),
-                        MediumGap(),
-                        _AttributionLegend(),
-                      ],
-                    ),
-                  ),
+        builder: (context, scrollController) => Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            AnimatedOpacity(
+              opacity: _shouldDisplayLegend() ? 1 : 0,
+              duration: theme.durations.short,
+              curve: Curves.easeOut,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: theme.spacing.medium),
+                child: const Row(
+                  children: [
+                    Expanded(child: _TimeGradientLegend()),
+                    MediumGap(),
+                    _AttributionLegend(),
+                  ],
                 ),
-                const XSmallGap(),
-                Expanded(
-                  child: LocationHistoryModal(
-                    scrollController: scrollController,
-                    draggableScrollableController:
-                        _draggableScrollableController,
-                  ),
-                ),
-              ],
+              ),
             ),
+            const XSmallGap(),
+            Expanded(
+              child: LocationHistoryModal(
+                scrollController: scrollController,
+                draggableScrollableController: _draggableScrollableController,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
+  /// Whether the map legends should be visible above the modal.
   bool _shouldDisplayLegend() {
     if (!_draggableScrollableController.isAttached) {
       return true;

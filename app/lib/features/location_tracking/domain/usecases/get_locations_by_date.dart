@@ -4,12 +4,22 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 
-/* 
-  To-Do:
-    - [ ] add docs
-*/
-
+/// {@template get_locations_by_date}
+/// Gets the current user's locations within a date range.
+///
+/// Parameters:
+/// - start: Start [DateTime] of the range
+/// - end: End [DateTime] of the range
+///
+/// Returns:
+/// - [Stream] of [Either] values containing [Failure]s or [List]s of
+///   [Location]s in the range
+///
+/// Failures:
+/// - Failures from [AuthenticationRepository.getCurrentUserId]
+/// {@endtemplate}
 class GetLocationsByDate {
+  /// {@macro get_locations_by_date}
   const GetLocationsByDate({
     required this.authenticationRepository,
     required this.locationDataRepository,
@@ -18,6 +28,7 @@ class GetLocationsByDate {
   final AuthenticationRepository authenticationRepository;
   final LocationDataRepository locationDataRepository;
 
+  /// {@macro get_locations_by_date}
   Stream<Either<Failure, List<Location>>> call({
     required DateTime start,
     required DateTime end,
@@ -29,8 +40,8 @@ class GetLocationsByDate {
     required DateTime start,
     required DateTime end,
   }) async* {
-    final Either<Failure, String> userIdEither =
-        await authenticationRepository.getCurrentUserId();
+    final Either<Failure, String> userIdEither = await authenticationRepository
+        .getCurrentUserId();
 
     yield* userIdEither.fold(
       (Failure failure) async* {
