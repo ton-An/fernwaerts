@@ -57,7 +57,8 @@ Mirror these files when adding similar code:
   - imports in page file
   - `part` declarations after imports
   - `pageName` and `route` on the page class
-  - page doc lists major internal components
+  - page doc explains coordination between the page, Cubit, and major widgets
+    only when that behavior is not obvious
 - Private page parts: `lib/features/map/presentation/pages/map_page/_map.dart`,
   `lib/features/map/presentation/pages/map_page/_modal.dart`,
   `lib/features/map/presentation/pages/map_page/_location_markers.dart`
@@ -85,27 +86,27 @@ docs in the target file; match useful detail, not only file structure.
 
 ## Documentation
 
-- New public APIs must have useful Dart doc comments (`///`) that describe the
-  contract or non-obvious behavior, not just restate the symbol name.
-- Document public classes, widgets, Cubits, states, use cases, models,
-  repository contracts, data source contracts, public methods, and non-obvious
-  public fields.
-- Public class docs should define a named `{@template ...}` contract. Public
-  constructors for that class should use `{@macro ...}` for the same contract
-  instead of a separate summary.
-- Reuse `{@macro ...}` anywhere the same public contract would otherwise be
-  repeated.
-- Do not add docs for obvious members whose name, type, and initializer already
-  explain them. This includes simple constants, pass-through constructors, and
-  marker/base classes whose purpose is already fully expressed by their name.
+- Write docs only when they add information a reader cannot get from the name,
+  type, initializer, or surrounding pattern.
+- Public APIs that define behavior or architectural contracts should have Dart
+  doc comments (`///`). This usually includes Cubits, use cases, repository and
+  data source contracts, reusable widgets with interaction/state behavior, and
+  public methods with non-obvious effects.
+- Skip docs for simple state/value classes, enum values, pass-through
+  constructors, obvious fields, and marker/base classes when their purpose is
+  fully expressed by the code.
+- Use `{@template ...}` and `{@macro ...}` only when the same contract is
+  genuinely reused. Do not add template/macro boilerplate for one-off or
+  self-explanatory APIs.
 - Do not replace useful detailed docs with shorter summaries. Preserve existing
   explanations unless they are wrong, and improve them in place when needed.
 - Repository/data source behavior is documented on the abstract contract.
   Implementations add docs only for differing or non-obvious behavior.
 - Private code gets docs only for non-obvious behavior: workarounds, gestures,
   animations, sync, platform/API constraints, or privacy implications.
-- When touching undocumented existing code, document the public API you changed.
-  Do not mass-document unrelated code.
+- When touching undocumented existing code, document only the changed API when
+  the change introduces or clarifies a meaningful contract. Do not
+  mass-document nearby code.
 - Avoid comments that restate implementation.
 
 Use labels when the documented code has that kind of contract:
@@ -122,7 +123,8 @@ Use case:
 3. Return `Either<Failure, T>` for recoverable failures.
 4. Register in `lib/core/dependency_injector.dart`.
 5. Add/update focused tests under matching `test/features/...`.
-6. Add template/macro docs.
+6. Treat the signature as the primary contract. Add docs only for behavior,
+   failure semantics, or constraints that the signature cannot express.
 
 Repository behavior:
 
