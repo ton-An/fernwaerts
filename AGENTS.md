@@ -49,6 +49,8 @@ Preserve per-user data isolation when changing any of these areas.
   `chore`, `test`, `refactor`, or combinations like `feat/chore` when the PR
   genuinely spans multiple change types.
 - Do not add tool-specific prefixes such as `[codex]`.
+- For commits authored by Codex, add the trailer
+  `Co-authored-by: Codex <codex@openai.com>`.
 - Use short snake_case branch names, for example `pre_alpha_polish` or
   `location_visualization`.
 
