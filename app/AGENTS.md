@@ -95,9 +95,8 @@ docs in the target file; match useful detail, not only file structure.
 - Skip docs for simple state/value classes, enum values, pass-through
   constructors, obvious fields, and marker/base classes when their purpose is
   fully expressed by the code.
-- Use `{@template ...}` and `{@macro ...}` only when the same contract is
-  genuinely reused. Do not add template/macro boilerplate for one-off or
-  self-explanatory APIs.
+- For documented classes, use `{@template ...}` on the class and `{@macro ...}`
+  on documented constructors.
 - Do not replace useful detailed docs with shorter summaries. Preserve existing
   explanations unless they are wrong, and improve them in place when needed.
 - Repository/data source behavior is documented on the abstract contract.
@@ -111,8 +110,8 @@ docs in the target file; match useful detail, not only file structure.
 
 Use labels when the documented code has that kind of contract:
 `Parameters:`, `Returns:`, `Failures:`, `Throws:`, `Emits:`, `States:`,
-`State management:`, `Sub-components:`. Prefer labeled sections over unlabeled
-prose for those topics.
+`Sub-components:`. Prefer labeled sections over unlabeled prose for those
+topics.
 
 ## Change Workflows
 
