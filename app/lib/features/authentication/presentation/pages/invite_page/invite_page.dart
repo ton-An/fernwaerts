@@ -19,13 +19,21 @@ part '_invite_form.dart';
     - [ ] Maybe replace custom navigation with GoRouter
 */
 
+/// {@template invite_page}
+/// Page for completing an invite link on a known server.
+///
+/// The server URL is supplied by the route and passed to [_InviteForm]. The page
+/// listens to [InviteCubit] so failures can be shown as in-app notifications and
+/// successful acceptance can navigate to [MapPage].
+/// {@endtemplate}
 class InvitePage extends StatefulWidget {
-  /// {@macro authentication_page}
+  /// {@macro invite_page}
   const InvitePage({super.key, required this.serverUrl});
 
   static const String pageName = 'invite';
   static const String route = '/$pageName';
 
+  /// Server URL extracted from the invite route.
   final String serverUrl;
 
   @override

@@ -13,7 +13,15 @@ import 'package:location_history/features/location_tracking/domain/usecases/init
     - [ ] Add tests
 */
 
+/// {@template invite_cubit}
+/// Coordinates accepting an invite link for a configured self-hosted server.
+///
+/// The cubit initializes the provided server URL, accepts the invite with the
+/// chosen credentials, then requests platform permissions and starts background
+/// location tracking.
+/// {@endtemplate}
 class InviteCubit extends Cubit<InviteCubitState> {
+  /// {@macro invite_cubit}
   InviteCubit({
     required this.initializeNewSupabaseConnection,
     required this.acceptInviteUsecase,
@@ -28,6 +36,12 @@ class InviteCubit extends Cubit<InviteCubitState> {
 
   // log in with tokens temp (needs to log out on next restart)
 
+  /// Accepts an invite for [serverUrl] with a new [username] and [password].
+  ///
+  /// Emits:
+  /// - [InviteLoading] while the server and invite calls are running
+  /// - [InviteFailure] when server initialization, invite acceptance, or
+  ///   location tracking startup fails
   void acceptInvite({
     required String username,
     required String password,

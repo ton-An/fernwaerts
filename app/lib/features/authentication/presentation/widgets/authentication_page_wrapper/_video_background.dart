@@ -1,6 +1,14 @@
 part of 'authentication_page_wrapper.dart';
 
+/// {@template video_background}
+/// Cross-fades two muted video controllers to create a continuous background.
+///
+/// A single controller loop can show a visible jump at the asset boundary. This
+/// widget alternates between two controllers near the end of playback so the
+/// authentication shell keeps moving without exposing the restart.
+/// {@endtemplate}
 class _VideoBackground extends StatefulWidget {
+  /// {@macro video_background}
   const _VideoBackground();
 
   @override
