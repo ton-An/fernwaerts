@@ -64,6 +64,10 @@ Mirror these files when adding similar code:
   - `part of '<page_file>.dart';` at top
   - private widget names with leading underscores
   - short docs for non-obvious private parts/handlers
+- Complex presentation widget docs:
+  `lib/features/in_app_notification/presentation/widgets/in_app_notification/in_app_notification_widget.dart`
+  - explains user interactions and relevant internal components
+  - keeps useful detail when the widget behavior is not obvious
 - Multi-step use case:
   `lib/features/authentication/domain/usecases/initialize_app.dart`
 - Stream-returning use case:
@@ -76,10 +80,13 @@ Mirror these files when adding similar code:
   `lib/features/location_tracking/data/datasources/location_data_remote_data_source.dart`
 
 Only add canonical references when the file is the pattern agents should copy.
+Before documentation work, read the relevant canonical examples and existing
+docs in the target file; match useful detail, not only file structure.
 
 ## Documentation
 
-- New public APIs must have Dart doc comments (`///`).
+- New public APIs must have useful Dart doc comments (`///`) that describe the
+  contract or non-obvious behavior, not just restate the symbol name.
 - Document public classes, widgets, Cubits, states, use cases, models,
   repository contracts, data source contracts, public methods, and non-obvious
   public fields.
@@ -91,6 +98,8 @@ Only add canonical references when the file is the pattern agents should copy.
 - Do not add docs for obvious members whose name, type, and initializer already
   explain them. This includes simple constants, pass-through constructors, and
   marker/base classes whose purpose is already fully expressed by their name.
+- Do not replace useful detailed docs with shorter summaries. Preserve existing
+  explanations unless they are wrong, and improve them in place when needed.
 - Repository/data source behavior is documented on the abstract contract.
   Implementations add docs only for differing or non-obvious behavior.
 - Private code gets docs only for non-obvious behavior: workarounds, gestures,
@@ -99,8 +108,10 @@ Only add canonical references when the file is the pattern agents should copy.
   Do not mass-document unrelated code.
 - Avoid comments that restate implementation.
 
-Use labels when relevant: `Parameters:`, `Returns:`, `Failures:`, `Throws:`,
-`Emits:`, `States:`.
+Use labels when the documented code has that kind of contract:
+`Parameters:`, `Returns:`, `Failures:`, `Throws:`, `Emits:`, `States:`,
+`State management:`, `Sub-components:`. Prefer labeled sections over unlabeled
+prose for those topics.
 
 ## Change Workflows
 
