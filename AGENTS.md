@@ -35,6 +35,21 @@ Sensitive areas:
 
 Preserve per-user data isolation when changing any of these areas.
 
+## AGENTS.md Maintenance
+
+When editing any `AGENTS.md`:
+
+- Read the affected section and any scoped `AGENTS.md` that may override or
+  extend it.
+- When correcting bad guidance, delete or replace stale, duplicate, or
+  over-specific rules before adding new ones.
+- Prefer general, durable guidance over rules tailored to one mistake.
+- Keep rules short, actionable, and easy to verify in review.
+- Avoid duplication; update or replace existing guidance instead of adding a
+  second rule for the same concern.
+- Use canonical examples only when they are intended models for future work.
+- Avoid long exception lists.
+
 ## Git Workflow
 
 - Before creating a commit or pull request, inspect recent history and match the
