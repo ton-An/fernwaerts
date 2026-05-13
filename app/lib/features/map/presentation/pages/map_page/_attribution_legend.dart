@@ -1,6 +1,10 @@
 part of 'map_page.dart';
 
+/// {@template attribution_legend}
+/// Opens the OpenStreetMap attribution page from the map legend.
+/// {@endtemplate}
 class _AttributionLegend extends StatelessWidget {
+  /// {@macro attribution_legend}
   const _AttributionLegend();
 
   static const String attributionUrl =

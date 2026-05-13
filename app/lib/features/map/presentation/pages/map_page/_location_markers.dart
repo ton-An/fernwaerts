@@ -1,14 +1,19 @@
 part of 'map_page.dart';
 
+/// {@template location_markers}
 /// The marker and polyline layer for the [MapPage].
 ///
 /// It converts chronological map points into colored markers and connecting
-/// polylines. Marker colors are interpolated across the configured timeline
-/// gradient.
+/// polylines.
+///
+/// The marker color is interpolated across the timeline gradient and each
+/// marker, except the final point or points that are nearly identical, gets a
+/// direction arrow toward the next point.
+/// {@endtemplate}
 class _LocationMarkers extends StatelessWidget {
+  /// {@macro location_markers}
   const _LocationMarkers({required this.points});
 
-  /// The chronological location points to render.
   final List<LatLng> points;
 
   @override
@@ -30,7 +35,7 @@ class _LocationMarkers extends StatelessWidget {
     );
   }
 
-  /// Builds markers and connecting polylines for the current [points].
+  /// Builds the markers and path segments for the current [points].
   (List<Marker>, List<Polyline>) _generateMarkers({
     required List<Color> gradientColors,
   }) {
@@ -57,9 +62,13 @@ class _LocationMarkers extends StatelessWidget {
         i / points.length,
       );
 
-      final bool isNextPointIdentical = isLastPoint
-          ? true
-          : _isNextPointIdentical(point: points[i], nextPoint: points[i + 1]);
+      final bool isNextPointIdentical =
+          isLastPoint
+              ? true
+              : _isNextPointIdentical(
+                point: points[i],
+                nextPoint: points[i + 1],
+              );
 
       markers.add(
         _SingleLocationMarker(
@@ -92,13 +101,13 @@ class _LocationMarkers extends StatelessWidget {
   }) {
     const Distance distanceUtils = Distance();
 
-    // Distance.bearing() gives you the heading clockwise from North, in degrees.
+    // Distance.bearing returns the heading clockwise from north, in degrees.
     final double bearingDeg = distanceUtils.bearing(point, nextPoint);
 
-    // Convert degrees → radians for Transform.rotate
+    // Transform.rotate expects radians.
     final double bearingRad = bearingDeg * (pi / 180);
 
-    // Normalize to 0 .. 2π
+    // Keep the rotation in the range expected by the marker transform.
     return (bearingRad + 2 * pi) % (2 * pi);
   }
 

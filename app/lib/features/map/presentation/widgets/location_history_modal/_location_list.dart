@@ -1,6 +1,10 @@
 part of 'location_history_modal.dart';
 
+/// {@template location_list}
+/// Renders the modal body from the current [MapCubit] state.
+/// {@endtemplate}
 class _LocationList extends StatelessWidget {
+  /// {@macro location_list}
   const _LocationList({required this.scrollController});
 
   final ScrollController scrollController;

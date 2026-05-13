@@ -1,6 +1,10 @@
 part of 'map_page.dart';
 
+/// {@template time_gradient_legend}
+/// Displays the gradient used to color markers from earliest to latest.
+/// {@endtemplate}
 class _TimeGradientLegend extends StatelessWidget {
+  /// {@macro time_gradient_legend}
   const _TimeGradientLegend();
 
   @override

@@ -1,6 +1,10 @@
 part of 'map_page.dart';
 
+/// {@template single_location_marker}
+/// A timeline marker with an optional directional arrow to the next point.
+/// {@endtemplate}
 class _SingleLocationMarker extends Marker {
+  /// {@macro single_location_marker}
   _SingleLocationMarker({
     required super.point,
     required Offset? arrowOffset,

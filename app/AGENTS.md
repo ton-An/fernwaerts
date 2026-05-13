@@ -95,8 +95,8 @@ docs in the target file; match useful detail, not only file structure.
 - Skip docs for simple state/value classes, enum values, pass-through
   constructors, obvious fields, and marker/base classes when their purpose is
   fully expressed by the code.
-- For documented classes, use `{@template ...}` on the class and `{@macro ...}`
-  on documented constructors.
+- When any class, public or private, has a Dart doc comment, use
+  `{@template ...}` on the class and `{@macro ...}` on its constructor.
 - Do not replace useful detailed docs with shorter summaries. Preserve existing
   explanations unless they are wrong, and improve them in place when needed.
 - Repository/data source behavior is documented on the abstract contract.

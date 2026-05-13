@@ -25,26 +25,18 @@ part '_single_location_marker.dart';
 part '_time_gradient_legend.dart';
 
 /// {@template map_page}
-/// The main map page of the application.
-///
-/// This page displays the selected location history on an interactive map,
-/// coordinates date selection through [CalendarComposite], and shows the
-/// selected history in a draggable [LocationHistoryModal].
+/// Displays the selected location history on a map and in a draggable list.
 ///
 /// State management:
 /// - Listens to [CalendarDateSelectionCubit] and requests location data from
 ///   [MapCubit] when the selected date or range changes.
-/// - [MapCubit] provides the map and modal with locations for the active
-///   selection.
+/// - Shares the resulting [MapCubit] state between [_Map] and
+///   [LocationHistoryModal].
 ///
-/// The page uses several internal components:
-/// - [_Map]: The core map widget.
-/// - [_LocationMarkers]: Renders markers on the map.
-/// - [_SingleLocationMarker]: Represents an individual marker.
-/// - [_Modal]: Hosts the draggable location history modal and map legends.
-/// - [_AttributionLegend]: Displays map attribution.
-/// - [_TimeGradientLegend]: Displays the time-based marker color legend.
-/// - [_LegendContainer]: Provides shared legend styling.
+/// Sub-components:
+/// - [CalendarComposite]: Drives the active day or range.
+/// - [_Map]: Renders OpenStreetMap tiles, markers, and connecting paths.
+/// - [_Modal]: Hosts the draggable history list and map legends.
 /// {@endtemplate}
 class MapPage extends StatefulWidget {
   /// {@macro map_page}
@@ -62,9 +54,8 @@ class _MapPageState extends State<MapPage> {
   void initState() {
     super.initState();
 
-    final CalendarDateSelectionState dateSelectionState = context
-        .read<CalendarDateSelectionCubit>()
-        .state;
+    final CalendarDateSelectionState dateSelectionState =
+        context.read<CalendarDateSelectionCubit>().state;
 
     _loadLocations(dateSelectionState);
   }
@@ -74,13 +65,12 @@ class _MapPageState extends State<MapPage> {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
     return BlocListener<CalendarDateSelectionCubit, CalendarDateSelectionState>(
-      listener:
-          (
-            BuildContext context,
-            CalendarDateSelectionState dateSelectionState,
-          ) {
-            _loadLocations(dateSelectionState);
-          },
+      listener: (
+        BuildContext context,
+        CalendarDateSelectionState dateSelectionState,
+      ) {
+        _loadLocations(dateSelectionState);
+      },
       child: Stack(
         children: [
           const Positioned.fill(child: _Map()),
