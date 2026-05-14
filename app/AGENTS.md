@@ -101,6 +101,15 @@ docs in the target file; match useful detail, not only file structure.
   explanations unless they are wrong, and improve them in place when needed.
 - Repository/data source behavior is documented on the abstract contract.
   Implementations add docs only for differing or non-obvious behavior.
+- Document each API at its own abstraction level. Describe caller-visible
+  behavior, inputs, outputs, and guarantees; leave lower-level implementation
+  mechanisms to the layer that owns them unless they are part of the public
+  contract.
+- `Failures:` sections must list the concrete failure types a method can return,
+  followed by shared macros for default converted failures, such as
+  `{@macro converted_client_exceptions}` or
+  `{@macro converted_dio_exceptions}`. Do not use vague bullets like
+  `Any Failure returned by ...`.
 - Private code gets docs only for non-obvious behavior: workarounds, gestures,
   animations, sync, platform/API constraints, or privacy implications.
 - When touching undocumented existing code, document only the changed API when
