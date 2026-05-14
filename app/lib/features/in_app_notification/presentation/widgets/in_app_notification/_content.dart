@@ -14,7 +14,12 @@ class _ContentData {
   final String message;
 }
 
+/// {@template in_app_notification_content}
+/// Maps notification content to the icon, color, title, and message shown in
+/// the overlay.
+/// {@endtemplate}
 class _Content extends StatelessWidget {
+  /// {@macro in_app_notification_content}
   const _Content({required this.notification});
 
   final InAppNotification notification;

@@ -10,8 +10,16 @@ const double _kFlingVelocityScale = 1.0 / 300.0;
 
 enum _FlingGestureKind { none, forward, reverse }
 
-/// This is a cut down version of the Dismissible widget from Flutter.
+/// {@template in_app_notification_dismissible}
+/// Handles entry motion and upward swipe dismissal for a notification.
+///
+/// This is a cut-down version of Flutter's `Dismissible` that only supports
+/// vertical upward dismissal and also drives the notification's initial slide-in
+/// animation. When the entry animation completes it confirms delivery with
+/// [InAppNotificationCubit].
+/// {@endtemplate}
 class _Dismissible extends StatefulWidget {
+  /// {@macro in_app_notification_dismissible}
   const _Dismissible({
     required Key key,
     required this.child,

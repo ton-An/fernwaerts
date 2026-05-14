@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/widgets/fade_tap_detector.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
@@ -21,28 +20,23 @@ part '_fade_wrapper.dart';
 */
 
 /// {@template in_app_notification}
-/// A widget that displays an in-app notification, typically for errors or alerts.
+/// Displays one in-app notification overlay entry.
 ///
-/// This widget is designed to show a [Failure] object to the user.
-/// It includes the following components:
-/// - **Fade Transition**: Animates the appearance and disappearance of the notification.
-/// - **Dismissible Area**: Allows the user to swipe away the notification.
-/// - **Decoration**: Provides the visual styling (background, border, shadow).
-/// - **Content**: Displays the actual error message and icon.
-///
-/// A long press on the notification copies the failure details to the clipboard.
+/// Failure notifications show the failure name and message; success
+/// notifications show their provided title and message. A long press copies
+/// failure details to the clipboard. Success notifications do not copy anything.
 ///
 /// Sub-components:
-/// - [_FadeWrapper]: Handles the fade-in and fade-out animations.
-/// - [_Dismissible]: Manages the swipe-to-dismiss functionality.
-/// - [_Decoration]: Defines the visual appearance of the notification container.
-/// - [_Content]: Renders the icon and text of the failure message.
+/// - [_FadeWrapper]: Fades out the current entry before replacement.
+/// - [_Dismissible]: Handles entry motion and upward swipe dismissal.
+/// - [_Decoration]: Applies the translucent notification container styling.
+/// - [_Content]: Maps the notification model to icon, color, title, and message.
 /// {@endtemplate}
 class InAppNotificationWidget extends StatelessWidget {
   /// {@macro in_app_notification}
   const InAppNotificationWidget({required this.notification, super.key});
 
-  /// The [Failure] object containing the error information to display.
+  /// Notification content to display.
   final InAppNotification notification;
 
   @override

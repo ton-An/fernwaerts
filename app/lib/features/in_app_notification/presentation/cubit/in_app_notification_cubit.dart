@@ -10,26 +10,31 @@ import 'package:location_history/features/in_app_notification/presentation/cubit
 */
 
 /// {@template in_app_notification_cubit}
-/// Controls the state in app notifications throughout the app and
-/// works in conjunction with [InAppNotificationListener] to apply the notification overlay
-/// to the app.
+/// Coordinates the lifecycle of app-wide in-app notification overlays.
+///
+/// [InAppNotificationListener] reacts to the emitted states by creating,
+/// inserting, replacing, and removing the overlay entry.
 /// {@endtemplate}
 class InAppNotificationCubit extends Cubit<InAppNotificationState> {
   /// {@macro in_app_notification_cubit}
   InAppNotificationCubit() : super(const InAppNotificationInitial());
 
+  /// Notification content currently shown or waiting to be shown.
   InAppNotification? notification;
+
+  /// Overlay entry for the currently shown notification.
   OverlayEntry? overlayEntry;
 
-  /// Sends a notification displaying a [Failure]
+  /// Sends a notification displaying [failure].
   ///
   /// Parameters:
-  /// - [Failure]: the new failure to be displayed
+  /// - [failure]: Failure to display.
   ///
   /// {@template send_notification_states}
   /// Emits:
-  /// - [InAppNotificationInitiating] if it is the first failure
-  /// - [InAppNotificationReplacing] on subsequent failures
+  /// - [InAppNotificationInitiating] when no notification is currently active.
+  /// - [InAppNotificationReplacing] when an active notification must be
+  ///   replaced first.
   /// {@endtemplate}
   void sendFailureNotification(Failure failure) {
     final InAppFailureNotification failureNotification =
@@ -38,11 +43,11 @@ class InAppNotificationCubit extends Cubit<InAppNotificationState> {
     _sendNotification(newNotification: failureNotification);
   }
 
-  /// Sends a notification displaying a success message
+  /// Sends a notification displaying a success [title] and [message].
   ///
   /// Parameters:
-  /// - [String]: the title of the success notification
-  /// - [String]: the message of the success notification
+  /// - [title]: Title shown in the notification.
+  /// - [message]: Message shown below [title].
   ///
   /// Emits:
   /// {@macro send_notification_states}
@@ -66,17 +71,16 @@ class InAppNotificationCubit extends Cubit<InAppNotificationState> {
     notification = newNotification;
   }
 
-  /// Confirms that the current in app notification has been replaced
-  /// and updates the notification with the new notification
+  /// Confirms that the current in-app notification has animated out.
   ///
   /// Emits:
-  /// - [InAppNotificationInitiating] with the new notification
+  /// - [InAppNotificationInitiating] with the pending replacement notification.
   void confirmNotificationReplaced() {
     overlayEntry?.remove();
     emit(InAppNotificationInitiating(notification: notification!));
   }
 
-  /// Confirms that the current in app notification has been delivered
+  /// Confirms that the current in-app notification has finished animating in.
   ///
   /// Emits:
   /// - [InAppNotificationDelivered]
@@ -84,19 +88,19 @@ class InAppNotificationCubit extends Cubit<InAppNotificationState> {
     emit(const InAppNotificationDelivered());
   }
 
-  /// Delivers a new notification and sets the current [overlayEntry]
+  /// Stores and delivers a new notification [overlayEntry].
   ///
-  /// Properties:
-  /// - [OverlayEntry]: the overlay entry of the notification
+  /// Parameters:
+  /// - [overlayEntry]: Overlay entry containing the notification widget.
   ///
   /// Emits:
-  /// - [InAppNotificationDelivering] with the new overlay entry
+  /// - [InAppNotificationDelivering] with [overlayEntry].
   void deliverNotification({required OverlayEntry overlayEntry}) {
     this.overlayEntry = overlayEntry;
     emit(InAppNotificationDelivering(overlayEntry: overlayEntry));
   }
 
-  /// Dismisses the current in app notification
+  /// Dismisses the current in-app notification and clears its overlay state.
   ///
   /// Emits:
   /// - [InAppNotificationDismissed]
