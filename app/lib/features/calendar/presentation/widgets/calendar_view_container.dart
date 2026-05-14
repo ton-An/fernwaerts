@@ -10,9 +10,9 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 ///
 /// This widget wraps its [child] with padding and a decorated [Container]
 /// (rounded corners, translucent background). The horizontal padding adjusts
-/// based on the current [CalendarSelectionTypeState] to optimize spacing for
-/// different calendar granularities (e.g., less padding for month/year views
-/// which might have wider cells).
+/// on the left side based on the current [CalendarSelectionTypeState] to
+/// optimize spacing for different calendar granularities (e.g., less padding
+/// for month/year views which might have wider cells).
 /// {@endtemplate}
 class CalendarViewContainer extends StatelessWidget {
   /// {@macro calendar_view_container}

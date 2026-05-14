@@ -71,8 +71,6 @@ abstract class RepositoryFailureHandler {
 
   /// Converts [FunctionException]s to [Failure]s
   ///
-  /// If the exception is not handled, it will be rethrown with the original stack trace.
-  ///
   /// Parameters:
   /// - functionException: [FunctionException] exception
   ///

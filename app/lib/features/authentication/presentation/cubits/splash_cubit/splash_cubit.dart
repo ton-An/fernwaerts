@@ -7,16 +7,23 @@ import 'package:location_history/features/authentication/presentation/cubits/spl
 import 'package:location_history/features/location_tracking/domain/usecases/init_background_location_tracking.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
-/* 
+/*
   To-Do:
     - [ ] Add unit tests
-    - [ ] Failures from _requestNecessaryPermissions probably won't be displayed in the ui as the splash screen will already be disposed
-    - [ ] Improve handling if there is server info in local storage but user isn't signed in (some unwanted services get initialized in that case)
+    - [ ] Revisit permission handling if the permissions package exposes an
+          awaitable result again.
+    - [ ] Improve handling if there is server info in local storage but user
+          isn't signed in (some unwanted services get initialized in that case)
 */
 
 /// {@template splash_cubit}
 /// Manages the application initialization flow including server connection,
 /// authentication verification, permission requests, and location tracking setup.
+///
+/// Permission requests are triggered after authentication completes, but the
+/// current permissions package returns before the user's response is available.
+/// That means a permission failure can still be reported after the splash page
+/// has already emitted [SplashAuthenticationComplete].
 /// {@endtemplate}
 class SplashCubit extends Cubit<SplashState> {
   /// {@macro splash_cubit}
@@ -40,8 +47,9 @@ class SplashCubit extends Cubit<SplashState> {
   /// 3. If authenticated, requests permissions and initializes location tracking
   ///
   /// The method will always emit either [SplashAuthenticationRequired] or
-  /// [SplashAuthenticationComplete] as the final state. The [SplashFailure]s
-  /// main purpose is to display errors to the user.
+  /// [SplashAuthenticationComplete] as the authentication result. Additional
+  /// [SplashFailure] states can still be emitted later while permission or
+  /// background-tracking setup is running.
   ///
   /// Emits:
   /// - [SplashLoading] during initialization

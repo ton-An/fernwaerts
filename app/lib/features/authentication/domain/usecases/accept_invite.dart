@@ -6,7 +6,7 @@ import 'package:location_history/features/authentication/domain/models/supabase_
 /// Accepts an invite for a known server.
 ///
 /// This domain API is reserved for the invite completion flow. The behavior is
-/// not implemented yet.
+/// not implemented yet and currently throws [UnimplementedError].
 ///
 /// Parameters:
 /// - supabaseInfo: [SupabaseInfo] connection info for the server

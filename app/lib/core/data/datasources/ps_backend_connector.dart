@@ -18,6 +18,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 /// lets PowerSync pause authenticated sync. Credential invalidation triggers a
 /// bounded Supabase session refresh so long-offline devices can recover from an
 /// expired token before the next credential fetch.
+///
+/// TODO: Confirm whether the injected [supabaseClient] should be used directly
+/// by the connector or whether the global [Supabase.instance] access is
+/// required for PowerSync callbacks.
 /// {@endtemplate}
 class PsBackendConnector extends PowerSyncBackendConnector {
   PsBackendConnector._({

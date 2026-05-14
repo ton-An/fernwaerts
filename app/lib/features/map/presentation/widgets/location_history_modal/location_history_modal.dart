@@ -27,9 +27,7 @@ part '_vertical_list_item_divider.dart';
 
 /* To-Do:
     - [ ] Factor in velocity of drag to determine if a drag was significant
-    - [ ] Fix onPointerUp sometimes not being called (might only be an issue in simulators)
-      - This is (at least partly) due to the maplibre package. It introduces (as ios support is still in alpha) render issues, 
-        which includes that the pointer events get interrupted on fade out of the attribution widget
+    - [ ] Fix onPointerUp sometimes not being called on some simulator devices
 */
 
 /// {@template location_history_modal}
@@ -172,10 +170,12 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
   }
 }
 
+/// Vertical drag direction used to decide how the modal should snap.
 enum VerticalDirection {
   up,
   down;
 
+  /// Returns the opposite vertical direction.
   VerticalDirection flip() {
     if (this == VerticalDirection.up) {
       return VerticalDirection.down;

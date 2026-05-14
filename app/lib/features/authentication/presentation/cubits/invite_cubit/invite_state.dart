@@ -25,7 +25,7 @@ class InviteLoading extends InviteState {
 }
 
 /// {@template invite_success}
-/// Indicates that the invite was accepted and the app can enter the map.
+/// Reserved for the invite-completion flow once acceptance is implemented.
 /// {@endtemplate}
 class InviteSuccess extends InviteState {
   /// {@macro invite_success}

@@ -25,7 +25,8 @@ abstract class LocationDataRepository {
   /// - end: [DateTime] to end the range at
   ///
   /// Returns:
-  /// - [Stream] of [List]s of [Location]s within the range
+  /// - [Future] that resolves to a [Stream] of [List]s of [Location]s within
+  ///   the range
   Future<Stream<List<Location>>> getLocationsByDate({
     required DateTime start,
     required DateTime end,

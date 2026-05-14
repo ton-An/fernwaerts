@@ -35,7 +35,8 @@ abstract class LocationDataRemoteDataSource {
   /// - end: [DateTime] to end the range at
   ///
   /// Returns:
-  /// - [Stream] of [List]s of [Location]s within the range
+  /// - [Future] that resolves to a [Stream] of [List]s of [Location]s within
+  ///   the range
   ///
   /// Throws:
   /// - Storage or sync exceptions from the underlying database layer

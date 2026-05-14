@@ -1,6 +1,9 @@
 /// Calendar-day helper for inclusive date range queries.
 extension EndOfDayExtension on DateTime {
   /// Returns this date at `23:59:59` in the same time zone.
+  ///
+  /// The returned value is suitable for date-only range queries but does not
+  /// include fractional seconds after `23:59:59`.
   DateTime endOfDay() {
     return copyWith(hour: 23, minute: 59, second: 59);
   }

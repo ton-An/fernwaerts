@@ -19,7 +19,8 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 /// (if not authenticated or an error occurs).
 ///
 /// It also handles displaying any failures encountered during the initialization
-/// process using the [InAppNotificationCubit].
+/// process while the splash screen is still active using the
+/// [InAppNotificationCubit].
 /// {@endtemplate}
 class SplashPage extends StatefulWidget {
   /// {@macro splash_page}

@@ -2,7 +2,7 @@ part of 'map_page.dart';
 
 /* 
   To-Do:
-    - [ ] Improve arrowOffsetDirection as it doesn't seem accurate over long distances
+    - [ ] Tune arrow offset and rotation accuracy over long distances
 */
 
 /// {@template map_page_map}

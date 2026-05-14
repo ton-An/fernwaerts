@@ -22,14 +22,14 @@ part '_version_tag.dart';
 /*
   To-Do:
     - [ ] Find right style for list items and buttons
-    - [ ] Implement proper log out flow
+    - [ ] Consider awaiting sign-out only if we need to block navigation on failure
 */
 /// {@template main_settings_page}
 /// Root settings page shown from the map route.
 ///
 /// It links to account and user-management settings, displays open-source and
-/// version information, and confirms sign-out before returning to
-/// [AuthenticationPage].
+/// version information, confirms the sign-out dialog, then starts sign-out and
+/// returns to [AuthenticationPage] immediately.
 /// {@endtemplate}
 class MainSettingsPage extends StatelessWidget {
   /// {@macro main_settings_page}

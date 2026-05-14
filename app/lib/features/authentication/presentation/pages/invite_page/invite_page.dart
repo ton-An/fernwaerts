@@ -23,8 +23,9 @@ part '_invite_form.dart';
 /// Page for completing an invite link on a known server.
 ///
 /// The server URL is supplied by the route and passed to [_InviteForm]. The page
-/// listens to [InviteCubit] so failures can be shown as in-app notifications and
-/// successful acceptance can navigate to [MapPage].
+/// listens to [InviteCubit] so failures can be shown as in-app notifications
+/// and the eventual success state can navigate to [MapPage] once invite
+/// completion is implemented.
 /// {@endtemplate}
 class InvitePage extends StatefulWidget {
   /// {@macro invite_page}

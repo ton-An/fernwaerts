@@ -2,6 +2,7 @@ part of 'location_history_modal.dart';
 
 /// Localizes activity labels for the history list.
 extension ActivityTypeLocalizationExtension on ActivityType {
+  /// Returns the localized label for this activity type.
   String localize(BuildContext context) {
     final AppLocalizations localizations = AppLocalizations.of(context)!;
     switch (this) {

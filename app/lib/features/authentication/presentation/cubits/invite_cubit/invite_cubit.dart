@@ -18,7 +18,8 @@ import 'package:location_history/features/location_tracking/domain/usecases/init
 ///
 /// The cubit initializes the provided server URL, accepts the invite with the
 /// chosen credentials, then requests platform permissions and starts background
-/// location tracking.
+/// location tracking. The invite acceptance use case is still stubbed, so the
+/// completion flow is not finished yet.
 /// {@endtemplate}
 class InviteCubit extends Cubit<InviteState> {
   /// {@macro invite_cubit}
@@ -42,6 +43,8 @@ class InviteCubit extends Cubit<InviteState> {
   /// - [InviteLoading] while the server and invite calls are running
   /// - [InviteFailure] when server initialization, invite acceptance, or
   ///   location tracking startup fails
+  ///
+  /// Success navigation is reserved for when [AcceptInvite] is implemented.
   void acceptInvite({
     required String username,
     required String password,

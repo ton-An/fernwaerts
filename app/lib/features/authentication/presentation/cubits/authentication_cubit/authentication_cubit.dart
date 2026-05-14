@@ -11,18 +11,20 @@ import 'package:location_history/features/authentication/presentation/cubits/aut
 import 'package:location_history/features/authentication/presentation/pages/authentication_page/authentication_page.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/init_background_location_tracking.dart';
 
-/* 
+/*
   To-Do:
     - [ ] Add tests
-    - [ ] Think of way to propagate failures from requesting permission (not possible with
-          commented out solution because auth bloc is closed by then
+    - [ ] Track permission request failures once the permissions package exposes
+          an awaitable result again.
 */
 
 /// {@template authentication_cubit}
 /// Manages the entire authentication flow of the [AuthenticationPage]:
 /// - Initializes and validates server connection.
 /// - Routes to either admin sign-up or user sign-in.
-/// - Requests platform permissions.
+/// - Requests platform permissions, but currently cannot await the user's
+///   response because the permission plugin returns before the dialog result is
+///   available.
 /// - Kicks off background location tracking.
 /// {@endtemplate}
 class AuthenticationCubit extends Cubit<AuthenticationState> {
@@ -84,6 +86,10 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   /// - [AuthenticationLoading] while processing
   /// - [AuthenticationSuccess] if successful
   /// - [AuthenticationFailure] if an error occurs
+  ///
+  /// The permissions request that follows success is started immediately and
+  /// cannot currently surface its own result because the permission plugin
+  /// resolves before the user response is available.
   void signUpAdmin({
     required String username,
     required String email,
@@ -117,6 +123,10 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   /// - [AuthenticationLoading] while processing
   /// - [AuthenticationSuccess] if successful
   /// - [AuthenticationFailure] if an error occurs
+  ///
+  /// The permissions request that follows success is started immediately and
+  /// cannot currently surface its own result because the permission plugin
+  /// resolves before the user response is available.
   void signIn({required String email, required String password}) async {
     emit(const AuthenticationLoading());
 
@@ -155,17 +165,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   }
 
   void _requestNecessaryPermissions() async {
-    // final Either<Failure, None> requestPermissionsEither =
     await requestNecessaryPermissions();
-
-    // requestPermissionsEither.fold(
-    //   (Failure failure) {
-    //     emit(AuthenticationFailure(failure: failure));
-    //   },
-    //   (None none) {
     _initBackgroundLocationTracking();
-    //   },
-    // );
   }
 
   void _initBackgroundLocationTracking() async {
