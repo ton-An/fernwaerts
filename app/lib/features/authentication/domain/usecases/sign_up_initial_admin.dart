@@ -13,10 +13,12 @@ import 'package:location_history/features/authentication/domain/usecases/sign_in
 /// completes the same sync-server and device-registration steps as [SignIn].
 ///
 /// Parameters:
-/// - [String] username: The username of the admin user
-/// - [String] email: The email of the admin user
-/// - [String] password: The password of the admin user
-/// - [String] repeatedPassword: The repeated password of the admin user to confirm it
+/// - supabaseInfo: [SupabaseInfo] connection info for the server
+/// - username: [String] username of the admin user
+/// - email: [String] email of the admin user
+/// - password: [String] password of the admin user
+/// - repeatedPassword: [String] repeated password of the admin user to confirm
+///   it
 ///
 /// Failures:
 /// - [PasswordMismatchFailure]

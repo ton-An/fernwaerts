@@ -29,13 +29,13 @@ abstract class DeviceRepository {
   /// Saves the user-scoped device information to the database.
   ///
   /// Parameters:
-  /// - [Device] device: The device object to save.
+  /// - device: [Device] object to save
   Future<void> saveDeviceInfoToDB({required Device device});
 
   /// Saves the generated Fernwaerts device id to local storage.
   ///
   /// Parameters:
-  /// - [String] deviceId: The id of the device to save.
+  /// - deviceId: [String] id of the device to save
   ///
   /// Failures:
   /// - [StorageWriteFailure]

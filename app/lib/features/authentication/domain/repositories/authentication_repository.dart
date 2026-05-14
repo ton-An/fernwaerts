@@ -25,9 +25,9 @@ abstract class AuthenticationRepository {
   /// Checks if the server is reachable.
   ///
   /// Parameters:
-  /// - [String] serverUrl: The URL of the server to connect to
+  /// - serverUrl: [String] URL of the server to connect to
   ///
-  /// Return:
+  /// Returns:
   /// - [None] if the server is reachable.
   ///
   /// Failures:
@@ -53,7 +53,7 @@ abstract class AuthenticationRepository {
   /// This prepares the auth client for calls that require a configured server.
   ///
   /// Parameters:
-  /// - [SupabaseInfo] supabaseInfo: The URL of the server to connect to.
+  /// - supabaseInfo: [SupabaseInfo] connection info for the server
   Future<void> initializeSupabaseConnection({
     required SupabaseInfo supabaseInfo,
   });
@@ -64,8 +64,7 @@ abstract class AuthenticationRepository {
   /// authenticate against the same server.
   ///
   /// Parameters:
-  /// - [PowersyncInfo] powerSyncInfo: The info of the sync server to connect to.
-
+  /// - powersyncInfo: [PowersyncInfo] info of the sync server to connect to
   Future<void> initializeSyncServerConnection({
     required PowersyncInfo powersyncInfo,
   });
@@ -73,7 +72,7 @@ abstract class AuthenticationRepository {
   /// Gets sync server info from the configured Supabase server.
   ///
   /// Returns:
-  /// - [PowersyncInfo] powerSyncInfo: The URL of the server to connect to.
+  /// - [PowersyncInfo] for the configured sync server
   ///
   /// Failures:
   /// {@macro converted_client_exceptions}
@@ -86,10 +85,10 @@ abstract class AuthenticationRepository {
   /// exists for the instance.
   ///
   /// Parameters:
-  /// - [String] serverUrl: The URL of the server to connect to
-  /// - [String] username: The username of the admin user
-  /// - [String] email: The email of the admin user
-  /// - [String] password: The password of the admin user
+  /// - serverUrl: [String] URL of the server to connect to
+  /// - username: [String] username of the admin user
+  /// - email: [String] email of the admin user
+  /// - password: [String] password of the admin user
   ///
   /// Failures:
   /// - [WeakPasswordFailure]
@@ -123,8 +122,8 @@ abstract class AuthenticationRepository {
   /// Signs in a user against the currently initialized Supabase connection.
   ///
   /// Parameters:
-  /// - [String] email
-  /// - [String] password
+  /// - email: [String] email of the user
+  /// - password: [String] password of the user
   ///
   /// Failures:
   /// {@macro converted_client_exceptions}
@@ -155,7 +154,7 @@ abstract class AuthenticationRepository {
   /// Saves the provided server info
   ///
   /// Parameters:
-  /// - [ServerInfo] serverInfo
+  /// - serverInfo: [ServerInfo] to save
   ///
   /// Failures:
   /// - [StorageWriteFailure]
@@ -166,7 +165,7 @@ abstract class AuthenticationRepository {
   /// Gets the Supabase anon key from the server bootstrap endpoint.
   ///
   /// Parameters:
-  /// - [String] serverUrl
+  /// - serverUrl: [String] URL of the server to query
   ///
   /// Returns:
   /// - a [String] containing the Supabase anon key
@@ -189,9 +188,9 @@ abstract class AuthenticationRepository {
   /// Checks if the sync server is reachable.
   ///
   /// Parameters:
-  /// - [String] syncServerUrl: The URL of the sync server to connect to
+  /// - syncServerUrl: [String] URL of the sync server to connect to
   ///
-  /// Return:
+  /// Returns:
   /// - [None] if the server is reachable.
   ///
   /// Failures:

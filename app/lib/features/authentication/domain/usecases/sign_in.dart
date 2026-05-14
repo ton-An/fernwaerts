@@ -18,8 +18,9 @@ import 'package:location_history/features/authentication/domain/usecases/save_de
 /// and registers the current device for the signed-in user.
 ///
 /// Parameters:
-/// - [String] email
-/// - [String] password
+/// - email: [String] email of the user
+/// - password: [String] password of the user
+/// - supabaseInfo: [SupabaseInfo] connection info for the server
 ///
 /// Failures:
 /// {@macro converted_client_exceptions}

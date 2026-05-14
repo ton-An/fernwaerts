@@ -63,6 +63,11 @@ class Device extends Equatable {
   final DateTime updatedAt;
 
   /// Creates a user-scoped device record from platform-provided device info.
+  ///
+  /// Parameters:
+  /// - rawDevice: [RawDevice] platform metadata to bind to the user
+  /// - appVersion: [String] installed app version for this device
+  /// - userId: [String] owner of the device record
   static Device fromRawDevice({
     required RawDevice rawDevice,
     required String appVersion,

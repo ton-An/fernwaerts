@@ -12,15 +12,27 @@ import 'package:location_history/features/location_tracking/domain/models/record
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
 
-/* 
-  To-Do:
-    - [ ] Add activity and battery data
-    - [ ] Maybe split usecase
-    - [ ] Improve stationary device handling (e.g. app requests location when user walks around the house)
-    - [ ] Add docs
-*/
-
+/// {@template init_background_location_tracking}
+/// Starts background location tracking for the signed-in user and current
+/// device.
+///
+/// The use case initializes the saved server and sync connections, resolves the
+/// current user and device IDs, starts the platform tracking service, listens
+/// for raw location updates, converts them into persisted [Location] records,
+/// and stores each record through [LocationDataRepository].
+///
+/// It also updates the platform distance filter after every recorded location.
+/// Faster movement increases the filter distance, while stationary or
+/// zero-speed updates keep a conservative default and schedule a delayed
+/// tracking re-initialization.
+///
+/// Failures:
+/// - Failures from [InitializeApp]
+/// - Failures from [AuthenticationRepository.getCurrentUserId]
+/// - Failures from [DeviceRepository.getDeviceIdFromStorage]
+/// {@endtemplate}
 class InitBackgroundLocationTracking {
+  /// {@macro init_background_location_tracking}
   InitBackgroundLocationTracking({
     required this.initializeApp,
     required this.authenticationRepository,
@@ -35,6 +47,7 @@ class InitBackgroundLocationTracking {
   final LocationTrackingRepository locationTrackingRepository;
   final LocationDataRepository locationDataRepository;
 
+  /// {@macro init_background_location_tracking}
   Future<Either<Failure, None>> call() async {
     return _initServer();
   }
@@ -105,9 +118,11 @@ class InitBackgroundLocationTracking {
     });
   }
 
-  /// Updates the distance filter dynamically based on the device's current speed,
-  /// and returns a timer that triggers a fallback re-initialization of location tracking
-  /// if no location update is received within the expected time window.
+  /// Updates the platform distance filter based on the current speed.
+  ///
+  /// Returns:
+  /// - [Timer] that re-initializes tracking when no location update arrives
+  ///   inside the expected time window
   Future<Timer> _updateDistanceFilter({
     required Location location,
     required Timer? distanceFilterTimeout,
@@ -145,8 +160,10 @@ class InitBackgroundLocationTracking {
     return newDistanceFilterTimeout;
   }
 
-  /// The curve of the distance filter starts off slow, then increases exponentially
-  /// until it levels off at the maximum distance.
+  /// Calculates a speed-sensitive distance filter in meters.
+  ///
+  /// The curve starts slowly, increases exponentially, then levels off near the
+  /// maximum distance so high-speed travel records fewer points.
   double _calculateDistanceFilter({required double speedInMetersPerSecond}) {
     final double speedInKmh = speedInMetersPerSecond * 3.6;
 

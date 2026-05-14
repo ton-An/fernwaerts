@@ -112,6 +112,9 @@ Use labels when the documented code has that kind of contract:
 `Parameters:`, `Returns:`, `Failures:`, `Throws:`, `Emits:`, `States:`,
 `Sub-components:`. Prefer labeled sections over unlabeled prose for those
 topics.
+- In `Parameters:` sections, format bullets as
+  `- name: [Type] description`, with the parameter name first and the linked
+  type immediately after the colon.
 
 ## Change Workflows
 

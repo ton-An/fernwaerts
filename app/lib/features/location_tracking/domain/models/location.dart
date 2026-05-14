@@ -5,7 +5,15 @@ import 'package:location_history/features/location_tracking/domain/enums/activit
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
 import 'package:uuid/uuid.dart';
 
+/// {@template location}
+/// Persisted location point for a user and device.
+///
+/// A [Location] combines the raw platform coordinates from [RecordedLocation]
+/// with Fernwaerts-specific ownership and context, including the user ID, device
+/// ID, activity classification, and battery state stored with the point.
+/// {@endtemplate}
 class Location extends Equatable {
+  /// Creates a [Location] from persisted database values.
   factory Location.fromDb({
     required String id,
     required String userId,
@@ -46,6 +54,7 @@ class Location extends Equatable {
     );
   }
 
+  /// {@macro location}
   Location({
     String? id,
     required this.userId,
@@ -92,6 +101,18 @@ class Location extends Equatable {
   final double batteryLevel;
   final bool isDeviceCharging;
 
+  /// Creates a persisted domain [Location] from a raw platform update.
+  ///
+  /// Parameters:
+  /// - recordedLocation: [RecordedLocation] with raw coordinates and sensor
+  ///   values from the tracking service
+  /// - userId: [String] identifying the owner of the location point
+  /// - deviceId: [String] identifying the device that recorded the point
+  /// - activityType: [ActivityType] stored with the point
+  /// - activityConfidence: [double] confidence for [activityType]
+  /// - batteryLevel: [double] battery level at record time
+  /// - isDeviceCharging: [bool] indicating whether the device was charging at
+  ///   record time
   static Location fromRecordedLocation({
     required RecordedLocation recordedLocation,
     required String userId,

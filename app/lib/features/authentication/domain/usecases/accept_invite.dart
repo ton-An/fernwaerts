@@ -7,6 +7,11 @@ import 'package:location_history/features/authentication/domain/models/supabase_
 ///
 /// This domain API is reserved for the invite completion flow. The behavior is
 /// not implemented yet.
+///
+/// Parameters:
+/// - supabaseInfo: [SupabaseInfo] connection info for the server
+/// - username: [String] username to create from the invite
+/// - password: [String] password to set for the invited user
 /// {@endtemplate}
 class AcceptInvite {
   /// {@macro accept_invite}

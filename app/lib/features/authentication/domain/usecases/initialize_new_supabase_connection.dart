@@ -14,7 +14,7 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 /// the connection details needed by the rest of the auth flow.
 ///
 /// Parameters:
-/// - [String] serverUrl: The URL of the server
+/// - serverUrl: [String] URL of the server
 ///
 /// Returns:
 /// - [SupabaseInfo] when the server can be initialized

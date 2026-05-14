@@ -8,8 +8,8 @@ import 'package:location_history/features/location_tracking/domain/repositories/
 /// Gets the current user's locations within a date range.
 ///
 /// Parameters:
-/// - start: Start [DateTime] of the range
-/// - end: End [DateTime] of the range
+/// - start: [DateTime] to start the range at
+/// - end: [DateTime] to end the range at
 ///
 /// Returns:
 /// - [Stream] of [Either] values containing [Failure]s or [List]s of
@@ -40,8 +40,8 @@ class GetLocationsByDate {
     required DateTime start,
     required DateTime end,
   }) async* {
-    final Either<Failure, String> userIdEither = await authenticationRepository
-        .getCurrentUserId();
+    final Either<Failure, String> userIdEither =
+        await authenticationRepository.getCurrentUserId();
 
     yield* userIdEither.fold(
       (Failure failure) async* {
