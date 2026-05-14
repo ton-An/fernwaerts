@@ -62,8 +62,13 @@ import 'package:talker_flutter/talker_flutter.dart';
 
 import '../features/location_tracking/domain/usecases/init_background_location_tracking.dart';
 
+/// Global service locator used by app startup, routes, Cubits, and data layers.
 final GetIt getIt = GetIt.instance;
 
+/// Registers all dependencies needed by the app.
+///
+/// Call this once during startup before resolving Cubits, use cases,
+/// repositories, or shared data sources from [getIt].
 void initGetIt() {
   registerThirdPartyDependencies();
   registerCoreDependencies();
@@ -74,6 +79,7 @@ void initGetIt() {
   registerSettingsDependencies();
 }
 
+/// Registers package and platform services that are consumed across features.
 void registerThirdPartyDependencies() {
   // -- Data -- //
   getIt.registerLazySingleton(() => Dio());
@@ -86,6 +92,8 @@ void registerThirdPartyDependencies() {
   getIt.registerLazySingleton(() => TalkerFlutter.init());
 }
 
+/// Registers app-wide infrastructure shared by feature repositories and data
+/// sources.
 void registerCoreDependencies() {
   // -- Data -- //
   getIt.registerLazySingleton<RepositoryFailureHandler>(
@@ -99,11 +107,13 @@ void registerCoreDependencies() {
   getIt.registerLazySingleton(() => const PlatformWrapper());
 }
 
+/// Registers in-app notification presentation dependencies.
 void registerInAppNotificationDependencies() {
   // -- Presentation -- //
   getIt.registerFactory(() => InAppNotificationCubit());
 }
 
+/// Registers authentication, invite, permissions, and device dependencies.
 void registerAuthenticationDependencies() {
   // -- Presentation -- //
   getIt.registerFactory(
@@ -223,6 +233,7 @@ void registerAuthenticationDependencies() {
   );
 }
 
+/// Registers calendar presentation state dependencies.
 void registerCalendarDependencies() {
   // -- Presentation -- //
   getIt.registerFactory(() => CalendarExpansionCubit());
@@ -233,6 +244,8 @@ void registerCalendarDependencies() {
   getIt.registerFactory(() => CalendarDateSelectionCubit());
 }
 
+/// Registers location tracking Cubits, use cases, repositories, and data
+/// sources.
 void registerLocationTrackingDependencies() {
   // -- Presentation -- //
   getIt.registerFactory(() => MapCubit(getLocationData: getIt()));
@@ -271,6 +284,7 @@ void registerLocationTrackingDependencies() {
   );
 }
 
+/// Registers settings Cubits, use cases, repositories, and data sources.
 void registerSettingsDependencies() {
   // -- Presentation -- //
   getIt.registerFactory(

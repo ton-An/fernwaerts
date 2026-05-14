@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
+/// {@template dialog_page}
+/// Non-opaque page route for dialog-style content in Navigator page stacks.
+///
+/// The route keeps the previous page visible, prevents barrier dismissal, and
+/// applies the app theme's short fade transition.
+/// {@endtemplate}
 class DialogPage<T> extends Page<T> {
+  /// {@macro dialog_page}
   const DialogPage({
     required this.child,
     super.key,

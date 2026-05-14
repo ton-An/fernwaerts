@@ -17,7 +17,16 @@ import 'package:supabase_flutter/supabase_flutter.dart';
     - [ ] fix late already initialized exception
 */
 
+/// {@template supabase_handler}
+/// Initializes and exposes the app-wide Supabase and PowerSync-backed Drift
+/// clients.
+///
+/// Supabase and PowerSync are configured after the user provides or loads server
+/// connection details. Consumers await [client] or [driftDatabase] instead of
+/// assuming these dependencies are available during app startup.
+/// {@endtemplate}
 class SupabaseHandler {
+  /// {@macro supabase_handler}
   SupabaseHandler();
 
   final Completer<SupabaseClient> _clientCompleter =
@@ -28,6 +37,10 @@ class SupabaseHandler {
 
   late final DriftAppDatabase _driftDatabase;
 
+  /// The initialized Supabase client.
+  ///
+  /// Returns immediately after Supabase has been initialized, otherwise waits
+  /// for [initializeSupabase] to complete.
   Future<SupabaseClient> get client {
     if (_clientCompleter.isCompleted) {
       return Future.value(Supabase.instance.client);
@@ -36,6 +49,10 @@ class SupabaseHandler {
     }
   }
 
+  /// The initialized Drift database backed by PowerSync.
+  ///
+  /// Returns immediately after PowerSync has been initialized, otherwise waits
+  /// for [initializePowerSync] to complete.
   Future<DriftAppDatabase> get driftDatabase {
     if (_driftDatabaseCompleter.isCompleted) {
       return Future.value(_driftDatabase);
@@ -44,6 +61,10 @@ class SupabaseHandler {
     }
   }
 
+  /// Initializes Supabase with the saved or newly entered server connection.
+  ///
+  /// Parameters:
+  /// - supabaseInfo: [SupabaseInfo] Supabase URL and anon key.
   Future<void> initializeSupabase({required SupabaseInfo supabaseInfo}) async {
     final Supabase supabase = await Supabase.initialize(
       url: supabaseInfo.url,
@@ -55,6 +76,10 @@ class SupabaseHandler {
     }
   }
 
+  /// Initializes PowerSync and exposes the Drift database over its SQLite file.
+  ///
+  /// Parameters:
+  /// - powersyncInfo: [PowersyncInfo] PowerSync endpoint configuration.
   Future<void> initializePowerSync({
     required PowersyncInfo powersyncInfo,
   }) async {
@@ -82,6 +107,7 @@ class SupabaseHandler {
     }
   }
 
+  /// Disposes the global Supabase instance.
   Future<void> dispose() async {
     await Supabase.instance.dispose();
   }

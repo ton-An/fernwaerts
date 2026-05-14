@@ -19,10 +19,17 @@ part 'users_table.dart';
     - [ ] decide on naming schemes. Especially for tables with enum ids
 */
 
+/// {@template drift_app_database}
+/// Drift database facade over the PowerSync-managed SQLite database.
+///
+/// Table definitions mirror the PowerSync client schema and the synced
+/// Supabase tables used by the app.
+/// {@endtemplate}
 @DriftDatabase(
   tables: [ActivityTypes, Devices, Locations, OperatingSystems, Users],
 )
 class DriftAppDatabase extends _$DriftAppDatabase {
+  /// {@macro drift_app_database}
   DriftAppDatabase(super.e);
 
   @override

@@ -10,14 +10,30 @@ import 'package:supabase_flutter/supabase_flutter.dart';
     - [ ] surface error from this class in the ui. (probably like: last sync was x days ago)
 */
 
+/// {@template ps_backend_connector}
+/// PowerSync connector that authenticates sync with the current Supabase
+/// session and uploads local CRUD operations through Supabase REST.
+///
+/// The connector returns `null` credentials when the user is signed out, which
+/// lets PowerSync pause authenticated sync. Credential invalidation triggers a
+/// bounded Supabase session refresh so long-offline devices can recover from an
+/// expired token before the next credential fetch.
+/// {@endtemplate}
 class PsBackendConnector extends PowerSyncBackendConnector {
   PsBackendConnector._({
     required this.supabaseClient,
     required this.powersyncUrl,
   });
 
+  /// {@macro ps_backend_connector}
   factory PsBackendConnector() => _singleton!;
 
+  /// Creates the singleton connector for the configured Supabase and PowerSync
+  /// servers.
+  ///
+  /// Parameters:
+  /// - supabaseClient: [SupabaseClient] authenticated client used by sync.
+  /// - powersyncUrl: [String] PowerSync instance URL used in credentials.
   factory PsBackendConnector.init({
     required SupabaseClient supabaseClient,
     required String powersyncUrl,

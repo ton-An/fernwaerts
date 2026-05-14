@@ -4,7 +4,14 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_button.dart';
 
+/// {@template custom_dialog}
+/// Shared confirmation dialog with themed blur, scrim, and two actions.
+///
+/// Use [show] to display the dialog with the app's scale/fade transition.
+/// Submit and cancel callbacks run after the button press animation delay.
+/// {@endtemplate}
 class CustomDialog extends StatelessWidget {
+  /// {@macro custom_dialog}
   const CustomDialog({
     super.key,
     required this.title,
@@ -87,6 +94,17 @@ class CustomDialog extends StatelessWidget {
     );
   }
 
+  /// Presents a [CustomDialog] above [context] using a transparent barrier and
+  /// themed transition.
+  ///
+  /// Parameters:
+  /// - context: [BuildContext] used to find theme and Navigator.
+  /// - title: [String] dialog title.
+  /// - message: [String] dialog body text.
+  /// - submitButtonLabel: [String] label for the highlighted action.
+  /// - cancelButtonLabel: [String] label for the secondary action.
+  /// - onSubmit: [VoidCallback] invoked after the submit animation delay.
+  /// - onCancel: [VoidCallback] invoked after the cancel animation delay.
   static void show({
     required BuildContext context,
     required String title,

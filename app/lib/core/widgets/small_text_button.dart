@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
+/// {@template small_text_button}
+/// Compact text-only button with a subtle themed press highlight.
+///
+/// Intended for secondary inline actions where a full Material button would be
+/// visually too heavy.
+/// {@endtemplate}
 class SmallTextButton extends StatefulWidget {
+  /// {@macro small_text_button}
   const SmallTextButton({
     super.key,
     required this.text,
