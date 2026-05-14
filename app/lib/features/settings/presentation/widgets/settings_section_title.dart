@@ -1,14 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
+/// {@template settings_section_title}
+/// Section heading used by settings pages.
+///
+/// An optional [description] is shown below the title with secondary styling.
+/// {@endtemplate}
 class SettingsSectionTitle extends StatelessWidget {
+  /// {@macro settings_section_title}
   const SettingsSectionTitle({
     super.key,
     required this.title,
     this.description,
   });
 
+  /// Section title text.
   final String title;
+
+  /// Optional explanatory text shown below [title].
   final String? description;
 
   @override

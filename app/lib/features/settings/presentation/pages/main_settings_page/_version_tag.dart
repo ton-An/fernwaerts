@@ -1,6 +1,10 @@
 part of 'main_settings_page.dart';
 
+/// {@template settings_version_tag}
+/// Displays the app version and opens the debug page after repeated taps.
+/// {@endtemplate}
 class _VersionTag extends StatefulWidget {
+  /// {@macro settings_version_tag}
   const _VersionTag();
 
   @override

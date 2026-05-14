@@ -9,7 +9,14 @@ import 'package:location_history/features/settings/presentation/widgets/settings
 import 'package:location_history/features/settings/presentation/widgets/settings_section_title.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
+/// {@template invite_new_user_settings_page}
+/// Settings page for inviting another user by email.
+///
+/// The page enables the invite action once an email is entered and forwards
+/// Cubit success or failure states to the in-app notification overlay.
+/// {@endtemplate}
 class InviteNewUserSettingsPage extends StatefulWidget {
+  /// {@macro invite_new_user_settings_page}
   const InviteNewUserSettingsPage({super.key});
 
   static const String pageName = 'invite_new_user_settings';

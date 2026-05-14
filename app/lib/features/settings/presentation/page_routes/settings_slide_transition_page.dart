@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
+/// {@template settings_slide_transition_page}
+/// Page wrapper that gives settings subpages the shared slide transition.
+/// {@endtemplate}
 class SettingsSlideTransitionPage<T> extends Page<T> {
+  /// {@macro settings_slide_transition_page}
   const SettingsSlideTransitionPage({
     required this.child,
     super.key,
@@ -10,6 +14,7 @@ class SettingsSlideTransitionPage<T> extends Page<T> {
     super.restorationId,
   });
 
+  /// Settings page content to display inside the route.
   final Widget child;
 
   @override
@@ -26,7 +31,11 @@ class SettingsSlideTransitionPage<T> extends Page<T> {
   }
 }
 
+/// {@template settings_transition_page_route}
+/// Transparent page route that slides settings pages in and out horizontally.
+/// {@endtemplate}
 class _SettingsTransitionPageRoute<T> extends PageRoute<T> {
+  /// {@macro settings_transition_page_route}
   _SettingsTransitionPageRoute({
     required SettingsSlideTransitionPage<T> page,
     required this.transitionDuration,

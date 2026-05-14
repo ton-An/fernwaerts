@@ -7,11 +7,9 @@ import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 /// {@template oss_info}
-/// A widget that displays information about the open-source nature of the app.
+/// Displays the open-source repository link in settings.
 ///
-/// It includes a GitHub icon, a title, an explanatory text, and an arrow icon.
-/// Tapping this widget opens the project's GitHub repository in a browser.
-/// The widget has a gradient border and a translucent background.
+/// Tapping the card opens the project's GitHub repository in the browser.
 /// {@endtemplate}
 class OSSInfo extends StatelessWidget {
   /// {@macro oss_info}

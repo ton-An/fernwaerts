@@ -1,9 +1,16 @@
 part of 'settings_page_wrapper.dart';
 
+/// {@template settings_page_footer}
+/// Footer bar that closes the settings stack or navigates back one page.
+/// {@endtemplate}
 class _Footer extends StatelessWidget {
+  /// {@macro settings_page_footer}
   const _Footer({required this.title, required this.isMainPage});
 
+  /// Title shown in the center of the footer.
   final String title;
+
+  /// Whether the footer should show the close icon instead of the back icon.
   final bool isMainPage;
 
   @override

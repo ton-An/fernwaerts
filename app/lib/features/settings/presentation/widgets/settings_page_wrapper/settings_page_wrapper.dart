@@ -9,14 +9,24 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_footer.dart';
 
+/// {@template settings_page_wrapper}
+/// Shared shell for settings routes.
+///
+/// It applies the blurred translucent background, bottom-rounded container,
+/// scroll edge fade, and footer navigation/title area for settings pages.
+/// {@endtemplate}
 class SettingsPageWrapper extends StatelessWidget {
+  /// {@macro settings_page_wrapper}
   const SettingsPageWrapper({
     super.key,
     required this.pagePath,
     required this.child,
   });
 
+  /// Route path used to choose the footer title and main-page close affordance.
   final String? pagePath;
+
+  /// Settings page content.
   final Widget child;
 
   @override

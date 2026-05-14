@@ -11,7 +11,14 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_user.dart';
 
+/// {@template user_management_settings_page}
+/// Settings page for user administration.
+///
+/// It links to the invite flow and currently displays placeholder user rows
+/// until repository-backed user management is wired in.
+/// {@endtemplate}
 class UserManagementSettingsPage extends StatelessWidget {
+  /// {@macro user_management_settings_page}
   const UserManagementSettingsPage({super.key});
 
   static const String pageName = 'user_management_settings';

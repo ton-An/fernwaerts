@@ -1,8 +1,13 @@
 part of 'user_management_settings_page.dart';
 
+/// {@template user_management_user}
+/// Displays a user row in the user-management settings list.
+/// {@endtemplate}
 class _User extends StatelessWidget {
+  /// {@macro user_management_user}
   const _User({required this.user});
 
+  /// User information displayed by this row.
   final User user;
 
   @override

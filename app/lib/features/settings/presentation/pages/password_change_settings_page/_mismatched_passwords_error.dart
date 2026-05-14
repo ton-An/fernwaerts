@@ -1,8 +1,13 @@
 part of 'password_change_settings_page.dart';
 
+/// {@template mismatched_passwords_error}
+/// Animated validation message shown when the two new password fields differ.
+/// {@endtemplate}
 class _MismatchedPasswordsError extends StatelessWidget {
+  /// {@macro mismatched_passwords_error}
   const _MismatchedPasswordsError({required this.display});
 
+  /// Whether the error message should be visible.
   final bool display;
 
   @override

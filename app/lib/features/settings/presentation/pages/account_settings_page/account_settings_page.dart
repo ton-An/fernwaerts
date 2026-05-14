@@ -12,7 +12,15 @@ import 'package:location_history/features/settings/presentation/widgets/settings
 import 'package:location_history/features/settings/presentation/widgets/sub_page_link.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
+/// {@template account_settings_page}
+/// Settings page for account authentication actions.
+///
+/// The page lets the user request an email address update, navigate to password
+/// change settings, and forwards Cubit success or failure states to the
+/// in-app notification overlay.
+/// {@endtemplate}
 class AccountSettingsPage extends StatefulWidget {
+  /// {@macro account_settings_page}
   const AccountSettingsPage({super.key});
 
   static const String pageName = 'account_settings';

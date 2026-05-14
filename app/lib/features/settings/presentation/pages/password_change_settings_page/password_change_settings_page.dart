@@ -12,7 +12,15 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_mismatched_passwords_error.dart';
 
+/// {@template password_change_settings_page}
+/// Settings page for changing the current user's password.
+///
+/// The page validates matching password inputs locally, reveals an OTP field
+/// when the backend requires reauthentication, and forwards Cubit success or
+/// failure states to the in-app notification overlay.
+/// {@endtemplate}
 class PasswordChangeSettingsPage extends StatefulWidget {
+  /// {@macro password_change_settings_page}
   const PasswordChangeSettingsPage({super.key});
 
   static const String pageName = 'password_change_settings';

@@ -21,12 +21,18 @@ part '_version_tag.dart';
 
 /*
   To-Do:
-    - [ ] re-add docs
     - [ ] Find right style for list items and buttons
     - [ ] Implement proper log out flow
 */
+/// {@template main_settings_page}
+/// Root settings page shown from the map route.
+///
+/// It links to account and user-management settings, displays open-source and
+/// version information, and confirms sign-out before returning to
+/// [AuthenticationPage].
+/// {@endtemplate}
 class MainSettingsPage extends StatelessWidget {
-  /// {@macro settings_page}
+  /// {@macro main_settings_page}
   const MainSettingsPage({super.key});
 
   static const String pageName = 'settings';
