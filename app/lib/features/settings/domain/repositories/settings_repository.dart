@@ -9,11 +9,20 @@ import 'package:location_history/core/failures/authentication/passwords_must_dif
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 
+/// {@template settings_repository}
+/// Domain contract for account-management actions available from settings.
+///
+/// Callers should use this contract for updating the current user's account
+/// credentials, requesting password reauthentication, and inviting new users.
+/// {@endtemplate}
 abstract class SettingsRepository {
+  /// {@macro settings_repository}
+  const SettingsRepository();
+
   /// Updates the email address of the current user.
   ///
   /// Parameters:
-  /// - [String]: new email address to update to
+  /// - newEmail: [String] new email address to update to
   ///
   /// Failures:
   /// - [EmailServerConfigFailure]
@@ -26,8 +35,8 @@ abstract class SettingsRepository {
   /// Updates the password of the current user.
   ///
   /// Parameters:
-  /// - [String]: new password to update to
-  /// - [String]: OTP code (if required)
+  /// - newPassword: [String] new password to update to
+  /// - otp: [String?] one-time password used when reauthentication is required
   ///
   /// Failures:
   /// - [WeakPasswordFailure]
@@ -43,6 +52,8 @@ abstract class SettingsRepository {
 
   /// Requests an OTP to reauthenticate the user.
   ///
+  /// The OTP is sent through the current user's configured email channel.
+  ///
   /// Failures:
   /// - [EmailRateLimitFailure]
   /// {@macro converted_client_exceptions}
@@ -51,7 +62,7 @@ abstract class SettingsRepository {
   /// Invites a new user to the application.
   ///
   /// Parameters:
-  /// - [String]: email address of the new user
+  /// - email: [String] email address of the user to invite
   ///
   /// Failures:
   /// - [EmailServerConfigFailure]

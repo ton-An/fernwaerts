@@ -6,7 +6,7 @@ import 'package:location_history/features/settings/domain/repositories/settings_
 /// Updates the email address of the current user.
 ///
 /// Parameters:
-/// - [String]: new email address to update to
+/// - newEmail: [String] new email address to update to
 ///
 /// Failures:
 /// - [EmailServerConfigFailure]
