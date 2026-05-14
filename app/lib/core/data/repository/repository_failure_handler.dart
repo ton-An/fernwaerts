@@ -29,8 +29,8 @@ abstract class RepositoryFailureHandler {
   /// Maps [DioException]s to [Failure]s
   ///
   /// Parameters:
-  /// - [DioException]: exception
-  /// - [ServerType]: type of the server the request was sent to
+  /// - dioException: [DioException] exception
+  /// - serverType: [ServerType] type of the server the request was sent to
   ///
   /// Returns:
   /// {@template converted_dio_exceptions}
@@ -53,9 +53,9 @@ abstract class RepositoryFailureHandler {
   /// If the exception is not handled, it will be rethrown with the original stack trace.
   ///
   /// Parameters:
-  /// - [ClientException]: exception
-  /// - [StackTrace]: stack trace
-  /// - [ServerType]: type of the server the request was sent to
+  /// - clientException: [ClientException] exception
+  /// - stackTrace: [StackTrace] stack trace
+  /// - serverType: [ServerType] type of the server the request was sent to
   ///
   /// Returns:
   /// {@template converted_client_exceptions}
@@ -74,9 +74,7 @@ abstract class RepositoryFailureHandler {
   /// If the exception is not handled, it will be rethrown with the original stack trace.
   ///
   /// Parameters:
-  /// - [FunctionException]: exception
-  /// - [StackTrace]: stack trace
-  /// - [ServerType]: type of the server the request was sent to
+  /// - functionException: [FunctionException] exception
   ///
   /// Returns:
   /// {@template converted_supabase_functions_exception}

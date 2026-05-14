@@ -7,7 +7,11 @@ import 'package:location_history/features/authentication/domain/models/server_in
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 
 /// {@template initialize_app}
-/// Initializes the server connection saved by the app
+/// Restores the saved server connection for the app.
+///
+/// The first successful call initializes both the auth and sync connections.
+/// Later calls on the same instance skip the sync initialization and only
+/// verify that the current auth session is still present.
 ///
 /// Failures:
 /// - [StorageReadFailure]

@@ -79,7 +79,14 @@ void main() async {
   );
 }
 
+/// {@template main_app}
+/// Bootstraps the application shell, theme, router, and global listeners.
+///
+/// This widget owns the top-level router and initializes the splash flow
+/// before the first frame so navigation can resolve to the correct entry page.
+/// {@endtemplate}
 class MainApp extends StatefulWidget {
+  /// {@macro main_app}
   const MainApp({super.key});
 
   @override

@@ -24,6 +24,7 @@ part '_welcome.dart';
     - [ ] Maybe replace custom navigation with GoRouter
 */
 
+/// Current form shown on the authentication carousel.
 enum AuthenticationFormType { signIn, adminSignUp }
 
 /// {@template authentication_page}

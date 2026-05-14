@@ -12,7 +12,8 @@ import 'package:location_history/features/location_tracking/domain/repositories/
 /// Data-layer implementation of [LocationDataRepository].
 ///
 /// This repository delegates persisted location reads and writes to
-/// [LocationDataRemoteDataSource].
+/// [LocationDataRemoteDataSource]. Movement-segment persistence is not
+/// implemented yet.
 /// {@endtemplate}
 class LocationDataRepositoryImpl extends LocationDataRepository {
   /// {@macro location_data_repository_impl}
@@ -35,6 +36,8 @@ class LocationDataRepositoryImpl extends LocationDataRepository {
 
   @override
   Future<void> saveMovementSegment({required MovementSegment movementSegment}) {
+    // TODO: implement persisted movement-segment writes once the schema and
+    // sync pipeline support them.
     throw UnimplementedError();
   }
 }

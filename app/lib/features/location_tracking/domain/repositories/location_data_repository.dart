@@ -1,4 +1,3 @@
-import 'package:location_history/core/failures/storage/database_read_failure.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
 import 'package:location_history/features/location_tracking/domain/models/movement_segment.dart';
 
@@ -6,8 +5,8 @@ import 'package:location_history/features/location_tracking/domain/models/moveme
 /// Repository contract for persisted location history data.
 ///
 /// Implementations are responsible for storage and sync details. Callers should
-/// use this contract for user-scoped location reads, saving recorded locations,
-/// and writing derived movement segments.
+/// use this contract for user-scoped location reads and saving recorded
+/// locations.
 /// {@endtemplate}
 abstract class LocationDataRepository {
   /// {@macro location_data_repository}
@@ -37,7 +36,7 @@ abstract class LocationDataRepository {
   /// Parameters:
   /// - movementSegment: [MovementSegment] to save
   ///
-  /// Failures:
-  /// - [DatabaseReadFailure]
+  /// Throws:
+  /// - [UnimplementedError] until segment persistence is wired up
   Future<void> saveMovementSegment({required MovementSegment movementSegment});
 }

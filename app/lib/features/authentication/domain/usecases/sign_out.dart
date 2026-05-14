@@ -14,6 +14,9 @@ import 'package:location_history/features/location_tracking/domain/repositories/
 ///
 /// Failures:
 /// - [StorageWriteFailure]
+///
+/// The auth sign-out, tracking stop, and local cache cleanup calls currently
+/// propagate their own exceptions if they fail before storage removal.
 /// {@endtemplate}
 class SignOut {
   /// {@macro sign_out}

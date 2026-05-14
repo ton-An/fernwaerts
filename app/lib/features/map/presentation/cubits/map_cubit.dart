@@ -29,8 +29,8 @@ class MapCubit extends Cubit<MapState> {
   /// Loads the locations whose timestamps fall within [start] and [end].
   ///
   /// Parameters:
-  /// - [start]: Inclusive lower bound for the selected range.
-  /// - [end]: Inclusive upper bound for the selected range.
+  /// - start: [DateTime] inclusive lower bound for the selected range.
+  /// - end: [DateTime] inclusive upper bound for the selected range.
   ///
   /// Emits:
   /// - [MapLocationsLoaded] each time the location stream returns data.
