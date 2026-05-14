@@ -11,16 +11,24 @@ import 'package:permission_handler/permission_handler.dart';
           Due to that the BackgroundLocationPermissionNotGrantedFailure will be thrown before the user even has a chance to allow the permission.
 */
 
+/// {@template permissions_local_data_source}
+/// Local permission data source contract for activity and location prompts.
+///
+/// This layer owns platform permission requests needed before location tracking
+/// can start. Repository implementations convert permission failures into
+/// domain results.
+/// {@endtemplate}
 abstract class PermissionsLocalDataSource {
+  /// {@macro permissions_local_data_source}
   const PermissionsLocalDataSource();
 
-  /// Requests the activity permission from the user.
+  /// Requests activity recognition permission from the user.
   ///
   /// Throws:
   /// - [ActivityPermissionNotGrantedFailure]
   Future<void> requestActivityPermission();
 
-  /// Requests the location permission from the user.
+  /// Requests foreground and background location permissions from the user.
   ///
   /// Throws:
   /// - [BasicLocationPermissionNotGrantedFailure]

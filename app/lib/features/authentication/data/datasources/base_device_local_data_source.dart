@@ -1,33 +1,41 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter/services.dart';
 import 'package:location_history/core/failures/authentication/no_saved_device_failure.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+/// {@template base_device_local_data_source}
+/// Shared local device data source contract for persisted device identity.
+///
+/// Platform-specific data sources provide raw device metadata; this contract
+/// owns the stable app-generated device id and app version.
+/// {@endtemplate}
 abstract class BaseDeviceLocalDataSource {
+  /// {@macro base_device_local_data_source}
   const BaseDeviceLocalDataSource();
 
-  /// Gets the current device's id from storage
+  /// Gets the current device id from secure storage.
   ///
   /// Returns:
-  /// - [String] the device id
+  /// - [String] the saved device id
   ///
   /// Throws:
   /// - [PlatformException]
   /// - [NoSavedDeviceFailure]
   Future<String> getDeviceIdFromStorage();
 
-  /// Saves the device's id to storage
+  /// Saves the current device id to secure storage.
   ///
   /// Parameters:
-  /// - [String] deviceId: the id of the device to save.
+  /// - deviceId: [String] device id to save
   ///
   /// Throws:
   /// - [PlatformException]
   Future<void> saveDeviceIdToStorage({required String deviceId});
 
-  /// Gets the app version
+  /// Gets the installed app version.
   ///
   /// Returns:
-  /// - [String] the app version
+  /// - [String] app version from package metadata
   String getAppVersion();
 }
 

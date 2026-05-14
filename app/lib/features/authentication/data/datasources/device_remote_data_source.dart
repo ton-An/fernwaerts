@@ -2,11 +2,20 @@ import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/drift/drift_database.dart';
 import 'package:location_history/features/authentication/domain/models/device.dart';
 
+/// {@template device_remote_data_source}
+/// Remote device data source contract for synced device registration data.
+///
+/// This layer writes device records to the PowerSync-backed local database so
+/// they can be synchronized with the selected server.
+/// {@endtemplate}
 abstract class DeviceRemoteDataSource {
-  /// Saves the device's information to the database
+  /// {@macro device_remote_data_source}
+  const DeviceRemoteDataSource();
+
+  /// Saves the device information to the synced database.
   ///
   /// Parameters:
-  /// - [Device] device: The device object to save.
+  /// - device: [Device] device record to save
   Future<void> saveDeviceInfoToDB({required Device device});
 }
 
