@@ -7,11 +7,11 @@ import 'package:location_history/features/authentication/domain/models/supabase_
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 
 /// {@template initialize_new_supabase_connection}
-/// Initializes a new connection with a Fernwaerts Supabase server.
+/// Initializes a new connection with a Fernwaerts server.
 ///
-/// The use case validates the provided server URL, fetches the Supabase anon
-/// key from the server bootstrap endpoint, initializes Supabase, and returns
-/// the connection details needed by the rest of the auth flow.
+/// The use case validates the provided server URL, fetches the auth anon key
+/// from the server bootstrap endpoint, initializes the auth connection, and
+/// returns the connection details needed by the rest of the auth flow.
 ///
 /// Parameters:
 /// - serverUrl: [String] URL of the server
@@ -20,10 +20,10 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 /// - [SupabaseInfo] when the server can be initialized
 ///
 /// Failures:
-/// {@macro converted_client_exceptions}
 /// - [InvalidUrlFormatFailure]
 /// - [ConnectionFailure]
 /// - [LikelyConfigurationIssueFailure]
+/// {@macro converted_client_exceptions}
 /// {@endtemplate}
 class InitializeNewSupabaseConnection {
   /// {@macro initialize_new_supabase_connection}

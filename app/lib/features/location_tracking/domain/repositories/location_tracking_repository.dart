@@ -1,11 +1,10 @@
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
 
 /// {@template location_tracking_repository}
-/// Repository contract for the platform background location service.
+/// Repository contract for background location tracking.
 ///
-/// Implementations own plugin and operating-system interaction. The domain
-/// layer depends on this contract to start or stop tracking, receive raw
-/// location updates, and tune how frequently the platform reports movement.
+/// The domain layer depends on this contract to start or stop tracking, receive
+/// raw location updates, and tune how frequently movement is reported.
 /// {@endtemplate}
 abstract class LocationTrackingRepository {
   /// {@macro location_tracking_repository}
@@ -20,7 +19,7 @@ abstract class LocationTrackingRepository {
   /// Stops the tracking service.
   Future<void> stopTracking();
 
-  /// Streams raw location updates emitted by the platform tracking service.
+  /// Streams raw location updates emitted by the tracking service.
   ///
   /// [initTracking] must be called before subscribing to this stream.
   ///
@@ -34,6 +33,6 @@ abstract class LocationTrackingRepository {
   ///
   /// Parameters:
   /// - distanceFilter: [double] distance in meters that should be traveled
-  ///   before the platform reports another location
+  ///   before another location is reported
   Future<void> updateDistanceFilter({required double distanceFilter});
 }

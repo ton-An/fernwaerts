@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
@@ -16,7 +17,7 @@ import 'package:location_history/features/location_tracking/domain/repositories/
 ///   [Location]s in the range
 ///
 /// Failures:
-/// - Failures from [AuthenticationRepository.getCurrentUserId]
+/// - [NotSignedInFailure]
 /// {@endtemplate}
 class GetLocationsByDate {
   /// {@macro get_locations_by_date}

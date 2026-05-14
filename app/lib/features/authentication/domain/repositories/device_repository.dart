@@ -10,8 +10,8 @@ import 'package:location_history/features/authentication/domain/models/raw_devic
 /// {@template device_repository}
 /// Domain contract for device metadata and persisted installation identity.
 ///
-/// Implementations read platform metadata, write the user-scoped device record
-/// remotely, and keep the generated Fernwaerts device id in local storage.
+/// Callers should use this contract to read device metadata, persist the
+/// user-scoped device record, and store the generated Fernwaerts device id.
 /// {@endtemplate}
 abstract class DeviceRepository {
   /// {@macro device_repository}

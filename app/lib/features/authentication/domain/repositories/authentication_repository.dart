@@ -15,8 +15,8 @@ import 'package:location_history/features/authentication/domain/models/supabase_
 /// {@template authentication_repository}
 /// Domain contract for authentication, saved server setup, and session state.
 ///
-/// Implementations initialize Supabase and PowerSync connections, persist the
-/// selected server, and expose the current user's session state.
+/// Callers should use this contract to configure the selected server, persist
+/// connection details, and access the current user's session state.
 /// {@endtemplate}
 abstract class AuthenticationRepository {
   /// {@macro authentication_repository}
@@ -44,11 +44,11 @@ abstract class AuthenticationRepository {
   /// - a [bool] indicating if the server is set up.
   ///
   /// Failures:
-  /// {@macro converted_client_exceptions}
   /// - [ConnectionFailure]
+  /// {@macro converted_client_exceptions}
   Future<Either<Failure, bool>> isServerSetUp();
 
-  /// Initializes the connection to the Supabase server.
+  /// Initializes the connection to the auth server.
   ///
   /// This prepares the auth client for calls that require a configured server.
   ///
@@ -69,7 +69,7 @@ abstract class AuthenticationRepository {
     required PowersyncInfo powersyncInfo,
   });
 
-  /// Gets sync server info from the configured Supabase server.
+  /// Gets sync server info from the configured server.
   ///
   /// Returns:
   /// - [PowersyncInfo] for the configured sync server
@@ -119,15 +119,15 @@ abstract class AuthenticationRepository {
   /// - An [AuthenticationState]
   Stream<AuthenticationState> authenticationStateStream();
 
-  /// Signs in a user against the currently initialized Supabase connection.
+  /// Signs in a user against the currently initialized auth connection.
   ///
   /// Parameters:
   /// - email: [String] email of the user
   /// - password: [String] password of the user
   ///
   /// Failures:
-  /// {@macro converted_client_exceptions}
   /// - [InvalidCredentialsFailure]
+  /// {@macro converted_client_exceptions}
   Future<Either<Failure, None>> signIn({
     required String email,
     required String password,
@@ -162,13 +162,13 @@ abstract class AuthenticationRepository {
     required ServerInfo serverInfo,
   });
 
-  /// Gets the Supabase anon key from the server bootstrap endpoint.
+  /// Gets the auth anon key from the server bootstrap endpoint.
   ///
   /// Parameters:
   /// - serverUrl: [String] URL of the server to query
   ///
   /// Returns:
-  /// - a [String] containing the Supabase anon key
+  /// - a [String] containing the auth anon key
   ///
   /// Failures:
   /// {@macro converted_dio_exceptions}

@@ -13,8 +13,8 @@ import 'package:location_history/features/authentication/domain/repositories/aut
 /// - a [bool] indicating if the server is set up.
 ///
 /// Failures:
-/// {@macro converted_client_exceptions}
 /// - [ConnectionFailure]
+/// {@macro converted_client_exceptions}
 /// {@endtemplate}
 class IsServerSetUp {
   /// {@macro is_server_set_up}

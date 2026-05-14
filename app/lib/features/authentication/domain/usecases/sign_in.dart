@@ -13,9 +13,9 @@ import 'package:location_history/features/authentication/domain/usecases/save_de
 /// {@template sign_in}
 /// Signs in a user and prepares the app for synced, user-scoped data access.
 ///
-/// On successful authentication, the use case fetches PowerSync connection
-/// info, validates the sync endpoint, initializes sync, saves the server info,
-/// and registers the current device for the signed-in user.
+/// On successful authentication, the use case fetches sync connection info,
+/// validates the sync endpoint, initializes sync, saves the server info, and
+/// registers the current device for the signed-in user.
 ///
 /// Parameters:
 /// - email: [String] email of the user
@@ -23,11 +23,11 @@ import 'package:location_history/features/authentication/domain/usecases/save_de
 /// - supabaseInfo: [SupabaseInfo] connection info for the server
 ///
 /// Failures:
-/// {@macro converted_client_exceptions}
 /// - [InvalidCredentialsFailure]
 /// - [NotSignedInFailure]
 /// - [DeviceInfoPlatformNotSupportedFailure]
 /// - [StorageWriteFailure]
+/// {@macro converted_client_exceptions}
 /// {@endtemplate}
 class SignIn {
   /// {@macro sign_in}

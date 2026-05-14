@@ -2,7 +2,11 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:fpdart/fpdart.dart';
+import 'package:location_history/core/failures/authentication/no_saved_device_failure.dart';
+import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
+import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
+import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/authentication/domain/repositories/device_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_app.dart';
@@ -27,9 +31,10 @@ import 'package:location_history/features/location_tracking/domain/repositories/
 /// tracking re-initialization.
 ///
 /// Failures:
-/// - Failures from [InitializeApp]
-/// - Failures from [AuthenticationRepository.getCurrentUserId]
-/// - Failures from [DeviceRepository.getDeviceIdFromStorage]
+/// - [StorageReadFailure]
+/// - [NoSavedServerFailure]
+/// - [NotSignedInFailure]
+/// - [NoSavedDeviceFailure]
 /// {@endtemplate}
 class InitBackgroundLocationTracking {
   /// {@macro init_background_location_tracking}

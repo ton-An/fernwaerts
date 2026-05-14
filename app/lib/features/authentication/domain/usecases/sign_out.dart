@@ -1,5 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
+import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
 
