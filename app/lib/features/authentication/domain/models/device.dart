@@ -3,7 +3,14 @@ import 'package:location_history/features/authentication/domain/enums/operating_
 import 'package:location_history/features/authentication/domain/models/raw_device.dart';
 import 'package:uuid/uuid.dart';
 
+/// {@template device}
+/// Device record associated with the current Fernwaerts user.
+///
+/// The generated [id] is persisted locally and remotely so later app launches
+/// can identify this installation without exposing platform device IDs.
+/// {@endtemplate}
 class Device extends Equatable {
+  /// {@macro device}
   Device({
     String? id,
     required this.userId,
@@ -17,6 +24,7 @@ class Device extends Equatable {
     required this.updatedAt,
   }) : id = id ?? (const Uuid()).v4();
 
+  /// Rebuilds a device record from database values.
   factory Device.fromDb({
     required String id,
     required String userId,
@@ -54,6 +62,7 @@ class Device extends Equatable {
   final DateTime createdAt;
   final DateTime updatedAt;
 
+  /// Creates a user-scoped device record from platform-provided device info.
   static Device fromRawDevice({
     required RawDevice rawDevice,
     required String appVersion,

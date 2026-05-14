@@ -5,13 +5,11 @@ import 'package:location_history/core/failures/storage/storage_read_failure.dart
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 
-/*
-  To-Do:
-    - [ ] Add Failures to docs
-*/
-
 /// {@template has_server_connection_saved}
-/// Checks if the app has a server connection saved
+/// Checks whether the app has a server connection saved locally.
+///
+/// [NoSavedServerFailure] is converted into `false`; other storage failures are
+/// returned so callers can distinguish an empty setup from a read problem.
 ///
 /// Returns:
 /// - a [bool] indicating if there is a saved server connection

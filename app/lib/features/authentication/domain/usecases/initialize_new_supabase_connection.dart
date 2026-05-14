@@ -6,19 +6,18 @@ import 'package:location_history/core/failures/networking/likely_configuration_f
 import 'package:location_history/features/authentication/domain/models/supabase_info.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 
-/* 
-  To-Do:
-    - [ ] dynamically fetch powersync url
-*/
-
 /// {@template initialize_new_supabase_connection}
-/// Initializes a new connection with a fernwaerts supabase server
+/// Initializes a new connection with a Fernwaerts Supabase server.
+///
+/// The use case validates the provided server URL, fetches the Supabase anon
+/// key from the server bootstrap endpoint, initializes Supabase, and returns
+/// the connection details needed by the rest of the auth flow.
 ///
 /// Parameters:
-/// - [Uri] serverUrl: The URL of the server
+/// - [String] serverUrl: The URL of the server
 ///
-/// Return:
-/// - [None] if the server is reachable
+/// Returns:
+/// - [SupabaseInfo] when the server can be initialized
 ///
 /// Failures:
 /// {@macro converted_client_exceptions}

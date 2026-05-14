@@ -1,16 +1,12 @@
 import 'package:location_history/features/authentication/domain/models/authentication_state.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 
-/*
-  To-Do:
-    - [ ] Implement this in presentation
-*/
-
 /// {@template authentication_state_stream}
-/// Notifies when the authentication state changes
+/// Subscribes to domain authentication state changes.
 ///
 /// Emits:
-/// - An [AuthenticationState]
+/// - [SignedInState] when the auth provider reports an active session
+/// - [SignedOutState] when the auth provider reports no active session
 /// {@endtemplate}
 class AuthenticationStateStream {
   /// {@macro authentication_state_stream}

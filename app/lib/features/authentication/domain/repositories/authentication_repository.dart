@@ -12,7 +12,16 @@ import 'package:location_history/features/authentication/domain/models/powersync
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
 import 'package:location_history/features/authentication/domain/models/supabase_info.dart';
 
+/// {@template authentication_repository}
+/// Domain contract for authentication, saved server setup, and session state.
+///
+/// Implementations initialize Supabase and PowerSync connections, persist the
+/// selected server, and expose the current user's session state.
+/// {@endtemplate}
 abstract class AuthenticationRepository {
+  /// {@macro authentication_repository}
+  const AuthenticationRepository();
+
   /// Checks if the server is reachable.
   ///
   /// Parameters:
@@ -39,7 +48,9 @@ abstract class AuthenticationRepository {
   /// - [ConnectionFailure]
   Future<Either<Failure, bool>> isServerSetUp();
 
-  /// Initializes the connection to the supabase server
+  /// Initializes the connection to the Supabase server.
+  ///
+  /// This prepares the auth client for calls that require a configured server.
   ///
   /// Parameters:
   /// - [SupabaseInfo] supabaseInfo: The URL of the server to connect to.
@@ -47,9 +58,10 @@ abstract class AuthenticationRepository {
     required SupabaseInfo supabaseInfo,
   });
 
-  /// Initializes the connection to the sync server
+  /// Initializes the connection to the sync server.
   ///
-  /// #### ! [initializeSupabaseConnection] needs to be called before this method !
+  /// [initializeSupabaseConnection] must be called first so the sync client can
+  /// authenticate against the same server.
   ///
   /// Parameters:
   /// - [PowersyncInfo] powerSyncInfo: The info of the sync server to connect to.
@@ -58,7 +70,7 @@ abstract class AuthenticationRepository {
     required PowersyncInfo powersyncInfo,
   });
 
-  /// Gets sync server info
+  /// Gets sync server info from the configured Supabase server.
   ///
   /// Returns:
   /// - [PowersyncInfo] powerSyncInfo: The URL of the server to connect to.
@@ -68,7 +80,10 @@ abstract class AuthenticationRepository {
   /// {@macro converted_supabase_functions_exception}
   Future<Either<Failure, PowersyncInfo>> getSyncServerInfo();
 
-  /// Signs up the initial admin user
+  /// Signs up the initial admin user.
+  ///
+  /// This is only valid during first-server setup before a normal sign-in flow
+  /// exists for the instance.
   ///
   /// Parameters:
   /// - [String] serverUrl: The URL of the server to connect to
@@ -86,26 +101,26 @@ abstract class AuthenticationRepository {
     required String password,
   });
 
-  /// Gets the saved server info
+  /// Gets the saved server info needed to restore a previous connection.
   ///
   /// Failures:
   /// - [StorageReadFailure]
   /// - [NoSavedServerFailure]
   Future<Either<Failure, ServerInfo>> getSavedServerInfo();
 
-  /// Checks if the user is signed in
+  /// Checks if the configured auth client has a current signed-in user.
   ///
   /// Returns:
   /// - a [bool] indicating if the user is signed in
   Future<bool> isSignedIn();
 
-  /// Notifies when the authentication state changes
+  /// Notifies when the configured auth client's session state changes.
   ///
   /// Emits:
   /// - An [AuthenticationState]
   Stream<AuthenticationState> authenticationStateStream();
 
-  /// Signs in a user
+  /// Signs in a user against the currently initialized Supabase connection.
   ///
   /// Parameters:
   /// - [String] email
@@ -119,22 +134,22 @@ abstract class AuthenticationRepository {
     required String password,
   });
 
-  /// Signs out the current user
+  /// Signs out the current user from the configured auth client.
   Future<void> signOut();
 
-  /// Removes the saved server
+  /// Removes the saved server info from local storage.
   ///
   /// Failures:
   /// - [StorageWriteFailure]
   Future<Either<Failure, None>> removeSavedServer();
 
-  /// Deletes local storage
+  /// Deletes local authentication and server storage.
   ///
   /// Failures:
   /// - [StorageWriteFailure]
   Future<Either<Failure, None>> deleteLocalStorage();
 
-  /// Deletes local DB cache
+  /// Deletes locally cached database state for the signed-out session.
   Future<void> deleteLocalDBCache();
 
   /// Saves the provided server info
@@ -148,7 +163,7 @@ abstract class AuthenticationRepository {
     required ServerInfo serverInfo,
   });
 
-  /// Gets the Supabase anon key from the server
+  /// Gets the Supabase anon key from the server bootstrap endpoint.
   ///
   /// Parameters:
   /// - [String] serverUrl
@@ -162,7 +177,7 @@ abstract class AuthenticationRepository {
     required String serverUrl,
   });
 
-  /// Gets the current user's id
+  /// Gets the current signed-in user's id.
   ///
   /// Returns:
   /// - a [String] containing the current user's id

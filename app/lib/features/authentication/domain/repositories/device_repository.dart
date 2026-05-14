@@ -7,7 +7,16 @@ import 'package:location_history/core/failures/storage/storage_write_failure.dar
 import 'package:location_history/features/authentication/domain/models/device.dart';
 import 'package:location_history/features/authentication/domain/models/raw_device.dart';
 
+/// {@template device_repository}
+/// Domain contract for device metadata and persisted installation identity.
+///
+/// Implementations read platform metadata, write the user-scoped device record
+/// remotely, and keep the generated Fernwaerts device id in local storage.
+/// {@endtemplate}
 abstract class DeviceRepository {
+  /// {@macro device_repository}
+  const DeviceRepository();
+
   /// Gets the device's information
   ///
   /// Returns:
@@ -17,13 +26,13 @@ abstract class DeviceRepository {
   /// - [DeviceInfoPlatformNotSupportedFailure]
   Future<Either<Failure, RawDevice>> getRawDeviceInfo();
 
-  /// Saves the device's information to the database
+  /// Saves the user-scoped device information to the database.
   ///
   /// Parameters:
   /// - [Device] device: The device object to save.
   Future<void> saveDeviceInfoToDB({required Device device});
 
-  /// Save the device's id to storage
+  /// Saves the generated Fernwaerts device id to local storage.
   ///
   /// Parameters:
   /// - [String] deviceId: The id of the device to save.
@@ -34,7 +43,7 @@ abstract class DeviceRepository {
     required String deviceId,
   });
 
-  /// Gets the device's id from storage
+  /// Gets the generated Fernwaerts device id from local storage.
   ///
   /// Returns:
   /// - a [String] containing the device's id.
@@ -44,7 +53,7 @@ abstract class DeviceRepository {
   /// - [NoSavedDeviceFailure]
   Future<Either<Failure, String>> getDeviceIdFromStorage();
 
-  /// Gets the app version
+  /// Gets the app version installed on this device.
   ///
   /// Returns:
   /// - a [String] containing the app version.
