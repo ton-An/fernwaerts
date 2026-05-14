@@ -9,7 +9,8 @@ Guidance for coding agents working in `app/`.
   `Widget/Page -> Cubit -> Use Case -> Repository Contract -> Repository Impl -> Data Source`.
 - Cubits call use cases, not repositories or data sources.
 - Use cases contain business logic and depend on repository contracts only.
-- Repository implementations map exceptions into `Failure` values.
+- Repository implementations convert app-relevant exceptions into `Failure`
+  values.
 - Data sources own platform, storage, HTTP, Supabase, and PowerSync calls.
 - Feature code stays in `lib/features/<feature>/` unless it is genuinely shared.
   Shared infrastructure belongs in `lib/core/`.
@@ -105,11 +106,9 @@ docs in the target file; match useful detail, not only file structure.
   behavior, inputs, outputs, and guarantees; leave lower-level implementation
   mechanisms to the layer that owns them unless they are part of the public
   contract.
-- `Failures:` sections must list the concrete failure types a method can return,
-  followed by shared macros for default converted failures, such as
-  `{@macro converted_client_exceptions}` or
-  `{@macro converted_dio_exceptions}`. Do not use vague bullets like
-  `Any Failure returned by ...`.
+- Use `Failures:` for returned errors and `Throws:` for thrown errors. List
+  concrete types and reusable exception or failure macros; do not use vague
+  bullets like `Any Failure returned by ...`.
 - Private code gets docs only for non-obvious behavior: workarounds, gestures,
   animations, sync, platform/API constraints, or privacy implications.
 - When touching undocumented existing code, document only the changed API when
