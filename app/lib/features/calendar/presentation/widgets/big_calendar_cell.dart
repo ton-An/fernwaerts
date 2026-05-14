@@ -5,19 +5,17 @@ import 'package:location_history/features/calendar/presentation/cubits/calendar_
 import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_type_state.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
-/// Defines the visual types for a [BigCalendarCell].
+/// Visual selection states for a [BigCalendarCell].
 enum BigCalendarCellType { unselected, fullySelected, partlySelected }
 
 /// {@template big_calendar_cell}
-/// A tappable cell widget used in larger calendar views (e.g., yearly, decennially).
+/// A tappable cell used by the year and decade calendar views.
 ///
-/// This widget displays a [label] (e.g., month name or year) and changes its
-/// appearance based on its [cellType] (unselected, fully selected, or partly
-/// selected). Tapping the cell triggers a date selection action via the
-/// [CalendarDateSelectionCubit] based on the current [CalendarSelectionTypeState].
+/// The cell displays a [label], applies visual selection styling from
+/// [cellType], and sends [date] to [CalendarDateSelectionCubit] using the
+/// current [CalendarSelectionTypeState].
 ///
-/// The background color and text style adapt to the [cellType] to provide
-/// visual feedback on the selection state.
+/// The background color and text style adapt to [cellType].
 /// {@endtemplate}
 class BigCalendarCell extends StatelessWidget {
   /// {@macro big_calendar_cell}
@@ -28,13 +26,13 @@ class BigCalendarCell extends StatelessWidget {
     required this.cellType,
   });
 
-  /// The text to display within the cell (e.g., "Jan", "2023").
+  /// Text displayed in the cell, such as a month name or year.
   final String label;
 
-  /// The [DateTime] represented by this cell. Used for selection logic.
+  /// Date represented by this cell.
   final DateTime date;
 
-  /// The selection type of the cell, determining its visual appearance.
+  /// Visual selection state of the cell.
   final BigCalendarCellType cellType;
 
   @override
