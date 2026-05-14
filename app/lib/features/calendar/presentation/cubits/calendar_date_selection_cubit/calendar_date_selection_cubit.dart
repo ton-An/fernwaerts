@@ -5,7 +5,14 @@ import 'package:location_history/features/calendar/presentation/cubits/calendar_
 import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_type_state.dart';
 import 'package:location_history/features/calendar/presentation/widgets/calendar_composite/calendar_composite.dart';
 
+/// {@template calendar_date_selection_cubit}
+/// Coordinates the currently selected calendar date or date range.
+///
+/// This Cubit stores the selected date or range. The focused month, year, or
+/// decade shown in the calendar carousel is tracked by separate Cubits.
+/// {@endtemplate}
 class CalendarDateSelectionCubit extends Cubit<CalendarDateSelectionState> {
+  /// {@macro calendar_date_selection_cubit}
   CalendarDateSelectionCubit()
     : super(CalendarDaySelected(selectedDate: DTU.startOfDay(DateTime.now())));
 
@@ -31,11 +38,11 @@ class CalendarDateSelectionCubit extends Cubit<CalendarDateSelectionState> {
   /// - [type]: The type of selection (day, range, week, month, year).
   ///
   /// Emits:
-  /// - [CalendarDaySelected] when a day is selected.
-  /// - [CalendarCustomRangeSelected] when a range is selected.
-  /// - [CalendarWeekSelected] when a week is selected.
-  /// - [CalendarMonthSelected] when a month is selected.
-  /// - [CalendarYearSelected] when a year is selected.
+  /// - [CalendarDaySelected] for day selections.
+  /// - [CalendarCustomRangeSelected] for custom range selections.
+  /// - [CalendarWeekSelected] for week selections.
+  /// - [CalendarMonthSelected] for month selections.
+  /// - [CalendarYearSelected] for year selections.
   void updateSelection({
     required DateTime selectedDate,
     required CalendarSelectionTypeState type,
@@ -57,17 +64,19 @@ class CalendarDateSelectionCubit extends Cubit<CalendarDateSelectionState> {
   ///
   /// This method maintains the current selection pattern (day, range, week, etc.)
   /// while moving it in the specified direction.
+  /// A custom range is shifted by its own duration.
   ///
   /// Parameters:
   /// - [forward]: When true, shifts the selection forward in time.
   ///   When false, shifts the selection backward in time.
   ///
   /// Emits:
-  /// - [CalendarDaySelected] when a day is selected.
-  /// - [CalendarCustomRangeSelected] when a range is selected.
-  /// - [CalendarWeekSelected] when a week is selected.
-  /// - [CalendarMonthSelected] when a month is selected.
-  /// - [CalendarYearSelected] when a year is selected.
+  /// - [CalendarDaySelected] when a single-day or incomplete range selection is
+  ///   shifted.
+  /// - [CalendarCustomRangeSelected] when a custom range is shifted.
+  /// - [CalendarWeekSelected] when a week selection is shifted.
+  /// - [CalendarMonthSelected] when a month selection is shifted.
+  /// - [CalendarYearSelected] when a year selection is shifted.
   void shiftSelection({required bool forward}) {
     _hasShiftedSelection = true;
 
