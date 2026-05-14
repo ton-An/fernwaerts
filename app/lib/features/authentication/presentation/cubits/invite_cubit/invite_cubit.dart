@@ -5,7 +5,7 @@ import 'package:location_history/features/authentication/domain/models/supabase_
 import 'package:location_history/features/authentication/domain/usecases/accept_invite.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_new_supabase_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/request_necessary_permissions.dart';
-import 'package:location_history/features/authentication/presentation/cubits/invite_cubit/invite_states.dart';
+import 'package:location_history/features/authentication/presentation/cubits/invite_cubit/invite_state.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/init_background_location_tracking.dart';
 
 /* 
@@ -20,14 +20,14 @@ import 'package:location_history/features/location_tracking/domain/usecases/init
 /// chosen credentials, then requests platform permissions and starts background
 /// location tracking.
 /// {@endtemplate}
-class InviteCubit extends Cubit<InviteCubitState> {
+class InviteCubit extends Cubit<InviteState> {
   /// {@macro invite_cubit}
   InviteCubit({
     required this.initializeNewSupabaseConnection,
     required this.acceptInviteUsecase,
     required this.requestNecessaryPermissions,
     required this.initBackgroundLocationTracking,
-  }) : super(const InviteInitialState());
+  }) : super(const InviteInitial());
 
   final InitializeNewSupabaseConnection initializeNewSupabaseConnection;
   final AcceptInvite acceptInviteUsecase;

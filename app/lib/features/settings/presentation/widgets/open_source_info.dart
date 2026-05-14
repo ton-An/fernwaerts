@@ -6,14 +6,14 @@ import 'package:location_history/core/widgets/fade_tap_detector.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
-/// {@template oss_info}
+/// {@template open_source_info}
 /// Displays the open-source repository link in settings.
 ///
 /// Tapping the card opens the project's GitHub repository in the browser.
 /// {@endtemplate}
-class OSSInfo extends StatelessWidget {
-  /// {@macro oss_info}
-  const OSSInfo({super.key});
+class OpenSourceInfo extends StatelessWidget {
+  /// {@macro open_source_info}
+  const OpenSourceInfo({super.key});
 
   static const String _githubIconPath = 'assets/images/logos/github.svg';
   static const String _repositoryUrl = 'https://github.com/ton-An/fernwaerts';

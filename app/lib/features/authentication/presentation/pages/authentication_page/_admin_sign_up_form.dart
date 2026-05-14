@@ -24,7 +24,7 @@ class _AdminSignUpFormState extends State<_AdminSignUpForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthenticationCubit, AuthenticationCubitState>(
+    return BlocBuilder<AuthenticationCubit, AuthenticationState>(
       builder: (context, state) {
         return AuthenticationForm(
           showBackButton: true,

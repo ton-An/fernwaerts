@@ -10,7 +10,7 @@ import 'package:location_history/features/calendar/presentation/cubits/calendar_
 import 'package:location_history/features/calendar/presentation/widgets/calendar_composite/calendar_composite.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
-import 'package:location_history/features/map/presentation/cubits/map_states.dart';
+import 'package:location_history/features/map/presentation/cubits/map_state.dart';
 import 'package:location_history/features/map/presentation/widgets/location_history_modal/location_history_modal.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';

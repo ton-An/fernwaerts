@@ -5,7 +5,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/get_locations_by_date.dart';
-import 'package:location_history/features/map/presentation/cubits/map_states.dart';
+import 'package:location_history/features/map/presentation/cubits/map_state.dart';
 
 /*
   To-Do:

@@ -24,7 +24,7 @@ class _InviteFormState extends State<_InviteForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<InviteCubit, InviteCubitState>(
+    return BlocBuilder<InviteCubit, InviteState>(
       builder: (context, state) {
         return AuthenticationForm(
           icon: CupertinoIcons.person_fill,

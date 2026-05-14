@@ -1,41 +1,41 @@
 import 'package:location_history/core/failures/failure.dart';
 
-/// {@template invite_cubit_state}
+/// {@template invite_state}
 /// Base state for accepting a user invite from a deep link.
 /// {@endtemplate}
-abstract class InviteCubitState {
-  /// {@macro invite_cubit_state}
-  const InviteCubitState();
+abstract class InviteState {
+  /// {@macro invite_state}
+  const InviteState();
 }
 
-/// {@template invite_initial_state}
+/// {@template invite_initial}
 /// Initial invite flow state before the user submits invite credentials.
 /// {@endtemplate}
-class InviteInitialState extends InviteCubitState {
-  /// {@macro invite_initial_state}
-  const InviteInitialState();
+class InviteInitial extends InviteState {
+  /// {@macro invite_initial}
+  const InviteInitial();
 }
 
 /// {@template invite_loading}
 /// Indicates that invite acceptance is currently running.
 /// {@endtemplate}
-class InviteLoading extends InviteCubitState {
+class InviteLoading extends InviteState {
   /// {@macro invite_loading}
   const InviteLoading();
 }
 
-/// {@template invite_successful}
+/// {@template invite_success}
 /// Indicates that the invite was accepted and the app can enter the map.
 /// {@endtemplate}
-class InviteSuccessful extends InviteCubitState {
-  /// {@macro invite_successful}
-  const InviteSuccessful();
+class InviteSuccess extends InviteState {
+  /// {@macro invite_success}
+  const InviteSuccess();
 }
 
 /// {@template invite_failure}
 /// Carries a recoverable [failure] from invite acceptance or setup.
 /// {@endtemplate}
-class InviteFailure extends InviteCubitState {
+class InviteFailure extends InviteState {
   /// {@macro invite_failure}
   const InviteFailure({required this.failure});
 

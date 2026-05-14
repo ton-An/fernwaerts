@@ -6,7 +6,7 @@ import 'package:location_history/features/settings/presentation/pages/invite_new
 import 'package:location_history/features/settings/presentation/pages/main_settings_page/main_settings_page.dart';
 import 'package:location_history/features/settings/presentation/widgets/settings_list_view.dart';
 import 'package:location_history/features/settings/presentation/widgets/settings_section_title.dart';
-import 'package:location_history/features/settings/presentation/widgets/sub_page_link.dart';
+import 'package:location_history/features/settings/presentation/widgets/settings_page_link.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_user.dart';
@@ -35,7 +35,7 @@ class UserManagementSettingsPage extends StatelessWidget {
           description: AppLocalizations.of(context)!.userManagementDescription,
         ),
 
-        SubSettingsPageLink(
+        SettingsPageLink(
           title: AppLocalizations.of(context)!.createNewUser,
           onPressed: () {
             context.push(InviteNewUserSettingsPage.route);

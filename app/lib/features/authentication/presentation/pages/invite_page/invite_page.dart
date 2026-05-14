@@ -4,7 +4,7 @@ import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/features/authentication/presentation/cubits/invite_cubit/invite_cubit.dart';
-import 'package:location_history/features/authentication/presentation/cubits/invite_cubit/invite_states.dart';
+import 'package:location_history/features/authentication/presentation/cubits/invite_cubit/invite_state.dart';
 import 'package:location_history/features/authentication/presentation/widgets/authentication_form/authentication_form.dart';
 import 'package:location_history/features/authentication/presentation/widgets/authentication_page_wrapper/authentication_page_wrapper.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
@@ -51,7 +51,7 @@ class _InvitePageState extends State<InvitePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<InviteCubit, InviteCubitState>(
+    return BlocListener<InviteCubit, InviteState>(
       listener: (context, state) {
         if (state is InviteFailure) {
           context.read<InAppNotificationCubit>().sendFailureNotification(
@@ -59,7 +59,7 @@ class _InvitePageState extends State<InvitePage> {
           );
         }
 
-        if (state is InviteSuccessful) {
+        if (state is InviteSuccess) {
           context.go(MapPage.route);
         }
       },

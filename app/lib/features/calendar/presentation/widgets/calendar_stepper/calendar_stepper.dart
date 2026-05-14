@@ -10,7 +10,7 @@ import 'package:location_history/features/calendar/presentation/cubits/calendar_
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_date_button.dart';
-part '_switch.dart';
+part '_navigation_button.dart';
 
 /// {@template calendar_stepper}
 /// Shows the current calendar selection and lets users step through it.
@@ -25,7 +25,7 @@ part '_switch.dart';
 /// - Date button expands or collapses the full calendar picker.
 ///
 /// Sub-components:
-/// - [_Switch]: Previous and next controls.
+/// - [_NavigationButton]: Previous and next controls.
 /// - [_DateButton]: Current selection label and expansion toggle.
 /// {@endtemplate}
 class CalendarStepper extends StatelessWidget {
@@ -52,7 +52,7 @@ class CalendarStepper extends StatelessWidget {
               ElevatedRow(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _Switch(
+                  _NavigationButton(
                     icon: Icons.arrow_back_ios_new_rounded,
                     onPressed: () {
                       context.read<CalendarDateSelectionCubit>().shiftSelection(
@@ -66,7 +66,7 @@ class CalendarStepper extends StatelessWidget {
                       child: _DateButton(),
                     ),
                   ),
-                  _Switch(
+                  _NavigationButton(
                     icon: Icons.arrow_forward_ios_rounded,
                     onPressed: () {
                       context.read<CalendarDateSelectionCubit>().shiftSelection(

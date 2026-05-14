@@ -1,16 +1,17 @@
 part of 'calendar.dart';
 
-class _Switch extends StatefulWidget {
-  const _Switch({required this.icon, required this.onPressed});
+class _NavigationButton extends StatefulWidget {
+  const _NavigationButton({required this.icon, required this.onPressed});
 
   final IconData icon;
   final VoidCallback onPressed;
 
   @override
-  State<_Switch> createState() => _SwitchState();
+  State<_NavigationButton> createState() => _NavigationButtonState();
 }
 
-class _SwitchState extends State<_Switch> with SingleTickerProviderStateMixin {
+class _NavigationButtonState extends State<_NavigationButton>
+    with SingleTickerProviderStateMixin {
   late AnimationController _fadeController;
   late Animation<double> _fadeAnimation;
 

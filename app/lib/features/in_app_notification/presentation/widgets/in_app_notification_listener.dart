@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
-import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_states.dart';
+import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_state.dart';
 import 'package:location_history/features/in_app_notification/presentation/widgets/in_app_notification/in_app_notification_widget.dart';
 
 /// {@template in_app_notification_listener}

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/invite_new_user_cubit/invite_new_user_cubit.dart';
-import 'package:location_history/features/settings/presentation/cubits/invite_new_user_cubit/invite_new_user_states.dart';
+import 'package:location_history/features/settings/presentation/cubits/invite_new_user_cubit/invite_new_user_state.dart';
 import 'package:location_history/features/settings/presentation/pages/user_management_settings_page/user_management_settings_page.dart';
 import 'package:location_history/features/settings/presentation/widgets/settings_list_view.dart';
 import 'package:location_history/features/settings/presentation/widgets/settings_section_title.dart';

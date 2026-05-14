@@ -5,7 +5,7 @@ import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_cubit.dart';
-import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_states.dart';
+import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_state.dart';
 import 'package:location_history/features/authentication/presentation/widgets/authentication_form/authentication_form.dart';
 import 'package:location_history/features/authentication/presentation/widgets/authentication_page_wrapper/authentication_page_wrapper.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
@@ -66,8 +66,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    return BlocListener<AuthenticationCubit, AuthenticationCubitState>(
-      listener: (BuildContext context, AuthenticationCubitState state) {
+    return BlocListener<AuthenticationCubit, AuthenticationState>(
+      listener: (BuildContext context, AuthenticationState state) {
         _handleAuthState(authState: state, theme: theme);
       },
       child: AuthenticationPageWrapper(
@@ -91,14 +91,14 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   /// - On successful login or sign-up, finalizes autofill and navigates to [MapPage].
   /// - On error, sends a failure notification via [InAppNotificationCubit].
   void _handleAuthState({
-    required AuthenticationCubitState authState,
+    required AuthenticationState authState,
     required WebfabrikThemeData theme,
   }) {
     if (authState is EnterServerDetails) {
       _animateToPage(pageIndex: 1, theme: theme);
     }
 
-    if (authState is EnterLogInInfo) {
+    if (authState is EnterLoginInfo) {
       _setFormType(formType: AuthenticationFormType.signIn);
       _animateToPage(pageIndex: 2, theme: theme);
     }
@@ -108,7 +108,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       _animateToPage(pageIndex: 2, theme: theme);
     }
 
-    if (authState is AuthenticationSuccessful) {
+    if (authState is AuthenticationSuccess) {
       TextInput.finishAutofillContext();
       context.go(MapPage.route);
     }

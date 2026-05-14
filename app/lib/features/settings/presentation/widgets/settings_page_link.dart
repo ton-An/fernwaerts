@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:location_history/core/widgets/fade_tap_detector.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
-/// {@template sub_settings_page_link}
+/// {@template settings_page_link}
 /// Tappable settings row that navigates to another settings page.
 /// {@endtemplate}
-class SubSettingsPageLink extends StatelessWidget {
-  /// {@macro sub_settings_page_link}
-  const SubSettingsPageLink({
+class SettingsPageLink extends StatelessWidget {
+  /// {@macro settings_page_link}
+  const SettingsPageLink({
     super.key,
     required this.title,
     required this.onPressed,

@@ -3,7 +3,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_app.dart';
 import 'package:location_history/features/authentication/domain/usecases/request_necessary_permissions.dart';
-import 'package:location_history/features/authentication/presentation/cubits/splash_cubit/splash_states.dart';
+import 'package:location_history/features/authentication/presentation/cubits/splash_cubit/splash_state.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/init_background_location_tracking.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 

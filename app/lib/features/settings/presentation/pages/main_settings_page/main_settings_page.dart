@@ -10,10 +10,10 @@ import 'package:location_history/features/map/presentation/pages/map_page/map_pa
 import 'package:location_history/features/settings/presentation/pages/account_settings_page/account_settings_page.dart';
 import 'package:location_history/features/settings/presentation/pages/debug_page.dart';
 import 'package:location_history/features/settings/presentation/pages/user_management_settings_page/user_management_settings_page.dart';
-import 'package:location_history/features/settings/presentation/widgets/oss_info.dart';
+import 'package:location_history/features/settings/presentation/widgets/open_source_info.dart';
 import 'package:location_history/features/settings/presentation/widgets/settings_list_view.dart';
 import 'package:location_history/features/settings/presentation/widgets/settings_section_title.dart';
-import 'package:location_history/features/settings/presentation/widgets/sub_page_link.dart';
+import 'package:location_history/features/settings/presentation/widgets/settings_page_link.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
@@ -45,7 +45,7 @@ class MainSettingsPage extends StatelessWidget {
     return SettingsListView(
       children: [
         SettingsSectionTitle(title: AppLocalizations.of(context)!.account),
-        SubSettingsPageLink(
+        SettingsPageLink(
           title: AppLocalizations.of(context)!.authentication,
           onPressed: () {
             context.go(AccountSettingsPage.route);
@@ -54,14 +54,14 @@ class MainSettingsPage extends StatelessWidget {
         const XXMediumGap(),
 
         SettingsSectionTitle(title: AppLocalizations.of(context)!.admin),
-        SubSettingsPageLink(
+        SettingsPageLink(
           title: AppLocalizations.of(context)!.userManagement,
           onPressed: () {
             context.go(UserManagementSettingsPage.route);
           },
         ),
         const XXMediumGap(),
-        const OSSInfo(),
+        const OpenSourceInfo(),
         const XXMediumGap(),
         CustomCupertinoTextButton(
           text: AppLocalizations.of(context)!.signOut,

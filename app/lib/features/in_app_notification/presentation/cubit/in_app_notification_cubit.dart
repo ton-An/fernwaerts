@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification.dart';
-import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_states.dart';
+import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_state.dart';
 
 /*
   To-Do:

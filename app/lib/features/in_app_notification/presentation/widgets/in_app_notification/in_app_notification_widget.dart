@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location_history/core/widgets/fade_tap_detector.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
-import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_states.dart';
+import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_state.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_content.dart';

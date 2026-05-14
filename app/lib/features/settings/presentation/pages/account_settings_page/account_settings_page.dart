@@ -4,12 +4,12 @@ import 'package:go_router/go_router.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/account_settings_cubit/account_settings_cubit.dart';
-import 'package:location_history/features/settings/presentation/cubits/account_settings_cubit/account_settings_states.dart';
+import 'package:location_history/features/settings/presentation/cubits/account_settings_cubit/account_settings_state.dart';
 import 'package:location_history/features/settings/presentation/pages/main_settings_page/main_settings_page.dart';
 import 'package:location_history/features/settings/presentation/pages/password_change_settings_page/password_change_settings_page.dart';
 import 'package:location_history/features/settings/presentation/widgets/settings_list_view.dart';
 import 'package:location_history/features/settings/presentation/widgets/settings_section_title.dart';
-import 'package:location_history/features/settings/presentation/widgets/sub_page_link.dart';
+import 'package:location_history/features/settings/presentation/widgets/settings_page_link.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 /// {@template account_settings_page}
@@ -81,7 +81,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
 
             const MediumGap(),
 
-            SubSettingsPageLink(
+            SettingsPageLink(
               title: AppLocalizations.of(context)!.changePassword,
               onPressed: () {
                 context.go(PasswordChangeSettingsPage.route);
