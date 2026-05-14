@@ -264,7 +264,7 @@ void registerLocationTrackingDependencies() {
     () => LocationDataRepositoryImpl(locationRemoteDataSource: getIt()),
   );
   getIt.registerLazySingleton<IOSLocationTrackingLocalDataSource>(
-    () => IOSLocationTrackingLocalDataSourceImpl(),
+    () => const IOSLocationTrackingLocalDataSourceImpl(),
   );
   getIt.registerLazySingleton<LocationDataRemoteDataSource>(
     () => LocationDataRemoteDataSourceImpl(supabaseHandler: getIt()),

@@ -2,7 +2,14 @@ import 'package:location_history/features/location_tracking/data/datasources/ios
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
 
+/// {@template location_tracking_repository_impl}
+/// Data-layer implementation of [LocationTrackingRepository].
+///
+/// This repository delegates tracking lifecycle, location stream, and distance
+/// filter operations to the iOS local data source.
+/// {@endtemplate}
 class LocationTrackingRepositoryImpl extends LocationTrackingRepository {
+  /// {@macro location_tracking_repository_impl}
   const LocationTrackingRepositoryImpl({
     required this.iosLocationTrackingLocalDataSource,
   });

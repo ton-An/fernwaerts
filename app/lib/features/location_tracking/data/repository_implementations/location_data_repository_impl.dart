@@ -8,7 +8,14 @@ import 'package:location_history/features/location_tracking/domain/repositories/
     - [ ] add failures to methods
 */
 
+/// {@template location_data_repository_impl}
+/// Data-layer implementation of [LocationDataRepository].
+///
+/// This repository delegates persisted location reads and writes to
+/// [LocationDataRemoteDataSource].
+/// {@endtemplate}
 class LocationDataRepositoryImpl extends LocationDataRepository {
+  /// {@macro location_data_repository_impl}
   const LocationDataRepositoryImpl({required this.locationRemoteDataSource});
 
   final LocationDataRemoteDataSource locationRemoteDataSource;

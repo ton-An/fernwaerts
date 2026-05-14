@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:background_location_2/background_location.dart';
+import 'package:flutter/services.dart';
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
 
 /*
@@ -8,28 +9,60 @@ import 'package:location_history/features/location_tracking/domain/models/record
     - [ ] Add error handling
 */
 
+/// {@template ios_location_tracking_local_data_source}
+/// Data source contract for the iOS background location tracking plugin.
+///
+/// This layer owns direct interaction with [BackgroundLocation] and exposes
+/// plugin updates as domain [RecordedLocation] values.
+/// {@endtemplate}
 abstract class IOSLocationTrackingLocalDataSource {
-  /// Initializes the tracking service
+  /// {@macro ios_location_tracking_local_data_source}
+  const IOSLocationTrackingLocalDataSource();
+
+  /// Initializes the tracking service.
+  ///
+  /// Call this before [locationChangeStream] or [updateDistanceFilter].
+  ///
+  /// Throws:
+  /// - [PlatformException] from the underlying tracking plugin
   Future<void> initTracking();
 
-  /// Stops the tracking service
+  /// Stops the tracking service.
+  ///
+  /// Throws:
+  /// - [PlatformException] from the underlying tracking plugin
   Future<void> stopTracking();
 
-  /// Streams location updates
+  /// Streams location updates from the tracking service.
+  ///
+  /// [initTracking] must be called before subscribing.
   ///
   /// Emits:
-  /// - [RecordedLocation] the current location of the user
+  /// - [RecordedLocation] values reported by the device
   Stream<RecordedLocation> locationChangeStream();
 
-  /// Updates the distance filter for the tracking service
+  /// Updates the distance filter for the tracking service.
+  ///
+  /// [initTracking] must be called before updating this setting.
   ///
   /// Parameters:
-  /// - [distanceFilter] the distance in meters that must be traveled before a new location is recorded
+  /// - distanceFilter: [double] distance in meters that should be traveled
+  ///   before another location is reported
+  ///
+  /// Throws:
+  /// - [PlatformException] from the underlying tracking plugin
   Future<void> updateDistanceFilter({required double distanceFilter});
 }
 
+/// {@template ios_location_tracking_local_data_source_impl}
+/// [BackgroundLocation] implementation of
+/// [IOSLocationTrackingLocalDataSource].
+/// {@endtemplate}
 class IOSLocationTrackingLocalDataSourceImpl
     extends IOSLocationTrackingLocalDataSource {
+  /// {@macro ios_location_tracking_local_data_source_impl}
+  const IOSLocationTrackingLocalDataSourceImpl();
+
   @override
   Future<void> initTracking() async {
     await BackgroundLocation.stopLocationService();
