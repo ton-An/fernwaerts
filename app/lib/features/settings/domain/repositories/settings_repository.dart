@@ -44,7 +44,6 @@ abstract class SettingsRepository {
   /// - [PasswordMustDifferFailure]
   /// - [OtpInvalidFailure]
   /// {@macro converted_client_exceptions}
-
   Future<Either<Failure, None>> updatePassword({
     required String newPassword,
     String? otp,

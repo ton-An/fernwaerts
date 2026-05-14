@@ -20,7 +20,16 @@ import 'package:supabase_flutter/supabase_flutter.dart';
     - [ ] handle internal server errors for functions (functionException.details is a string in this case)
 */
 
+/// {@template settings_repository_impl}
+/// Settings repository implementation that maps Supabase errors to failures.
+///
+/// The data source is allowed to throw Supabase Auth, Edge Function, and client
+/// transport exceptions. This repository converts app-relevant error codes into
+/// settings failures and delegates generic client transport conversion to
+/// [RepositoryFailureHandler].
+/// {@endtemplate}
 class SettingsRepositoryImpl extends SettingsRepository {
+  /// {@macro settings_repository_impl}
   SettingsRepositoryImpl({
     required this.settingsRemoteDataSource,
     required this.repositoryFailureHandler,

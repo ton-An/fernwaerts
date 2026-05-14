@@ -7,47 +7,65 @@ import 'package:supabase_flutter/supabase_flutter.dart';
     - [ ] Test updateEmail once the supabase test suite supports mocking auth
 */
 
+/// {@template settings_remote_data_source}
+/// Data source contract for remote settings account-management calls.
+///
+/// This layer owns Supabase Auth and Edge Function access for updating the
+/// current user's credentials, requesting reauthentication, and inviting users.
+/// {@endtemplate}
 abstract class SettingsRemoteDataSource {
+  /// {@macro settings_remote_data_source}
+  const SettingsRemoteDataSource();
+
   /// Updates the email address of the current user.
   ///
   /// Parameters:
-  /// - [String]: new email address to update to
+  /// - newEmail: [String] new email address to update to
   ///
   /// Throws:
-  /// - [AuthException]
-  /// - [ClientException]
+  /// - [AuthException] for Supabase Auth validation or mail delivery errors
+  /// - [ClientException] for network or Supabase client transport errors
   Future<void> updateEmail({required String newEmail});
 
   /// Updates the password of the current user.
   ///
+  /// When Supabase requires reauthentication, callers may retry with [otp].
+  ///
   /// Parameters:
-  /// - [String]: new password to update to
-  /// - [String?]: otp token (if required)
+  /// - newPassword: [String] new password to update to
+  /// - otp: [String?] one-time password used for reauthentication
   ///
   /// Throws:
-  /// - [AuthException]
-  /// - [ClientException]
+  /// - [AuthException] for Supabase Auth validation or reauthentication errors
+  /// - [ClientException] for network or Supabase client transport errors
   Future<void> updatePassword({required String newPassword, String? otp});
 
-  /// Requests an OTP token for re-authentication.
+  /// Requests an OTP token for reauthentication.
+  ///
+  /// The token is delivered through the current user's Supabase Auth email
+  /// channel.
   ///
   /// Throws:
-  /// - [AuthException]
-  /// - [ClientException]
+  /// - [AuthException] for Supabase Auth or email rate-limit errors
+  /// - [ClientException] for network or Supabase client transport errors
   Future<void> requestOtp();
 
-  /// Invites a new user to the app.
+  /// Invites a new user to the app through the `invite_user` Edge Function.
   ///
   /// Parameters:
-  /// - [String]: email address of the new user
+  /// - email: [String] email address of the new user
   ///
   /// Throws:
-  /// - [FunctionException]
-  /// - [ClientException]
+  /// - [FunctionException] for Edge Function validation or mail delivery errors
+  /// - [ClientException] for network or Supabase client transport errors
   Future<void> inviteNewUser({required String email});
 }
 
+/// {@template settings_remote_data_source_impl}
+/// Supabase implementation of [SettingsRemoteDataSource].
+/// {@endtemplate}
 class SettingsRemoteDataSourceImpl extends SettingsRemoteDataSource {
+  /// {@macro settings_remote_data_source_impl}
   SettingsRemoteDataSourceImpl({required this.supabaseHandler});
 
   final SupabaseHandler supabaseHandler;
