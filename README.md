@@ -23,6 +23,13 @@
 
 ---
 
+### 🧭 Road to Alpha
+
+Fernwärts is not ready for alpha yet. The current alpha readiness checklist is
+tracked in [Road to Alpha](ROAD_TO_ALPHA.md).
+
+---
+
 ### 📸 Screenshots
 
 <p float="left">

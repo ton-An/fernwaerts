@@ -1,4 +1,4 @@
-## Fernwaerts Alpha Definition
+## Road to Alpha
 
 Alpha is ready when:
 
