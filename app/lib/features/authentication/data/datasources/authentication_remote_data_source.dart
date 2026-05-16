@@ -92,6 +92,23 @@ abstract class AuthenticationRemoteDataSource {
     required String password,
   });
 
+  /// Completes setup for the currently authenticated invited user.
+  ///
+  /// The Supabase client must already hold the invited user's temporary
+  /// session from the invite link.
+  ///
+  /// Parameters:
+  /// - username: [String] username for the invited user
+  /// - password: [String] password for the invited user
+  ///
+  /// Throws:
+  /// - [ClientException]
+  /// - [FunctionException]
+  Future<void> signUpInvitedUser({
+    required String username,
+    required String password,
+  });
+
   /// Checks whether the configured Supabase client has an active session.
   ///
   /// Returns:
@@ -232,6 +249,19 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
     if (response['error']['code'] == 'weak_password') {
       throw const WeakPasswordFailure();
     }
+  }
+
+  @override
+  Future<void> signUpInvitedUser({
+    required String username,
+    required String password,
+  }) async {
+    final SupabaseClient supabaseClient = await supabaseHandler.client;
+
+    await supabaseClient.functions.invoke(
+      'sign_up_invited_user',
+      body: {'username': username, 'password': password},
+    );
   }
 
   @override
