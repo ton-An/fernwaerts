@@ -1,6 +1,14 @@
-part of 'in_app_notification.dart';
+part of 'in_app_notification_widget.dart';
 
+/// {@template in_app_notification_fade_wrapper}
+/// Fades out the current notification before a replacement entry is inserted.
+///
+/// The fade only runs for [InAppNotificationReplacing]. When it completes, the
+/// Cubit removes the old overlay entry and starts delivery for the pending
+/// notification.
+/// {@endtemplate}
 class _FadeWrapper extends StatefulWidget {
+  /// {@macro in_app_notification_fade_wrapper}
   const _FadeWrapper({required this.child});
 
   final Widget child;

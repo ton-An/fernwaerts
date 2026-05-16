@@ -21,7 +21,7 @@ class _CalendarHeader extends StatelessWidget {
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _Switch(
+                        _NavigationButton(
                           icon: Icons.arrow_back_ios_new_rounded,
                           onPressed:
                               () => _onBackwardPressed(
@@ -45,7 +45,7 @@ class _CalendarHeader extends StatelessWidget {
                             ),
                           ),
                         ),
-                        _Switch(
+                        _NavigationButton(
                           icon: Icons.arrow_forward_ios_rounded,
                           onPressed:
                               () => _onForwardPressed(
@@ -85,7 +85,7 @@ class _CalendarHeader extends StatelessWidget {
     } else if (selectionTypeState is CalendarYearSelection) {
       return "${DateFormat("y", Localizations.localeOf(context).languageCode).format(decenniallyCalendarState.startYear)} - ${DateFormat("y", Localizations.localeOf(context).languageCode).format(decenniallyCalendarState.endYear)}";
     } else {
-      return 'hoooops :)';
+      return '';
     }
   }
 

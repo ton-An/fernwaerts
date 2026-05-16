@@ -1,19 +1,22 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
+import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
 
-/*
-  To-Do:
-    - [ ] Add Failures to docs
-    - [ ] Hanlde exception on sign out without internet
-*/
+// TODO: Handle sign-out exceptions when the device is offline.
 
 /// {@template sign_out}
-/// Signs out the current user
+/// Signs out the current user and clears local session state.
+///
+/// The flow signs out of auth, stops location tracking, deletes the local
+/// database cache, and removes saved local authentication/server storage.
 ///
 /// Failures:
 /// - [StorageWriteFailure]
+///
+/// The auth sign-out, tracking stop, and local cache cleanup calls currently
+/// propagate their own exceptions if they fail before storage removal.
 /// {@endtemplate}
 class SignOut {
   /// {@macro sign_out}

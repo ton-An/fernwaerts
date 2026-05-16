@@ -1,6 +1,17 @@
 part of 'map_page.dart';
 
+/// {@template location_markers}
+/// The marker and polyline layer for the [MapPage].
+///
+/// It converts chronological map points into colored markers and connecting
+/// polylines.
+///
+/// The marker color is interpolated across the timeline gradient and each
+/// marker, except the final point or points that are nearly identical, gets a
+/// direction arrow toward the next point.
+/// {@endtemplate}
 class _LocationMarkers extends StatelessWidget {
+  /// {@macro location_markers}
   const _LocationMarkers({required this.points});
 
   final List<LatLng> points;
@@ -24,6 +35,7 @@ class _LocationMarkers extends StatelessWidget {
     );
   }
 
+  /// Builds the markers and path segments for the current [points].
   (List<Marker>, List<Polyline>) _generateMarkers({
     required List<Color> gradientColors,
   }) {
@@ -82,22 +94,24 @@ class _LocationMarkers extends StatelessWidget {
     return (markers, polylines);
   }
 
+  /// Calculates the rotation angle from [point] to [nextPoint].
   double _calculateAngleToNextPoint({
     required LatLng point,
     required LatLng nextPoint,
   }) {
     const Distance distanceUtils = Distance();
 
-    // Distance.bearing() gives you the heading clockwise from North, in degrees.
+    // Distance.bearing returns the heading clockwise from north, in degrees.
     final double bearingDeg = distanceUtils.bearing(point, nextPoint);
 
-    // Convert degrees → radians for Transform.rotate
+    // Transform.rotate expects radians.
     final double bearingRad = bearingDeg * (pi / 180);
 
-    // Normalize to 0 .. 2π
+    // Keep the rotation in the range expected by the marker transform.
     return (bearingRad + 2 * pi) % (2 * pi);
   }
 
+  /// Whether [nextPoint] is close enough to [point] to hide the direction arrow.
   bool _isNextPointIdentical({
     required LatLng point,
     required LatLng nextPoint,
@@ -110,11 +124,12 @@ class _LocationMarkers extends StatelessWidget {
       nextPoint,
     );
 
-    const int minDistanceInMeters = 10;
+    const int minDistanceInMeters = 5;
 
     return distance < minDistanceInMeters;
   }
 
+  /// Interpolates the timeline marker color for position [t].
   Color _interpolateColors(List<Color> colors, double t) {
     if (colors.length == 1 || t <= 0) return colors.first;
     if (t >= 1) return colors.last;

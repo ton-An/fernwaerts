@@ -195,6 +195,6 @@ class _DateButtonState extends State<_DateButton>
         return "${DateFormat("d MMM yy", Localizations.localeOf(context).languageCode).format(dateSelectionState.startDate!)} - ${DateFormat("d MMM yy", Localizations.localeOf(context).languageCode).format(dateSelectionState.endDate!)}";
       }
     }
-    return 'hooops :)';
+    return '';
   }
 }

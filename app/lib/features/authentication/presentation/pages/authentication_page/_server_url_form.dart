@@ -18,7 +18,7 @@ class _ServerUrlFormState extends State<_ServerUrlForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthenticationCubit, AuthenticationCubitState>(
+    return BlocBuilder<AuthenticationCubit, AuthenticationState>(
       builder: (context, state) {
         return AuthenticationForm(
           icon: CupertinoIcons.globe,

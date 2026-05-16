@@ -5,8 +5,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/get_locations_by_date.dart';
-import 'package:location_history/features/map/presentation/cubits/map_states.dart';
-import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
+import 'package:location_history/features/map/presentation/cubits/map_state.dart';
 
 /*
   To-Do:
@@ -14,8 +13,10 @@ import 'package:location_history/features/map/presentation/pages/map_page/map_pa
 */
 
 /// {@template map_cubit}
-/// Manages the state of the [MapPage]:
-/// - Loads and displays location data based on a date range.
+/// Coordinates map presentation state for the active calendar selection.
+///
+/// The Cubit subscribes to the location stream for the selected date range and
+/// replaces the previous subscription whenever the range changes.
 /// {@endtemplate}
 class MapCubit extends Cubit<MapState> {
   /// {@macro map_cubit}
@@ -25,15 +26,15 @@ class MapCubit extends Cubit<MapState> {
 
   StreamSubscription? locationsStreamSubscription;
 
-  /// Loads locations based on the provided date range.
+  /// Loads the locations whose timestamps fall within [start] and [end].
   ///
   /// Parameters:
-  /// - [start]: The start date of the range.
-  /// - [end]: The end date of the range.
+  /// - start: [DateTime] inclusive lower bound for the selected range.
+  /// - end: [DateTime] inclusive upper bound for the selected range.
   ///
   /// Emits:
-  /// - [MapLocationsLoaded] with the loaded locations
-  /// - [MapLocationsError] with the failure if loading fails
+  /// - [MapLocationsLoaded] each time the location stream returns data.
+  /// - [MapLocationsError] when the location stream reports a [Failure].
   void loadLocationsByDate({
     required DateTime start,
     required DateTime end,

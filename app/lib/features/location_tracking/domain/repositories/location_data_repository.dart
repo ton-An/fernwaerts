@@ -1,35 +1,43 @@
-import 'package:location_history/core/failures/storage/database_read_failure.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
 import 'package:location_history/features/location_tracking/domain/models/movement_segment.dart';
 
+/// {@template location_data_repository}
+/// Repository contract for persisted location history data.
+///
+/// Implementations are responsible for storage and sync details. Callers should
+/// use this contract for user-scoped location reads and saving recorded
+/// locations.
+/// {@endtemplate}
 abstract class LocationDataRepository {
+  /// {@macro location_data_repository}
   const LocationDataRepository();
 
-  /// Save location
+  /// Saves a recorded location.
   ///
   /// Parameters:
-  /// - [Location] the location to save
+  /// - location: [Location] to save
   Future<void> saveLocation({required Location location});
 
-  /// Get locations by date range
+  /// Watches locations recorded within a date range.
   ///
   /// Parameters:
-  /// - [DateTime] the start date of the range
-  /// - [DateTime] the end date of the range
+  /// - start: [DateTime] to start the range at
+  /// - end: [DateTime] to end the range at
   ///
   /// Returns:
-  /// - Stream of Lists of [Location]s within the date range
+  /// - [Future] that resolves to a [Stream] of [List]s of [Location]s within
+  ///   the range
   Future<Stream<List<Location>>> getLocationsByDate({
     required DateTime start,
     required DateTime end,
   });
 
-  /// Saves a movement segment
+  /// Saves a movement segment.
   ///
   /// Parameters:
-  /// - [MovementSegment] the segment to save
+  /// - movementSegment: [MovementSegment] to save
   ///
-  /// Failures:
-  /// - [DatabaseReadFailure]
+  /// Throws:
+  /// - [UnimplementedError] until segment persistence is wired up
   Future<void> saveMovementSegment({required MovementSegment movementSegment});
 }

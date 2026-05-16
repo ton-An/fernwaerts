@@ -1,5 +1,9 @@
 import 'package:powersync/powersync.dart';
 
+/// PowerSync client schema for the tables available in the local sync database.
+///
+/// Keep this aligned with Supabase migrations, PowerSync sync rules, and the
+/// Drift table definitions in this folder.
 Schema schema = const Schema(([
   // devices
   // activity types

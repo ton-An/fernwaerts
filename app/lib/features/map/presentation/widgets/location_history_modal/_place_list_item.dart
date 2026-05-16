@@ -1,5 +1,6 @@
 part of 'location_history_modal.dart';
 
+// ignore: unused_element
 class _PlaceListItem extends StatelessWidget {
   const _PlaceListItem({required this.place});
 

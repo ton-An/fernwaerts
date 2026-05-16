@@ -1,12 +1,16 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class User extends Equatable {
-  const User({required this.id, required this.username, required this.email});
+part 'user.freezed.dart';
 
-  final String id;
-  final String username;
-  final String email;
-
-  @override
-  List<Object?> get props => [id, username, email];
+/// {@template user}
+/// Authenticated Fernwaerts user profile exposed to the app domain.
+/// {@endtemplate}
+@freezed
+sealed class User with _$User {
+  /// {@macro user}
+  const factory User({
+    required String id,
+    required String username,
+    required String email,
+  }) = _User;
 }

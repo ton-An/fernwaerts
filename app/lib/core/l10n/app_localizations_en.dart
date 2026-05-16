@@ -116,4 +116,119 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get debugger => 'Debugger';
+
+  @override
+  String get doubleTapToOpenLogPage => 'Double tap to open log page';
+
+  @override
+  String get signOutQuestion => 'Sign Out?';
+
+  @override
+  String get signOutMessage =>
+      'You’ll be signed out of your account. You can sign back in anytime :)';
+
+  @override
+  String get yes => 'Yes';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get accountDetails => 'Account Details';
+
+  @override
+  String get authentication => 'Authentication';
+
+  @override
+  String get userManagement => 'User Management';
+
+  @override
+  String get userManagementDescription =>
+      'Manage your users and create new ones';
+
+  @override
+  String get personalInformation => 'Personal Information';
+
+  @override
+  String get authenticationDescription =>
+      'Change your password or email address.';
+
+  @override
+  String get changePassword => 'Change Password';
+
+  @override
+  String get oldPassword => 'Old Password';
+
+  @override
+  String get newPassword => 'New Password';
+
+  @override
+  String get confirmNewPassword => 'Confirm New Password';
+
+  @override
+  String get createNewUser => 'Create new User';
+
+  @override
+  String get yourUsers => 'Your Users';
+
+  @override
+  String get users => 'Users';
+
+  @override
+  String get emailSent => 'E-Mail Sent';
+
+  @override
+  String get checkInboxForVerificationMail =>
+      'Check your inbox for the verification email.';
+
+  @override
+  String get newPasswordsDoNotMatch => 'Your new passwords do not match';
+
+  @override
+  String get passwordChange => 'Password Change';
+
+  @override
+  String get passwordChangeDescription =>
+      'Your new password must be at least 8 characters long. It should contain a number, an uppercase letter and a lowercase letter.';
+
+  @override
+  String get otpPassword => 'OTP Password';
+
+  @override
+  String get success => 'Success';
+
+  @override
+  String get passwordChangeSuccess =>
+      'Your password has been changed successfully.';
+
+  @override
+  String get newEmailAddress => 'New E-Mail Address';
+
+  @override
+  String get inviteNewUser => 'Invite New User';
+
+  @override
+  String get inviteNewUserDescription => 'Invite a new user via email.';
+
+  @override
+  String get usersEmail => 'Users Email';
+
+  @override
+  String get invite => 'Invite';
+
+  @override
+  String get inviteNewUserSuccess => 'The user has been invited via email.';
+
+  @override
+  String get acceptInvite => 'Accept Invite';
+
+  @override
+  String get acceptInviteDescription =>
+      'Enter your username and password to accept the invite.';
+
+  @override
+  String get accept => 'Accept';
 }

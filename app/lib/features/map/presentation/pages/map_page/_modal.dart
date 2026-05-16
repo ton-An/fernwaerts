@@ -1,6 +1,13 @@
 part of 'map_page.dart';
 
+/// {@template map_page_modal}
+/// The draggable location history modal section of the [MapPage].
+///
+/// It owns the [DraggableScrollableController] so the history modal and legend
+/// visibility stay synchronized with the current sheet extent.
+/// {@endtemplate}
 class _Modal extends StatefulWidget {
+  /// {@macro map_page_modal}
   const _Modal();
 
   @override
@@ -72,6 +79,7 @@ class _ModalState extends State<_Modal> {
     );
   }
 
+  /// Whether the map legends should remain visible above the current sheet.
   bool _shouldDisplayLegend() {
     if (!_draggableScrollableController.isAttached) {
       return true;

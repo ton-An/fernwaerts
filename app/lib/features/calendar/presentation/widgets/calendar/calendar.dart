@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
-import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_cubit.dart';
-import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_type_state.dart';
+import 'package:location_history/features/calendar/presentation/cubits/calendar_selection_type_cubit/calendar_selection_type_cubit.dart';
+import 'package:location_history/features/calendar/presentation/cubits/calendar_selection_type_cubit/calendar_selection_type_state.dart';
 import 'package:location_history/features/calendar/presentation/cubits/decennially_calendar_cubit/decennially_calendar_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/decennially_calendar_cubit/decennially_calendar_state.dart';
 import 'package:location_history/features/calendar/presentation/cubits/monthly_calendar_cubit/monthly_calendar_cubit.dart';
@@ -18,39 +18,25 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_calendar_container.dart';
 part '_calendar_header.dart';
-part '_calendar_header_switch.dart';
+part '_navigation_button.dart';
 part '_calendar_type_selector.dart';
 
-/// Enum defining the different types of selection modes for the calendar.
-/// This is used by `_CalendarTypeSelector` to offer different ways to select dates.
+/// Selection granularities offered by `_CalendarTypeSelector`.
 enum CalendarSelectionType { customRange, day, week, month, year }
 
 /// {@template calendar}
-/// The main calendar view widget that allows users to select dates or date ranges.
+/// Displays the expanded calendar picker.
 ///
-/// This widget adapts its display based on the [CalendarSelectionTypeState]
-/// (e.g., showing a [MonthlyCalendar], [YearlyCalendar], or [DecenniallyYearCalendar]).
-/// It uses an [ExpandableCarousel] to allow swiping between different time periods
-/// (e.g., months, years, decades).
+/// The visible calendar page depends on [CalendarSelectionTypeState]:
+/// day, range, and week modes show [MonthlyCalendar]; month mode shows
+/// [YearlyCalendar]; year mode shows [DecenniallyYearCalendar]. Swiping the
+/// carousel updates the matching focus Cubit and then jumps back to the center
+/// page so future swipes can keep using relative offsets.
 ///
 /// Structure:
-/// - **Header**: Displays the current time period and navigation arrows (via `_CalendarHeader`).
-/// - **Carousel**: A swipeable area showing the appropriate calendar view ([MonthlyCalendar], [YearlyCalendar], or [DecenniallyYearCalendar]).
-/// - **Type Selector**: Allows changing the selection granularity (e.g., day, week, month, year) (via `_CalendarTypeSelector`).
-///
-/// State Management:
-/// - Listens to [CalendarSelectionTypeCubit] to determine which calendar view to display.
-/// - Interacts with [MonthlyCalendarCubit], [YearlyCalendarCubit], or [DecenniallyCalendarCubit]
-///   when the user swipes the carousel to load the corresponding time frame.
-///
-/// Sub-components:
-/// - [_CalendarContainer]: Provides the main visual container for the calendar.
-/// - [_CalendarHeader]: Displays the current period (e.g., "May 2023") and navigation.
-///   - [_CalendarHeaderSwitch]: The interactive element in the header to change period or selection type.
-/// - [MonthlyCalendar]: Displays days of a month.
-/// - [YearlyCalendar]: Displays months of a year.
-/// - [DecenniallyYearCalendar]: Displays years of a decade.
-/// - [_CalendarTypeSelector]: Buttons to switch between different selection modes (day, week, month, etc.).
+/// - [_CalendarHeader]: Shows the focused month, year, or decade and navigation.
+/// - [ExpandableCarousel]: Handles relative page navigation.
+/// - [_CalendarTypeSelector]: Changes the active selection granularity.
 /// {@endtemplate}
 class Calendar extends StatefulWidget {
   /// {@macro calendar}

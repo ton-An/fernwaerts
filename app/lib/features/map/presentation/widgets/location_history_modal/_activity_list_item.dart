@@ -1,6 +1,8 @@
 part of 'location_history_modal.dart';
 
+/// Localizes activity labels for the history list.
 extension ActivityTypeLocalizationExtension on ActivityType {
+  /// Returns the localized label for this activity type.
   String localize(BuildContext context) {
     final AppLocalizations localizations = AppLocalizations.of(context)!;
     switch (this) {
@@ -16,6 +18,7 @@ extension ActivityTypeLocalizationExtension on ActivityType {
   }
 }
 
+// ignore: unused_element
 class _ActivityListItem extends StatelessWidget {
   const _ActivityListItem({required this.activity});
 

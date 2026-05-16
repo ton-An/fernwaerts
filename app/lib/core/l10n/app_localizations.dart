@@ -303,6 +303,222 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Debugger'**
   String get debugger;
+
+  /// No description provided for @doubleTapToOpenLogPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Double tap to open log page'**
+  String get doubleTapToOpenLogPage;
+
+  /// No description provided for @signOutQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Out?'**
+  String get signOutQuestion;
+
+  /// No description provided for @signOutMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You’ll be signed out of your account. You can sign back in anytime :)'**
+  String get signOutMessage;
+
+  /// No description provided for @yes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yes;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @accountDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Account Details'**
+  String get accountDetails;
+
+  /// No description provided for @authentication.
+  ///
+  /// In en, this message translates to:
+  /// **'Authentication'**
+  String get authentication;
+
+  /// No description provided for @userManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'User Management'**
+  String get userManagement;
+
+  /// No description provided for @userManagementDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage your users and create new ones'**
+  String get userManagementDescription;
+
+  /// No description provided for @personalInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal Information'**
+  String get personalInformation;
+
+  /// No description provided for @authenticationDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Change your password or email address.'**
+  String get authenticationDescription;
+
+  /// No description provided for @changePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get changePassword;
+
+  /// No description provided for @oldPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Old Password'**
+  String get oldPassword;
+
+  /// No description provided for @newPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get newPassword;
+
+  /// No description provided for @confirmNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm New Password'**
+  String get confirmNewPassword;
+
+  /// No description provided for @createNewUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Create new User'**
+  String get createNewUser;
+
+  /// No description provided for @yourUsers.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Users'**
+  String get yourUsers;
+
+  /// No description provided for @users.
+  ///
+  /// In en, this message translates to:
+  /// **'Users'**
+  String get users;
+
+  /// No description provided for @emailSent.
+  ///
+  /// In en, this message translates to:
+  /// **'E-Mail Sent'**
+  String get emailSent;
+
+  /// No description provided for @checkInboxForVerificationMail.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your inbox for the verification email.'**
+  String get checkInboxForVerificationMail;
+
+  /// No description provided for @newPasswordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Your new passwords do not match'**
+  String get newPasswordsDoNotMatch;
+
+  /// No description provided for @passwordChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Password Change'**
+  String get passwordChange;
+
+  /// No description provided for @passwordChangeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Your new password must be at least 8 characters long. It should contain a number, an uppercase letter and a lowercase letter.'**
+  String get passwordChangeDescription;
+
+  /// No description provided for @otpPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'OTP Password'**
+  String get otpPassword;
+
+  /// No description provided for @success.
+  ///
+  /// In en, this message translates to:
+  /// **'Success'**
+  String get success;
+
+  /// No description provided for @passwordChangeSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Your password has been changed successfully.'**
+  String get passwordChangeSuccess;
+
+  /// No description provided for @newEmailAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'New E-Mail Address'**
+  String get newEmailAddress;
+
+  /// No description provided for @inviteNewUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite New User'**
+  String get inviteNewUser;
+
+  /// No description provided for @inviteNewUserDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite a new user via email.'**
+  String get inviteNewUserDescription;
+
+  /// No description provided for @usersEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Users Email'**
+  String get usersEmail;
+
+  /// No description provided for @invite.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite'**
+  String get invite;
+
+  /// No description provided for @inviteNewUserSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'The user has been invited via email.'**
+  String get inviteNewUserSuccess;
+
+  /// No description provided for @acceptInvite.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept Invite'**
+  String get acceptInvite;
+
+  /// No description provided for @acceptInviteDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your username and password to accept the invite.'**
+  String get acceptInviteDescription;
+
+  /// No description provided for @accept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get accept;
 }
 
 class _AppLocalizationsDelegate

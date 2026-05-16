@@ -1,0 +1,85 @@
+import 'package:fpdart/fpdart.dart';
+import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
+import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
+import 'package:location_history/core/failures/failure.dart';
+import 'package:location_history/core/failures/storage/storage_read_failure.dart';
+import 'package:location_history/features/authentication/domain/models/server_info.dart';
+import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
+
+/// {@template initialize_app}
+/// Restores the saved server connection for the app.
+///
+/// The first successful call initializes both the auth and sync connections.
+/// Later calls on the same instance skip the sync initialization and only
+/// verify that the current auth session is still present.
+///
+/// Failures:
+/// - [StorageReadFailure]
+/// - [NoSavedServerFailure]
+/// - [NotSignedInFailure]
+/// {@endtemplate}
+class InitializeApp {
+  /// {@macro initialize_app}
+  InitializeApp({required this.authenticationRepository});
+
+  final AuthenticationRepository authenticationRepository;
+
+  bool _isServerSetUp = false;
+
+  /// {@macro initialize_app}
+  Future<Either<Failure, None>> call() async {
+    return _getSavedServerInfo();
+  }
+
+  Future<Either<Failure, None>> _getSavedServerInfo() async {
+    final Either<Failure, ServerInfo> savedServerEither =
+        await authenticationRepository.getSavedServerInfo();
+
+    return savedServerEither.fold(
+      (Failure failure) {
+        return Left(failure);
+      },
+      (ServerInfo serverInfo) {
+        return _initializeServerConnection(serverInfo: serverInfo);
+      },
+    );
+  }
+
+  Future<Either<Failure, None>> _initializeServerConnection({
+    required ServerInfo serverInfo,
+  }) async {
+    await authenticationRepository.initializeSupabaseConnection(
+      supabaseInfo: serverInfo.supabaseInfo,
+    );
+
+    return _isSignedIn(serverInfo: serverInfo);
+  }
+
+  Future<Either<Failure, None>> _isSignedIn({
+    required ServerInfo serverInfo,
+  }) async {
+    final bool isSignedIn = await authenticationRepository.isSignedIn();
+
+    if (!isSignedIn) {
+      return const Left(NotSignedInFailure());
+    }
+
+    if (_isServerSetUp) {
+      return const Right(None());
+    }
+
+    return _initializeSyncServerConnection(serverInfo: serverInfo);
+  }
+
+  Future<Either<Failure, None>> _initializeSyncServerConnection({
+    required ServerInfo serverInfo,
+  }) async {
+    await authenticationRepository.initializeSyncServerConnection(
+      powersyncInfo: serverInfo.powersyncInfo,
+    );
+
+    _isServerSetUp = true;
+
+    return const Right(None());
+  }
+}

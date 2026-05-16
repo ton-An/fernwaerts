@@ -1,7 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:location_history/features/authentication/domain/enums/operating_system.dart';
 
+/// {@template raw_device}
+/// Platform device metadata before it is tied to a Fernwaerts user.
+/// {@endtemplate}
 class RawDevice extends Equatable {
+  /// {@macro raw_device}
   const RawDevice({
     required this.name,
     required this.model,

@@ -20,21 +20,22 @@ import 'package:location_history/features/authentication/data/repository_impleme
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/authentication/domain/repositories/device_repository.dart';
 import 'package:location_history/features/authentication/domain/repositories/permissions_repository.dart';
+import 'package:location_history/features/authentication/domain/usecases/accept_invite.dart';
 import 'package:location_history/features/authentication/domain/usecases/has_server_connection_saved.dart';
+import 'package:location_history/features/authentication/domain/usecases/initialize_app.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_new_supabase_connection.dart';
-import 'package:location_history/features/authentication/domain/usecases/initialize_saved_server_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_server_set_up.dart';
-import 'package:location_history/features/authentication/domain/usecases/is_signed_in.dart';
 import 'package:location_history/features/authentication/domain/usecases/request_necessary_permissions.dart';
 import 'package:location_history/features/authentication/domain/usecases/save_device_info_to_db.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_out.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_up_initial_admin.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_cubit.dart';
+import 'package:location_history/features/authentication/presentation/cubits/invite_cubit/invite_cubit.dart';
 import 'package:location_history/features/authentication/presentation/cubits/splash_cubit/splash_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_expansion_cubit/calendar_expansion_cubit.dart';
-import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_cubit.dart';
+import 'package:location_history/features/calendar/presentation/cubits/calendar_selection_type_cubit/calendar_selection_type_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/decennially_calendar_cubit/decennially_calendar_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/monthly_calendar_cubit/monthly_calendar_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/yearly_calendar_cubit/yearly_calendar_cubit.dart';
@@ -47,13 +48,27 @@ import 'package:location_history/features/location_tracking/domain/repositories/
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/get_locations_by_date.dart';
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
+import 'package:location_history/features/settings/data/datasources/settings_remote_data_source.dart';
+import 'package:location_history/features/settings/data/repository_implementations/settings_repository_impl.dart';
+import 'package:location_history/features/settings/domain/repositories/settings_repository.dart';
+import 'package:location_history/features/settings/domain/usecases/change_password.dart';
+import 'package:location_history/features/settings/domain/usecases/invite_new_user.dart';
+import 'package:location_history/features/settings/domain/usecases/update_email.dart';
+import 'package:location_history/features/settings/presentation/cubits/account_settings_cubit/account_settings_cubit.dart';
+import 'package:location_history/features/settings/presentation/cubits/invite_new_user_cubit/invite_new_user_cubit.dart';
+import 'package:location_history/features/settings/presentation/cubits/password_change_cubit/password_change_cubit.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
 import '../features/location_tracking/domain/usecases/init_background_location_tracking.dart';
 
+/// Global service locator used by app startup, routes, Cubits, and data layers.
 final GetIt getIt = GetIt.instance;
 
+/// Registers all dependencies needed by the app.
+///
+/// Call this once during startup before resolving Cubits, use cases,
+/// repositories, or shared data sources from [getIt].
 void initGetIt() {
   registerThirdPartyDependencies();
   registerCoreDependencies();
@@ -61,8 +76,10 @@ void initGetIt() {
   registerAuthenticationDependencies();
   registerCalendarDependencies();
   registerLocationTrackingDependencies();
+  registerSettingsDependencies();
 }
 
+/// Registers package and platform services that are consumed across features.
 void registerThirdPartyDependencies() {
   // -- Data -- //
   getIt.registerLazySingleton(() => Dio());
@@ -75,6 +92,8 @@ void registerThirdPartyDependencies() {
   getIt.registerLazySingleton(() => TalkerFlutter.init());
 }
 
+/// Registers app-wide infrastructure shared by feature repositories and data
+/// sources.
 void registerCoreDependencies() {
   // -- Data -- //
   getIt.registerLazySingleton<RepositoryFailureHandler>(
@@ -88,11 +107,13 @@ void registerCoreDependencies() {
   getIt.registerLazySingleton(() => const PlatformWrapper());
 }
 
+/// Registers in-app notification presentation dependencies.
 void registerInAppNotificationDependencies() {
   // -- Presentation -- //
   getIt.registerFactory(() => InAppNotificationCubit());
 }
 
+/// Registers authentication, invite, permissions, and device dependencies.
 void registerAuthenticationDependencies() {
   // -- Presentation -- //
   getIt.registerFactory(
@@ -107,11 +128,18 @@ void registerAuthenticationDependencies() {
   );
   getIt.registerFactory(
     () => SplashCubit(
-      initSavedServerConnection: getIt(),
-      isSignedInUsecase: getIt(),
+      initializeApp: getIt(),
       requestNecessaryPermissions: getIt(),
       initBackgroundLocationTracking: getIt(),
       talker: getIt(),
+    ),
+  );
+  getIt.registerFactory(
+    () => InviteCubit(
+      initializeNewSupabaseConnection: getIt(),
+      acceptInviteUsecase: getIt(),
+      requestNecessaryPermissions: getIt(),
+      initBackgroundLocationTracking: getIt(),
     ),
   );
 
@@ -139,10 +167,7 @@ void registerAuthenticationDependencies() {
     () => HasServerConnectionSaved(authenticationRepository: getIt()),
   );
   getIt.registerLazySingleton(
-    () => InitializeSavedServerConnection(authenticationRepository: getIt()),
-  );
-  getIt.registerLazySingleton(
-    () => IsSignedIn(authenticationRepository: getIt()),
+    () => InitializeApp(authenticationRepository: getIt()),
   );
   getIt.registerLazySingleton(
     () => RequestNecessaryPermissions(permissionsRepository: getIt()),
@@ -153,6 +178,7 @@ void registerAuthenticationDependencies() {
       deviceRepository: getIt(),
     ),
   );
+  getIt.registerLazySingleton(() => const AcceptInvite());
 
   // -- Data -- //
   getIt.registerLazySingleton<AuthenticationRepository>(
@@ -207,6 +233,7 @@ void registerAuthenticationDependencies() {
   );
 }
 
+/// Registers calendar presentation state dependencies.
 void registerCalendarDependencies() {
   // -- Presentation -- //
   getIt.registerFactory(() => CalendarExpansionCubit());
@@ -217,6 +244,8 @@ void registerCalendarDependencies() {
   getIt.registerFactory(() => CalendarDateSelectionCubit());
 }
 
+/// Registers location tracking Cubits, use cases, repositories, and data
+/// sources.
 void registerLocationTrackingDependencies() {
   // -- Presentation -- //
   getIt.registerFactory(() => MapCubit(getLocationData: getIt()));
@@ -224,7 +253,7 @@ void registerLocationTrackingDependencies() {
   // -- Domain -- //
   getIt.registerLazySingleton(
     () => InitBackgroundLocationTracking(
-      initializeSavedServerConnection: getIt(),
+      initializeApp: getIt(),
       authenticationRepository: getIt(),
       deviceRepository: getIt(),
       locationTrackingRepository: getIt(),
@@ -248,9 +277,41 @@ void registerLocationTrackingDependencies() {
     () => LocationDataRepositoryImpl(locationRemoteDataSource: getIt()),
   );
   getIt.registerLazySingleton<IOSLocationTrackingLocalDataSource>(
-    () => IOSLocationTrackingLocalDataSourceImpl(),
+    () => const IOSLocationTrackingLocalDataSourceImpl(),
   );
   getIt.registerLazySingleton<LocationDataRemoteDataSource>(
     () => LocationDataRemoteDataSourceImpl(supabaseHandler: getIt()),
+  );
+}
+
+/// Registers settings Cubits, use cases, repositories, and data sources.
+void registerSettingsDependencies() {
+  // -- Presentation -- //
+  getIt.registerFactory(
+    () => AccountSettingsCubit(updateEmailUsecase: getIt()),
+  );
+  getIt.registerFactory(
+    () => PasswordChangeCubit(changePasswordUseCase: getIt()),
+  );
+  getIt.registerFactory(
+    () => InviteNewUserCubit(inviteNewUserUseCase: getIt()),
+  );
+
+  //-- Domain -- //
+  getIt.registerLazySingleton(() => UpdateEmail(settingsRepository: getIt()));
+  getIt.registerLazySingleton(
+    () => ChangePassword(settingsRepository: getIt()),
+  );
+  getIt.registerLazySingleton(() => InviteNewUser(settingsRepository: getIt()));
+
+  //-- Data -- //
+  getIt.registerLazySingleton<SettingsRepository>(
+    () => SettingsRepositoryImpl(
+      settingsRemoteDataSource: getIt(),
+      repositoryFailureHandler: getIt(),
+    ),
+  );
+  getIt.registerLazySingleton<SettingsRemoteDataSource>(
+    () => SettingsRemoteDataSourceImpl(supabaseHandler: getIt()),
   );
 }

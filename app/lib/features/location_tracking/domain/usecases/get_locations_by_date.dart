@@ -1,15 +1,26 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 
-/* 
-  To-Do:
-    - [ ] add docs
-*/
-
+/// {@template get_locations_by_date}
+/// Gets the current user's locations within a date range.
+///
+/// Parameters:
+/// - start: [DateTime] to start the range at
+/// - end: [DateTime] to end the range at
+///
+/// Returns:
+/// - [Stream] of [Either] values containing [Failure]s or [List]s of
+///   [Location]s in the range
+///
+/// Failures:
+/// - [NotSignedInFailure]
+/// {@endtemplate}
 class GetLocationsByDate {
+  /// {@macro get_locations_by_date}
   const GetLocationsByDate({
     required this.authenticationRepository,
     required this.locationDataRepository,
@@ -18,6 +29,7 @@ class GetLocationsByDate {
   final AuthenticationRepository authenticationRepository;
   final LocationDataRepository locationDataRepository;
 
+  /// {@macro get_locations_by_date}
   Stream<Either<Failure, List<Location>>> call({
     required DateTime start,
     required DateTime end,

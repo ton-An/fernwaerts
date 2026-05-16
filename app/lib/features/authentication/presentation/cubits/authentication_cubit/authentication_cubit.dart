@@ -7,23 +7,27 @@ import 'package:location_history/features/authentication/domain/usecases/is_serv
 import 'package:location_history/features/authentication/domain/usecases/request_necessary_permissions.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_up_initial_admin.dart';
-import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_states.dart';
+import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_state.dart';
 import 'package:location_history/features/authentication/presentation/pages/authentication_page/authentication_page.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/init_background_location_tracking.dart';
 
-/* 
+/*
   To-Do:
     - [ ] Add tests
+    - [ ] Track permission request failures once the permissions package exposes
+          an awaitable result again.
 */
 
 /// {@template authentication_cubit}
 /// Manages the entire authentication flow of the [AuthenticationPage]:
 /// - Initializes and validates server connection.
 /// - Routes to either admin sign-up or user sign-in.
-/// - Requests platform permissions.
+/// - Requests platform permissions, but currently cannot await the user's
+///   response because the permission plugin returns before the dialog result is
+///   available.
 /// - Kicks off background location tracking.
 /// {@endtemplate}
-class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
+class AuthenticationCubit extends Cubit<AuthenticationState> {
   /// {@macro authentication_cubit}
   AuthenticationCubit({
     required this.initializeNewSupabaseConnection,
@@ -56,7 +60,7 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
   ///
   /// Emits:
   /// - [AuthenticationLoading] while processing
-  /// - [EnterLogInInfo] if server is reachable and set up
+  /// - [EnterLoginInfo] if server is reachable and set up
   /// - [EnterAdminSignUpInfo] if server is reachable but not set up
   void toAuthDetails({required String serverUrl}) async {
     emit(const AuthenticationLoading());
@@ -80,8 +84,12 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
   ///
   /// Emits:
   /// - [AuthenticationLoading] while processing
-  /// - [AuthenticationSuccessful] if successful
+  /// - [AuthenticationSuccess] if successful
   /// - [AuthenticationFailure] if an error occurs
+  ///
+  /// The permissions request that follows success is started immediately and
+  /// cannot currently surface its own result because the permission plugin
+  /// resolves before the user response is available.
   void signUpAdmin({
     required String username,
     required String email,
@@ -103,7 +111,7 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
         emit(AuthenticationFailure(failure: failure));
       },
       (None none) async {
-        emit(const AuthenticationSuccessful());
+        emit(const AuthenticationSuccess());
         _requestNecessaryPermissions();
       },
     );
@@ -113,8 +121,12 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
   ///
   /// Emits:
   /// - [AuthenticationLoading] while processing
-  /// - [AuthenticationSuccessful] if successful
+  /// - [AuthenticationSuccess] if successful
   /// - [AuthenticationFailure] if an error occurs
+  ///
+  /// The permissions request that follows success is started immediately and
+  /// cannot currently surface its own result because the permission plugin
+  /// resolves before the user response is available.
   void signIn({required String email, required String password}) async {
     emit(const AuthenticationLoading());
 
@@ -129,7 +141,7 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
         emit(AuthenticationFailure(failure: failure));
       },
       (None none) async {
-        emit(const AuthenticationSuccessful());
+        emit(const AuthenticationSuccess());
         _requestNecessaryPermissions();
       },
     );
@@ -144,7 +156,7 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
       },
       (bool isServerSetUp) {
         if (isServerSetUp) {
-          emit(const EnterLogInInfo());
+          emit(const EnterLoginInfo());
         } else {
           emit(const EnterAdminSignUpInfo());
         }
@@ -153,17 +165,8 @@ class AuthenticationCubit extends Cubit<AuthenticationCubitState> {
   }
 
   void _requestNecessaryPermissions() async {
-    final Either<Failure, None> requestPermissionsEither =
-        await requestNecessaryPermissions();
-
-    requestPermissionsEither.fold(
-      (Failure failure) {
-        emit(AuthenticationFailure(failure: failure));
-      },
-      (None none) {
-        _initBackgroundLocationTracking();
-      },
-    );
+    await requestNecessaryPermissions();
+    _initBackgroundLocationTracking();
   }
 
   void _initBackgroundLocationTracking() async {

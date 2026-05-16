@@ -16,12 +16,14 @@ import 'package:location_history/features/authentication/data/datasources/permis
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/authentication/domain/repositories/device_repository.dart';
 import 'package:location_history/features/authentication/domain/repositories/permissions_repository.dart';
-import 'package:location_history/features/authentication/domain/usecases/initialize_saved_server_connection.dart';
+import 'package:location_history/features/authentication/domain/usecases/initialize_app.dart';
 import 'package:location_history/features/authentication/domain/usecases/save_device_info_to_db.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
 import 'package:location_history/features/location_tracking/data/datasources/location_data_remote_data_source.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
+import 'package:location_history/features/settings/data/datasources/settings_remote_data_source.dart';
+import 'package:location_history/features/settings/domain/repositories/settings_repository.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
@@ -100,8 +102,7 @@ class MockDeviceRepository extends Mock implements DeviceRepository {}
 
 class MockPermissionsRepository extends Mock implements PermissionsRepository {}
 
-class MockInitializeSavedServerConnection extends Mock
-    implements InitializeSavedServerConnection {}
+class MockInitializeApp extends Mock implements InitializeApp {}
 
 class MockSignIn extends Mock implements SignIn {}
 
@@ -116,3 +117,9 @@ class MockLocationDataRepository extends Mock
 
 class MockLocationDataRemoteDataSource extends Mock
     implements LocationDataRemoteDataSource {}
+
+// -- Settings
+class MockSettingsRemoteDataSource extends Mock
+    implements SettingsRemoteDataSource {}
+
+class MockSettingsRepository extends Mock implements SettingsRepository {}

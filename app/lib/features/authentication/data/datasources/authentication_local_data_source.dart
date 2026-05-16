@@ -16,41 +16,51 @@ import 'package:location_history/features/authentication/domain/models/supabase_
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
+/// {@template authentication_local_data_source}
+/// Local auth data source contract for saved server details and cached state.
+///
+/// This layer owns secure storage and local database cache deletion. Repository
+/// implementations convert platform and storage exceptions into failures.
+/// {@endtemplate}
 abstract class AuthenticationLocalDataSource {
+  /// {@macro authentication_local_data_source}
   const AuthenticationLocalDataSource();
 
-  /// Gets the saved server Info
+  /// Gets the saved server info needed to restore a server connection.
   ///
   /// Returns:
-  /// - [ServerInfo] the saved server info
+  /// - [ServerInfo] containing Supabase and PowerSync connection details
   ///
   /// Throws:
   /// - [PlatformException]
   /// - [NoSavedServerFailure]
   Future<ServerInfo> getSavedServerInfo();
 
-  /// Removes the saved server
+  /// Removes only the saved server connection details from secure storage.
   ///
   /// Throws:
   /// - [PlatformException]
   Future<void> removeSavedServer();
 
-  /// Saves the provided server info
+  /// Saves the provided server connection details in secure storage.
   ///
   /// Parameters:
-  /// - [ServerInfo] serverInfo
+  /// - serverInfo: [ServerInfo] connection details to save
   ///
   /// Throws:
   /// - [PlatformException]
   Future<void> saveServerInfo({required ServerInfo serverInfo});
 
-  /// Deletes the local storage
+  /// Deletes all local secure storage owned by the app.
   ///
   /// Throws:
   /// - [PlatformException]
   Future<void> deleteLocalStorage();
 
-  /// Deletes the local db cache
+  /// Deletes the local PowerSync/Drift database cache file.
+  ///
+  /// Throws:
+  /// - [FileSystemException]
   Future<void> deleteLocalDBCache();
 }
 

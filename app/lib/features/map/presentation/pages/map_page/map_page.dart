@@ -10,7 +10,7 @@ import 'package:location_history/features/calendar/presentation/cubits/calendar_
 import 'package:location_history/features/calendar/presentation/widgets/calendar_composite/calendar_composite.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
-import 'package:location_history/features/map/presentation/cubits/map_states.dart';
+import 'package:location_history/features/map/presentation/cubits/map_state.dart';
 import 'package:location_history/features/map/presentation/widgets/location_history_modal/location_history_modal.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -25,31 +25,18 @@ part '_single_location_marker.dart';
 part '_time_gradient_legend.dart';
 
 /// {@template map_page}
-/// The main page of the application, displaying the map, calendar, and location history modal.
+/// Displays the selected location history on a map and in a draggable list.
 ///
-/// This page integrates several key features:
-/// - **Map View**: Displays a geographical map using `flutter_map` (via `_Map`).
-///   - Shows location markers for the selected date range (via `_LocationMarkers`).
-///   - Includes attribution and time gradient legends (via `_AttributionLegend`, `_TimeGradientLegend`).
-/// - **Calendar**: Allows users to select dates or date ranges for viewing location history (via [CalendarComposite]).
-/// - **Location History Modal**: A draggable bottom sheet that displays detailed location history (via `_Modal` which wraps [LocationHistoryModal]).
-///
-/// State Management:
-/// - Listens to [CalendarDateSelectionCubit] to load location data via [MapCubit] when the selected date changes.
-/// - [MapCubit] manages fetching and providing location data to the map and modal.
-///
-/// Initialization:
-/// - On `initState`, it triggers an initial load of locations based on the current state of [CalendarDateSelectionCubit].
+/// State management:
+/// - Listens to [CalendarDateSelectionCubit] and requests location data from
+///   [MapCubit] when the selected date or range changes.
+/// - Shares the resulting [MapCubit] state between [_Map] and
+///   [LocationHistoryModal].
 ///
 /// Sub-components:
-/// - [_Map]: The core map widget.
-/// - [_LocationMarkers]: Renders markers on the map.
-/// - [_SingleLocationMarker]: Represents an individual marker.
-/// - [_AttributionLegend]: Displays map attribution information.
-/// - [_TimeGradientLegend]: Shows a legend for the time-based color gradient of location markers.
-/// - [_LegendContainer]: A common container for map legends.
-/// - [CalendarComposite]: The interactive calendar widget.
-/// - [_Modal]: Manages the presentation of the [LocationHistoryModal].
+/// - [CalendarComposite]: Drives the active day or range.
+/// - [_Map]: Renders OpenStreetMap tiles, markers, and connecting paths.
+/// - [_Modal]: Hosts the draggable history list and map legends.
 /// {@endtemplate}
 class MapPage extends StatefulWidget {
   /// {@macro map_page}

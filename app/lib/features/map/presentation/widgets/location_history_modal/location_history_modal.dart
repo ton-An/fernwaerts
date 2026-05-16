@@ -10,8 +10,8 @@ import 'package:location_history/features/location_tracking/domain/models/locati
 import 'package:location_history/features/map/domain/models/activity.dart';
 import 'package:location_history/features/map/domain/models/place.dart';
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
-import 'package:location_history/features/map/presentation/cubits/map_states.dart';
-import 'package:location_history/features/settings/pages/settings_page/settings_page.dart';
+import 'package:location_history/features/map/presentation/cubits/map_state.dart';
+import 'package:location_history/features/settings/presentation/pages/main_settings_page/main_settings_page.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_activity_icon.dart';
@@ -27,20 +27,19 @@ part '_vertical_list_item_divider.dart';
 
 /* To-Do:
     - [ ] Factor in velocity of drag to determine if a drag was significant
-    - [ ] Fix onPointerUp sometimes not being called (might only be an issue in simulators)
-      - This is (at least partly) due to the maplibre package. It introduces (as ios support is still in alpha) render issues, 
-        which includes that the pointer events get interrupted on fade out of the attribution widget
+    - [ ] Fix onPointerUp sometimes not being called on some simulator devices
 */
 
 /// {@template location_history_modal}
-/// A draggable modal sheet that displays the user's location history.
+/// Displays the selected location history in a draggable bottom sheet.
 ///
-/// This widget allows the user to view their location history in a list format.
-/// It can be dragged to three different heights: small, medium (implicitly),
-/// and large, controlled by a [DraggableScrollableController].
+/// The parent owns the [DraggableScrollableController]; this widget uses it to
+/// react to drag gestures on the header and snap between collapsed and expanded
+/// heights.
 ///
-/// The modal includes a header, a draggable handle, and a scrollable list
-/// of location and activity items.
+/// Sub-components:
+/// - [_Header]: Shows the history title and page actions.
+/// - [_LocationList]: Renders the current [MapCubit] locations.
 /// {@endtemplate}
 class LocationHistoryModal extends StatefulWidget {
   /// {@macro location_history_modal}
@@ -50,20 +49,19 @@ class LocationHistoryModal extends StatefulWidget {
     required this.draggableScrollableController,
   });
 
-  /// The [ScrollController] for the list of location history items within the modal.
+  /// Coordinates list scrolling with the surrounding [DraggableScrollableSheet].
   final ScrollController scrollController;
 
-  /// The [DraggableScrollableController] that controls the size and position
-  /// of the modal.
+  /// Controls the sheet extent shared with the parent modal section.
   final DraggableScrollableController draggableScrollableController;
 
-  /// The maximum height of the modal, occupying the full screen.
+  /// Expanded sheet extent.
   static const double largeModalHeight = 1;
 
-  /// The default medium height of the modal.
+  /// Initial sheet extent.
   static const double mediumModalHeight = .6;
 
-  /// The minimum height of the modal when collapsed.
+  /// Collapsed sheet extent.
   static const double smallModalHeight = .3;
 
   @override
@@ -121,19 +119,13 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
     );
   }
 
-  /// Records the start position of a vertical drag gesture.
-  ///
-  /// Stores the initial y-coordinate of the pointer when dragging begins.
+  /// Stores the pointer position used to calculate header drag distance.
   void _verticalDragStart(double dragStartPosition) {
     _dragStart = dragStartPosition;
     _dragPosition = dragStartPosition;
   }
 
-  /// Updates the modal height in response to the user's drag movement.
-  ///
-  /// Adjusts the [DraggableScrollableController] based on the drag delta,
-  /// clamped between [smallModalHeight] and [largeModalHeight], and updates
-  /// the current drag position.
+  /// Moves the sheet with the header drag while keeping it within valid extents.
   void _verticalDragUpdate(double dragDelta, double dragPosition) {
     double currentExtent = widget.draggableScrollableController.size;
 
@@ -146,10 +138,7 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
     _dragPosition = dragPosition;
   }
 
-  /// Handles completion of a vertical drag by animating to the nearest snap point.
-  ///
-  /// Determines drag direction and significance to animate the modal to
-  /// either [largeModalHeight] or [smallModalHeight] with an easing curve.
+  /// Snaps the sheet to an expanded or collapsed extent after a header drag.
   void _verticalDragEnd({required WebfabrikThemeData theme}) {
     final double dragDelta = _dragStart - _dragPosition;
 
@@ -171,9 +160,7 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
     }
   }
 
-  /// Returns the target modal height based on the drag direction.
-  ///
-  /// If dragging up, returns [largeModalHeight], otherwise returns [smallModalHeight].
+  /// Resolves the snap extent for the completed drag direction.
   double _getModalHeight(VerticalDirection dragDirection) {
     if (dragDirection == VerticalDirection.up) {
       return LocationHistoryModal.largeModalHeight;
@@ -183,10 +170,12 @@ class _LocationHistoryModalState extends State<LocationHistoryModal> {
   }
 }
 
+/// Vertical drag direction used to decide how the modal should snap.
 enum VerticalDirection {
   up,
   down;
 
+  /// Returns the opposite vertical direction.
   VerticalDirection flip() {
     if (this == VerticalDirection.up) {
       return VerticalDirection.down;

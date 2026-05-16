@@ -4,13 +4,10 @@ import validator from "npm:validator";
 
 Deno.serve(async (req) => {
   if (req.method !== "POST") {
-    return new Response(
-      JSON.stringify({ error: "Method not allowed" }),
-      {
-        status: 405,
-        headers: { "Content-Type": "application/json" },
-      },
-    );
+    return new Response(JSON.stringify({ error: "Method not allowed" }), {
+      status: 405,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 
   const { username, email, password } = await req.json();
@@ -42,7 +39,7 @@ Deno.serve(async (req) => {
   if (!isValidPassword) {
     return new Response(
       JSON.stringify({
-        error: { "code": "weak_password" },
+        error: { code: "weak_password" },
       }),
       {
         status: 200,
@@ -77,11 +74,11 @@ async function createUserAccount(
 }
 
 async function isSetUp(supabase: SupabaseClient): Promise<boolean> {
-  const { data } = await supabase.from("public_info")
-    .select().eq(
-      "name",
-      "is_set_up",
-    ).single();
+  const { data } = await supabase
+    .from("public_info")
+    .select()
+    .eq("name", "is_set_up")
+    .single();
 
   return data.value;
 }
@@ -96,13 +93,11 @@ async function addUserToDB(
     id: userId,
     username: username,
     email: email,
+    is_set_up: true,
   });
 }
 
-async function makeUserAdmin(
-  supabase: SupabaseClient,
-  userId: string,
-) {
+async function makeUserAdmin(supabase: SupabaseClient, userId: string) {
   await supabase.from("user_roles").insert({
     user_id: userId,
     role: "admin",
@@ -110,10 +105,10 @@ async function makeUserAdmin(
 }
 
 async function markSetupAsComplete(supabase: SupabaseClient) {
-  await supabase.from("public_info").update({
-    value: true,
-  }).eq(
-    "name",
-    "is_set_up",
-  );
+  await supabase
+    .from("public_info")
+    .update({
+      value: true,
+    })
+    .eq("name", "is_set_up");
 }

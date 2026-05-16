@@ -6,24 +6,28 @@ import 'package:location_history/features/authentication/domain/models/supabase_
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
 
-/*
-  To-Do:
-    - [ ] Add possible Failures from sign in 
-*/
-
+/// {@template sign_up_initial_admin}
 /// Signs up the initial admin user
 ///
+/// After creating the admin account, this use case signs that account in and
+/// completes the same sync-server and device-registration steps as [SignIn].
+///
 /// Parameters:
-/// - [String] username: The username of the admin user
-/// - [String] email: The email of the admin user
-/// - [String] password: The password of the admin user
-/// - [String] repeatedPassword: The repeated password of the admin user to confirm it
+/// - supabaseInfo: [SupabaseInfo] connection info for the server
+/// - username: [String] username of the admin user
+/// - email: [String] email of the admin user
+/// - password: [String] password of the admin user
+/// - repeatedPassword: [String] repeated password of the admin user to confirm
+///   it
 ///
 /// Failures:
+/// - [PasswordMismatchFailure]
 /// - [WeakPasswordFailure]
 /// {@macro converted_dio_exceptions}
 /// {@macro converted_client_exceptions}
+/// {@endtemplate}
 class SignUpInitialAdmin {
+  /// {@macro sign_up_initial_admin}
   const SignUpInitialAdmin({
     required this.authenticationRepository,
     required this.signIn,
@@ -32,6 +36,7 @@ class SignUpInitialAdmin {
   final AuthenticationRepository authenticationRepository;
   final SignIn signIn;
 
+  /// {@macro sign_up_initial_admin}
   Future<Either<Failure, None>> call({
     required SupabaseInfo supabaseInfo,
     required String username,

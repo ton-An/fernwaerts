@@ -10,24 +10,24 @@ import 'package:location_history/features/authentication/domain/models/supabase_
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/save_device_info_to_db.dart';
 
-/*
-  To-Do:
-    - [ ] Add Failures to docs
-*/
-
 /// {@template sign_in}
-/// Signs in a user with a given email and password
+/// Signs in a user and prepares the app for synced, user-scoped data access.
+///
+/// On successful authentication, the use case fetches sync connection info,
+/// validates the sync endpoint, initializes sync, saves the server info, and
+/// registers the current device for the signed-in user.
 ///
 /// Parameters:
-/// - [String] email
-/// - [String] password
+/// - email: [String] email of the user
+/// - password: [String] password of the user
+/// - supabaseInfo: [SupabaseInfo] connection info for the server
 ///
 /// Failures:
-/// {@macro converted_client_exceptions}
 /// - [InvalidCredentialsFailure]
 /// - [NotSignedInFailure]
 /// - [DeviceInfoPlatformNotSupportedFailure]
 /// - [StorageWriteFailure]
+/// {@macro converted_client_exceptions}
 /// {@endtemplate}
 class SignIn {
   /// {@macro sign_in}

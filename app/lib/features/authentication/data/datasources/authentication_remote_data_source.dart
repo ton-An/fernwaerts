@@ -18,51 +18,69 @@ import 'package:talker_flutter/talker_flutter.dart';
     - [ ] Standardize error handling and server calls
 */
 
+/// {@template authentication_remote_data_source}
+/// Remote auth data source contract for Supabase, bootstrap, and sync setup.
+///
+/// This layer owns network calls, Supabase auth/session access, Supabase Edge
+/// Function calls, and PowerSync initialization.
+/// {@endtemplate}
 abstract class AuthenticationRemoteDataSource {
+  /// {@macro authentication_remote_data_source}
   const AuthenticationRemoteDataSource();
 
-  /// Checks if the server is reachable.
+  /// Checks whether the Supabase server health endpoint is reachable.
   ///
   /// Parameters:
-  /// - [String] serverUrl: The URL of the server to connect to
+  /// - serverUrl: [String] URL of the Supabase server to check
   ///
   /// Throws:
   /// {@macro server_remote_handler_exceptions}
   Future<void> isServerConnectionValid({required String serverUrl});
 
-  /// Checks if the server is set up.
+  /// Checks whether the configured server completed first-run setup.
+  ///
+  /// The Supabase connection must already be initialized.
   ///
   /// Returns:
-  /// - a [bool] indicating if the server is set up.
+  /// - [bool] whether the server is set up
   ///
   /// Throws:
   /// - [ClientException]
   /// - [PostgrestException]
   Future<bool> isServerSetUp();
 
-  /// Initializes the connection to the supabase server
+  /// Initializes the Supabase connection for the selected server.
+  ///
+  /// Existing Supabase and PowerSync resources may be disposed before the new
+  /// connection is initialized.
   ///
   /// Parameters:
-  /// - [SupabaseInfo] supabaseInfo: The info of the server to connect to
+  /// - supabaseInfo: [SupabaseInfo] connection info for the Supabase server
   Future<void> initializeSupabaseConnection({
     required SupabaseInfo supabaseInfo,
   });
 
-  /// Initializes the connection to the sync server
+  /// Initializes the PowerSync connection for the selected server.
+  ///
+  /// The Supabase connection must already be initialized so PowerSync can use
+  /// the same authenticated server context.
   ///
   /// Parameters:
-  /// - [PowersyncInfo] powersyncInfo: The info of the server to connect to
+  /// - powersyncInfo: [PowersyncInfo] connection info for the sync server
   Future<void> initializeSyncServerConnection({
     required PowersyncInfo powersyncInfo,
   });
 
-  /// Signs up the initial admin user
+  /// Creates the initial admin account during first-run server setup.
+  ///
+  /// This calls the unauthenticated bootstrap endpoint and is only valid before
+  /// the instance has been set up.
   ///
   /// Parameters:
-  /// - [String] serverUrl: The URL of the server to connect to
-  /// - [String] username: The username of the admin user
-  /// - [String] email: The email of the admin user
-  /// - [String] password: The password of the admin user
+  /// - serverUrl: [String] URL of the server to bootstrap
+  /// - username: [String] username for the admin user
+  /// - email: [String] email for the admin user
+  /// - password: [String] password for the admin user
   ///
   /// Throws:
   /// - [WeakPasswordFailure]
@@ -74,63 +92,67 @@ abstract class AuthenticationRemoteDataSource {
     required String password,
   });
 
-  /// Checks if the user is signed in
+  /// Checks whether the configured Supabase client has an active session.
   ///
   /// Returns:
-  /// - a [bool] indicating if the user is signed in
+  /// - [bool] whether a current session exists
   Future<bool> isSignedIn();
 
-  /// Notifies when the authentication state changes
+  /// Streams sign-in and sign-out events from the configured auth client.
   ///
   /// Emits:
   /// - An [AuthenticationState]
   Stream<AuthenticationState> authenticationStateStream();
 
-  /// Signs in a user
+  /// Signs in a user against the initialized Supabase auth connection.
   ///
   /// Parameters:
-  /// - [String] email
-  /// - [String] password
+  /// - email: [String] email address for the user
+  /// - password: [String] password for the user
   ///
   /// Throws:
   /// - [ClientException]
   /// - [AuthException]
   Future<void> signIn({required String email, required String password});
 
-  /// Signs out the current user
+  /// Signs out the current user from the initialized Supabase auth connection.
   Future<void> signOut();
 
-  /// Gets the server's Supabase anon key
+  /// Gets the server's Supabase anon key from the bootstrap endpoint.
   ///
   /// Parameters:
-  /// - [String] serverUrl: The URL of the server to connect to
+  /// - serverUrl: [String] URL of the server to query
   ///
   /// Returns:
-  /// - a [String] containing the Supabase anon key
+  /// - [String] containing the Supabase anon key
   ///
   /// Throws:
   /// {@macro server_remote_handler_exceptions}
   Future<String> getAnonKeyFromServer({required String serverUrl});
 
-  /// Gets the current user's id
+  /// Gets the currently signed-in Supabase user's id.
   ///
   /// Returns:
-  /// - a [String] containing the current user's id
+  /// - [String] containing the current user's id
   ///
   /// Throws:
   /// - [NotSignedInFailure]
   Future<String> getCurrentUserId();
 
-  /// Gets the sync server's URL
+  /// Gets the sync server URL from the configured Supabase Edge Function.
   ///
   /// Returns:
   /// - [PowersyncInfo] containing the sync server's URL
+  ///
+  /// Throws:
+  /// - [ClientException]
+  /// - [FunctionException]
   Future<PowersyncInfo> getSyncServerInfo();
 
-  /// Checks if the sync server is reachable.
+  /// Checks whether the PowerSync server health endpoint is reachable.
   ///
   /// Parameters:
-  /// - [String] serverUrl: The URL of the server to connect to
+  /// - syncServerUrl: [String] URL of the sync server to check
   ///
   /// Throws:
   /// {@macro server_remote_handler_exceptions}
@@ -237,11 +259,11 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
 
     await for (AuthState authState in authStateSubscription) {
       if (authState.event == AuthChangeEvent.signedIn) {
-        yield SignedInState();
+        yield const SignedInState();
       }
 
       if (authState.event == AuthChangeEvent.signedOut) {
-        yield SignedOutState();
+        yield const SignedOutState();
       }
     }
   }

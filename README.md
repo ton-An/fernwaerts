@@ -29,6 +29,13 @@
 
 ---
 
+### 🧭 Road to Alpha
+
+Fernwärts is not ready for alpha yet. The current alpha readiness checklist is
+tracked in [Road to Alpha](ROAD_TO_ALPHA.md).
+
+---
+
 ### 📸 Screenshots
 
 <p float="left">
@@ -47,7 +54,7 @@
   and country
 - **Activity Recognition**: Knows whether you’re walking, biking, driving, or
   just chilling
-- **Cross-Platform (Flutter)**: Currently supports **iOS** and **Android**
+- **Cross-Platform (Flutter)**: Supports **iOS** and **Android**
   > 🚧 Desktop (macOS, Linux and Windows) and Web support are on the roadmap and
   > coming soon
 

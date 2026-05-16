@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/features/authentication/presentation/cubits/splash_cubit/splash_cubit.dart';
-import 'package:location_history/features/authentication/presentation/cubits/splash_cubit/splash_states.dart';
+import 'package:location_history/features/authentication/presentation/cubits/splash_cubit/splash_state.dart';
 import 'package:location_history/features/authentication/presentation/pages/authentication_page/authentication_page.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
-import 'package:location_history/features/settings/pages/debug_page.dart';
+import 'package:location_history/features/settings/presentation/pages/debug_page.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 /// {@template splash_page}
@@ -18,7 +19,8 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 /// (if not authenticated or an error occurs).
 ///
 /// It also handles displaying any failures encountered during the initialization
-/// process using the [InAppNotificationCubit].
+/// process while the splash screen is still active using the
+/// [InAppNotificationCubit].
 /// {@endtemplate}
 class SplashPage extends StatefulWidget {
   /// {@macro splash_page}
@@ -32,10 +34,19 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  bool _showLogPageHint = false;
+
   @override
   void initState() {
     super.initState();
     context.read<SplashCubit>().determineInitialAppState();
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) {
+        setState(() {
+          _showLogPageHint = true;
+        });
+      }
+    });
   }
 
   @override
@@ -67,8 +78,21 @@ class _SplashPageState extends State<SplashPage> {
           },
           child: Container(
             padding: EdgeInsets.all(theme.spacing.large),
-            alignment: Alignment.center,
-            child: const LoadingIndicator(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const LoadingIndicator(),
+                const SizedBox(height: 16),
+                AnimatedOpacity(
+                  opacity: _showLogPageHint ? 1 : 0,
+                  duration: theme.durations.short,
+                  child: Text(
+                    AppLocalizations.of(context)!.doubleTapToOpenLogPage,
+                    style: theme.text.body.copyWith(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

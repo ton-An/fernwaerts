@@ -1,30 +1,30 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_cubit.dart';
-import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_states.dart';
+import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_state.dart';
 import 'package:location_history/features/authentication/presentation/widgets/authentication_form/authentication_form.dart';
+import 'package:location_history/features/authentication/presentation/widgets/authentication_page_wrapper/authentication_page_wrapper.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
 import 'package:simple_shadow/simple_shadow.dart';
-import 'package:video_player/video_player.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_admin_sign_up_form.dart';
 part '_server_url_form.dart';
 part '_sign_in_form.dart';
-part '_video_background.dart';
 part '_welcome.dart';
 
 /*
   To-Do:
     - [ ] Add apple-apple-site-association to fully enable autofill on iOS
+    - [ ] Maybe replace custom navigation with GoRouter
 */
 
+/// Current form shown on the authentication carousel.
 enum AuthenticationFormType { signIn, adminSignUp }
 
 /// {@template authentication_page}
@@ -67,50 +67,19 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    return BlocListener<AuthenticationCubit, AuthenticationCubitState>(
-      listener: (BuildContext context, AuthenticationCubitState state) {
+    return BlocListener<AuthenticationCubit, AuthenticationState>(
+      listener: (BuildContext context, AuthenticationState state) {
         _handleAuthState(authState: state, theme: theme);
       },
-      child: Stack(
+      child: AuthenticationPageWrapper(
+        carouselController: _carouselController,
         children: [
-          const Positioned.fill(child: _VideoBackground()),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: ClipRRect(
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(theme.radii.xLarge),
-              ),
-              child: BackdropFilter(
-                filter: theme.misc.blurFilter,
-                child: Container(
-                  color: theme.colors.translucentBackground,
-                  child: ExpandableCarousel(
-                    items: [
-                      const _Welcome(),
-                      const _ServerUrlForm(),
-                      if (_formType == AuthenticationFormType.adminSignUp)
-                        const _AdminSignUpForm()
-                      else
-                        const _SignInForm(),
-                    ],
-                    options: ExpandableCarouselOptions(
-                      controller: _carouselController,
-                      expansionAlignment: Alignment.bottomCenter,
-                      viewportFraction: 1,
-                      showIndicator: false,
-                      padEnds: false,
-                      disableCenter: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      autoPlayCurve: Curves.easeOut,
-                      autoPlayAnimationDuration: const Duration(
-                        milliseconds: 240,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
+          const _Welcome(),
+          const _ServerUrlForm(),
+          if (_formType == AuthenticationFormType.adminSignUp)
+            const _AdminSignUpForm()
+          else
+            const _SignInForm(),
         ],
       ),
     );
@@ -123,14 +92,14 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   /// - On successful login or sign-up, finalizes autofill and navigates to [MapPage].
   /// - On error, sends a failure notification via [InAppNotificationCubit].
   void _handleAuthState({
-    required AuthenticationCubitState authState,
+    required AuthenticationState authState,
     required WebfabrikThemeData theme,
   }) {
     if (authState is EnterServerDetails) {
       _animateToPage(pageIndex: 1, theme: theme);
     }
 
-    if (authState is EnterLogInInfo) {
+    if (authState is EnterLoginInfo) {
       _setFormType(formType: AuthenticationFormType.signIn);
       _animateToPage(pageIndex: 2, theme: theme);
     }
@@ -140,7 +109,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       _animateToPage(pageIndex: 2, theme: theme);
     }
 
-    if (authState is AuthenticationSuccessful) {
+    if (authState is AuthenticationSuccess) {
       TextInput.finishAutofillContext();
       context.go(MapPage.route);
     }

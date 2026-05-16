@@ -1,11 +1,14 @@
 import 'package:background_location_2/background_location.dart' as bg;
 
-/* 
-  To-Do:
-    - [ ] Check if timestamp is parsed correctly
-*/
-
+/// {@template recorded_location}
+/// Raw location update emitted by the platform tracking plugin.
+///
+/// [RecordedLocation] keeps plugin-shaped data out of the rest of the domain
+/// layer. Use [Location.fromRecordedLocation] when a raw update is ready to be
+/// associated with a user, device, and persistence metadata.
+/// {@endtemplate}
 class RecordedLocation {
+  /// {@macro recorded_location}
   RecordedLocation({
     required this.timestamp,
     required this.latitude,
@@ -34,6 +37,13 @@ class RecordedLocation {
   final double ellipsoidalAltitude;
   final double altitudeAccuracy;
 
+  /// Converts a `background_location_2` update into a domain value.
+  ///
+  /// The plugin reports timestamp values in milliseconds since epoch; the domain
+  /// stores them as [DateTime] values.
+  ///
+  /// Parameters:
+  /// - bgLocation: [bg.Location] to convert
   static RecordedLocation fromBGLocation({required bg.Location bgLocation}) {
     return RecordedLocation(
       timestamp: DateTime.fromMicrosecondsSinceEpoch(

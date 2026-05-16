@@ -120,6 +120,7 @@ final PlatformException tPlatformException = PlatformException(code: 'bad');
 const String tUsername = 'Ted';
 const String tEmail = 'ted@example.com';
 const String tPassword = 'VeryStrongPassword';
+const String tOtp = '424242';
 
 const String tUserId = '1234567890';
 const String tDeviceId = '1234567890';
@@ -262,6 +263,8 @@ const RawDevice tIOSRawDevice = RawDevice(
 );
 
 final IosDeviceInfo tIOSDeviceInfo = IosDeviceInfo.setMockInitialValues(
+  freeDiskSize: 1000,
+  totalDiskSize: 10000,
   name: tIOSRawDevice.name,
   systemName: 'ios',
   systemVersion: tIOSRawDevice.osVersion,
@@ -282,7 +285,7 @@ final IosDeviceInfo tIOSDeviceInfo = IosDeviceInfo.setMockInitialValues(
 );
 
 final Device tDevice = Device(
-  id: "uuid",
+  id: 'uuid',
   userId: tUserId,
   name: "Ted's iPhone",
   model: 'iPhone Ultra Max Pro',
@@ -304,6 +307,8 @@ const RawDevice tAndroidRawDevice = RawDevice(
 
 final AndroidDeviceInfo tAndroidDeviceInfo =
     AndroidDeviceInfo.setMockInitialValues(
+      freeDiskSize: 1000,
+      totalDiskSize: 10000,
       name: tAndroidRawDevice.name,
       model: tAndroidRawDevice.model,
       manufacturer: tAndroidRawDevice.manufacturer,

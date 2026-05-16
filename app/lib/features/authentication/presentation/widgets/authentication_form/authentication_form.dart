@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
-import 'package:location_history/features/settings/pages/debug_page.dart';
+import 'package:location_history/features/settings/presentation/pages/debug_page.dart';
 import 'package:super_keyboard/super_keyboard.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
@@ -78,10 +78,10 @@ class AuthenticationForm extends StatelessWidget {
             MediaQuery.of(context).viewInsets.bottom,
       ),
       child: SuperKeyboardBuilder(
-        builder: (context, keyboardState) {
+        builder: (BuildContext context, MobileWindowGeometry windowGeometry) {
           final isKeyboardVisible =
-              keyboardState == KeyboardState.open ||
-              keyboardState == KeyboardState.opening;
+              windowGeometry.keyboardState == KeyboardState.open ||
+              windowGeometry.keyboardState == KeyboardState.opening;
 
           return Column(
             mainAxisAlignment: MainAxisAlignment.end,

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_cubit.dart';
-import 'package:location_history/features/calendar/presentation/cubits/calendar_type_cubit/calendar_selection_type_state.dart';
+import 'package:location_history/features/calendar/presentation/cubits/calendar_selection_type_cubit/calendar_selection_type_cubit.dart';
+import 'package:location_history/features/calendar/presentation/cubits/calendar_selection_type_cubit/calendar_selection_type_state.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 /// {@template calendar_view_container}
@@ -10,9 +10,9 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 ///
 /// This widget wraps its [child] with padding and a decorated [Container]
 /// (rounded corners, translucent background). The horizontal padding adjusts
-/// based on the current [CalendarSelectionTypeState] to optimize spacing for
-/// different calendar granularities (e.g., less padding for month/year views
-/// which might have wider cells).
+/// on the left side based on the current [CalendarSelectionTypeState] to
+/// optimize spacing for different calendar granularities (e.g., less padding
+/// for month/year views which might have wider cells).
 /// {@endtemplate}
 class CalendarViewContainer extends StatelessWidget {
   /// {@macro calendar_view_container}

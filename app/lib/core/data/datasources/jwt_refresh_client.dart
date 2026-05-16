@@ -1,7 +1,15 @@
 import 'package:http/http.dart' as http;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+/// {@template jwt_refresh_client}
+/// HTTP client that attaches the current Supabase access token to each request.
+///
+/// Requests are sent without an `Authorization` header when there is no active
+/// Supabase session. The client does not refresh sessions itself; Supabase owns
+/// token refresh lifecycle.
+/// {@endtemplate}
 class JWTRefreshClient extends http.BaseClient {
+  /// {@macro jwt_refresh_client}
   JWTRefreshClient() : _innerClient = http.Client();
 
   final http.Client _innerClient;
