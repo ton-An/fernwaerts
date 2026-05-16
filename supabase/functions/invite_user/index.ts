@@ -67,7 +67,7 @@ async function inviteNewUser(
     if (errorCode == "email_exists") {
       const user = await getUserByEmail(supabase, email);
 
-      if (user && !user.is_setup) {
+      if (user && !user.is_set_up) {
         await deleteUser(supabase, user.id);
 
         return await inviteNewUser(supabase, siteUrl, apiUrl, email);
