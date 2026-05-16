@@ -20,9 +20,13 @@ Deno.serve(async (request) => {
   if (getUserError || !user || isUserSetUp) {
     return new Response(
       JSON.stringify({
-        error: { code: "account_already_set_up" },
+        code: "account_already_set_up",
+        message: "Account is already set up.",
       }),
-      { status: 400 },
+      {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      },
     );
   }
 
@@ -39,7 +43,8 @@ Deno.serve(async (request) => {
   if (!isValidPassword) {
     return new Response(
       JSON.stringify({
-        error: { code: "weak_password" },
+        code: "weak_password",
+        message: "Password is too weak.",
       }),
       {
         status: 400,
