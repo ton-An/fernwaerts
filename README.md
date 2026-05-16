@@ -23,16 +23,15 @@
 
 <div align="center">
   <a href="https://fernwaerts.eu">Homepage</a> • 
-  <a href="https://sites.plane.so/issues/fbbc1b7173c046db81991272b8f43259">Planning</a> • 
   <a href="https://www.fernwaerts.eu/docs">Documentation</a>
 </div>
 
 ---
 
-### 🧭 Road to Alpha
+### 🧭 Alpha Status
 
 Fernwärts is not ready for alpha yet. The current alpha readiness checklist is
-tracked in [Road to Alpha](ROAD_TO_ALPHA.md).
+tracked internally. A public roadmap will be added soon.
 
 ---
 
@@ -55,8 +54,7 @@ tracked in [Road to Alpha](ROAD_TO_ALPHA.md).
 - **Activity Recognition**: Knows whether you’re walking, biking, driving, or
   just chilling
 - **Cross-Platform (Flutter)**: Supports **iOS** and **Android**
-  > 🚧 Desktop (macOS, Linux and Windows) and Web support are on the roadmap and
-  > coming soon
+  > 🚧 Desktop (macOS, Linux and Windows) and Web support are planned
 
 ---
 
