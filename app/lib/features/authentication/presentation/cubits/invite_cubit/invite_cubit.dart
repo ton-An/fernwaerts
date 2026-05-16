@@ -8,18 +8,12 @@ import 'package:location_history/features/authentication/domain/usecases/request
 import 'package:location_history/features/authentication/presentation/cubits/invite_cubit/invite_state.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/init_background_location_tracking.dart';
 
-/* 
-  To-Do:
-    - [ ] Add tests
-*/
-
 /// {@template invite_cubit}
 /// Coordinates accepting an invite link for a configured self-hosted server.
 ///
 /// The cubit initializes the provided server URL, accepts the invite with the
 /// chosen credentials, then requests platform permissions and starts background
-/// location tracking. The invite acceptance use case is still stubbed, so the
-/// completion flow is not finished yet.
+/// location tracking.
 /// {@endtemplate}
 class InviteCubit extends Cubit<InviteState> {
   /// {@macro invite_cubit}
@@ -35,16 +29,13 @@ class InviteCubit extends Cubit<InviteState> {
   final RequestNecessaryPermissions requestNecessaryPermissions;
   final InitBackgroundLocationTracking initBackgroundLocationTracking;
 
-  // log in with tokens temp (needs to log out on next restart)
-
   /// Accepts an invite for [serverUrl] with a new [username] and [password].
   ///
   /// Emits:
   /// - [InviteLoading] while the server and invite calls are running
   /// - [InviteFailure] when server initialization, invite acceptance, or
   ///   location tracking startup fails
-  ///
-  /// Success navigation is reserved for when [AcceptInvite] is implemented.
+  /// - [InviteSuccess] once invite acceptance and local startup complete
   void acceptInvite({
     required String username,
     required String password,
@@ -102,24 +93,29 @@ class InviteCubit extends Cubit<InviteState> {
   }
 
   void _requestNecessaryPermissions() async {
-    // final Either<Failure, None> requestPermissionsEither =
-    await requestNecessaryPermissions();
+    final Either<Failure, None> requestPermissionsEither =
+        await requestNecessaryPermissions();
 
-    // requestPermissionsEither.fold(
-    //   (Failure failure) {
-    //     emit(AuthenticationFailure(failure: failure));
-    //   },
-    //   (None none) {
-    _initBackgroundLocationTracking();
-    //   },
-    // );
+    requestPermissionsEither.fold(
+      (Failure failure) {
+        emit(InviteFailure(failure: failure));
+      },
+      (None none) {
+        _initBackgroundLocationTracking();
+      },
+    );
   }
 
   void _initBackgroundLocationTracking() async {
     final initTrackingEither = await initBackgroundLocationTracking();
 
-    initTrackingEither.fold((Failure failure) {
-      emit(InviteFailure(failure: failure));
-    }, (_) {});
+    initTrackingEither.fold(
+      (Failure failure) {
+        emit(InviteFailure(failure: failure));
+      },
+      (_) {
+        emit(const InviteSuccess());
+      },
+    );
   }
 }
