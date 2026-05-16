@@ -15,9 +15,13 @@ Deno.serve(async (request) => {
     error: getUserError,
   } = await supabase.auth.getUser(token);
 
-  const isUserSetUp = await isSetUp(supabase, user?.id);
+  if (getUserError || !user) {
+    return new Response("Unauthorized", { status: 401 });
+  }
 
-  if (getUserError || !user || isUserSetUp) {
+  const isUserSetUp = await isSetUp(supabase, user.id);
+
+  if (isUserSetUp) {
     return new Response(
       JSON.stringify({
         code: "account_already_set_up",
