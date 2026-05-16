@@ -1,7 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient, SupabaseClient } from "jsr:@supabase/supabase-js";
+import validator from "npm:validator";
 
-i
 Deno.serve(async (request) => {
   const supabase = createClient(
     Deno.env.get("SUPABASE_URL") ?? "",
@@ -56,7 +56,6 @@ Deno.serve(async (request) => {
 });
 
 async function isSetUp(supabase: SupabaseClient, userId: string) {
-
   const { data } = await supabase
     .from("users")
     .select("is_set_up")
