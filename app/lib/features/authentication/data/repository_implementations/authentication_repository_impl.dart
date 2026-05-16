@@ -134,7 +134,9 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
 
       return const Right(None());
     } on FunctionException catch (functionException) {
-      final String? errorCode = functionException.details['code'];
+      final Object? details = functionException.details;
+      final String? errorCode =
+          details is Map ? details['code'] as String? : null;
 
       if (errorCode == 'weak_password') {
         return const Left(WeakPasswordFailure());
