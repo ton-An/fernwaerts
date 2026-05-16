@@ -1,4 +1,5 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:location_history/core/failures/authentication/account_already_set_up_failure.dart';
 import 'package:location_history/core/failures/authentication/invalid_credentials_failure.dart';
 import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
 import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
@@ -97,6 +98,22 @@ abstract class AuthenticationRepository {
     required String serverUrl,
     required String username,
     required String email,
+    required String password,
+  });
+
+  /// Completes account setup for the currently authenticated invited user.
+  ///
+  /// Parameters:
+  /// - username: [String] username for the invited user
+  /// - password: [String] password for the invited user
+  ///
+  /// Failures:
+  /// - [WeakPasswordFailure]
+  /// - [AccountAlreadySetUpFailure]
+  /// {@macro converted_client_exceptions}
+  /// {@macro converted_supabase_functions_exception}
+  Future<Either<Failure, None>> signUpInvitedUser({
+    required String username,
     required String password,
   });
 
