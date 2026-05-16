@@ -14,7 +14,7 @@ Deno.serve(async (request) => {
     error: getUserError,
   } = await supabase.auth.getUser(token);
 
-  const isUserAdmin = isAdmin(supabase, user?.id);
+  const isUserAdmin = await isAdmin(supabase, user?.id);
 
   if (getUserError || !user || !isUserAdmin) {
     return new Response("Unauthorized", { status: 401 });
