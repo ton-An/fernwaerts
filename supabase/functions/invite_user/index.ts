@@ -50,16 +50,12 @@ async function inviteNewUser(
   apiUrl: string,
   email: string,
 ) {
-  console.log("inviteNewUser", email);
   const redirectTo = `${siteUrl}/sign-up-invite?serverUrl=${apiUrl}`;
 
   const { data: newUser, error: inviteError } = await supabase.auth.admin
     .inviteUserByEmail(email, {
       redirectTo: redirectTo,
     });
-
-  console.log("newUser", newUser);
-  console.log("inviteError", inviteError);
 
   if (inviteError) {
     const errorCode = inviteError?.code;
