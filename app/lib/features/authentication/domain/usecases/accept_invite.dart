@@ -1,21 +1,47 @@
 import 'package:fpdart/fpdart.dart';
+import 'package:location_history/core/failures/authentication/account_already_set_up_failure.dart';
+import 'package:location_history/core/failures/authentication/device_info_platform_not_supported_failure.dart';
+import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
+import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
+import 'package:location_history/core/failures/storage/storage_write_failure.dart';
+import 'package:location_history/features/authentication/domain/models/powersync_info.dart';
+import 'package:location_history/features/authentication/domain/models/server_info.dart';
 import 'package:location_history/features/authentication/domain/models/supabase_info.dart';
+import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
+import 'package:location_history/features/authentication/domain/usecases/save_device_info_to_db.dart';
 
 /// {@template accept_invite}
 /// Accepts an invite for a known server.
 ///
-/// This domain API is reserved for the invite completion flow. The behavior is
-/// not implemented yet and currently throws [UnimplementedError].
+/// The invite link must already have established a temporary Supabase session
+/// for the invited user. This use case completes the invited account setup,
+/// initializes sync, saves the selected server, and registers the current
+/// device.
 ///
 /// Parameters:
 /// - supabaseInfo: [SupabaseInfo] connection info for the server
 /// - username: [String] username to create from the invite
 /// - password: [String] password to set for the invited user
+///
+/// Failures:
+/// - [WeakPasswordFailure]
+/// - [AccountAlreadySetUpFailure]
+/// - [NotSignedInFailure]
+/// - [DeviceInfoPlatformNotSupportedFailure]
+/// - [StorageWriteFailure]
+/// {@macro converted_client_exceptions}
+/// {@macro converted_supabase_functions_exception}
 /// {@endtemplate}
 class AcceptInvite {
   /// {@macro accept_invite}
-  const AcceptInvite();
+  const AcceptInvite({
+    required this.authenticationRepository,
+    required this.saveDeviceInfo,
+  });
+
+  final AuthenticationRepository authenticationRepository;
+  final SaveDeviceInfo saveDeviceInfo;
 
   /// {@macro accept_invite}
   Future<Either<Failure, None>> call({
@@ -23,6 +49,73 @@ class AcceptInvite {
     required String username,
     required String password,
   }) async {
-    throw UnimplementedError();
+    final Either<Failure, None> signUpInvitedUserEither =
+        await authenticationRepository.signUpInvitedUser(
+          username: username,
+          password: password,
+        );
+
+    return signUpInvitedUserEither.fold(
+      Left.new,
+      (None none) => _getSyncServerInfo(supabaseInfo: supabaseInfo),
+    );
+  }
+
+  Future<Either<Failure, None>> _getSyncServerInfo({
+    required SupabaseInfo supabaseInfo,
+  }) async {
+    final Either<Failure, PowersyncInfo> getSyncServerInfoEither =
+        await authenticationRepository.getSyncServerInfo();
+
+    return getSyncServerInfoEither.fold(Left.new, (
+      PowersyncInfo powersyncInfo,
+    ) {
+      final ServerInfo serverInfo = ServerInfo(
+        supabaseInfo: supabaseInfo,
+        powersyncInfo: powersyncInfo,
+      );
+
+      return _isSyncServerConnectionValid(serverInfo: serverInfo);
+    });
+  }
+
+  Future<Either<Failure, None>> _isSyncServerConnectionValid({
+    required ServerInfo serverInfo,
+  }) async {
+    final Either<Failure, None> isSyncServerConnectionValidEither =
+        await authenticationRepository.isSyncServerConnectionValid(
+          syncServerUrl: serverInfo.powersyncInfo.url,
+        );
+
+    return isSyncServerConnectionValidEither.fold(
+      Left.new,
+      (None none) => _initializeSyncServer(serverInfo: serverInfo),
+    );
+  }
+
+  Future<Either<Failure, None>> _initializeSyncServer({
+    required ServerInfo serverInfo,
+  }) async {
+    await authenticationRepository.initializeSyncServerConnection(
+      powersyncInfo: serverInfo.powersyncInfo,
+    );
+
+    return _saveServerInfo(serverInfo: serverInfo);
+  }
+
+  Future<Either<Failure, None>> _saveServerInfo({
+    required ServerInfo serverInfo,
+  }) async {
+    final Either<Failure, None> saveServerInfoEither =
+        await authenticationRepository.saveServerInfo(serverInfo: serverInfo);
+
+    return saveServerInfoEither.fold(
+      Left.new,
+      (None none) => _saveDeviceInfo(),
+    );
+  }
+
+  Future<Either<Failure, None>> _saveDeviceInfo() async {
+    return saveDeviceInfo();
   }
 }

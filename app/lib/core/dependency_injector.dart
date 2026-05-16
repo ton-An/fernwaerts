@@ -178,7 +178,12 @@ void registerAuthenticationDependencies() {
       deviceRepository: getIt(),
     ),
   );
-  getIt.registerLazySingleton(() => const AcceptInvite());
+  getIt.registerLazySingleton(
+    () => AcceptInvite(
+      authenticationRepository: getIt(),
+      saveDeviceInfo: getIt(),
+    ),
+  );
 
   // -- Data -- //
   getIt.registerLazySingleton<AuthenticationRepository>(
