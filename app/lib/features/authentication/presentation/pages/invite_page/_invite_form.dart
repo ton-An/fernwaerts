@@ -1,9 +1,7 @@
 part of 'invite_page.dart';
 
 class _InviteForm extends StatefulWidget {
-  const _InviteForm({required this.serverUrl});
-
-  final String serverUrl;
+  const _InviteForm();
 
   @override
   State<_InviteForm> createState() => _InviteFormState();
@@ -57,7 +55,6 @@ class _InviteFormState extends State<_InviteForm> {
             context.read<InviteCubit>().acceptInvite(
               username: _usernameController.text,
               password: _passwordController.text,
-              serverUrl: widget.serverUrl,
             );
           },
           isLoading: state is InviteLoading,

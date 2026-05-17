@@ -25,6 +25,7 @@ import 'package:location_history/features/authentication/domain/usecases/has_ser
 import 'package:location_history/features/authentication/domain/usecases/initialize_app.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_new_supabase_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_server_set_up.dart';
+import 'package:location_history/features/authentication/domain/usecases/recover_invite_session.dart';
 import 'package:location_history/features/authentication/domain/usecases/request_necessary_permissions.dart';
 import 'package:location_history/features/authentication/domain/usecases/save_device_info_to_db.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
@@ -137,6 +138,7 @@ void registerAuthenticationDependencies() {
   getIt.registerFactory(
     () => InviteCubit(
       initializeNewSupabaseConnection: getIt(),
+      recoverInviteSession: getIt(),
       acceptInviteUsecase: getIt(),
       requestNecessaryPermissions: getIt(),
       initBackgroundLocationTracking: getIt(),
@@ -171,6 +173,9 @@ void registerAuthenticationDependencies() {
   );
   getIt.registerLazySingleton(
     () => RequestNecessaryPermissions(permissionsRepository: getIt()),
+  );
+  getIt.registerLazySingleton(
+    () => RecoverInviteSession(authenticationRepository: getIt()),
   );
   getIt.registerLazySingleton(
     () => SaveDeviceInfo(
