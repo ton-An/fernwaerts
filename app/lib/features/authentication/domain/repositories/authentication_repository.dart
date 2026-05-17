@@ -1,5 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/authentication/account_already_set_up_failure.dart';
+import 'package:location_history/core/failures/authentication/expired_refresh_token_failure.dart';
 import 'package:location_history/core/failures/authentication/invalid_credentials_failure.dart';
 import 'package:location_history/core/failures/authentication/no_saved_server_failure.dart';
 import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
@@ -117,6 +118,18 @@ abstract class AuthenticationRepository {
     required String password,
   });
 
+  /// Recovers the temporary auth session from a Supabase invite refresh token.
+  ///
+  /// Parameters:
+  /// - refreshToken: [String] refresh token from the Supabase invite callback
+  ///
+  /// Failures:
+  /// - [ExpiredRefreshTokenFailure]
+  /// {@macro converted_client_exceptions}
+  Future<Either<Failure, None>> recoverInviteSession({
+    required String refreshToken,
+  });
+
   /// Gets the saved server info needed to restore a previous connection.
   ///
   /// Failures:
@@ -201,6 +214,15 @@ abstract class AuthenticationRepository {
   /// Failures:
   /// - [NotSignedInFailure]
   Future<Either<Failure, String>> getCurrentUserId();
+
+  /// Gets the current signed-in user's email.
+  ///
+  /// Returns:
+  /// - a [String] containing the current user's email
+  ///
+  /// Failures:
+  /// - [NotSignedInFailure]
+  Future<Either<Failure, String>> getCurrentUserEmail();
 
   /// Checks if the sync server is reachable.
   ///

@@ -1,6 +1,7 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/authentication/account_already_set_up_failure.dart';
 import 'package:location_history/core/failures/authentication/device_info_platform_not_supported_failure.dart';
+import 'package:location_history/core/failures/authentication/invalid_credentials_failure.dart';
 import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
@@ -16,8 +17,8 @@ import 'package:location_history/features/authentication/domain/usecases/save_de
 ///
 /// The invite link must already have established a temporary Supabase session
 /// for the invited user. This use case completes the invited account setup,
-/// initializes sync, saves the selected server, and registers the current
-/// device.
+/// signs in with the newly set password, initializes sync, saves the selected
+/// server, and registers the current device.
 ///
 /// Parameters:
 /// - supabaseInfo: [SupabaseInfo] connection info for the server
@@ -27,6 +28,7 @@ import 'package:location_history/features/authentication/domain/usecases/save_de
 /// Failures:
 /// - [WeakPasswordFailure]
 /// - [AccountAlreadySetUpFailure]
+/// - [InvalidCredentialsFailure]
 /// - [NotSignedInFailure]
 /// - [DeviceInfoPlatformNotSupportedFailure]
 /// - [StorageWriteFailure]
@@ -49,6 +51,38 @@ class AcceptInvite {
     required String username,
     required String password,
   }) async {
+    return _getCurrentUserEmail(
+      supabaseInfo: supabaseInfo,
+      username: username,
+      password: password,
+    );
+  }
+
+  Future<Either<Failure, None>> _getCurrentUserEmail({
+    required SupabaseInfo supabaseInfo,
+    required String username,
+    required String password,
+  }) async {
+    final Either<Failure, String> currentUserEmailEither =
+        await authenticationRepository.getCurrentUserEmail();
+
+    return currentUserEmailEither.fold(
+      Left.new,
+      (String email) => _signUpInvitedUser(
+        supabaseInfo: supabaseInfo,
+        username: username,
+        email: email,
+        password: password,
+      ),
+    );
+  }
+
+  Future<Either<Failure, None>> _signUpInvitedUser({
+    required SupabaseInfo supabaseInfo,
+    required String username,
+    required String email,
+    required String password,
+  }) async {
     final Either<Failure, None> signUpInvitedUserEither =
         await authenticationRepository.signUpInvitedUser(
           username: username,
@@ -56,6 +90,21 @@ class AcceptInvite {
         );
 
     return signUpInvitedUserEither.fold(
+      Left.new,
+      (None none) =>
+          _signIn(supabaseInfo: supabaseInfo, email: email, password: password),
+    );
+  }
+
+  Future<Either<Failure, None>> _signIn({
+    required SupabaseInfo supabaseInfo,
+    required String email,
+    required String password,
+  }) async {
+    final Either<Failure, None> signInEither = await authenticationRepository
+        .signIn(email: email, password: password);
+
+    return signInEither.fold(
       Left.new,
       (None none) => _getSyncServerInfo(supabaseInfo: supabaseInfo),
     );

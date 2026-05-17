@@ -4,6 +4,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart';
 import 'package:location_history/core/data/repository/repository_failure_handler.dart';
 import 'package:location_history/core/failures/authentication/account_already_set_up_failure.dart';
+import 'package:location_history/core/failures/authentication/expired_refresh_token_failure.dart';
 import 'package:location_history/core/failures/authentication/invalid_credentials_failure.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
@@ -160,6 +161,35 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       );
 
       return Left(failure);
+    } on Failure catch (failure) {
+      return Left(failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, None>> recoverInviteSession({
+    required String refreshToken,
+  }) async {
+    try {
+      await authRemoteDataSource.recoverInviteSession(
+        refreshToken: refreshToken,
+      );
+
+      return const Right(None());
+    } on ClientException catch (clientException, stackTrace) {
+      final Failure failure = repositoryFailureHandler.clientExceptionConverter(
+        clientException: clientException,
+        stackTrace: stackTrace,
+        serverType: ServerType.supabase,
+      );
+
+      return Left(failure);
+    } on AuthSessionMissingException {
+      return const Left(ExpiredRefreshTokenFailure());
+    } on AuthApiException {
+      return const Left(ExpiredRefreshTokenFailure());
+    } on Failure catch (failure) {
+      return Left(failure);
     }
   }
 
@@ -278,6 +308,17 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
+  Future<Either<Failure, String>> getCurrentUserEmail() async {
+    try {
+      final String email = await authRemoteDataSource.getCurrentUserEmail();
+
+      return Right(email);
+    } on Failure catch (failure) {
+      return Left(failure);
+    }
+  }
+
+  @override
   Future<void> deleteLocalDBCache() async {
     return authLocalDataSource.deleteLocalDBCache();
   }
@@ -314,6 +355,8 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
             functionException: functionException,
           );
 
+      return Left(failure);
+    } on Failure catch (failure) {
       return Left(failure);
     }
   }
