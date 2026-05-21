@@ -10,6 +10,7 @@ import 'package:location_history/core/failures/authentication/passwords_must_dif
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/core/failures/networking/server_type.dart';
+import 'package:location_history/core/failures/networking/status_code_not_ok_failure.dart';
 import 'package:location_history/features/settings/data/repository_implementations/settings_repository_impl.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -33,6 +34,7 @@ void main() {
 
   setUpAll(() {
     registerFallbackValue(tTimeoutClientException);
+    registerFallbackValue(tFunctionException);
     registerFallbackValue(tStackTrace);
     registerFallbackValue(ServerType.supabase);
   });
@@ -489,6 +491,53 @@ void main() {
 
         // assert
         expect(result, const Left(EmailRateLimitFailure()));
+      },
+    );
+
+    test(
+      'should convert supabase function exceptions with unstructured details',
+      () async {
+        // arrange
+        const functionException = FunctionException(
+          status: 401,
+          details: 'Unauthorized',
+        );
+        when(
+          () => mockSettingsRemoteDataSource.inviteNewUser(
+            email: any(named: 'email'),
+          ),
+        ).thenThrow(functionException);
+        when(
+          () => mockRepositoryFailureHandler.supabaseFunctionExceptionConverter(
+            functionException: any(named: 'functionException'),
+          ),
+        ).thenReturn(
+          StatusCodeNotOkFailure(
+            serverType: ServerType.supabase,
+            statusCode: functionException.status,
+          ),
+        );
+
+        // act
+        final result = await settingsRepositoryImpl.inviteNewUser(
+          email: tEmail,
+        );
+
+        // assert
+        expect(
+          result,
+          Left(
+            StatusCodeNotOkFailure(
+              serverType: ServerType.supabase,
+              statusCode: functionException.status,
+            ),
+          ),
+        );
+        verify(
+          () => mockRepositoryFailureHandler.supabaseFunctionExceptionConverter(
+            functionException: functionException,
+          ),
+        );
       },
     );
   });

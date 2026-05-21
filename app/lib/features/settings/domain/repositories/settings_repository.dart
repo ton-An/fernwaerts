@@ -69,5 +69,6 @@ abstract class SettingsRepository {
   /// - [EmailAddressTakenFailure]
   /// - [EmailRateLimitFailure]
   /// {@macro converted_client_exceptions}
+  /// {@macro converted_supabase_functions_exception}
   Future<Either<Failure, None>> inviteNewUser({required String email});
 }

@@ -14,6 +14,7 @@ import 'package:location_history/features/settings/domain/repositories/settings_
 /// - [EmailAddressTakenFailure]
 /// - [EmailRateLimitFailure]
 /// {@macro converted_client_exceptions}
+/// {@macro converted_supabase_functions_exception}
 /// {@endtemplate}
 class InviteNewUser {
   /// {@macro invite_new_user}

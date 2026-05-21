@@ -15,11 +15,6 @@ import 'package:location_history/features/settings/data/datasources/settings_rem
 import 'package:location_history/features/settings/domain/repositories/settings_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-/*
-    To-Do:
-    - [ ] handle internal server errors for functions (functionException.details is a string in this case)
-*/
-
 /// {@template settings_repository_impl}
 /// Settings repository implementation that maps Supabase errors to failures.
 ///
@@ -144,8 +139,21 @@ class SettingsRepositoryImpl extends SettingsRepository {
 
       return const Right(None());
     } on FunctionException catch (functionException) {
-      final String errorMessage = functionException.details['message'];
-      final String errorCode = functionException.details['code'];
+      final Object? details = functionException.details;
+
+      if (details is! Map ||
+          details['message'] is! String ||
+          details['code'] is! String) {
+        final Failure failure = repositoryFailureHandler
+            .supabaseFunctionExceptionConverter(
+              functionException: functionException,
+            );
+
+        return Left(failure);
+      }
+
+      final String errorMessage = details['message'];
+      final String errorCode = details['code'];
 
       if (errorMessage.contains('Error sending invite email')) {
         return const Left(EmailServerConfigFailure());
