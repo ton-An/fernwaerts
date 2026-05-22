@@ -77,7 +77,7 @@ When editing any `AGENTS.md`:
 
 Database schema change:
 
-1. Update `supabase/migrations/`.
+1. Follow `supabase/AGENTS.md` for schema and migration updates.
 2. Review RLS policies.
 3. Review `supabase/powersync/config/sync_rules.yaml`.
 4. Update Flutter Drift/PowerSync schema.
