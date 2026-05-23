@@ -11,11 +11,6 @@ bucket_definitions:
     data:
     - SELECT * from public_info
 
-  general_info:
-    data:
-    - SELECT * from activity_types
-    - SELECT * from operating_systems
-  
   user_data:
     parameters: SELECT request.user_id() as user_id
     data:
