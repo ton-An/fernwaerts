@@ -50,7 +50,40 @@ max_client_conn = 100
 [db.migrations]
 # Specifies an ordered list of schema files that describe your database.
 # Supports glob patterns relative to supabase directory: "./schemas/*.sql"
-schema_paths = []
+schema_paths = [
+  "./schemas/extensions.sql",
+  "./schemas/role_permissions/10_types.sql",
+  "./schemas/users/10_table.sql",
+  "./schemas/public_info/10_table.sql",
+  "./schemas/role_permissions/20_table.sql",
+  "./schemas/user_roles/10_table.sql",
+  "./schemas/devices/10_types.sql",
+  "./schemas/devices/20_table.sql",
+  "./schemas/activities/10_types.sql",
+  "./schemas/raw_location_data/10_table.sql",
+  "./schemas/activities/20_table.sql",
+  "./schemas/significant_location_changes/10_table.sql",
+  "./schemas/users/40_has_permission.sql",
+  "./schemas/users/20_grants.sql",
+  "./schemas/user_roles/20_grants.sql",
+  "./schemas/role_permissions/40_grants.sql",
+  "./schemas/public_info/20_grants.sql",
+  "./schemas/devices/30_grants.sql",
+  "./schemas/raw_location_data/20_grants.sql",
+  "./schemas/activities/30_grants.sql",
+  "./schemas/significant_location_changes/20_grants.sql",
+  "./schemas/users/30_rls.sql",
+  "./schemas/user_roles/30_rls.sql",
+  "./schemas/role_permissions/30_rls.sql",
+  "./schemas/public_info/30_rls.sql",
+  "./schemas/devices/40_rls.sql",
+  "./schemas/raw_location_data/30_rls.sql",
+  "./schemas/activities/40_rls.sql",
+  "./schemas/significant_location_changes/30_rls.sql",
+  "./schemas/role_permissions/50_data.sql",
+  "./schemas/public_info/50_data.sql",
+  "./schemas/updated_at_trigger.sql",
+]
 
 [db.seed]
 # If enabled, seeds the database after migrations during a db reset.
