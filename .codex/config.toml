@@ -2,3 +2,12 @@
 command = "dart"
 args = ["mcp-server", "--force-roots-fallback"]
 enabled = true
+
+[mcp_servers.dart.tools.add_roots]
+approval_mode = "approve"
+
+[mcp_servers.dart.tools.pub]
+approval_mode = "approve"
+
+[mcp_servers.dart.tools.read_package_uris]
+approval_mode = "approve"

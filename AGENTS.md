@@ -12,9 +12,9 @@ Repository-wide guidance for coding agents.
 - Do not revert user changes or unrelated local modifications.
 - Keep changes scoped to the task.
 - Prefer `rg` for search.
-- For Dart and Flutter package, dependency, `pub`, hot reload/restart, and
-  package-source inspection tasks, use the Dart MCP server before shell commands
-  or web search.
+- For Dart and Flutter package, dependency, `pub`, hot reload/restart,
+  package-source inspection, and API documentation lookup tasks, use the Dart
+  MCP server before shell commands or web search.
 - Use structured tools/parsers for structured files when practical.
 - Do not commit secrets, Supabase keys, local env files, dependency folders,
   build output, local volumes, or device-specific artifacts.
@@ -34,6 +34,12 @@ Sensitive areas:
 - offline/local-first persistence
 
 Preserve per-user data isolation when changing any of these areas.
+
+## Dart MCP Setup
+
+- Before using Dart MCP tools, call `add_roots` for `file://<repo-root>` and
+  `file://<repo-root>/app`, deriving `<repo-root>` from the current checkout.
+- Use the `app/` root for Flutter package operations.
 
 ## AGENTS.md Maintenance
 
