@@ -11,7 +11,7 @@ create table "public"."raw_location_data" (
   "heading_accuracy" double precision not null,
   "ellipsoidal_altitude" double precision not null,
   "altitude_accuracy" double precision not null,
-  "activity_type_id" public.activity_type,
+  "activity_type_id" public.activity_type not null default 'unknown',
   "activity_confidence" double precision not null,
   "recording_trigger" public.location_recording_trigger not null default 'standard',
   "battery_level" double precision not null,

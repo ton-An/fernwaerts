@@ -3,7 +3,7 @@ create table "public"."devices" (
   "user_id" uuid not null references public.users(id) on delete cascade,
   "name" text not null,
   "model" text not null,
-  "os_id" public.operating_system,
+  "os_id" public.operating_system not null default 'unknown',
   "os_version" text not null,
   "app_version" text not null,
   "manufacturer" text not null,
