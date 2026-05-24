@@ -9,5 +9,6 @@ create table "public"."devices" (
   "manufacturer" text not null,
   "created_at" timestamp with time zone not null,
   "updated_at" timestamp with time zone not null,
-  primary key ("id")
+  primary key ("id"),
+  unique ("user_id", "id")
 );

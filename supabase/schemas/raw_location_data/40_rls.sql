@@ -1,14 +1,14 @@
-alter table "public"."significant_location_changes" enable row level security;
+alter table "public"."raw_location_data" enable row level security;
 
 create policy "Enable select for user himself"
-  on "public"."significant_location_changes"
+  on "public"."raw_location_data"
   as permissive
   for select
   to authenticated
 using (((select auth.uid()) = user_id));
 
 create policy "Enable insert for user himself"
-  on "public"."significant_location_changes"
+  on "public"."raw_location_data"
   as permissive
   for insert
   to authenticated
