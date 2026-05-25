@@ -1,9 +1,12 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient, SupabaseClient } from "jsr:@supabase/supabase-js";
 import validator from "npm:validator";
+import type { Database } from "../_shared/database.types.ts";
+
+type Supabase = SupabaseClient<Database>;
 
 Deno.serve(async (request) => {
-  const supabase = createClient(
+  const supabase = createClient<Database>(
     Deno.env.get("SUPABASE_URL") ?? "",
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
   );
@@ -64,18 +67,18 @@ Deno.serve(async (request) => {
   return new Response(null, { status: 200 });
 });
 
-async function isSetUp(supabase: SupabaseClient, userId: string) {
+async function isSetUp(supabase: Supabase, userId: string) {
   const { data } = await supabase
     .from("users")
-    .select("is_set_up")
+    .select("created_at, updated_at")
     .eq("id", userId)
     .single();
 
-  return data?.is_set_up;
+  return data !== null && data.updated_at !== data.created_at;
 }
 
 async function setUserPassword(
-  supabase: SupabaseClient,
+  supabase: Supabase,
   userId: string,
   password: string,
 ) {
@@ -85,12 +88,12 @@ async function setUserPassword(
 }
 
 async function completeDbEntry(
-  supabase: SupabaseClient,
+  supabase: Supabase,
   userId: string,
   username: string,
 ) {
   await supabase
     .from("users")
-    .update({ username: username, is_set_up: true })
+    .update({ username: username })
     .eq("id", userId);
 }

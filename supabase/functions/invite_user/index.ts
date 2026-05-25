@@ -1,12 +1,15 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient, SupabaseClient } from "npm:@supabase/supabase-js@2";
+import type { Database } from "../_shared/database.types.ts";
+
+type Supabase = SupabaseClient<Database>;
 
 Deno.serve(async (request) => {
   if (request.method !== "POST") {
     return new Response("Method not allowed", { status: 405 });
   }
 
-  const supabase = createClient(
+  const supabase = createClient<Database>(
     Deno.env.get("SUPABASE_URL") ?? "",
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
   );
@@ -40,7 +43,7 @@ Deno.serve(async (request) => {
   return await inviteNewUser(supabase, siteUrl, apiUrl, newUserEmail);
 });
 
-async function deleteUser(supabase: SupabaseClient, userId: string) {
+async function deleteUser(supabase: Supabase, userId: string) {
   await supabase.from("users").delete().eq("id", userId);
 
   await supabase.auth.admin.deleteUser(
@@ -49,7 +52,7 @@ async function deleteUser(supabase: SupabaseClient, userId: string) {
 }
 
 async function inviteNewUser(
-  supabase: SupabaseClient,
+  supabase: Supabase,
   siteUrl: string,
   apiUrl: string,
   email: string,
@@ -67,7 +70,7 @@ async function inviteNewUser(
     if (errorCode == "email_exists") {
       const user = await getUserByEmail(supabase, email);
 
-      if (user && !user.is_set_up) {
+      if (user && !isSetUp(user)) {
         await deleteUser(supabase, user.id);
 
         return await inviteNewUser(supabase, siteUrl, apiUrl, email);
@@ -86,7 +89,7 @@ async function inviteNewUser(
     );
   }
 
-  await addUserToDB(supabase, newUser.user.id, newUser.user.email);
+  await addUserToDB(supabase, newUser.user.id, email);
 
   return new Response(null, {
     status: 200,
@@ -94,7 +97,11 @@ async function inviteNewUser(
   });
 }
 
-async function isAdmin(supabase: SupabaseClient, userId?: string) {
+async function isAdmin(supabase: Supabase, userId?: string) {
+  if (!userId) {
+    return false;
+  }
+
   const { data: roles } = await supabase
     .from("user_roles")
     .select()
@@ -103,7 +110,11 @@ async function isAdmin(supabase: SupabaseClient, userId?: string) {
   return roles?.some((role) => role.role === "admin");
 }
 
-async function getUserByEmail(supabase: SupabaseClient, email?: string) {
+async function getUserByEmail(supabase: Supabase, email?: string) {
+  if (!email) {
+    return null;
+  }
+
   const { data: users } = await supabase
     .from("users")
     .select()
@@ -115,15 +126,20 @@ async function getUserByEmail(supabase: SupabaseClient, email?: string) {
   return user;
 }
 
+function isSetUp(
+  user: Database["public"]["Tables"]["users"]["Row"],
+) {
+  return user.updated_at !== user.created_at;
+}
+
 async function addUserToDB(
-  supabase: SupabaseClient,
+  supabase: Supabase,
   userId: string,
-  email?: string,
+  email: string,
 ) {
   await supabase.from("users").insert({
     id: userId,
-    username: null,
+    username: "",
     email: email,
-    is_set_up: false,
   });
 }
