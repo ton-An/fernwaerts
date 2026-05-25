@@ -421,9 +421,9 @@ CREATE TRIGGER handle_updated_at BEFORE UPDATE ON public.users FOR EACH ROW EXEC
 revoke select, insert, update, delete, references, trigger, truncate on table "public"."role_permissions" from anon;
 revoke select, insert, update, delete, references, trigger, truncate on table "public"."role_permissions" from authenticated;
 
-insert into "public"."role_permissions" ("id", "role", "permission", "created_at", "updated_at", "deleted_at") VALUES
-	('9c7ff33b-08d9-4082-b966-c503f6ec2207', 'admin', 'read.users', (now() AT TIME ZONE 'utc'::text), (now() AT TIME ZONE 'utc'::text), null),
-	('35e876c2-809c-4d3d-9a01-56e1cabbeddf', 'admin', 'write.users', (now() AT TIME ZONE 'utc'::text), (now() AT TIME ZONE 'utc'::text), null);
+insert into "public"."role_permissions" ("id", "role", "permission") VALUES
+	('9c7ff33b-08d9-4082-b966-c503f6ec2207', 'admin', 'read.users'),
+	('35e876c2-809c-4d3d-9a01-56e1cabbeddf', 'admin', 'write.users');
 
 -- users
 revoke select, insert, update, delete, references, trigger, truncate on table "public"."users" from anon;
