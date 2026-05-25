@@ -1,14 +1,18 @@
 # yaml-language-server: $schema=https://unpkg.com/@powersync/service-sync-rules@latest/schema/sync_rules.json
 #
 # See Documentation for more information:
-# https://docs.powersync.com/usage/sync-rules
+# https://docs.powersync.com/sync/streams
 #
 # Note that changes to this file are not watched.
 # The service needs to be restarted for changes to take effect.
 
-bucket_definitions:
+config:
+  edition: 3
+
+streams:
   public_info:
-    data:
+    auto_subscribe: true
+    queries:
       - |
         SELECT
           id,
@@ -19,16 +23,14 @@ bucket_definitions:
         SELECT
           id,
           role,
-          permission,
-          created_at,
-          updated_at,
-          deleted_at
+          permission
         FROM role_permissions
-        WHERE role_permissions.deleted_at IS NULL
 
   user_data:
-    parameters: SELECT request.user_id() as user_id
-    data:
+    with:
+      current_user_id: SELECT auth.user_id() AS id
+    auto_subscribe: true
+    queries:
       - |
         SELECT
           id,
@@ -38,7 +40,7 @@ bucket_definitions:
           updated_at,
           deleted_at
         FROM users
-        WHERE users.id = bucket.user_id
+        WHERE id IN current_user_id
       - |
         SELECT
           id,
@@ -52,7 +54,7 @@ bucket_definitions:
           created_at,
           updated_at
         FROM devices
-        WHERE devices.user_id = bucket.user_id
+        WHERE user_id IN current_user_id
       - |
         SELECT
           id,
@@ -74,7 +76,7 @@ bucket_definitions:
           is_device_charging,
           timestamp
         FROM raw_location_data
-        WHERE raw_location_data.user_id = bucket.user_id
+        WHERE user_id IN current_user_id
       - |
         SELECT
           id,
@@ -82,7 +84,7 @@ bucket_definitions:
           start_location_id,
           end_location_id
         FROM activity_segments
-        WHERE activity_segments.user_id = bucket.user_id
+        WHERE user_id IN current_user_id
       - |
         SELECT
           id,
@@ -91,7 +93,7 @@ bucket_definitions:
           arrival_location_id,
           departure_location_id
         FROM visits
-        WHERE visits.user_id = bucket.user_id
+        WHERE user_id IN current_user_id
       - |
         SELECT
           id,
@@ -103,20 +105,26 @@ bucket_definitions:
           updated_at,
           deleted_at
         FROM user_roles
-        WHERE user_roles.user_id = bucket.user_id
+        WHERE user_id IN current_user_id
 
   user_management_data:
-    parameters: |
-      SELECT DISTINCT 'user_management' as scope
-      FROM user_roles
-      INNER JOIN role_permissions
-        ON role_permissions.role = user_roles.role
-      WHERE user_id = request.user_id()
-        AND user_roles.accepted_at IS NOT NULL
-        AND user_roles.deleted_at IS NULL
-        AND role_permissions.permission = 'read.users'
-        AND role_permissions.deleted_at IS NULL
-    data:
+    with:
+      managed_user_ids: |
+        SELECT id
+        FROM users
+        WHERE EXISTS (
+          SELECT 1
+          FROM user_roles
+          INNER JOIN role_permissions
+            ON role_permissions.role = user_roles.role
+          WHERE user_roles.user_id = auth.user_id()
+            AND user_roles.accepted_at IS NOT NULL
+            AND user_roles.deleted_at IS NULL
+            AND role_permissions.permission = 'read.users'
+            AND role_permissions.deleted_at IS NULL
+        )
+    auto_subscribe: true
+    queries:
       - |
         SELECT
           id,
@@ -126,6 +134,7 @@ bucket_definitions:
           updated_at,
           deleted_at
         FROM users
+        WHERE id IN managed_user_ids
       - |
         SELECT
           id,
@@ -137,3 +146,4 @@ bucket_definitions:
           updated_at,
           deleted_at
         FROM user_roles
+        WHERE user_id IN managed_user_ids
