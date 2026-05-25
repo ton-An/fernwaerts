@@ -24,3 +24,7 @@ approval_mode = "approve"
 [mcp_servers.XcodeBuildMCP]
 command = "npx"
 args = ["-y", "xcodebuildmcp@latest", "mcp"]
+
+[mcp_servers.docs]
+type = "http"
+url = "https://docs.powersync.com/mcp"
