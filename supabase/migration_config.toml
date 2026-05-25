@@ -61,7 +61,6 @@ schema_paths = [
     './schemas/raw_location_data/10_types.sql',
     './schemas/raw_location_data/20_table.sql',
     './schemas/activity_segments/20_table.sql',
-    './schemas/places/10_table.sql',
     './schemas/visits/10_table.sql',
     './schemas/users/40_has_permission.sql',
     './schemas/users/*.sql',
@@ -70,7 +69,6 @@ schema_paths = [
     './schemas/devices/*.sql',
     './schemas/raw_location_data/*.sql',
     './schemas/activity_segments/*.sql',
-    './schemas/places/*.sql',
     './schemas/visits/*.sql',
     './schemas/updated_at_trigger.sql',
 ]

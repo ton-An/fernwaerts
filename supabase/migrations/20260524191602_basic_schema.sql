@@ -131,26 +131,14 @@ create table "public"."activity_segments" (
     references public.raw_location_data("user_id", "id")
 );
 
-create table "public"."places" (
-  "id" text not null default gen_random_uuid(),
-  "user_id" uuid not null references public.users(id) on delete cascade,
-  "location_id" text not null,
-  primary key ("id"),
-  unique ("user_id", "id"),
-  foreign key ("user_id", "location_id")
-    references public.raw_location_data("user_id", "id")
-);
-
 create table "public"."visits" (
   "id" text not null default gen_random_uuid(),
   "user_id" uuid not null references public.users(id) on delete cascade,
-  "place_id" text,
+  "name" text not null,
   "arrival_location_id" text,
   "departure_location_id" text,
   primary key ("id"),
   unique ("user_id", "id"),
-  foreign key ("user_id", "place_id")
-    references public.places("user_id", "id"),
   foreign key ("user_id", "arrival_location_id")
     references public.raw_location_data("user_id", "id"),
   foreign key ("user_id", "departure_location_id")
@@ -273,22 +261,6 @@ create policy "Enable insert for user himself"
   to authenticated
 with check (((select auth.uid()) = user_id));
 
-alter table "public"."places" enable row level security;
-
-create policy "Enable select for user himself"
-  on "public"."places"
-  as permissive
-  for select
-  to authenticated
-using (((select auth.uid()) = user_id));
-
-create policy "Enable insert for user himself"
-  on "public"."places"
-  as permissive
-  for insert
-  to authenticated
-with check (((select auth.uid()) = user_id));
-
 alter table "public"."visits" enable row level security;
 
 create policy "Enable select for user himself"
@@ -363,12 +335,6 @@ revoke select, insert, update, delete, references, trigger, truncate on table "p
 revoke select, insert, update, delete, references, trigger, truncate on table "public"."activity_segments" from authenticated;
 
 grant select, insert on table "public"."activity_segments" to authenticated;
-
--- places
-revoke select, insert, update, delete, references, trigger, truncate on table "public"."places" from anon;
-revoke select, insert, update, delete, references, trigger, truncate on table "public"."places" from authenticated;
-
-grant select, insert on table "public"."places" to authenticated;
 
 -- visits
 revoke select, insert, update, delete, references, trigger, truncate on table "public"."visits" from anon;
