@@ -10,8 +10,6 @@ Guidance for coding agents working in `supabase/`.
 - Do not add user-owned tables to global PowerSync buckets.
 - Do not log tokens, passwords, invite links, credentials, or location data.
 - Use service-role access only where the operation requires it.
-- Use the Codex `supabase` and `supabase-postgres-best-practices` skills for
-  Supabase and Postgres work when available.
 - Do not edit vendored Supabase files unless the task specifically requires it.
 - Do not commit local volumes, database data, `.env` files, keys, or runtime
   artifacts.

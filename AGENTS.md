@@ -41,6 +41,12 @@ Preserve per-user data isolation when changing any of these areas.
   `file://<repo-root>/app`, deriving `<repo-root>` from the current checkout.
 - Use the `app/` root for Flutter package operations.
 
+## Agent Skills
+
+- Repo-local skills live under `.agents/skills/`; read the relevant `SKILL.md`
+  before PowerSync, Supabase, or Postgres work.
+- Keep detailed skill guidance in the skill files, not in `AGENTS.md`.
+
 ## AGENTS.md Maintenance
 
 When editing any `AGENTS.md`:
