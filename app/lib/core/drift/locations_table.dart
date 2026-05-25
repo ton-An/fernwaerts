@@ -25,8 +25,12 @@ class Locations extends Table {
   TextColumn get activityType =>
       textEnum<ActivityType>()
           .named('activity_type_id')
-          .references(ActivityTypes, #id)();
+          .withDefault(const Constant('unknown'))();
   RealColumn get activityConfidence => real().named('activity_confidence')();
+  TextColumn get recordingTrigger =>
+      text()
+          .named('recording_trigger')
+          .withDefault(const Constant('standard'))();
   RealColumn get batteryLevel => real().named('battery_level')();
   BoolColumn get isDeviceCharging => boolean().named('is_device_charging')();
 }

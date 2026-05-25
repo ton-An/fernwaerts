@@ -7,11 +7,16 @@ import 'package:location_history/features/location_tracking/domain/models/locati
 import 'package:uuid/uuid.dart';
 
 part 'activity_types_table.dart';
+part 'activity_segments_table.dart';
 part 'devices_table.dart';
 part 'drift_database.g.dart';
 part 'locations_table.dart';
 part 'operating_systems_table.dart';
+part 'public_info_table.dart';
+part 'role_permissions_table.dart';
+part 'user_roles_table.dart';
 part 'users_table.dart';
+part 'visits_table.dart';
 
 /* 
   To-Do:
@@ -26,7 +31,16 @@ part 'users_table.dart';
 /// Supabase tables used by the app.
 /// {@endtemplate}
 @DriftDatabase(
-  tables: [ActivityTypes, Devices, Locations, OperatingSystems, Users],
+  tables: [
+    ActivitySegments,
+    Devices,
+    Locations,
+    PublicInfo,
+    RolePermissions,
+    UserRoles,
+    Users,
+    Visits,
+  ],
 )
 class DriftAppDatabase extends _$DriftAppDatabase {
   /// {@macro drift_app_database}
