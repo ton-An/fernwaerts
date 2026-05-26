@@ -71,6 +71,7 @@ schema_paths = [
     './schemas/activity_segments/*.sql',
     './schemas/visits/*.sql',
     './schemas/updated_at_trigger.sql',
+    './schemas/powersync.sql',
 ]
 
 [db.seed]
