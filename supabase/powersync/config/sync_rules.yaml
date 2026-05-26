@@ -33,12 +33,12 @@ streams:
     queries:
       - |
         SELECT
-          id,
-          email,
-          username,
-          created_at,
-          updated_at,
-          deleted_at
+          users.id,
+          users.email,
+          users.username,
+          users.created_at,
+          users.updated_at,
+          users.deleted_at
         FROM users
         WHERE id IN current_user_id
       - |
@@ -109,41 +109,36 @@ streams:
 
   user_management_data:
     with:
-      managed_user_ids: |
-        SELECT id
-        FROM users
-        WHERE EXISTS (
-          SELECT 1
-          FROM user_roles
-          INNER JOIN role_permissions
-            ON role_permissions.role = user_roles.role
-          WHERE user_roles.user_id = auth.user_id()
-            AND user_roles.accepted_at IS NOT NULL
-            AND user_roles.deleted_at IS NULL
-            AND role_permissions.permission = 'read.users'
-            AND role_permissions.deleted_at IS NULL
-        )
+      current_permissions: |
+        SELECT role_permissions.permission
+        FROM user_roles
+        INNER JOIN role_permissions
+          ON role_permissions.role = user_roles.role
+        WHERE user_roles.user_id = auth.user_id()
+          AND user_roles.accepted_at IS NOT NULL
+          AND user_roles.deleted_at IS NULL
+          AND role_permissions.deleted_at IS NULL
     auto_subscribe: true
     queries:
       - |
         SELECT
-          id,
-          email,
-          username,
-          created_at,
-          updated_at,
-          deleted_at
+          users.id,
+          users.email,
+          users.username,
+          users.created_at,
+          users.updated_at,
+          users.deleted_at
         FROM users
-        WHERE id IN managed_user_ids
+        WHERE 'read.users' IN current_permissions
       - |
         SELECT
-          id,
-          user_id,
-          role,
-          invited_at,
-          accepted_at,
-          created_at,
-          updated_at,
-          deleted_at
+          user_roles.id,
+          user_roles.user_id,
+          user_roles.role,
+          user_roles.invited_at,
+          user_roles.accepted_at,
+          user_roles.created_at,
+          user_roles.updated_at,
+          user_roles.deleted_at
         FROM user_roles
-        WHERE user_id IN managed_user_ids
+        WHERE 'read.users' IN current_permissions
