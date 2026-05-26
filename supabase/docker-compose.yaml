@@ -5,33 +5,41 @@ name: Fernwaerts
 services:
   supabase-vendor-migrator:
     container_name: fernwaerts-supabase-vendor-migrator
+    build:
+      context: .
+      dockerfile: Dockerfile.vendor
     image: antonswebfabrik/fernwaerts-supabase-vendor-migrator:dev
     volumes:
       - ${FERNWAERTS_FOLDER}/supabase_vendor:/supabase_vendor
     restart: "no"
 
   migrator:
-    privileged: true # required to run the daemon
     container_name: fernwaerts-migrator
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: antonswebfabrik/fernwaerts-migrator:dev
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
       API_PORT: ${KONG_HTTP_PORT}
-      SUPABASE_DB_URL: postgresql://postgres:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+      PS_SOURCE_PASSWORD: ${PS_SOURCE_PASSWORD:?PS_SOURCE_PASSWORD is required}
+      PGSSLMODE: disable
+      SUPABASE_DB_URL: postgresql://postgres:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable
     depends_on:
       db:
         condition: service_healthy
       supabase-vendor-migrator:
         condition: service_completed_successfully
     volumes:
-      - ${DOCKER_SOCKET_LOCATION}:/var/run/docker.sock:ro,z
       - ${FERNWAERTS_FOLDER}/functions:/functions
     restart: "no"
 
   powersync-migrator:
-    privileged: true # required to run the daemon
     container_name: fernwaerts-powersync-migrator
+    build:
+      context: .
+      dockerfile: Dockerfile.powersync
     image: antonswebfabrik/fernwaerts-powersync-migrator:dev
     volumes:
       - ${FERNWAERTS_FOLDER}/powersync:/powersync
@@ -55,7 +63,7 @@ services:
       POWERSYNC_CONFIG_PATH: /config/powersync.yaml
 
       PS_DATABASE_TYPE: postgresql
-      PS_DATA_SOURCE_URI: postgresql://postgres:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+      PS_DATA_SOURCE_URI: postgresql://powersync_role:${PS_SOURCE_PASSWORD:?PS_SOURCE_PASSWORD is required}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
       PS_STORAGE_SOURCE_URI: postgres://${PS_POSTGRES_USER}:${PS_POSTGRES_PASSWORD}@${PS_POSTGRES_HOST}:${PS_POSTGRES_PORT}/postgres 
 
       # The port which the PowerSync API server should run on
@@ -222,7 +230,7 @@ services:
       GOTRUE_EXTERNAL_PHONE_ENABLED: ${ENABLE_PHONE_SIGNUP}
       GOTRUE_SMS_AUTOCONFIRM: ${ENABLE_PHONE_AUTOCONFIRM}
 
-      GOTRUE_SECURITY_UPDATE_PASSWORD_REQUIRE_REAUTHENTICATION: ${ENABLE_PASSWORD_UPDATE_REAUTHENTICATION}
+      GOTRUE_SECURITY_UPDATE_PASSWORD_REQUIRE_REAUTHENTICATION: ${ENABLE_PASSWORD_UPDATE_REAUTHENTICATION:-true}
       # Uncomment to enable custom access token hook. Please see: https://supabase.com/docs/guides/auth/auth-hooks for full list of hooks and additional details about custom_access_token_hook
 
       # GOTRUE_HOOK_CUSTOM_ACCESS_TOKEN_ENABLED: "true"

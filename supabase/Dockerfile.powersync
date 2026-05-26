@@ -1,6 +1,4 @@
-# ToDo: apply proper permissions and allow rootless
-
-FROM node:latest
+FROM alpine:latest
 
 # Set working directory
 WORKDIR /ps
