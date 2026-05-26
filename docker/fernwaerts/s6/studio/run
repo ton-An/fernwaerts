@@ -1,0 +1,25 @@
+#!/command/with-contenv sh
+exec 2>&1
+export HOSTNAME=127.0.0.1
+export PORT=3000
+export STUDIO_PG_META_URL=http://127.0.0.1:8080
+export POSTGRES_HOST="${POSTGRES_HOST}"
+export POSTGRES_PORT="${POSTGRES_PORT}"
+export POSTGRES_DB="${POSTGRES_DB}"
+export POSTGRES_PASSWORD="${POSTGRES_PASSWORD}"
+export PG_META_CRYPTO_KEY="${JWT_SECRET}"
+export PGRST_DB_SCHEMAS="public,storage,graphql_public"
+export DEFAULT_ORGANIZATION_NAME=Fernwaerts
+export DEFAULT_PROJECT_NAME=Fernwaerts
+export SUPABASE_URL=http://127.0.0.1:8000
+export SUPABASE_PUBLIC_URL="${SUPABASE_PUBLIC_URL}"
+export SUPABASE_ANON_KEY="${ANON_KEY}"
+export SUPABASE_SERVICE_KEY="${SERVICE_ROLE_KEY}"
+export AUTH_JWT_SECRET="${JWT_SECRET}"
+export LOGFLARE_PUBLIC_ACCESS_TOKEN=fernwaerts-public
+export LOGFLARE_PRIVATE_ACCESS_TOKEN=fernwaerts-private
+export LOGFLARE_URL=http://127.0.0.1:4000
+export NEXT_PUBLIC_ENABLE_LOGS=true
+export NEXT_ANALYTICS_BACKEND_PROVIDER=postgres
+cd /opt/studio
+exec node server.js

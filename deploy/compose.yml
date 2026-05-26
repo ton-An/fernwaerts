@@ -1,0 +1,89 @@
+name: fernwaerts
+
+services:
+  db:
+    # fernwaerts-postgres = supabase/postgres + vendor init SQL baked in.
+    # On first boot it runs the same scripts upstream's compose mounts into
+    # /docker-entrypoint-initdb.d/ (roles, jwt, webhooks, _supabase, logs).
+    image: ghcr.io/${FERNWAERTS_IMAGE_OWNER:-fernwaerts}/fernwaerts-postgres:${FERNWAERTS_VERSION:-latest}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in .env}
+      JWT_EXP: ${JWT_EXPIRY:-3600}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - db-config:/etc/postgresql-custom
+    command:
+      - postgres
+      - -c
+      - config_file=/etc/postgresql/postgresql.conf
+      - -c
+      - log_min_messages=fatal
+      - -c
+      - wal_level=logical
+      - -c
+      - max_wal_senders=10
+      - -c
+      - max_replication_slots=10
+
+  fernwaerts:
+    image: ghcr.io/${FERNWAERTS_IMAGE_OWNER:-fernwaerts}/fernwaerts:${FERNWAERTS_VERSION:-latest}
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${API_PORT:-8000}:8000"
+      - "${POWERSYNC_PORT:-7901}:7901"
+    # Map the hostnames upstream's kong.yml + vector.yml use to localhost so
+    # those configs stay verbatim. `rest` lands on 127.0.0.2 so PostgREST can
+    # keep its default port 3000 alongside Studio (also on port 3000).
+    extra_hosts:
+      - "auth:127.0.0.1"
+      - "rest:127.0.0.2"
+      - "functions:127.0.0.1"
+      - "meta:127.0.0.1"
+      - "analytics:127.0.0.1"
+      - "studio:127.0.0.1"
+      - "kong:127.0.0.1"
+      - "vector:127.0.0.1"
+      - "realtime-dev.supabase-realtime:127.0.0.1"
+      - "storage:127.0.0.1"
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRY: ${JWT_EXPIRY:-3600}
+      ANON_KEY: ${ANON_KEY:?set ANON_KEY in .env}
+      SERVICE_ROLE_KEY: ${SERVICE_ROLE_KEY:?set SERVICE_ROLE_KEY in .env}
+      PS_SOURCE_PASSWORD: ${PS_SOURCE_PASSWORD:?set PS_SOURCE_PASSWORD in .env}
+      PS_STORAGE_PASSWORD: ${PS_STORAGE_PASSWORD:?set PS_STORAGE_PASSWORD in .env}
+      DASHBOARD_USERNAME: ${DASHBOARD_USERNAME:-fernwaerts}
+      DASHBOARD_PASSWORD: ${DASHBOARD_PASSWORD:?set DASHBOARD_PASSWORD in .env}
+      SITE_URL: ${SITE_URL:-http://localhost:3000}
+      API_EXTERNAL_URL: ${API_EXTERNAL_URL:-http://localhost:8000}
+      SUPABASE_PUBLIC_URL: ${SUPABASE_PUBLIC_URL:-http://localhost:8000}
+      DISABLE_SIGNUP: ${DISABLE_SIGNUP:-true}
+      ENABLE_EMAIL_SIGNUP: ${ENABLE_EMAIL_SIGNUP:-true}
+      ENABLE_EMAIL_AUTOCONFIRM: ${ENABLE_EMAIL_AUTOCONFIRM:-false}
+      SMTP_ADMIN_EMAIL: ${SMTP_ADMIN_EMAIL:-admin@example.com}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      SMTP_SENDER_NAME: ${SMTP_SENDER_NAME:-Fernwaerts}
+    volumes:
+      - logs:/var/log
+
+volumes:
+  db-data:
+  db-config:
+  logs:

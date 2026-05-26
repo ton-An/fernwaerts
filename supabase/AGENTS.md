@@ -22,8 +22,27 @@ Guidance for coding agents working in `supabase/`.
 - `functions/`: Supabase Edge Functions.
 - `powersync/config/powersync.yaml`: PowerSync service config.
 - `powersync/config/sync_rules.yaml`: PowerSync sync rules.
-- `docker-compose.yaml`: self-hosted Supabase/PowerSync runtime stack.
-- `supabase_vendor/`: vendored Supabase service config and migrations.
+- `supabase_vendor/`: vendored Supabase service config and init SQL. Consumed
+  by the bundle image build.
+
+The runtime is defined under the repo root:
+
+- `deploy/compose.yml` and `deploy/.env.example`: self-host compose file
+  (two images: `fernwaerts-postgres` + `fernwaerts`) that consumes everything
+  here.
+- `docker/fernwaerts/`: build context for the bundle image. kong.yml,
+  kong-entrypoint.sh, and the upstream portion of vector.yml are fetched
+  from `supabase/docker` at build time (keyed off the `SUPABASE_REF` ARG)
+  rather than vendored — bumping that single ARG is the upgrade path for
+  all three. Only the Fernwaerts-specific vector source block is committed
+  here (`vector-source.yml`). Pinned versions are documented in `VERSIONS`.
+- `docker/fernwaerts-postgres/`: build context for the postgres image. Bakes
+  `supabase_vendor/db/` SQL into `/docker-entrypoint-initdb.d/` so first-boot
+  init matches upstream's mount layout exactly.
+
+When changing migrations, schemas, functions, vendor SQL, or PowerSync config,
+the bundle image needs to be rebuilt for those changes to land in a running
+deployment.
 
 ## Workflows
 
@@ -47,14 +66,26 @@ Declarative schema change:
 
 ## Commands
 
-Run from `supabase/`:
+CLI dev workflow, run from `supabase/`:
 
 ```bash
 supabase start
 supabase db reset
 supabase functions serve
-docker build -t fernwaerts-migrator:dev .
-docker build -f Dockerfile.vendor -t fernwaerts-supabase-vendor-migrator:dev .
+```
+
+Image builds (run from the repo root, not from `supabase/`):
+
+```bash
+docker build -f docker/fernwaerts/Dockerfile          -t fernwaerts:dev .
+docker build -f docker/fernwaerts-postgres/Dockerfile -t fernwaerts-postgres:dev .
+```
+
+Self-host runtime, run from `deploy/`:
+
+```bash
+docker compose up -d
+docker compose pull && docker compose up -d   # upgrade
 ```
 
 ## Verification

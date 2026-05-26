@@ -1,8 +1,0 @@
-FROM alpine:latest
-
-# Set working directory
-WORKDIR /ps
-
-COPY ./powersync/ powersync/
-
-CMD ["sh", "-c", "cp -r powersync/. /powersync/  && chmod -R a+rX /powersync/"]
