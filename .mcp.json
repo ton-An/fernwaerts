@@ -1,0 +1,23 @@
+{
+  "mcpServers": {
+    "dart": {
+      "command": "dart",
+      "args": [
+        "mcp-server",
+        "--force-roots-fallback"
+      ]
+    },
+    "XcodeBuildMCP": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "xcodebuildmcp@latest",
+        "mcp"
+      ]
+    },
+    "docs": {
+      "type": "http",
+      "url": "https://docs.powersync.com/mcp"
+    }
+  }
+}
