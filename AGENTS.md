@@ -15,6 +15,8 @@ Repository-wide guidance for coding agents.
 - For Dart and Flutter package, dependency, `pub`, hot reload/restart,
   package-source inspection, and API documentation lookup tasks, use the Dart
   MCP server before shell commands or web search.
+- For launching, controlling, and inspecting iOS simulators, use XcodeBuildMCP
+  simulator tools.
 - Use structured tools/parsers for structured files when practical.
 - Do not commit secrets, Supabase keys, local env files, dependency folders,
   build output, local volumes, or device-specific artifacts.
