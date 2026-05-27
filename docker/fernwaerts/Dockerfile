@@ -61,11 +61,11 @@ FROM debian:bookworm-slim AS migrator-build
 ARG SUPABASE_CLI_VERSION=2.101.0
 ARG TARGETARCH
 RUN apt-get update && apt-get install -y --no-install-recommends \
-      ca-certificates curl \
- && rm -rf /var/lib/apt/lists/* \
- && curl -fsSL \
-      "https://github.com/supabase/cli/releases/download/v${SUPABASE_CLI_VERSION}/supabase_${SUPABASE_CLI_VERSION}_linux_${TARGETARCH}.tar.gz" \
-    | tar -C /usr/local/bin -xz supabase supabase-go
+     ca-certificates curl \
+     && rm -rf /var/lib/apt/lists/* \
+     && curl -fsSL \
+     "https://github.com/supabase/cli/releases/download/v${SUPABASE_CLI_VERSION}/supabase_${SUPABASE_CLI_VERSION}_linux_${TARGETARCH}.tar.gz" \
+     | tar -C /usr/local/bin -xz supabase supabase-go
 
 WORKDIR /payload
 COPY supabase/schemas/              ./supabase/schemas/
@@ -84,26 +84,26 @@ ARG S6_OVERLAY_VERSION=3.2.0.2
 ARG TARGETARCH
 
 ENV DEBIAN_FRONTEND=noninteractive \
-    S6_KEEP_ENV=1 \
-    S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
-    S6_CMD_WAIT_FOR_SERVICES_MAXTIME=120000 \
-    S6_VERBOSITY=1
+     S6_KEEP_ENV=1 \
+     S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
+     S6_CMD_WAIT_FOR_SERVICES_MAXTIME=120000 \
+     S6_VERBOSITY=1
 
 # ── Build tools ───────────────────────────────────────────────────────────────
 RUN apt-get update && apt-get install -y --no-install-recommends \
-      ca-certificates curl xz-utils gnupg \
- && rm -rf /var/lib/apt/lists/*
+     ca-certificates curl xz-utils gnupg \
+     && rm -rf /var/lib/apt/lists/*
 
 # ── s6-overlay v3.2.0.2 ───────────────────────────────────────────────────────
 # https://github.com/just-containers/s6-overlay/releases/tag/v3.2.0.2
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp/
 RUN S6_ARCH=$([ "${TARGETARCH}" = "arm64" ] && echo "aarch64" || echo "x86_64") \
- && curl -fsSL \
-      "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-${S6_ARCH}.tar.xz" \
-      -o "/tmp/s6-overlay-${S6_ARCH}.tar.xz" \
- && tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz \
- && tar -C / -Jxpf "/tmp/s6-overlay-${S6_ARCH}.tar.xz" \
- && rm /tmp/s6-overlay-*.tar.xz
+     && curl -fsSL \
+     "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-${S6_ARCH}.tar.xz" \
+     -o "/tmp/s6-overlay-${S6_ARCH}.tar.xz" \
+     && tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz \
+     && tar -C / -Jxpf "/tmp/s6-overlay-${S6_ARCH}.tar.xz" \
+     && rm /tmp/s6-overlay-*.tar.xz
 
 # ── Node.js 24 ────────────────────────────────────────────────────────────────
 # https://github.com/nodesource/distributions
@@ -112,8 +112,8 @@ RUN S6_ARCH=$([ "${TARGETARCH}" = "arm64" ] && echo "aarch64" || echo "x86_64") 
 #   https://github.com/powersync-ja/powersync-service/blob/916cb924c54aeb7326cddea9468eb2d5be4fff72/service/Dockerfile
 #   https://github.com/supabase/supabase/blob/5f6060197e9e7de016dc7a50c18fdffa65eff9a5/apps/studio/Dockerfile
 RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
- && apt-get install -y --no-install-recommends nodejs \
- && rm -rf /var/lib/apt/lists/*
+     && apt-get install -y --no-install-recommends nodejs \
+     && rm -rf /var/lib/apt/lists/*
 
 # ── Vector v0.53.0 ────────────────────────────────────────────────────────────
 # https://github.com/vectordotdev/vector/blob/v0.53.0/distribution/docker/alpine/Dockerfile
@@ -127,8 +127,8 @@ COPY --from=src-auth /usr/local/bin/auth /opt/auth/auth
 # ── PostgREST v14.8 (rest) ────────────────────────────────────────────────────
 # https://github.com/PostgREST/postgrest/blob/v14.8/Dockerfile
 RUN apt-get update && apt-get install -y --no-install-recommends \
-      libgmp10 libpq5 libssl3 \
- && rm -rf /var/lib/apt/lists/*
+     libgmp10 libpq5 libssl3 \
+     && rm -rf /var/lib/apt/lists/*
 COPY --from=src-rest /bin/postgrest /opt/rest/postgrest
 
 # ── Edge Runtime v1.71.2 (functions) ──────────────────────────────────────────
@@ -142,8 +142,8 @@ COPY --from=src-meta /usr/src/app /opt/meta/
 # ── PowerSync v1.21.0 ─────────────────────────────────────────────────────────
 # https://github.com/powersync-ja/powersync-service/blob/916cb924c54aeb7326cddea9468eb2d5be4fff72/service/Dockerfile
 RUN apt-get update && apt-get install -y --no-install-recommends \
-      libyaml-0-2 \
- && rm -rf /var/lib/apt/lists/*
+     libyaml-0-2 \
+     && rm -rf /var/lib/apt/lists/*
 COPY --from=src-powersync /app /opt/powersync/
 COPY supabase/powersync/config/powersync.yaml  /etc/powersync/powersync.yaml
 COPY supabase/powersync/config/sync_rules.yaml /etc/powersync/sync_rules.yaml
@@ -157,12 +157,12 @@ COPY --from=src-studio /app /opt/studio/
 # OTP 25+ required; ubuntu noble ships OTP 25. For OTP 26, switch to:
 # https://www.erlang-solutions.com/downloads/
 RUN apt-get update && apt-get install -y --no-install-recommends \
-      libffi8 \
-      erlang-base erlang-asn1 erlang-crypto erlang-eldap erlang-ftp erlang-inets \
-      erlang-mnesia erlang-os-mon erlang-parsetools erlang-public-key \
-      erlang-runtime-tools erlang-snmp erlang-ssl erlang-syntax-tools \
-      erlang-tftp erlang-tools erlang-xmerl \
- && rm -rf /var/lib/apt/lists/*
+     libffi8 \
+     erlang-base erlang-asn1 erlang-crypto erlang-eldap erlang-ftp erlang-inets \
+     erlang-mnesia erlang-os-mon erlang-parsetools erlang-public-key \
+     erlang-runtime-tools erlang-snmp erlang-ssl erlang-syntax-tools \
+     erlang-tftp erlang-tools erlang-xmerl \
+     && rm -rf /var/lib/apt/lists/*
 COPY --from=src-analytics /opt/app /opt/analytics/
 # Logflare's crypto NIF needs its own OpenSSL; isolated to avoid affecting other services.
 COPY --from=src-analytics \
@@ -173,8 +173,8 @@ COPY --from=src-analytics \
 # ── Kong v3.9.1 ───────────────────────────────────────────────────────────────
 # https://github.com/Kong/docker-kong/blob/3.9.1/Dockerfile.deb
 RUN apt-get update && apt-get install -y --no-install-recommends \
-      gettext-base \
- && rm -rf /var/lib/apt/lists/*
+     gettext-base \
+     && rm -rf /var/lib/apt/lists/*
 COPY --from=src-kong /usr/local/bin/kong     /usr/local/bin/kong
 COPY --from=src-kong /usr/local/openresty    /usr/local/openresty
 COPY --from=src-kong /usr/local/kong         /usr/local/kong
@@ -183,8 +183,8 @@ COPY --from=src-kong /usr/local/lib/lua      /usr/local/lib/lua
 COPY --from=src-kong /usr/local/lib/luarocks /usr/local/lib/luarocks
 COPY --from=src-kong /entrypoint.sh /entrypoint.sh
 RUN mkdir -p /home/kong \
- && groupadd --system kong \
- && useradd --system --gid kong --no-create-home kong
+     && groupadd --system kong \
+     && useradd --system --gid kong --no-create-home kong
 COPY supabase/supabase_vendor/api/kong.yml           /home/kong/temp.yml
 COPY supabase/supabase_vendor/api/kong-entrypoint.sh /home/kong/kong-entrypoint.sh
 RUN chmod +x /home/kong/kong-entrypoint.sh /entrypoint.sh
@@ -192,23 +192,23 @@ RUN chmod +x /home/kong/kong-entrypoint.sh /entrypoint.sh
 # ── Supabase CLI v2.101.0 + migrate payload ───────────────────────────────────
 # https://github.com/supabase/cli/releases/tag/v2.101.0
 RUN apt-get update && apt-get install -y --no-install-recommends \
-      postgresql-client \
- && rm -rf /var/lib/apt/lists/*
+     postgresql-client \
+     && rm -rf /var/lib/apt/lists/*
 COPY --from=migrator-build /usr/local/bin/supabase    /usr/local/bin/supabase
 COPY --from=migrator-build /usr/local/bin/supabase-go /usr/local/bin/supabase-go
 COPY --from=migrator-build /payload                   /opt/migrate
 COPY docker/fernwaerts/migrate/entrypoint.sh          /opt/migrate/entrypoint.sh
 RUN mkdir -p /home/deno \
- && cp -a /opt/migrate/supabase/functions /home/deno/functions \
- && chmod +x /opt/migrate/entrypoint.sh
+     && cp -a /opt/migrate/supabase/functions /home/deno/functions \
+     && chmod +x /opt/migrate/entrypoint.sh
 
 # ── s6 service definitions + log directories ──────────────────────────────────
 COPY docker/fernwaerts/s6/ /etc/s6-overlay/s6-rc.d/
 RUN set -eux; \
-    for svc in auth rest functions powersync meta analytics studio kong vector init-migrator; do \
-      mkdir -p "/var/log/${svc}"; \
-      chmod 02750 "/var/log/${svc}"; \
-    done
+     for svc in auth rest functions powersync meta analytics studio kong vector init-migrator; do \
+     mkdir -p "/var/log/${svc}"; \
+     chmod 02750 "/var/log/${svc}"; \
+     done
 
 EXPOSE 8000 7901
 
