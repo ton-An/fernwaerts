@@ -187,7 +187,7 @@ COPY --from=src-kong /usr/local/kong         /usr/local/kong
 COPY --from=src-kong /usr/local/share/lua    /usr/local/share/lua
 COPY --from=src-kong /usr/local/lib/lua      /usr/local/lib/lua
 COPY --from=src-kong /usr/local/lib/luarocks /usr/local/lib/luarocks
-COPY --from=src-kong /docker-entrypoint.sh /entrypoint.sh
+COPY --from=src-kong /entrypoint.sh /entrypoint.sh
 RUN mkdir -p /home/kong \
      && groupadd --system kong \
      && useradd --system --gid kong --no-create-home kong
