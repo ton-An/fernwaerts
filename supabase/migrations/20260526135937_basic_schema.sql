@@ -236,8 +236,6 @@ $function$
 
 grant insert on table "public"."activity_segments" to "authenticated";
 
-grant select on table "public"."activity_segments" to "powersync_role";
-
 grant delete on table "public"."activity_segments" to "service_role";
 
 grant insert on table "public"."activity_segments" to "service_role";
@@ -253,8 +251,6 @@ grant truncate on table "public"."activity_segments" to "service_role";
 grant update on table "public"."activity_segments" to "service_role";
 
 grant insert on table "public"."devices" to "authenticated";
-
-grant select on table "public"."devices" to "powersync_role";
 
 grant delete on table "public"."devices" to "service_role";
 
@@ -274,8 +270,6 @@ grant select on table "public"."public_info" to "anon";
 
 grant select on table "public"."public_info" to "authenticated";
 
-grant select on table "public"."public_info" to "powersync_role";
-
 grant delete on table "public"."public_info" to "service_role";
 
 grant insert on table "public"."public_info" to "service_role";
@@ -292,8 +286,6 @@ grant update on table "public"."public_info" to "service_role";
 
 grant insert on table "public"."raw_location_data" to "authenticated";
 
-grant select on table "public"."raw_location_data" to "powersync_role";
-
 grant delete on table "public"."raw_location_data" to "service_role";
 
 grant insert on table "public"."raw_location_data" to "service_role";
@@ -307,8 +299,6 @@ grant trigger on table "public"."raw_location_data" to "service_role";
 grant truncate on table "public"."raw_location_data" to "service_role";
 
 grant update on table "public"."raw_location_data" to "service_role";
-
-grant select on table "public"."role_permissions" to "powersync_role";
 
 grant delete on table "public"."role_permissions" to "service_role";
 
@@ -324,8 +314,6 @@ grant truncate on table "public"."role_permissions" to "service_role";
 
 grant update on table "public"."role_permissions" to "service_role";
 
-grant select on table "public"."user_roles" to "powersync_role";
-
 grant delete on table "public"."user_roles" to "service_role";
 
 grant insert on table "public"."user_roles" to "service_role";
@@ -339,8 +327,6 @@ grant trigger on table "public"."user_roles" to "service_role";
 grant truncate on table "public"."user_roles" to "service_role";
 
 grant update on table "public"."user_roles" to "service_role";
-
-grant select on table "public"."users" to "powersync_role";
 
 grant delete on table "public"."users" to "service_role";
 
@@ -357,8 +343,6 @@ grant truncate on table "public"."users" to "service_role";
 grant update on table "public"."users" to "service_role";
 
 grant insert on table "public"."visits" to "authenticated";
-
-grant select on table "public"."visits" to "powersync_role";
 
 grant delete on table "public"."visits" to "service_role";
 
@@ -419,6 +403,8 @@ with check ((( SELECT auth.uid() AS uid) = user_id));
 with check ((( SELECT auth.uid() AS uid) = user_id));
 
 
+create extension if not exists moddatetime with schema extensions;
+
 CREATE TRIGGER handle_updated_at BEFORE UPDATE ON public.user_roles FOR EACH ROW EXECUTE FUNCTION extensions.moddatetime('updated_at');
 
 CREATE TRIGGER handle_updated_at BEFORE UPDATE ON public.users FOR EACH ROW EXECUTE FUNCTION extensions.moddatetime('updated_at');
@@ -476,3 +462,27 @@ revoke select, insert, update, delete, references, trigger, truncate on table "p
 revoke select, insert, update, delete, references, trigger, truncate on table "public"."visits" from authenticated;
 
 grant insert on table "public"."visits" to authenticated;
+
+-- powersync (supabase db diff does not capture roles or publications)
+create role powersync_role with login replication bypassrls;
+
+grant select on
+  public.public_info,
+  public.role_permissions,
+  public.users,
+  public.devices,
+  public.raw_location_data,
+  public.activity_segments,
+  public.visits,
+  public.user_roles
+to powersync_role;
+
+create publication powersync for table
+  public.public_info,
+  public.role_permissions,
+  public.users,
+  public.devices,
+  public.raw_location_data,
+  public.activity_segments,
+  public.visits,
+  public.user_roles;

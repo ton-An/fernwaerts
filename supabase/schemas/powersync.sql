@@ -1,4 +1,5 @@
--- Set the password outside migrations for deployed environments.
+-- NEEDS_MANUAL_MODIFICATION - supabase db diff does not capture roles or publications; add to migration manually.
+-- Password is set at deploy time by migrate.sh (runtime secret; not in migrations).
 create role powersync_role with replication bypassrls login;
 
 grant select on
