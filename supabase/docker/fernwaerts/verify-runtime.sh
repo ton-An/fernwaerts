@@ -2,20 +2,20 @@
 # Build-time/runtime sanity check for the all-in-one Fernwaerts backend image.
 #
 # Default usage:
-#   docker/fernwaerts/verify-runtime.sh
+#   supabase/docker/fernwaerts/verify-runtime.sh
 #
 # Optional compose smoke test:
-#   VERIFY_COMPOSE=1 docker/fernwaerts/verify-runtime.sh
+#   VERIFY_COMPOSE=1 supabase/docker/fernwaerts/verify-runtime.sh
 
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 IMAGE_OWNER="${FERNWAERTS_IMAGE_OWNER:-fernwaerts}"
 IMAGE_VERSION="${FERNWAERTS_VERSION:-verify}"
 BACKEND_IMAGE="ghcr.io/${IMAGE_OWNER}/fernwaerts:${IMAGE_VERSION}"
 POSTGRES_IMAGE="ghcr.io/${IMAGE_OWNER}/fernwaerts-postgres:${IMAGE_VERSION}"
 COMPOSE_PROJECT="${VERIFY_COMPOSE_PROJECT:-fernwaerts-verify}"
-DEPLOY_ENV="${DEPLOY_ENV:-${ROOT_DIR}/deploy/.env}"
+DEPLOY_ENV="${DEPLOY_ENV:-${ROOT_DIR}/supabase/deploy/.env}"
 API_PORT="${VERIFY_API_PORT:-18000}"
 POWERSYNC_PORT="${VERIFY_POWERSYNC_PORT:-17901}"
 
@@ -24,7 +24,7 @@ log() {
 }
 
 log "building ${BACKEND_IMAGE}"
-docker build -f "${ROOT_DIR}/docker/fernwaerts/Dockerfile" -t "${BACKEND_IMAGE}" "${ROOT_DIR}"
+docker build -f "${ROOT_DIR}/supabase/docker/fernwaerts/Dockerfile" -t "${BACKEND_IMAGE}" "${ROOT_DIR}"
 
 log "checking runtime commands and shared libraries"
 docker run --rm --entrypoint /bin/bash "${BACKEND_IMAGE}" -lc '
@@ -62,7 +62,7 @@ set -euo pipefail
 export PATH=/usr/local/openresty/bin:${PATH}
 
 # Packages explicitly installed in the Dockerfile (non-Erlang). Keep in sync
-# with the RUN apt-get install blocks in docker/fernwaerts/Dockerfile.
+# with the RUN apt-get install blocks in supabase/docker/fernwaerts/Dockerfile.
 # Erlang packages are omitted: the BEAM VM loads modules dynamically, so ldd
 # cannot see those references. They are verified by the erl smoke-test above.
 DOCKERFILE_PKGS="
@@ -165,12 +165,12 @@ if [[ ! -f "${DEPLOY_ENV}" ]]; then
 fi
 
 log "building ${POSTGRES_IMAGE}"
-docker build -f "${ROOT_DIR}/docker/fernwaerts-postgres/Dockerfile" -t "${POSTGRES_IMAGE}" "${ROOT_DIR}"
+docker build -f "${ROOT_DIR}/supabase/docker/fernwaerts-postgres/Dockerfile" -t "${POSTGRES_IMAGE}" "${ROOT_DIR}"
 
 cleanup() {
   log "stopping compose project ${COMPOSE_PROJECT}"
   (
-    cd "${ROOT_DIR}/deploy"
+    cd "${ROOT_DIR}/supabase/deploy"
     FERNWAERTS_IMAGE_OWNER="${IMAGE_OWNER}" FERNWAERTS_VERSION="${IMAGE_VERSION}" \
       API_PORT="${API_PORT}" POWERSYNC_PORT="${POWERSYNC_PORT}" \
       docker compose --env-file "${DEPLOY_ENV}" -p "${COMPOSE_PROJECT}" down -v

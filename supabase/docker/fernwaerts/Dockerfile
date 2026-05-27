@@ -8,7 +8,7 @@
 # Postgres, defined alongside this in deploy/compose.yml.
 #
 # Build from the repo root:
-#   docker build -f docker/fernwaerts/Dockerfile -t fernwaerts:dev .
+#   docker build -f supabase/docker/fernwaerts/Dockerfile -t fernwaerts:dev .
 #
 # Runtime base is ubuntu:24.04 to match kong/kong:3.9.1's glibc 2.39. Lifting
 # older-base binaries onto a newer glibc works; the reverse does not.
@@ -72,8 +72,8 @@ COPY supabase/schemas/              ./supabase/schemas/
 COPY supabase/migrations/           ./supabase/migrations/
 COPY supabase/functions/            ./supabase/functions/
 COPY supabase/migration_config.toml ./supabase/config.toml
-COPY supabase/supabase_vendor/db/init-scripts ./vendor/init-scripts
-COPY supabase/supabase_vendor/db/migrations   ./vendor/migrations
+COPY supabase/docker/vendor/db/init-scripts ./vendor/init-scripts
+COPY supabase/docker/vendor/db/migrations   ./vendor/migrations
 
 ###############################################################################
 # Stage: runtime                                                              #
@@ -122,7 +122,7 @@ RUN apt-get purge -y curl gnupg \
 # ── Vector v0.53.0 ────────────────────────────────────────────────────────────
 # https://github.com/vectordotdev/vector/blob/v0.53.0/distribution/docker/alpine/Dockerfile
 COPY --from=src-vector /usr/local/bin/vector /usr/local/bin/vector
-COPY docker/fernwaerts/vector.yml            /etc/vector/vector.yml
+COPY supabase/docker/fernwaerts/vector.yml            /etc/vector/vector.yml
 
 # ── GoTrue v2.186.0 (auth) ────────────────────────────────────────────────────
 # https://github.com/supabase/auth/blob/v2.186.0/Dockerfile
@@ -191,8 +191,8 @@ COPY --from=src-kong /entrypoint.sh /entrypoint.sh
 RUN mkdir -p /home/kong \
      && groupadd --system kong \
      && useradd --system --gid kong --no-create-home kong
-COPY supabase/supabase_vendor/api/kong.yml           /home/kong/temp.yml
-COPY supabase/supabase_vendor/api/kong-entrypoint.sh /home/kong/kong-entrypoint.sh
+COPY supabase/docker/fernwaerts/kong.yml           /home/kong/temp.yml
+COPY supabase/docker/fernwaerts/kong-entrypoint.sh /home/kong/kong-entrypoint.sh
 RUN chmod +x /home/kong/kong-entrypoint.sh /entrypoint.sh
 
 # ── Supabase CLI v2.101.0 + migrate payload ───────────────────────────────────
@@ -203,13 +203,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY --from=migrator-build /usr/local/bin/supabase    /usr/local/bin/supabase
 COPY --from=migrator-build /usr/local/bin/supabase-go /usr/local/bin/supabase-go
 COPY --from=migrator-build /payload                   /opt/migrate
-COPY docker/fernwaerts/migrate/entrypoint.sh          /opt/migrate/entrypoint.sh
+COPY supabase/docker/fernwaerts/migrate.sh          /opt/migrate/entrypoint.sh
 RUN mkdir -p /home/deno \
      && cp -a /opt/migrate/supabase/functions /home/deno/functions \
      && chmod +x /opt/migrate/entrypoint.sh
 
 # ── s6 service definitions + log directories ──────────────────────────────────
-COPY docker/fernwaerts/s6/ /etc/s6-overlay/s6-rc.d/
+COPY supabase/docker/fernwaerts/s6/ /etc/s6-overlay/s6-rc.d/
 RUN set -eux; \
      for svc in auth rest functions powersync meta analytics studio kong vector init-migrator; do \
      mkdir -p "/var/log/${svc}"; \

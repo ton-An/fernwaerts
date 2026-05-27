@@ -22,21 +22,22 @@ Guidance for coding agents working in `supabase/`.
 - `functions/`: Supabase Edge Functions.
 - `powersync/config/powersync.yaml`: PowerSync service config.
 - `powersync/config/sync_rules.yaml`: PowerSync sync rules.
-- `supabase_vendor/`: vendored Supabase service config and init SQL. Consumed
-  by the bundle image build.
+- `docker/vendor/db/`: vendored Supabase DB init SQL shared by both Docker
+  builds.
+- `docker/fernwaerts/kong.yml` and `docker/fernwaerts/kong-entrypoint.sh`:
+  vendored Kong config used only by the bundle image.
 
-The runtime is defined under the repo root:
+The runtime lives alongside the rest of the backend under `supabase/`:
 
 - `deploy/compose.yml` and `deploy/.env.example`: self-host compose file
-  (two images: `fernwaerts-postgres` + `fernwaerts`) that consumes everything
-  here.
-- `docker/fernwaerts/`: build context for the bundle image. Kong and Vector
-  upstream config is checked in under `supabase_vendor/`; update those files
-  intentionally when tracking a newer Supabase docker version. The full Vector
-  runtime config lives in `docker/fernwaerts/vector.yml`. Pinned versions are
-  documented in `VERSIONS`.
+  (two images: `fernwaerts-postgres` + `fernwaerts`).
+- `docker/fernwaerts/`: build context for the bundle image. Vendored Kong config
+  `docker/fernwaerts/kong.yml`; update those files intentionally when tracking
+  a newer Supabase docker version. The full Vector runtime config lives
+  in `docker/fernwaerts/vector.yml`. Pinned versions are documented in
+  `docker/fernwaerts/VERSIONS`.
 - `docker/fernwaerts-postgres/`: build context for the postgres image. Bakes
-  `supabase_vendor/db/` SQL into `/docker-entrypoint-initdb.d/` so first-boot
+  `docker/vendor/db/` SQL into `/docker-entrypoint-initdb.d/` so first-boot
   init matches upstream's mount layout exactly.
 
 When changing migrations, schemas, functions, vendor SQL, or PowerSync config,
@@ -76,11 +77,11 @@ supabase functions serve
 Image builds (run from the repo root, not from `supabase/`):
 
 ```bash
-docker build -f docker/fernwaerts/Dockerfile          -t fernwaerts:dev .
-docker build -f docker/fernwaerts-postgres/Dockerfile -t fernwaerts-postgres:dev .
+docker build -f supabase/docker/fernwaerts/Dockerfile          -t fernwaerts:dev .
+docker build -f supabase/docker/fernwaerts-postgres/Dockerfile -t fernwaerts-postgres:dev .
 ```
 
-Self-host runtime, run from `deploy/`:
+Self-host runtime, run from `supabase/deploy/`:
 
 ```bash
 docker compose up -d

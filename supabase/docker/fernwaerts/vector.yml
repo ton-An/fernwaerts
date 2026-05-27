@@ -1,6 +1,6 @@
 # Vector config for the Fernwaerts bundle image.
 #
-# Why this differs from upstream (supabase_vendor/logs/vector.yml):
+# Why this differs from upstream supabase/docker vector config:
 # - Services run as s6 longruns inside this container, so there's no Docker
 #   daemon to query. We tail s6's per-service log dirs instead.
 # - project_logs derives .appname from the file path (matching upstream's
