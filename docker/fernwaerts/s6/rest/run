@@ -1,7 +1,7 @@
 #!/command/with-contenv sh
 # PostgREST binds to 127.0.0.2 so it can keep upstream's default port 3000
-# despite Studio also listening on :3000. Kong reaches it via the `rest`
-# /etc/hosts entry pointing at 127.0.0.2 — see compose.yml extra_hosts.
+# despite Studio also listening on :3000. Kong routes to it via 127.0.0.2:3000
+# directly in kong.yml.
 exec 2>&1
 export PGRST_SERVER_HOST=127.0.0.2
 export PGRST_DB_URI="postgres://authenticator:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable"

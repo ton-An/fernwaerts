@@ -41,20 +41,6 @@ services:
     ports:
       - "${API_PORT:-8000}:8000"
       - "${POWERSYNC_PORT:-7901}:7901"
-    # Map the hostnames upstream's kong.yml + vector.yml use to localhost so
-    # those configs stay verbatim. `rest` lands on 127.0.0.2 so PostgREST can
-    # keep its default port 3000 alongside Studio (also on port 3000).
-    extra_hosts:
-      - "auth:127.0.0.1"
-      - "rest:127.0.0.2"
-      - "functions:127.0.0.1"
-      - "meta:127.0.0.1"
-      - "analytics:127.0.0.1"
-      - "studio:127.0.0.1"
-      - "kong:127.0.0.1"
-      - "vector:127.0.0.1"
-      - "realtime-dev.supabase-realtime:127.0.0.1"
-      - "storage:127.0.0.1"
     environment:
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
