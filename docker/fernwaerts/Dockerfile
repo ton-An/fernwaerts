@@ -89,11 +89,10 @@ ENV DEBIAN_FRONTEND=noninteractive \
      S6_CMD_WAIT_FOR_SERVICES_MAXTIME=120000 \
      S6_VERBOSITY=1
 
-# ── s6-overlay v3.2.0.2 + Node.js 24 ────────────────────────────────────────
+# ── s6-overlay v3.2.0.2 ──────────────────────────────────────────────────────
 # https://github.com/just-containers/s6-overlay/releases/tag/v3.2.0.2
-# https://github.com/nodesource/distributions
 RUN apt-get update && apt-get install -y --no-install-recommends \
-     ca-certificates curl xz-utils gnupg \
+     ca-certificates curl xz-utils \
      && rm -rf /var/lib/apt/lists/* \
      && S6_ARCH=$([ "${TARGETARCH}" = "arm64" ] && echo "aarch64" || echo "x86_64") \
      && curl -fsSL \
@@ -104,10 +103,19 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
      -o "/tmp/s6-overlay-${S6_ARCH}.tar.xz" \
      && tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz \
      && tar -C / -Jxpf "/tmp/s6-overlay-${S6_ARCH}.tar.xz" \
-     && rm /tmp/s6-overlay-*.tar.xz \
+     && rm /tmp/s6-overlay-*.tar.xz
+RUN apt-get purge -y curl xz-utils \
+     && apt-get autoremove -y \
+     && rm -rf /var/lib/apt/lists/*
+
+# ── Node.js 24 ────────────────────────────────────────────────────────────────
+# https://github.com/nodesource/distributions
+RUN apt-get update && apt-get install -y --no-install-recommends \
+     ca-certificates curl gnupg \
+     && rm -rf /var/lib/apt/lists/* \
      && curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
-     && apt-get install -y --no-install-recommends nodejs \
-     && apt-get purge -y curl xz-utils gnupg \
+     && apt-get install -y --no-install-recommends nodejs
+RUN apt-get purge -y curl gnupg \
      && apt-get autoremove -y \
      && rm -rf /var/lib/apt/lists/*
 
