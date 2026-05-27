@@ -127,12 +127,15 @@ COPY --from=src-auth /usr/local/bin/auth /opt/auth/auth
 # ── PostgREST v14.8 (rest) ────────────────────────────────────────────────────
 # https://github.com/PostgREST/postgrest/blob/v14.8/Dockerfile
 RUN apt-get update && apt-get install -y --no-install-recommends \
-     libgmp10 libpq5 libssl3 \
+     libgmp10 libpq5 libssl3 zlib1g libnuma1 \
      && rm -rf /var/lib/apt/lists/*
 COPY --from=src-rest /bin/postgrest /opt/rest/postgrest
 
 # ── Edge Runtime v1.71.2 (functions) ──────────────────────────────────────────
 # https://github.com/supabase/edge-runtime/blob/v1.71.2/Dockerfile
+RUN apt-get update && apt-get install -y --no-install-recommends \
+     libblas3 liblapack3 libopenblas0-pthread \
+     && rm -rf /var/lib/apt/lists/*
 COPY --from=src-functions /usr/local/bin/edge-runtime /opt/functions/edge-runtime
 
 # ── postgres-meta v0.96.3 (meta) ──────────────────────────────────────────────
@@ -154,15 +157,14 @@ COPY --from=src-studio /app /opt/studio/
 
 # ── Logflare v1.36.1 (analytics) ──────────────────────────────────────────────
 # https://github.com/Logflare/logflare/blob/v1.36.1/Dockerfile
-# OTP 25+ required; ubuntu noble ships OTP 25. For OTP 26, switch to:
-# https://www.erlang-solutions.com/downloads/
 RUN apt-get update && apt-get install -y --no-install-recommends \
-     libffi8 \
-     erlang-base erlang-asn1 erlang-crypto erlang-eldap erlang-ftp erlang-inets \
-     erlang-mnesia erlang-os-mon erlang-parsetools erlang-public-key \
-     erlang-runtime-tools erlang-snmp erlang-ssl erlang-syntax-tools \
-     erlang-tftp erlang-tools erlang-xmerl \
+     locales libstdc++6 \
+     && sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen \
+     && locale-gen \
      && rm -rf /var/lib/apt/lists/*
+ENV LANG=en_US.UTF-8 \
+    LANGUAGE=en_US:en \
+    LC_ALL=en_US.UTF-8
 COPY --from=src-analytics /opt/app /opt/analytics/
 # Logflare's crypto NIF needs its own OpenSSL; isolated to avoid affecting other services.
 COPY --from=src-analytics \
@@ -181,7 +183,7 @@ COPY --from=src-kong /usr/local/kong         /usr/local/kong
 COPY --from=src-kong /usr/local/share/lua    /usr/local/share/lua
 COPY --from=src-kong /usr/local/lib/lua      /usr/local/lib/lua
 COPY --from=src-kong /usr/local/lib/luarocks /usr/local/lib/luarocks
-COPY --from=src-kong /entrypoint.sh /entrypoint.sh
+COPY --from=src-kong /docker-entrypoint.sh /entrypoint.sh
 RUN mkdir -p /home/kong \
      && groupadd --system kong \
      && useradd --system --gid kong --no-create-home kong
