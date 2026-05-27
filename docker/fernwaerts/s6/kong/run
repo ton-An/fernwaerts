@@ -1,7 +1,5 @@
 #!/command/with-contenv sh
-# Defer to upstream's kong-entrypoint.sh verbatim — it computes the Lua
-# request-transformer expressions, substitutes env vars into kong.yml (writing
-# the rendered copy to $KONG_DECLARATIVE_CONFIG), and execs Kong.
+# Render the checked-in Kong config with runtime env vars, then exec Kong.
 exec 2>&1
 
 export KONG_DATABASE=off
@@ -25,5 +23,7 @@ export ANON_KEY_ASYMMETRIC="${ANON_KEY_ASYMMETRIC:-}"
 export SERVICE_ROLE_KEY_ASYMMETRIC="${SERVICE_ROLE_KEY_ASYMMETRIC:-}"
 export DASHBOARD_USERNAME="${DASHBOARD_USERNAME}"
 export DASHBOARD_PASSWORD="${DASHBOARD_PASSWORD}"
+
+export PATH=/usr/local/openresty/bin:${PATH}
 
 exec /home/kong/kong-entrypoint.sh

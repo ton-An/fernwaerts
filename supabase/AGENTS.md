@@ -30,12 +30,12 @@ The runtime is defined under the repo root:
 - `deploy/compose.yml` and `deploy/.env.example`: self-host compose file
   (two images: `fernwaerts-postgres` + `fernwaerts`) that consumes everything
   here.
-- `docker/fernwaerts/`: build context for the bundle image. kong.yml,
-  kong-entrypoint.sh, and the upstream portion of vector.yml are fetched
-  from `supabase/docker` at build time (keyed off the `SUPABASE_REF` ARG)
-  rather than vendored — bumping that single ARG is the upgrade path for
-  all three. Only the Fernwaerts-specific vector source block is committed
-  here (`vector-source.yml`). Pinned versions are documented in `VERSIONS`.
+- `docker/fernwaerts/`: build context for the bundle image. Kong and Vector
+  upstream config is checked in under `supabase_vendor/`; update those files
+  intentionally when tracking a newer Supabase docker version. The
+  Fernwaerts-specific vector source block lives in
+  `docker/fernwaerts/vector-source.yml`. Pinned versions are documented in
+  `VERSIONS`.
 - `docker/fernwaerts-postgres/`: build context for the postgres image. Bakes
   `supabase_vendor/db/` SQL into `/docker-entrypoint-initdb.d/` so first-boot
   init matches upstream's mount layout exactly.

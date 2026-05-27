@@ -14,5 +14,6 @@ export LOGFLARE_SUPABASE_MODE=true
 export POSTGRES_BACKEND_URL="postgresql://supabase_admin:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/_supabase"
 export POSTGRES_BACKEND_SCHEMA=_analytics
 export LOGFLARE_FEATURE_FLAG_OVERRIDE=multibackend=true
+export LD_LIBRARY_PATH=/opt/analytics/openssl${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 cd /opt/analytics
-exec /opt/analytics/bin/logflare start
+exec /opt/analytics/rel/logflare/bin/logflare start

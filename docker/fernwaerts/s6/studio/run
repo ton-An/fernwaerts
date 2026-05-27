@@ -21,5 +21,5 @@ export LOGFLARE_PRIVATE_ACCESS_TOKEN=fernwaerts-private
 export LOGFLARE_URL=http://127.0.0.1:4000
 export NEXT_PUBLIC_ENABLE_LOGS=true
 export NEXT_ANALYTICS_BACKEND_PROVIDER=postgres
-cd /opt/studio
+cd /opt/studio/apps/studio
 exec node server.js

@@ -12,12 +12,11 @@
 #   - docker build -f docker/fernwaerts/Dockerfile -t fernwaerts:vNEXT .
 #   - smoke test, push, bump FERNWAERTS_VERSION in deploy/.env.example
 #
-# Track upstream supabase/docker (kong.yml, vector.yml, kong-entrypoint.sh):
+# Track upstream supabase/docker (kong.yml, vector.yml):
 #
-#   - edit SUPABASE_REF ARG default in docker/fernwaerts/Dockerfile
-#   - docker build --build-arg SUPABASE_REF=<sha> ...
-#   - the build fetches all three configs fresh from raw.githubusercontent.com
-#   - no manual curl, no patch reapplication
+#   - update the checked-in files under supabase/supabase_vendor/
+#   - docker build -f docker/fernwaerts/Dockerfile -t fernwaerts:vNEXT .
+#   - review the diff before committing; builds must not fetch mutable configs
 #
 # Postgres image:
 #
@@ -32,14 +31,14 @@
 #
 # ---- Current pins (mirror docker/fernwaerts/Dockerfile ARGs) ---------------
 
-SUPABASE_REF=master                                  # supabase/supabase ref for kong.yml + vector.yml + kong-entrypoint.sh
+SUPABASE_DOCKER_CONFIG=checked-in                    # supabase/supabase docker config under supabase/supabase_vendor/
 
 POSTGRES_IMAGE=supabase/postgres:15.8.1.085          # also pinned in docker/fernwaerts-postgres/Dockerfile
 
 GOTRUE_IMAGE=supabase/gotrue:v2.186.0
 POSTGREST_IMAGE=postgrest/postgrest:v14.8
 EDGE_RUNTIME_IMAGE=supabase/edge-runtime:v1.71.2
-POWERSYNC_IMAGE=journeyapps/powersync-service:1.13.4
+POWERSYNC_IMAGE=journeyapps/powersync-service:1.21.0
 POSTGRES_META_IMAGE=supabase/postgres-meta:v0.96.3
 STUDIO_IMAGE=supabase/studio:2026.04.27-sha-5f60601
 LOGFLARE_IMAGE=supabase/logflare:1.36.1

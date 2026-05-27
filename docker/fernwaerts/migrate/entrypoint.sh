@@ -6,8 +6,8 @@
 # Steps:
 #   1. Wait for the external db service to accept connections.
 #   2. Create the powersync storage user + _powersync database (idempotent).
-#   3. Apply Fernwaerts declarative schema via `supabase db push` (idempotent).
-#   4. Set the password on the powersync replication role.
+#   3. Create/update the powersync replication role.
+#   4. Apply Fernwaerts declarative schema via `supabase db push` (idempotent).
 
 set -euo pipefail
 
@@ -19,7 +19,9 @@ set -euo pipefail
 : "${PS_STORAGE_PASSWORD:?required}"
 
 DB_URL="postgresql://postgres:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable"
+ADMIN_DB_URL="postgresql://supabase_admin:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable"
 export PGPASSWORD="${POSTGRES_PASSWORD}"
+export PGSSLMODE=disable
 
 log() { printf '[migrate] %s\n' "$*"; }
 
@@ -30,31 +32,78 @@ done
 log "postgres is ready"
 
 log "provisioning powersync storage user + database (idempotent)"
-psql "${DB_URL}" -v ON_ERROR_STOP=1 -q \
-  -v ps_storage_pw="${PS_STORAGE_PASSWORD}" <<'SQL'
-DO $$
-BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'powersync_storage_user') THEN
-    EXECUTE format('CREATE USER powersync_storage_user WITH PASSWORD %L', :'ps_storage_pw');
-  ELSE
-    EXECUTE format('ALTER USER powersync_storage_user WITH PASSWORD %L', :'ps_storage_pw');
-  END IF;
-END $$;
+if psql "${ADMIN_DB_URL}" -tAc "SELECT 1 FROM pg_roles WHERE rolname='powersync_storage_user'" | grep -q 1; then
+  psql "${ADMIN_DB_URL}" -v ON_ERROR_STOP=1 -q \
+    -v ps_storage_pw="${PS_STORAGE_PASSWORD}" <<'SQL'
+ALTER USER powersync_storage_user WITH PASSWORD :'ps_storage_pw';
+SQL
+else
+  psql "${ADMIN_DB_URL}" -v ON_ERROR_STOP=1 -q \
+    -v ps_storage_pw="${PS_STORAGE_PASSWORD}" <<'SQL'
+CREATE USER powersync_storage_user WITH PASSWORD :'ps_storage_pw';
+SQL
+fi
+
+if ! psql "${ADMIN_DB_URL}" -tAc "SELECT 1 FROM pg_database WHERE datname='_powersync'" | grep -q 1; then
+  psql "${ADMIN_DB_URL}" -v ON_ERROR_STOP=1 -q -c \
+    "CREATE DATABASE _powersync WITH OWNER powersync_storage_user"
+fi
+
+log "provisioning application database extensions"
+psql "${ADMIN_DB_URL}" -v ON_ERROR_STOP=1 -q <<'SQL'
+CREATE SCHEMA IF NOT EXISTS extensions;
+CREATE EXTENSION IF NOT EXISTS moddatetime WITH SCHEMA extensions;
 SQL
 
-if ! psql "${DB_URL}" -tAc "SELECT 1 FROM pg_database WHERE datname='_powersync'" | grep -q 1; then
-  psql "${DB_URL}" -v ON_ERROR_STOP=1 -q -c \
-    "CREATE DATABASE _powersync WITH OWNER powersync_storage_user"
+log "provisioning powersync replication role"
+if psql "${ADMIN_DB_URL}" -tAc "SELECT 1 FROM pg_roles WHERE rolname='powersync_role'" | grep -q 1; then
+  psql "${ADMIN_DB_URL}" -v ON_ERROR_STOP=1 -q \
+    -v ps_source_pw="${PS_SOURCE_PASSWORD}" <<'SQL'
+ALTER ROLE powersync_role WITH LOGIN REPLICATION BYPASSRLS PASSWORD :'ps_source_pw';
+SQL
+else
+  psql "${ADMIN_DB_URL}" -v ON_ERROR_STOP=1 -q \
+    -v ps_source_pw="${PS_SOURCE_PASSWORD}" <<'SQL'
+CREATE ROLE powersync_role WITH LOGIN REPLICATION BYPASSRLS PASSWORD :'ps_source_pw';
+SQL
 fi
 
 log "applying fernwaerts schema (supabase db push)"
 cd /opt/migrate/supabase
 supabase db push --yes --db-url "${DB_URL}"
 
-log "setting powersync_role password"
-psql "${DB_URL}" -v ON_ERROR_STOP=1 -q \
-  -v ps_source_pw="${PS_SOURCE_PASSWORD}" <<'SQL'
-ALTER ROLE powersync_role WITH PASSWORD :'ps_source_pw';
+log "provisioning powersync publication"
+psql "${ADMIN_DB_URL}" -v ON_ERROR_STOP=1 -q <<'SQL'
+DO $$
+DECLARE
+  sync_tables regclass[] := ARRAY[
+    'public.public_info'::regclass,
+    'public.role_permissions'::regclass,
+    'public.users'::regclass,
+    'public.devices'::regclass,
+    'public.raw_location_data'::regclass,
+    'public.activity_segments'::regclass,
+    'public.visits'::regclass,
+    'public.user_roles'::regclass
+  ];
+  sync_table regclass;
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_publication WHERE pubname = 'powersync') THEN
+    CREATE PUBLICATION powersync;
+  END IF;
+
+  FOREACH sync_table IN ARRAY sync_tables LOOP
+    IF NOT EXISTS (
+      SELECT 1
+      FROM pg_publication_rel publication_rel
+      JOIN pg_publication publication ON publication.oid = publication_rel.prpubid
+      WHERE publication.pubname = 'powersync'
+        AND publication_rel.prrelid = sync_table
+    ) THEN
+      EXECUTE format('ALTER PUBLICATION powersync ADD TABLE %s', sync_table);
+    END IF;
+  END LOOP;
+END $$;
 SQL
 
 log "migrations complete"
