@@ -89,30 +89,26 @@ ENV DEBIAN_FRONTEND=noninteractive \
      S6_CMD_WAIT_FOR_SERVICES_MAXTIME=120000 \
      S6_VERBOSITY=1
 
-# ── Build tools ───────────────────────────────────────────────────────────────
+# ── s6-overlay v3.2.0.2 + Node.js 24 ────────────────────────────────────────
+# https://github.com/just-containers/s6-overlay/releases/tag/v3.2.0.2
+# https://github.com/nodesource/distributions
 RUN apt-get update && apt-get install -y --no-install-recommends \
      ca-certificates curl xz-utils gnupg \
-     && rm -rf /var/lib/apt/lists/*
-
-# ── s6-overlay v3.2.0.2 ───────────────────────────────────────────────────────
-# https://github.com/just-containers/s6-overlay/releases/tag/v3.2.0.2
-ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp/
-RUN S6_ARCH=$([ "${TARGETARCH}" = "arm64" ] && echo "aarch64" || echo "x86_64") \
+     && rm -rf /var/lib/apt/lists/* \
+     && S6_ARCH=$([ "${TARGETARCH}" = "arm64" ] && echo "aarch64" || echo "x86_64") \
+     && curl -fsSL \
+     "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz" \
+     -o /tmp/s6-overlay-noarch.tar.xz \
      && curl -fsSL \
      "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-${S6_ARCH}.tar.xz" \
      -o "/tmp/s6-overlay-${S6_ARCH}.tar.xz" \
      && tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz \
      && tar -C / -Jxpf "/tmp/s6-overlay-${S6_ARCH}.tar.xz" \
-     && rm /tmp/s6-overlay-*.tar.xz
-
-# ── Node.js 24 ────────────────────────────────────────────────────────────────
-# https://github.com/nodesource/distributions
-# Used by:
-#   https://github.com/supabase/postgres-meta/blob/v0.96.3/Dockerfile
-#   https://github.com/powersync-ja/powersync-service/blob/916cb924c54aeb7326cddea9468eb2d5be4fff72/service/Dockerfile
-#   https://github.com/supabase/supabase/blob/5f6060197e9e7de016dc7a50c18fdffa65eff9a5/apps/studio/Dockerfile
-RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
+     && rm /tmp/s6-overlay-*.tar.xz \
+     && curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
      && apt-get install -y --no-install-recommends nodejs \
+     && apt-get purge -y curl xz-utils gnupg \
+     && apt-get autoremove -y \
      && rm -rf /var/lib/apt/lists/*
 
 # ── Vector v0.53.0 ────────────────────────────────────────────────────────────
