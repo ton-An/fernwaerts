@@ -32,10 +32,9 @@ The runtime is defined under the repo root:
   here.
 - `docker/fernwaerts/`: build context for the bundle image. Kong and Vector
   upstream config is checked in under `supabase_vendor/`; update those files
-  intentionally when tracking a newer Supabase docker version. The
-  Fernwaerts-specific vector source block lives in
-  `docker/fernwaerts/vector-source.yml`. Pinned versions are documented in
-  `VERSIONS`.
+  intentionally when tracking a newer Supabase docker version. The full Vector
+  runtime config lives in `docker/fernwaerts/vector.yml`. Pinned versions are
+  documented in `VERSIONS`.
 - `docker/fernwaerts-postgres/`: build context for the postgres image. Bakes
   `supabase_vendor/db/` SQL into `/docker-entrypoint-initdb.d/` so first-boot
   init matches upstream's mount layout exactly.

@@ -1,2 +1,2 @@
 #!/command/execlineb -P
-s6-log -d3 T n10 s10000000 /var/log/powersync
+s6-log T n10 s10000000 /var/log/powersync

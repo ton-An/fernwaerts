@@ -10,30 +10,54 @@
 # Build from the repo root:
 #   docker build -f docker/fernwaerts/Dockerfile -t fernwaerts:dev .
 #
-# Some upstream images ship on alpine/musl, others on debian or ubuntu. The
-# runtime stage is ubuntu:24.04 (matching Kong's base) so glibc-linked
-# binaries from older debian/ubuntu sources lift cleanly via COPY --from.
-# Statically linked Go/Rust binaries (GoTrue, edge-runtime) work regardless.
-# The BEAM release for Logflare runs against the system Erlang we install
-# below rather than its embedded erts.
+# Runtime base is ubuntu:24.04 to match kong/kong:3.9.1's glibc 2.39. Lifting
+# older-base binaries onto a newer glibc works; the reverse does not.
 
 ###############################################################################
-# Stage: upstream binaries we lift directly                                   #
+# Source stages                                                               #
 ###############################################################################
+
+# https://github.com/supabase/auth/blob/v2.186.0/Dockerfile
 FROM supabase/gotrue:v2.186.0               AS src-auth
+
+# https://github.com/PostgREST/postgrest/blob/v14.8/Dockerfile
 FROM postgrest/postgrest:v14.8              AS src-rest
+
+# https://github.com/supabase/edge-runtime/blob/v1.71.2/Dockerfile
 FROM supabase/edge-runtime:v1.71.2          AS src-functions
+
+# https://github.com/powersync-ja/powersync-service/blob/9ca82d7258623b03b9acdf0406200cc82c1c8648/service/Dockerfile
+# (tag: @powersync/service-image@1.21.0)
 FROM journeyapps/powersync-service:1.21.0   AS src-powersync
+
+# https://github.com/supabase/postgres-meta/blob/v0.96.3/Dockerfile
 FROM supabase/postgres-meta:v0.96.3         AS src-meta
-FROM supabase/studio:2026.04.27-sha-5f60601 AS src-studio
+
+# https://github.com/supabase/supabase/blob/5f6060197e9e7de016dc7a50c18fdffa65eff9a5/apps/studio/Dockerfile
+# (image tag encodes the commit SHA: 2026.04.27-sha-5f6060197e9e7de016dc7a50c18fdffa65eff9a5)
+FROM supabase/studio:2026.04.27-sha-5f6060197e9e7de016dc7a50c18fdffa65eff9a5 AS src-studio
+
+# https://github.com/Logflare/logflare/blob/v1.36.1/Dockerfile
+# (repo is Logflare/logflare, not supabase/logflare)
 FROM supabase/logflare:1.36.1               AS src-analytics
+
+# https://github.com/Kong/docker-kong/blob/3.9.1/Dockerfile.deb
+# (kong/kong images are built from Kong/docker-kong; ubuntu-based = Dockerfile.deb)
 FROM kong/kong:3.9.1                        AS src-kong
+
+# https://github.com/vectordotdev/vector/blob/v0.53.0/distribution/docker/alpine/Dockerfile
+# (Docker Hub org is timberio; source repo is vectordotdev/vector)
+FROM timberio/vector:0.53.0-alpine          AS src-vector
 
 ###############################################################################
 # Stage: migrator payload (supabase CLI + project files)                      #
 ###############################################################################
 FROM debian:bookworm-slim AS migrator-build
 
+# https://github.com/supabase/cli/releases/tag/v2.101.0
+# Release archive contains two binaries: supabase and supabase-go.
+# If a future version drops supabase-go, the tar below will fail loudly — check
+# release assets before bumping.
 ARG SUPABASE_CLI_VERSION=2.101.0
 ARG TARGETARCH
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -54,16 +78,9 @@ COPY supabase/supabase_vendor/db/migrations   ./vendor/migrations
 ###############################################################################
 # Stage: runtime                                                              #
 ###############################################################################
-#
-# Base = ubuntu:24.04 (noble) to match kong/kong:3.9.1's glibc 2.39. Other
-# upstream images use older bases (debian bookworm, alpine, distroless) and
-# lift fine onto a newer glibc — newer libc is backward compatible. The
-# reverse (lifting noble binaries onto bookworm) breaks with missing GLIBC
-# symbol errors, which is why we don't base on bookworm.
 FROM ubuntu:24.04
 
 ARG S6_OVERLAY_VERSION=3.2.0.2
-ARG VECTOR_VERSION=0.53.0
 ARG TARGETARCH
 
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -72,124 +89,121 @@ ENV DEBIAN_FRONTEND=noninteractive \
     S6_CMD_WAIT_FOR_SERVICES_MAXTIME=120000 \
     S6_VERBOSITY=1
 
-# Base OS deps shared by multiple services.
+# ── Build tools ───────────────────────────────────────────────────────────────
 RUN apt-get update && apt-get install -y --no-install-recommends \
-      ca-certificates curl wget xz-utils gnupg \
-      libssl3 libffi8 libgmp10 libpq5 \
-      postgresql-client gettext-base libyaml-0-2 \
-      tini procps \
+      ca-certificates curl xz-utils gnupg \
  && rm -rf /var/lib/apt/lists/*
 
-# Node 24 — needed by postgres-meta, Studio, PowerSync.
-# PowerSync 1.20+ uses the 'using' TC39 syntax which requires Node 22+.
+# ── s6-overlay v3.2.0.2 ───────────────────────────────────────────────────────
+# https://github.com/just-containers/s6-overlay/releases/tag/v3.2.0.2
+ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp/
+RUN S6_ARCH=$([ "${TARGETARCH}" = "arm64" ] && echo "aarch64" || echo "x86_64") \
+ && curl -fsSL \
+      "https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-${S6_ARCH}.tar.xz" \
+      -o "/tmp/s6-overlay-${S6_ARCH}.tar.xz" \
+ && tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz \
+ && tar -C / -Jxpf "/tmp/s6-overlay-${S6_ARCH}.tar.xz" \
+ && rm /tmp/s6-overlay-*.tar.xz
+
+# ── Node.js 24 ────────────────────────────────────────────────────────────────
+# https://github.com/nodesource/distributions
+# Used by:
+#   https://github.com/supabase/postgres-meta/blob/v0.96.3/Dockerfile
+#   https://github.com/powersync-ja/powersync-service/blob/916cb924c54aeb7326cddea9468eb2d5be4fff72/service/Dockerfile
+#   https://github.com/supabase/supabase/blob/5f6060197e9e7de016dc7a50c18fdffa65eff9a5/apps/studio/Dockerfile
 RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
  && apt-get install -y --no-install-recommends nodejs \
  && rm -rf /var/lib/apt/lists/*
 
-# Erlang/OTP — needed by Logflare BEAM release. Ubuntu noble ships Erlang 25;
-# Logflare 1.36.x is compatible with 25+. If a future release requires 26,
-# install from Erlang Solutions instead of the ubuntu archive.
+# ── Vector v0.53.0 ────────────────────────────────────────────────────────────
+# https://github.com/vectordotdev/vector/blob/v0.53.0/distribution/docker/alpine/Dockerfile
+COPY --from=src-vector /usr/local/bin/vector /usr/local/bin/vector
+COPY docker/fernwaerts/vector.yml            /etc/vector/vector.yml
+
+# ── GoTrue v2.186.0 (auth) ────────────────────────────────────────────────────
+# https://github.com/supabase/auth/blob/v2.186.0/Dockerfile
+COPY --from=src-auth /usr/local/bin/auth /opt/auth/auth
+
+# ── PostgREST v14.8 (rest) ────────────────────────────────────────────────────
+# https://github.com/PostgREST/postgrest/blob/v14.8/Dockerfile
 RUN apt-get update && apt-get install -y --no-install-recommends \
+      libgmp10 libpq5 libssl3 \
+ && rm -rf /var/lib/apt/lists/*
+COPY --from=src-rest /bin/postgrest /opt/rest/postgrest
+
+# ── Edge Runtime v1.71.2 (functions) ──────────────────────────────────────────
+# https://github.com/supabase/edge-runtime/blob/v1.71.2/Dockerfile
+COPY --from=src-functions /usr/local/bin/edge-runtime /opt/functions/edge-runtime
+
+# ── postgres-meta v0.96.3 (meta) ──────────────────────────────────────────────
+# https://github.com/supabase/postgres-meta/blob/v0.96.3/Dockerfile
+COPY --from=src-meta /usr/src/app /opt/meta/
+
+# ── PowerSync v1.21.0 ─────────────────────────────────────────────────────────
+# https://github.com/powersync-ja/powersync-service/blob/916cb924c54aeb7326cddea9468eb2d5be4fff72/service/Dockerfile
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      libyaml-0-2 \
+ && rm -rf /var/lib/apt/lists/*
+COPY --from=src-powersync /app /opt/powersync/
+COPY supabase/powersync/config/powersync.yaml  /etc/powersync/powersync.yaml
+COPY supabase/powersync/config/sync_rules.yaml /etc/powersync/sync_rules.yaml
+
+# ── Studio 2026.04.27 / sha 5f6060197e9e7de016dc7a50c18fdffa65eff9a5 ──────────────────────────────────────────
+# https://github.com/supabase/supabase/blob/5f6060197e9e7de016dc7a50c18fdffa65eff9a5/apps/studio/Dockerfile
+COPY --from=src-studio /app /opt/studio/
+
+# ── Logflare v1.36.1 (analytics) ──────────────────────────────────────────────
+# https://github.com/Logflare/logflare/blob/v1.36.1/Dockerfile
+# OTP 25+ required; ubuntu noble ships OTP 25. For OTP 26, switch to:
+# https://www.erlang-solutions.com/downloads/
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      libffi8 \
       erlang-base erlang-asn1 erlang-crypto erlang-eldap erlang-ftp erlang-inets \
       erlang-mnesia erlang-os-mon erlang-parsetools erlang-public-key \
       erlang-runtime-tools erlang-snmp erlang-ssl erlang-syntax-tools \
       erlang-tftp erlang-tools erlang-xmerl \
  && rm -rf /var/lib/apt/lists/*
-
-# Vector from official tarball. Map Docker's TARGETARCH to Vector's arch triplet.
-RUN VECTOR_ARCH=$([ "${TARGETARCH}" = "arm64" ] && echo "aarch64" || echo "x86_64") \
- && curl -fsSL \
-      "https://packages.timber.io/vector/${VECTOR_VERSION}/vector-${VECTOR_VERSION}-${VECTOR_ARCH}-unknown-linux-gnu.tar.gz" \
-    | tar -xz -C /tmp \
- && mv "/tmp/vector-${VECTOR_ARCH}-unknown-linux-gnu/bin/vector" /usr/local/bin/vector \
- && rm -rf /tmp/vector-*
-
-# s6-overlay.
-ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp/
-ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-x86_64.tar.xz  /tmp/
-RUN tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz \
- && tar -C / -Jxpf /tmp/s6-overlay-x86_64.tar.xz \
- && rm /tmp/s6-overlay-*.tar.xz
-
-# Service binaries / runtime trees lifted from upstream images.
-#
-# GoTrue, PostgREST, edge-runtime are single static binaries.
-COPY --from=src-auth      /usr/local/bin/auth          /opt/auth/auth
-COPY --from=src-rest      /bin/postgrest               /opt/rest/postgrest
-COPY --from=src-functions /usr/local/bin/edge-runtime  /opt/functions/edge-runtime
-
-# Node services — copy their /app trees, run with our system node.
-COPY --from=src-meta      /usr/src/app                 /opt/meta/
-COPY --from=src-powersync /app                         /opt/powersync/
-COPY --from=src-studio    /app                         /opt/studio/
-
-# Logflare BEAM release — embedded erts won't run on debian glibc; we use our
-# system Erlang against the release's compiled .beam files.
 COPY --from=src-analytics /opt/app /opt/analytics/
-# Logflare's crypto NIF is compiled against OpenSSL 3.4+, newer than Ubuntu 24.04's
-# 3.0.x. Copy the library from the logflare image so the NIF can load.
-RUN --mount=type=bind,from=src-analytics,source=/usr/lib,target=/logflare-lib \
-    LIBDIR=$([ "${TARGETARCH}" = "arm64" ] && echo "aarch64-linux-gnu" || echo "x86_64-linux-gnu") ; \
-    mkdir -p /opt/analytics/openssl ; \
-    cp /logflare-lib/${LIBDIR}/libcrypto.so.3 /opt/analytics/openssl/ ; \
-    cp /logflare-lib/${LIBDIR}/libssl.so.3 /opt/analytics/openssl/
+# Logflare's crypto NIF needs its own OpenSSL; isolated to avoid affecting other services.
+COPY --from=src-analytics \
+     /usr/lib/*-linux-gnu/libcrypto.so.3 \
+     /usr/lib/*-linux-gnu/libssl.so.3 \
+     /opt/analytics/openssl/
 
-# Kong = openresty (nginx + lua) + kong's lua modules. Image base is also
-# ubuntu:24.04, so all libc-linked binaries match ours. Defaults under
-# /etc/kong are unused at runtime — every Kong setting is passed via KONG_*
-# env vars from the s6 run script, so we don't lift /etc/kong itself; our own
-# kong.yml lands there in a later COPY.
+# ── Kong v3.9.1 ───────────────────────────────────────────────────────────────
+# https://github.com/Kong/docker-kong/blob/3.9.1/Dockerfile.deb
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      gettext-base \
+ && rm -rf /var/lib/apt/lists/*
 COPY --from=src-kong /usr/local/bin/kong     /usr/local/bin/kong
 COPY --from=src-kong /usr/local/openresty    /usr/local/openresty
 COPY --from=src-kong /usr/local/kong         /usr/local/kong
 COPY --from=src-kong /usr/local/share/lua    /usr/local/share/lua
 COPY --from=src-kong /usr/local/lib/lua      /usr/local/lib/lua
 COPY --from=src-kong /usr/local/lib/luarocks /usr/local/lib/luarocks
-# Upstream's docker entrypoint and the Supabase kong-entrypoint wrapper. The
-# wrapper expects the unrendered kong.yml at /home/kong/temp.yml and writes
-# the rendered copy to KONG_DECLARATIVE_CONFIG.
-COPY --from=src-kong /entrypoint.sh          /entrypoint.sh
-RUN mkdir -p /home/kong
-# Kong's wrapper script may try to drop privileges to the `kong` user. Create
-# it so that doesn't error even when we run everything as root under s6.
-RUN groupadd --system kong && useradd --system --gid kong --no-create-home kong
+COPY --from=src-kong /entrypoint.sh /entrypoint.sh
+RUN mkdir -p /home/kong \
+ && groupadd --system kong \
+ && useradd --system --gid kong --no-create-home kong
+COPY supabase/supabase_vendor/api/kong.yml           /home/kong/temp.yml
+COPY supabase/supabase_vendor/api/kong-entrypoint.sh /home/kong/kong-entrypoint.sh
+RUN chmod +x /home/kong/kong-entrypoint.sh /entrypoint.sh
 
-# Migrator payload + supabase CLI.
-COPY --from=migrator-build /usr/local/bin/supabase /usr/local/bin/supabase
+# ── Supabase CLI v2.101.0 + migrate payload ───────────────────────────────────
+# https://github.com/supabase/cli/releases/tag/v2.101.0
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      postgresql-client \
+ && rm -rf /var/lib/apt/lists/*
+COPY --from=migrator-build /usr/local/bin/supabase    /usr/local/bin/supabase
 COPY --from=migrator-build /usr/local/bin/supabase-go /usr/local/bin/supabase-go
-COPY --from=migrator-build /payload                /opt/migrate
-COPY docker/fernwaerts/migrate/entrypoint.sh      /opt/migrate/entrypoint.sh
+COPY --from=migrator-build /payload                   /opt/migrate
+COPY docker/fernwaerts/migrate/entrypoint.sh          /opt/migrate/entrypoint.sh
 RUN mkdir -p /home/deno \
  && cp -a /opt/migrate/supabase/functions /home/deno/functions \
  && chmod +x /opt/migrate/entrypoint.sh
 
-# PowerSync runtime config.
-COPY supabase/powersync/config/powersync.yaml /etc/powersync/powersync.yaml
-COPY supabase/powersync/config/sync_rules.yaml /etc/powersync/sync_rules.yaml
-
-# Vendored Supabase configs. Keep these in sync with the Supabase docker
-# version documented in VERSIONS; builds must not depend on mutable GitHub
-# refs or network-fetched config files.
-COPY supabase/supabase_vendor/api/kong.yml            /home/kong/temp.yml
-COPY supabase/supabase_vendor/api/kong-entrypoint.sh  /home/kong/kong-entrypoint.sh
-COPY supabase/supabase_vendor/logs/vector.yml         /tmp/upstream-vector.yml
-
-# vector.yml = our source/transform prefix + everything from upstream's `router:` down.
-# Splitting at `router:` keeps us insulated from upstream changes to sinks and
-# downstream transforms (they pass through unmodified); we only own the part
-# that has to differ because we're not reading from the Docker socket.
-COPY docker/fernwaerts/vector-source.yml /tmp/our-source.yml
-RUN mkdir -p /etc/vector \
- && cp /tmp/our-source.yml /etc/vector/vector.yml \
- && awk '/^  router:/{p=1} p' /tmp/upstream-vector.yml >> /etc/vector/vector.yml \
- && rm /tmp/upstream-vector.yml /tmp/our-source.yml
-
-RUN chmod +x /home/kong/kong-entrypoint.sh /entrypoint.sh
-
-# s6 service definitions.
+# ── s6 service definitions + log directories ──────────────────────────────────
 COPY docker/fernwaerts/s6/ /etc/s6-overlay/s6-rc.d/
-
-# Per-service log directories. s6-log writes /var/log/<svc>/current here.
 RUN set -eux; \
     for svc in auth rest functions powersync meta analytics studio kong vector init-migrator; do \
       mkdir -p "/var/log/${svc}"; \
