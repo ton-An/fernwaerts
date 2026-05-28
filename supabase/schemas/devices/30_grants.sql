@@ -2,4 +2,4 @@
 revoke select, insert, update, delete, references, trigger, truncate on table "public"."devices" from anon;
 revoke select, insert, update, delete, references, trigger, truncate on table "public"."devices" from authenticated;
 
-grant insert on table "public"."devices" to authenticated;
+grant select, insert, update on table "public"."devices" to authenticated;

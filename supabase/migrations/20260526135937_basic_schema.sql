@@ -236,6 +236,10 @@ $function$
 
 grant insert on table "public"."activity_segments" to "authenticated";
 
+grant select on table "public"."activity_segments" to "authenticated";
+
+grant update on table "public"."activity_segments" to "authenticated";
+
 grant delete on table "public"."activity_segments" to "service_role";
 
 grant insert on table "public"."activity_segments" to "service_role";
@@ -251,6 +255,10 @@ grant truncate on table "public"."activity_segments" to "service_role";
 grant update on table "public"."activity_segments" to "service_role";
 
 grant insert on table "public"."devices" to "authenticated";
+
+grant select on table "public"."devices" to "authenticated";
+
+grant update on table "public"."devices" to "authenticated";
 
 grant delete on table "public"."devices" to "service_role";
 
@@ -285,6 +293,10 @@ grant truncate on table "public"."public_info" to "service_role";
 grant update on table "public"."public_info" to "service_role";
 
 grant insert on table "public"."raw_location_data" to "authenticated";
+
+grant select on table "public"."raw_location_data" to "authenticated";
+
+grant update on table "public"."raw_location_data" to "authenticated";
 
 grant delete on table "public"."raw_location_data" to "service_role";
 
@@ -344,6 +356,10 @@ grant update on table "public"."users" to "service_role";
 
 grant insert on table "public"."visits" to "authenticated";
 
+grant select on table "public"."visits" to "authenticated";
+
+grant update on table "public"."visits" to "authenticated";
+
 grant delete on table "public"."visits" to "service_role";
 
 grant insert on table "public"."visits" to "service_role";
@@ -368,11 +384,49 @@ with check ((( SELECT auth.uid() AS uid) = user_id));
 
 
 
+  create policy "Enable select for user himself"
+  on "public"."activity_segments"
+  as permissive
+  for select
+  to authenticated
+using ((( SELECT auth.uid() AS uid) = user_id));
+
+
+
+  create policy "Enable update for user himself"
+  on "public"."activity_segments"
+  as permissive
+  for update
+  to authenticated
+using ((( SELECT auth.uid() AS uid) = user_id))
+with check ((( SELECT auth.uid() AS uid) = user_id));
+
+
+
   create policy "Enable insert for user himself"
   on "public"."devices"
   as permissive
   for insert
   to authenticated
+with check ((( SELECT auth.uid() AS uid) = user_id));
+
+
+
+  create policy "Enable select for user himself"
+  on "public"."devices"
+  as permissive
+  for select
+  to authenticated
+using ((( SELECT auth.uid() AS uid) = user_id));
+
+
+
+  create policy "Enable update for user himself"
+  on "public"."devices"
+  as permissive
+  for update
+  to authenticated
+using ((( SELECT auth.uid() AS uid) = user_id))
 with check ((( SELECT auth.uid() AS uid) = user_id));
 
 
@@ -395,6 +449,25 @@ with check ((( SELECT auth.uid() AS uid) = user_id));
 
 
 
+  create policy "Enable select for user himself"
+  on "public"."raw_location_data"
+  as permissive
+  for select
+  to authenticated
+using ((( SELECT auth.uid() AS uid) = user_id));
+
+
+
+  create policy "Enable update for user himself"
+  on "public"."raw_location_data"
+  as permissive
+  for update
+  to authenticated
+using ((( SELECT auth.uid() AS uid) = user_id))
+with check ((( SELECT auth.uid() AS uid) = user_id));
+
+
+
   create policy "Enable insert for user himself"
   on "public"."visits"
   as permissive
@@ -403,7 +476,26 @@ with check ((( SELECT auth.uid() AS uid) = user_id));
 with check ((( SELECT auth.uid() AS uid) = user_id));
 
 
-create extension if not exists moddatetime with schema extensions;
+
+  create policy "Enable select for user himself"
+  on "public"."visits"
+  as permissive
+  for select
+  to authenticated
+using ((( SELECT auth.uid() AS uid) = user_id));
+
+
+
+  create policy "Enable update for user himself"
+  on "public"."visits"
+  as permissive
+  for update
+  to authenticated
+using ((( SELECT auth.uid() AS uid) = user_id))
+with check ((( SELECT auth.uid() AS uid) = user_id));
+
+
+create extension if not exists "moddatetime" with schema "extensions";
 
 CREATE TRIGGER handle_updated_at BEFORE UPDATE ON public.user_roles FOR EACH ROW EXECUTE FUNCTION extensions.moddatetime('updated_at');
 
@@ -443,25 +535,25 @@ insert into "public"."public_info" ("name", "value") values
 revoke select, insert, update, delete, references, trigger, truncate on table "public"."devices" from anon;
 revoke select, insert, update, delete, references, trigger, truncate on table "public"."devices" from authenticated;
 
-grant insert on table "public"."devices" to authenticated;
+grant select, insert, update on table "public"."devices" to authenticated;
 
 -- raw_location_data
 revoke select, insert, update, delete, references, trigger, truncate on table "public"."raw_location_data" from anon;
 revoke select, insert, update, delete, references, trigger, truncate on table "public"."raw_location_data" from authenticated;
 
-grant insert on table "public"."raw_location_data" to authenticated;
+grant select, insert, update on table "public"."raw_location_data" to authenticated;
 
 -- activity_segments
 revoke select, insert, update, delete, references, trigger, truncate on table "public"."activity_segments" from anon;
 revoke select, insert, update, delete, references, trigger, truncate on table "public"."activity_segments" from authenticated;
 
-grant insert on table "public"."activity_segments" to authenticated;
+grant select, insert, update on table "public"."activity_segments" to authenticated;
 
 -- visits
 revoke select, insert, update, delete, references, trigger, truncate on table "public"."visits" from anon;
 revoke select, insert, update, delete, references, trigger, truncate on table "public"."visits" from authenticated;
 
-grant insert on table "public"."visits" to authenticated;
+grant select, insert, update on table "public"."visits" to authenticated;
 
 -- powersync (supabase db diff does not capture roles or publications)
 create role powersync_role with login replication bypassrls;

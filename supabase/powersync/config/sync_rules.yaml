@@ -109,15 +109,15 @@ streams:
 
   user_management_data:
     with:
-      current_permissions: |
-        SELECT role_permissions.permission
+      can_read_users: |
+        SELECT 1 AS access
         FROM user_roles
         INNER JOIN role_permissions
           ON role_permissions.role = user_roles.role
         WHERE user_roles.user_id = auth.user_id()
           AND user_roles.accepted_at IS NOT NULL
           AND user_roles.deleted_at IS NULL
-          AND role_permissions.deleted_at IS NULL
+          AND role_permissions.permission = 'read.users'
     auto_subscribe: true
     queries:
       - |
@@ -128,8 +128,7 @@ streams:
           users.created_at,
           users.updated_at,
           users.deleted_at
-        FROM users
-        WHERE 'read.users' IN current_permissions
+        FROM users, can_read_users
       - |
         SELECT
           user_roles.id,
@@ -140,5 +139,4 @@ streams:
           user_roles.created_at,
           user_roles.updated_at,
           user_roles.deleted_at
-        FROM user_roles
-        WHERE 'read.users' IN current_permissions
+        FROM user_roles, can_read_users
