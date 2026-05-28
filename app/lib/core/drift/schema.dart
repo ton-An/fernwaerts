@@ -5,11 +5,24 @@ import 'package:powersync/powersync.dart';
 /// Keep this aligned with Supabase migrations, PowerSync sync rules, and the
 /// Drift table definitions in this folder.
 Schema schema = const Schema(([
-  // devices
-  // activity types
-  // locations
-  // operating systems
-  // users
+  Table('public_info', [Column.text('name'), Column.text('value')]),
+  Table('role_permissions', [Column.text('role'), Column.text('permission')]),
+  Table('users', [
+    Column.text('username'),
+    Column.text('email'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+    Column.text('deleted_at'),
+  ]),
+  Table('user_roles', [
+    Column.text('user_id'),
+    Column.text('role'),
+    Column.text('invited_at'),
+    Column.text('accepted_at'),
+    Column.text('created_at'),
+    Column.text('updated_at'),
+    Column.text('deleted_at'),
+  ]),
   Table('devices', [
     Column.text('user_id'),
     Column.text('name'),
@@ -21,7 +34,6 @@ Schema schema = const Schema(([
     Column.text('created_at'),
     Column.text('updated_at'),
   ]),
-  Table('activity_types', []),
   Table('raw_location_data', [
     Column.text('user_id'),
     Column.text('device_id'),
@@ -37,9 +49,19 @@ Schema schema = const Schema(([
     Column.real('altitude_accuracy'),
     Column.text('activity_type_id'),
     Column.real('activity_confidence'),
+    Column.text('recording_trigger'),
     Column.real('battery_level'),
     Column.integer('is_device_charging'),
   ]),
-  Table('operating_systems', []),
-  Table('users', [Column.text('username'), Column.text('email')]),
+  Table('activity_segments', [
+    Column.text('user_id'),
+    Column.text('start_location_id'),
+    Column.text('end_location_id'),
+  ]),
+  Table('visits', [
+    Column.text('user_id'),
+    Column.text('name'),
+    Column.text('arrival_location_id'),
+    Column.text('departure_location_id'),
+  ]),
 ]));

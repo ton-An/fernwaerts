@@ -1,7 +1,0 @@
-Dockerfile
-docker-compose.yaml
-.gitignore
-.branches
-.temp
-.env
-.env.example

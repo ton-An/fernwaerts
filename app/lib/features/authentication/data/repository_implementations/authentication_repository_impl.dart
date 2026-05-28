@@ -3,7 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart';
 import 'package:location_history/core/data/repository/repository_failure_handler.dart';
+import 'package:location_history/core/failures/authentication/account_already_set_up_failure.dart';
+import 'package:location_history/core/failures/authentication/expired_refresh_token_failure.dart';
 import 'package:location_history/core/failures/authentication/invalid_credentials_failure.dart';
+import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
 import 'package:location_history/core/failures/networking/server_type.dart';
@@ -114,6 +117,77 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       );
 
       return Left(failure);
+    } on Failure catch (failure) {
+      return Left(failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, None>> signUpInvitedUser({
+    required String username,
+    required String password,
+  }) async {
+    try {
+      await authRemoteDataSource.signUpInvitedUser(
+        username: username,
+        password: password,
+      );
+
+      return const Right(None());
+    } on FunctionException catch (functionException) {
+      final Object? details = functionException.details;
+      final String? errorCode =
+          details is Map ? details['code'] as String? : null;
+
+      if (errorCode == 'weak_password') {
+        return const Left(WeakPasswordFailure());
+      }
+
+      if (errorCode == 'account_already_set_up') {
+        return const Left(AccountAlreadySetUpFailure());
+      }
+
+      final Failure failure = repositoryFailureHandler
+          .supabaseFunctionExceptionConverter(
+            functionException: functionException,
+          );
+
+      return Left(failure);
+    } on ClientException catch (clientException, stackTrace) {
+      final Failure failure = repositoryFailureHandler.clientExceptionConverter(
+        clientException: clientException,
+        stackTrace: stackTrace,
+        serverType: ServerType.supabase,
+      );
+
+      return Left(failure);
+    } on Failure catch (failure) {
+      return Left(failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, None>> recoverInviteSession({
+    required String refreshToken,
+  }) async {
+    try {
+      await authRemoteDataSource.recoverInviteSession(
+        refreshToken: refreshToken,
+      );
+
+      return const Right(None());
+    } on ClientException catch (clientException, stackTrace) {
+      final Failure failure = repositoryFailureHandler.clientExceptionConverter(
+        clientException: clientException,
+        stackTrace: stackTrace,
+        serverType: ServerType.supabase,
+      );
+
+      return Left(failure);
+    } on AuthSessionMissingException {
+      return const Left(ExpiredRefreshTokenFailure());
+    } on AuthApiException {
+      return const Left(ExpiredRefreshTokenFailure());
     } on Failure catch (failure) {
       return Left(failure);
     }
@@ -234,6 +308,17 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
+  Future<Either<Failure, String>> getCurrentUserEmail() async {
+    try {
+      final String email = await authRemoteDataSource.getCurrentUserEmail();
+
+      return Right(email);
+    } on Failure catch (failure) {
+      return Left(failure);
+    }
+  }
+
+  @override
   Future<void> deleteLocalDBCache() async {
     return authLocalDataSource.deleteLocalDBCache();
   }
@@ -270,6 +355,8 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
             functionException: functionException,
           );
 
+      return Left(failure);
+    } on Failure catch (failure) {
       return Left(failure);
     }
   }

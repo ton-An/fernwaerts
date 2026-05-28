@@ -1,0 +1,10 @@
+#!/command/with-contenv sh
+exec 2>&1
+export POWERSYNC_CONFIG_PATH=/etc/powersync/powersync.yaml
+export PS_DATABASE_TYPE=postgresql
+export PS_DATA_SOURCE_URI="postgresql://powersync_role:${PS_SOURCE_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
+export PS_STORAGE_SOURCE_URI="postgres://powersync_storage_user:${PS_STORAGE_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/_powersync"
+export PS_PORT=7901
+export PS_SUPABASE_JWT_SECRET="${JWT_SECRET}"
+cd /opt/powersync/service
+exec /opt/powersync-node/bin/node lib/entry.js start -r unified

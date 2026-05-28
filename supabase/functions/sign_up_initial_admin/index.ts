@@ -1,6 +1,9 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient, SupabaseClient } from "jsr:@supabase/supabase-js";
 import validator from "npm:validator";
+import type { Database } from "../_shared/database.types.ts";
+
+type Supabase = SupabaseClient<Database>;
 
 Deno.serve(async (req) => {
   if (req.method !== "POST") {
@@ -20,7 +23,7 @@ Deno.serve(async (req) => {
     throw new Error("Missing Supabase environment variables");
   }
 
-  const supabase = createClient(supabaseClient, supabaseKey);
+  const supabase = createClient<Database>(supabaseClient, supabaseKey);
 
   if (await isSetUp(supabase)) {
     return new Response(null, {
@@ -60,51 +63,58 @@ Deno.serve(async (req) => {
 });
 
 async function createUserAccount(
-  supabase: SupabaseClient,
+  supabase: Supabase,
   email: string,
   password: string,
 ): Promise<string> {
+  // TODO: Handle errors
   const { data } = await supabase.auth.admin.createUser({
     email,
     password,
     email_confirm: true,
   });
 
-  return data.user?.id;
+  return data.user!.id;
 }
 
-async function isSetUp(supabase: SupabaseClient): Promise<boolean> {
+async function isSetUp(supabase: Supabase): Promise<boolean> {
   const { data } = await supabase
     .from("public_info")
     .select()
     .eq("name", "is_set_up")
     .single();
 
-  return data.value;
+  return data?.value === true;
 }
 
 async function addUserToDB(
-  supabase: SupabaseClient,
+  supabase: Supabase,
   userId: string,
   username: string,
   email: string,
 ) {
+  // Different timestamps to ensure updated_at is after created_at, which means that the user is set up
+  const now = new Date();
+  const nowIncremented = new Date(now.getTime() + 1000);
+
   await supabase.from("users").insert({
     id: userId,
     username: username,
     email: email,
-    is_set_up: true,
+    created_at: now.toISOString(),
+    updated_at: nowIncremented.toISOString(),
   });
 }
 
-async function makeUserAdmin(supabase: SupabaseClient, userId: string) {
+async function makeUserAdmin(supabase: Supabase, userId: string) {
   await supabase.from("user_roles").insert({
     user_id: userId,
     role: "admin",
+    accepted_at: new Date().toISOString(),
   });
 }
 
-async function markSetupAsComplete(supabase: SupabaseClient) {
+async function markSetupAsComplete(supabase: Supabase) {
   await supabase
     .from("public_info")
     .update({

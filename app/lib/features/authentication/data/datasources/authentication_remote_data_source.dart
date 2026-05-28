@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:http/http.dart';
 import 'package:location_history/core/data/datasources/server_remote_handler.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
+import 'package:location_history/core/failures/authentication/expired_refresh_token_failure.dart';
 import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/failures/networking/server_type.dart';
@@ -92,6 +93,34 @@ abstract class AuthenticationRemoteDataSource {
     required String password,
   });
 
+  /// Completes setup for the currently authenticated invited user.
+  ///
+  /// The Supabase client must already hold the invited user's temporary
+  /// session from the invite link.
+  ///
+  /// Parameters:
+  /// - username: [String] username for the invited user
+  /// - password: [String] password for the invited user
+  ///
+  /// Throws:
+  /// - [ClientException]
+  /// - [FunctionException]
+  Future<void> signUpInvitedUser({
+    required String username,
+    required String password,
+  });
+
+  /// Recovers the invited user's temporary session from an invite refresh token.
+  ///
+  /// Parameters:
+  /// - refreshToken: [String] refresh token from the Supabase invite callback
+  ///
+  /// Throws:
+  /// - [AuthException]
+  /// - [ExpiredRefreshTokenFailure]
+  /// - [ClientException]
+  Future<void> recoverInviteSession({required String refreshToken});
+
   /// Checks whether the configured Supabase client has an active session.
   ///
   /// Returns:
@@ -138,6 +167,15 @@ abstract class AuthenticationRemoteDataSource {
   /// Throws:
   /// - [NotSignedInFailure]
   Future<String> getCurrentUserId();
+
+  /// Gets the currently signed-in Supabase user's email.
+  ///
+  /// Returns:
+  /// - [String] containing the current user's email
+  ///
+  /// Throws:
+  /// - [NotSignedInFailure]
+  Future<String> getCurrentUserEmail();
 
   /// Gets the sync server URL from the configured Supabase Edge Function.
   ///
@@ -235,6 +273,33 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
   }
 
   @override
+  Future<void> signUpInvitedUser({
+    required String username,
+    required String password,
+  }) async {
+    final SupabaseClient supabaseClient = await supabaseHandler.client;
+
+    await supabaseClient.functions.invoke(
+      'sign_up_invited_user',
+      body: {'username': username, 'password': password},
+    );
+  }
+
+  @override
+  Future<void> recoverInviteSession({required String refreshToken}) async {
+    final SupabaseClient supabaseClient = await supabaseHandler.client;
+
+    final AuthResponse authResponse = await supabaseClient.auth.setSession(
+      refreshToken,
+    );
+    final Session? session = authResponse.session;
+
+    if (session == null) {
+      throw const ExpiredRefreshTokenFailure();
+    }
+  }
+
+  @override
   Future<bool> isSignedIn() async {
     final SupabaseClient supabaseClient = await supabaseHandler.client;
 
@@ -310,6 +375,19 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
     final String currentUserId = currentUser.id;
 
     return currentUserId;
+  }
+
+  @override
+  Future<String> getCurrentUserEmail() async {
+    final SupabaseClient supabaseClient = await supabaseHandler.client;
+
+    final String? email = supabaseClient.auth.currentUser?.email;
+
+    if (email == null) {
+      throw const NotSignedInFailure();
+    }
+
+    return email;
   }
 
   @override

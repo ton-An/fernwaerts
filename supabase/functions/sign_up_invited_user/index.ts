@@ -1,9 +1,12 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient, SupabaseClient } from "jsr:@supabase/supabase-js";
+import validator from "npm:validator";
+import type { Database } from "../_shared/database.types.ts";
 
-i
+type Supabase = SupabaseClient<Database>;
+
 Deno.serve(async (request) => {
-  const supabase = createClient(
+  const supabase = createClient<Database>(
     Deno.env.get("SUPABASE_URL") ?? "",
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
   );
@@ -15,14 +18,22 @@ Deno.serve(async (request) => {
     error: getUserError,
   } = await supabase.auth.getUser(token);
 
-  const isUserSetUp = await isSetUp(supabase, user?.id);
+  if (getUserError || !user) {
+    return new Response("Unauthorized", { status: 401 });
+  }
 
-  if (getUserError || !user || isUserSetUp) {
+  const isUserSetUp = await isSetUp(supabase, user.id);
+
+  if (isUserSetUp) {
     return new Response(
       JSON.stringify({
-        error: { code: "account_already_set_up" },
+        code: "account_already_set_up",
+        message: "Account is already set up.",
       }),
-      { status: 400 },
+      {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      },
     );
   }
 
@@ -39,7 +50,8 @@ Deno.serve(async (request) => {
   if (!isValidPassword) {
     return new Response(
       JSON.stringify({
-        error: { code: "weak_password" },
+        code: "weak_password",
+        message: "Password is too weak.",
       }),
       {
         status: 400,
@@ -51,23 +63,23 @@ Deno.serve(async (request) => {
   await setUserPassword(supabase, user.id, password);
 
   await completeDbEntry(supabase, user.id, username);
+  await acceptUserRole(supabase, user.id);
 
   return new Response(null, { status: 200 });
 });
 
-async function isSetUp(supabase: SupabaseClient, userId: string) {
-
+async function isSetUp(supabase: Supabase, userId: string) {
   const { data } = await supabase
     .from("users")
-    .select("is_set_up")
+    .select("created_at, updated_at")
     .eq("id", userId)
     .single();
 
-  return data?.is_set_up;
+  return data !== null && data.updated_at !== data.created_at;
 }
 
 async function setUserPassword(
-  supabase: SupabaseClient,
+  supabase: Supabase,
   userId: string,
   password: string,
 ) {
@@ -77,12 +89,20 @@ async function setUserPassword(
 }
 
 async function completeDbEntry(
-  supabase: SupabaseClient,
+  supabase: Supabase,
   userId: string,
   username: string,
 ) {
   await supabase
     .from("users")
-    .update({ username: username, is_set_up: true })
+    .update({ username: username })
     .eq("id", userId);
+}
+
+async function acceptUserRole(supabase: Supabase, userId: string) {
+  await supabase
+    .from("user_roles")
+    .update({ accepted_at: new Date().toISOString() })
+    .eq("user_id", userId)
+    .is("accepted_at", null);
 }

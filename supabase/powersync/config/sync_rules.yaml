@@ -1,26 +1,142 @@
 # yaml-language-server: $schema=https://unpkg.com/@powersync/service-sync-rules@latest/schema/sync_rules.json
 #
 # See Documentation for more information:
-# https://docs.powersync.com/usage/sync-rules
+# https://docs.powersync.com/sync/streams
 #
 # Note that changes to this file are not watched.
 # The service needs to be restarted for changes to take effect.
 
-bucket_definitions:
-  public_info:
-    data:
-    - SELECT * from public_info
+config:
+  edition: 3
 
-  general_info:
-    data:
-    - SELECT * from activity_types
-    - SELECT * from operating_systems
-  
+streams:
+  public_info:
+    auto_subscribe: true
+    queries:
+      - |
+        SELECT
+          id,
+          name,
+          value
+        FROM public_info
+      - |
+        SELECT
+          id,
+          role,
+          permission
+        FROM role_permissions
+
   user_data:
-    parameters: SELECT request.user_id() as user_id
-    data:
-      - SELECT * FROM users WHERE users.id = bucket.user_id
-      - SELECT * FROM activities WHERE activities.user_id = bucket.user_id
-      - SELECT * FROM devices WHERE devices.user_id = bucket.user_id
-      - SELECT * FROM raw_location_data WHERE raw_location_data.user_id = bucket.user_id
-      - SELECT * FROM significant_location_changes WHERE significant_location_changes.user_id = bucket.user_id
+    with:
+      current_user_id: SELECT auth.user_id() AS id
+    auto_subscribe: true
+    queries:
+      - |
+        SELECT
+          users.id,
+          users.email,
+          users.username,
+          users.created_at,
+          users.updated_at,
+          users.deleted_at
+        FROM users
+        WHERE id IN current_user_id
+      - |
+        SELECT
+          id,
+          user_id,
+          name,
+          model,
+          os_id,
+          os_version,
+          app_version,
+          manufacturer,
+          created_at,
+          updated_at
+        FROM devices
+        WHERE user_id IN current_user_id
+      - |
+        SELECT
+          id,
+          user_id,
+          device_id,
+          latitude,
+          longitude,
+          coordinates_accuracy,
+          speed,
+          speed_accuracy,
+          heading,
+          heading_accuracy,
+          ellipsoidal_altitude,
+          altitude_accuracy,
+          activity_type_id,
+          activity_confidence,
+          recording_trigger,
+          battery_level,
+          is_device_charging,
+          timestamp
+        FROM raw_location_data
+        WHERE user_id IN current_user_id
+      - |
+        SELECT
+          id,
+          user_id,
+          start_location_id,
+          end_location_id
+        FROM activity_segments
+        WHERE user_id IN current_user_id
+      - |
+        SELECT
+          id,
+          user_id,
+          name,
+          arrival_location_id,
+          departure_location_id
+        FROM visits
+        WHERE user_id IN current_user_id
+      - |
+        SELECT
+          id,
+          user_id,
+          role,
+          invited_at,
+          accepted_at,
+          created_at,
+          updated_at,
+          deleted_at
+        FROM user_roles
+        WHERE user_id IN current_user_id
+
+  user_management_data:
+    with:
+      can_read_users: |
+        SELECT 1 AS access
+        FROM user_roles
+        INNER JOIN role_permissions
+          ON role_permissions.role = user_roles.role
+        WHERE user_roles.user_id = auth.user_id()
+          AND user_roles.accepted_at IS NOT NULL
+          AND user_roles.deleted_at IS NULL
+          AND role_permissions.permission = 'read.users'
+    auto_subscribe: true
+    queries:
+      - |
+        SELECT
+          users.id,
+          users.email,
+          users.username,
+          users.created_at,
+          users.updated_at,
+          users.deleted_at
+        FROM users, can_read_users
+      - |
+        SELECT
+          user_roles.id,
+          user_roles.user_id,
+          user_roles.role,
+          user_roles.invited_at,
+          user_roles.accepted_at,
+          user_roles.created_at,
+          user_roles.updated_at,
+          user_roles.deleted_at
+        FROM user_roles, can_read_users

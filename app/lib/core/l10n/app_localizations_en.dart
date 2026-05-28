@@ -147,7 +147,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get userManagementDescription =>
-      'Manage your users and create new ones';
+      'Manage your users and invite new ones';
 
   @override
   String get personalInformation => 'Personal Information';
@@ -176,6 +176,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get users => 'Users';
+
+  @override
+  String get invitePending => 'Invite pending';
+
+  @override
+  String get pending => 'Pending';
 
   @override
   String get emailSent => 'E-Mail Sent';
@@ -214,7 +220,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get inviteNewUserDescription => 'Invite a new user via email.';
 
   @override
-  String get usersEmail => 'Users Email';
+  String get usersEmail => 'User\'s Email';
 
   @override
   String get invite => 'Invite';

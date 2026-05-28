@@ -1,0 +1,5 @@
+#!/command/with-contenv sh
+exec 2>&1
+export LOGFLARE_PUBLIC_ACCESS_TOKEN=fernwaerts-public
+export LOGFLARE_API_KEY=fernwaerts-public
+exec /usr/local/bin/vector --config /etc/vector/vector.yml

@@ -1,0 +1,50 @@
+# Upstream pinning for the Fernwaerts bundle.
+#
+# This file is documentation — the actual pins live as ARG defaults in
+# docker/fernwaerts/Dockerfile and docker/fernwaerts-postgres/Dockerfile.
+# Keep this list in sync when bumping versions there.
+#
+# ---- Routine maintainer upgrade --------------------------------------------
+#
+# Single component (e.g. GoTrue 2.186.0 -> 2.187.0):
+#
+#   - edit one FROM line in docker/fernwaerts/Dockerfile
+#   - docker build -f docker/fernwaerts/Dockerfile -t fernwaerts:vNEXT .
+#   - smoke test, push, bump FERNWAERTS_VERSION in deploy/.env.example
+#
+# Track upstream supabase/docker (kong.yml, vector.yml):
+#
+#   - update the checked-in files under supabase/supabase_vendor/
+#   - docker build -f docker/fernwaerts/Dockerfile -t fernwaerts:vNEXT .
+#   - review the diff before committing; builds must not fetch mutable configs
+#
+# Postgres image:
+#
+#   - edit FROM line in docker/fernwaerts-postgres/Dockerfile
+#   - docker build -f docker/fernwaerts-postgres/Dockerfile -t fernwaerts-postgres:vNEXT .
+#
+# ---- Self-hoster upgrade ---------------------------------------------------
+#
+# Bump FERNWAERTS_VERSION in their .env, then:
+#
+#   docker compose pull && docker compose up -d
+#
+# ---- Current pins (mirror docker/fernwaerts/Dockerfile ARGs) ---------------
+
+SUPABASE_DOCKER_CONFIG=checked-in                    # supabase/supabase docker config under supabase/supabase_vendor/
+
+POSTGRES_IMAGE=supabase/postgres:15.8.1.085          # also pinned in docker/fernwaerts-postgres/Dockerfile
+
+GOTRUE_IMAGE=supabase/gotrue:v2.186.0
+POSTGREST_IMAGE=postgrest/postgrest:v14.8
+EDGE_RUNTIME_IMAGE=supabase/edge-runtime:v1.71.2
+POWERSYNC_IMAGE=journeyapps/powersync-service:1.21.0
+POSTGRES_META_IMAGE=supabase/postgres-meta:v0.96.3
+STUDIO_IMAGE=supabase/studio:2026.04.27-sha-5f60601
+LOGFLARE_IMAGE=supabase/logflare:1.36.1
+KONG_IMAGE=kong/kong:3.9.1
+
+RUNTIME_BASE=ubuntu:24.04
+S6_OVERLAY_VERSION=3.2.0.2
+VECTOR_VERSION=0.53.0
+SUPABASE_CLI_VERSION=2.101.0

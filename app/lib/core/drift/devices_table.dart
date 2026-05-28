@@ -17,9 +17,7 @@ class Devices extends Table {
   TextColumn get model => text()();
   TextColumn get manufacturer => text()();
   TextColumn get operatingSystem =>
-      textEnum<OperatingSystem>()
-          .named('os_id')
-          .references(OperatingSystems, #id)();
+      textEnum<OperatingSystem>().named('os_id')();
   TextColumn get osVersion => text().named('os_version')();
   TextColumn get appVersion => text().named('app_version')();
 

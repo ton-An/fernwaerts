@@ -361,7 +361,7 @@ abstract class AppLocalizations {
   /// No description provided for @userManagementDescription.
   ///
   /// In en, this message translates to:
-  /// **'Manage your users and create new ones'**
+  /// **'Manage your users and invite new ones'**
   String get userManagementDescription;
 
   /// No description provided for @personalInformation.
@@ -417,6 +417,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Users'**
   String get users;
+
+  /// No description provided for @invitePending.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite pending'**
+  String get invitePending;
+
+  /// No description provided for @pending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get pending;
 
   /// No description provided for @emailSent.
   ///
@@ -487,7 +499,7 @@ abstract class AppLocalizations {
   /// No description provided for @usersEmail.
   ///
   /// In en, this message translates to:
-  /// **'Users Email'**
+  /// **'User\'s Email'**
   String get usersEmail;
 
   /// No description provided for @invite.

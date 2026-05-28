@@ -29,13 +29,20 @@ part '_invite_form.dart';
 /// {@endtemplate}
 class InvitePage extends StatefulWidget {
   /// {@macro invite_page}
-  const InvitePage({super.key, required this.serverUrl});
+  const InvitePage({
+    super.key,
+    required this.serverUrl,
+    required this.refreshToken,
+  });
 
   static const String pageName = 'invite';
   static const String route = '/$pageName';
 
   /// Server URL extracted from the invite route.
   final String serverUrl;
+
+  /// Refresh token extracted from the Supabase invite callback.
+  final String refreshToken;
 
   @override
   State<InvitePage> createState() => _InvitePageState();
@@ -48,6 +55,10 @@ class _InvitePageState extends State<InvitePage> {
   void initState() {
     super.initState();
     _carouselController = ExpandableCarouselController();
+    context.read<InviteCubit>().initializeInvite(
+      serverUrl: widget.serverUrl,
+      refreshToken: widget.refreshToken,
+    );
   }
 
   @override
@@ -66,7 +77,7 @@ class _InvitePageState extends State<InvitePage> {
       },
       child: AuthenticationPageWrapper(
         carouselController: _carouselController,
-        children: [_InviteForm(serverUrl: widget.serverUrl)],
+        children: const [_InviteForm()],
       ),
     );
   }

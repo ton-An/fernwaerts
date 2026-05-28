@@ -1,0 +1,1 @@
+alter table "public"."users" enable row level security;

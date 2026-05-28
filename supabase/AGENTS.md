@@ -4,7 +4,8 @@ Guidance for coding agents working in `supabase/`.
 
 ## Hard Rules
 
-- Application schema changes go through `migrations/`.
+- Application schema changes should update the declarative files in `schemas/`
+  before generating or editing migrations.
 - User-owned data must stay user-scoped in RLS and PowerSync.
 - Do not add user-owned tables to global PowerSync buckets.
 - Do not log tokens, passwords, invite links, credentials, or location data.
@@ -16,47 +17,43 @@ Guidance for coding agents working in `supabase/`.
 ## Layout
 
 - `migrations/`: application database migrations.
+- `schemas/`: declarative application schema, split by object/domain and ordered
+  by filename.
 - `functions/`: Supabase Edge Functions.
 - `powersync/config/powersync.yaml`: PowerSync service config.
 - `powersync/config/sync_rules.yaml`: PowerSync sync rules.
-- `docker-compose.yaml`: self-hosted Supabase/PowerSync runtime stack.
-- `supabase_vendor/`: vendored Supabase service config and migrations.
+- `docker/vendor/db/`: vendored Supabase DB init SQL shared by both Docker
+  builds.
+- `docker/fernwaerts/kong.yml` and `docker/fernwaerts/kong-entrypoint.sh`:
+  vendored Kong config used only by the bundle image.
+
+The runtime lives alongside the rest of the backend under `supabase/`:
+
+- `deploy/compose.yml` and `deploy/.env.example`: self-host compose file
+  (two images: `fernwaerts-postgres` + `fernwaerts`).
+- `docker/fernwaerts/`: build context for the bundle image. Vendored Kong config
+  `docker/fernwaerts/kong.yml`; update those files intentionally when tracking
+  a newer Supabase docker version. The full Vector runtime config lives
+  in `docker/fernwaerts/vector.yml`. Pinned versions are documented in
+  `docker/fernwaerts/VERSIONS`.
+- `docker/fernwaerts-postgres/`: build context for the postgres image. Bakes
+  `docker/vendor/db/` SQL into `/docker-entrypoint-initdb.d/` so first-boot
+  init matches upstream's mount layout exactly.
+
+When changing migrations, schemas, functions, vendor SQL, or PowerSync config,
+the bundle image needs to be rebuilt for those changes to land in a running
+deployment.
 
 ## Workflows
 
-Synced user-owned table:
+Declarative schema change:
 
-1. Add migration with table definition.
-2. Include `user_id` referencing `public.users` when records are user-owned.
-3. Enable row-level security.
-4. Add policies restricting access to `auth.uid() = user_id`.
-5. Add the table to the PowerSync `user_data` bucket.
-6. Update `../app/lib/core/drift/`.
-7. Update affected Flutter data sources, repositories, and tests.
-
-Global reference data:
-
-1. Add migration and seed data.
-2. Enable row-level security.
-3. Add read-only policies for public or authenticated access.
-4. Add the table to `public_info` or `general_info` sync buckets.
-5. Update Flutter schema/lookup code if the app reads it locally.
-
-PowerSync rule change:
-
-1. Decide whether data is public/general or user-scoped.
-2. Use `request.user_id()` for user-owned buckets.
-3. Restart PowerSync locally when testing; sync rule changes are not hot-loaded.
-
-Edge Function change:
-
-1. Validate HTTP method.
-2. Validate required request fields.
-3. Authenticate the caller unless the operation is public setup.
-4. Check authorization before service-role mutations.
-5. Return structured errors when Flutter maps them to specific `Failure`s.
-6. Update Flutter remote data source/repository mapping if response shape or
-   status codes change.
+1. Update or add the relevant file under `schemas/`.
+2. Keep object files ordered so dependencies are created before dependents.
+3. Generate migrations from the declarative schema when the task requires one.
+4. Review generated SQL before committing it; do not hand-edit generated output
+   when the source belongs in `schemas/`.
+5. Re-check RLS, grants, seed data, and PowerSync sync rules for changed tables.
 
 ## Documentation
 
@@ -69,14 +66,26 @@ Edge Function change:
 
 ## Commands
 
-Run from `supabase/`:
+CLI dev workflow, run from `supabase/`:
 
 ```bash
 supabase start
 supabase db reset
 supabase functions serve
-docker build -t fernwaerts-migrator:dev .
-docker build -f Dockerfile.vendor -t fernwaerts-supabase-vendor-migrator:dev .
+```
+
+Image builds (run from the repo root, not from `supabase/`):
+
+```bash
+docker build -f supabase/docker/fernwaerts/Dockerfile          -t fernwaerts:dev .
+docker build -f supabase/docker/fernwaerts-postgres/Dockerfile -t fernwaerts-postgres:dev .
+```
+
+Self-host runtime, run from `supabase/deploy/`:
+
+```bash
+docker compose up -d
+docker compose pull && docker compose up -d   # upgrade
 ```
 
 ## Verification

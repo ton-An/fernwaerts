@@ -8,6 +8,8 @@ import 'package:location_history/core/failures/authentication/otp_invalid_failur
 import 'package:location_history/core/failures/authentication/passwords_must_differ.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
+import 'package:location_history/core/failures/storage/database_read_failure.dart';
+import 'package:location_history/features/authentication/domain/models/user.dart';
 
 /// {@template settings_repository}
 /// Domain contract for account-management actions available from settings.
@@ -69,5 +71,19 @@ abstract class SettingsRepository {
   /// - [EmailAddressTakenFailure]
   /// - [EmailRateLimitFailure]
   /// {@macro converted_client_exceptions}
+  /// {@macro converted_supabase_functions_exception}
   Future<Either<Failure, None>> inviteNewUser({required String email});
+
+  /// Watches public user profiles visible to the current user.
+  ///
+  /// PowerSync and backend permissions decide the visible row set. A user with
+  /// `read.users` can receive other users; a user without that permission
+  /// receives only rows synced for them.
+  ///
+  /// Returns:
+  /// - [Stream] of [Either] values containing [Failure]s or visible [User]s
+  ///
+  /// Failures:
+  /// - [DatabaseReadFailure]
+  Stream<Either<Failure, List<User>>> watchUsers();
 }

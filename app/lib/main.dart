@@ -9,6 +9,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location_history/core/dependency_injector.dart';
 import 'package:location_history/core/failures/authentication/already_signed_in_failure.dart';
+import 'package:location_history/core/failures/authentication/invalid_invite_link_failure.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/core/page_routes/dialog_page.dart';
 import 'package:location_history/features/authentication/presentation/cubits/authentication_cubit/authentication_cubit.dart';
@@ -31,6 +32,7 @@ import 'package:location_history/features/map/presentation/pages/map_page/map_pa
 import 'package:location_history/features/settings/presentation/cubits/account_settings_cubit/account_settings_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/invite_new_user_cubit/invite_new_user_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/password_change_cubit/password_change_cubit.dart';
+import 'package:location_history/features/settings/presentation/cubits/user_management_cubit/user_management_cubit.dart';
 import 'package:location_history/features/settings/presentation/page_routes/settings_slide_transition_page.dart';
 import 'package:location_history/features/settings/presentation/pages/account_settings_page/account_settings_page.dart';
 import 'package:location_history/features/settings/presentation/pages/debug_page.dart';
@@ -148,17 +150,11 @@ class _MainAppState extends State<MainApp> {
   }
 
   void _initRouter() {
-    String lastRoute = '/';
-
     router = GoRouter(
       debugLogDiagnostics: true,
       initialLocation: SplashPage.route,
       redirect: (context, state) {
         if (state.uri.path.startsWith('/sign-up-invite')) {
-          print(state.fullPath);
-          print(state.uri.queryParameters);
-          print(state.uri.fragment);
-
           if (splashCubit.state is SplashAuthenticationComplete) {
             Future.delayed(const Duration(seconds: 1), () {
               inAppNotificationCubit.sendFailureNotification(
@@ -166,17 +162,42 @@ class _MainAppState extends State<MainApp> {
               );
             });
 
-            return lastRoute;
+            return MapPage.route;
           }
 
-          final serverUrl = state.uri.queryParameters['serverUrl']!;
+          final String? serverUrl = state.uri.queryParameters['serverUrl'];
+          final Uri callbackUri = Uri.parse(
+            state.uri.toString().replaceAll('#', '?'),
+          );
+          final String? refreshToken =
+              callbackUri.queryParameters['refresh_token'];
+          final bool isInviteCallback =
+              serverUrl != null &&
+              serverUrl.isNotEmpty &&
+              refreshToken != null &&
+              refreshToken.isNotEmpty &&
+              callbackUri.queryParameters['type'] == 'invite';
 
-          lastRoute = '${InvitePage.route}?serverUrl=$serverUrl';
-          return lastRoute;
+          if (!isInviteCallback) {
+            Future.delayed(const Duration(seconds: 1), () {
+              inAppNotificationCubit.sendFailureNotification(
+                const InvalidInviteLinkFailure(),
+              );
+            });
+
+            return SplashPage.route;
+          }
+
+          return Uri(
+            path: InvitePage.route,
+            queryParameters: {
+              'serverUrl': serverUrl,
+              'refreshToken': refreshToken,
+            },
+          ).toString();
         }
 
-        lastRoute = state.uri.toString();
-        return lastRoute;
+        return null;
       },
       routes: <RouteBase>[
         ShellRoute(
@@ -227,11 +248,16 @@ class _MainAppState extends State<MainApp> {
                   path: InvitePage.pageName,
                   pageBuilder: (BuildContext context, GoRouterState state) {
                     final serverUrl = state.uri.queryParameters['serverUrl']!;
+                    final refreshToken =
+                        state.uri.queryParameters['refreshToken']!;
 
                     return NoTransitionPage(
                       child: BlocProvider(
                         create: (context) => getIt<InviteCubit>(),
-                        child: InvitePage(serverUrl: serverUrl),
+                        child: InvitePage(
+                          serverUrl: serverUrl,
+                          refreshToken: refreshToken,
+                        ),
                       ),
                     );
                   },
@@ -290,6 +316,12 @@ class _MainAppState extends State<MainApp> {
                               BlocProvider(
                                 create:
                                     (context) => getIt<InviteNewUserCubit>(),
+                              ),
+                              BlocProvider(
+                                create:
+                                    (context) =>
+                                        getIt<UserManagementCubit>()
+                                          ..watchUsers(),
                               ),
                             ],
                             child: SettingsPageWrapper(

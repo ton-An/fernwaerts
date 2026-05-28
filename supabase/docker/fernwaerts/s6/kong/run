@@ -1,0 +1,29 @@
+#!/command/with-contenv sh
+# Render the checked-in Kong config with runtime env vars, then exec Kong.
+exec 2>&1
+
+export KONG_DATABASE=off
+export KONG_DECLARATIVE_CONFIG=/usr/local/kong/kong.yml
+export KONG_PROXY_LISTEN="0.0.0.0:8000"
+export KONG_ADMIN_LISTEN=off
+export KONG_DNS_ORDER="LAST,A,CNAME"
+export KONG_DNS_NOT_FOUND_TTL=1
+export KONG_PLUGINS="request-transformer,cors,key-auth,acl,basic-auth,request-termination,ip-restriction,post-function"
+export KONG_NGINX_PROXY_PROXY_BUFFER_SIZE=160k
+export KONG_NGINX_PROXY_PROXY_BUFFERS="64 160k"
+export KONG_PROXY_ACCESS_LOG=/dev/stdout
+export KONG_PROXY_ERROR_LOG=/dev/stderr
+
+# Variables kong-entrypoint.sh + the rendered kong.yml expect to find in env.
+export SUPABASE_ANON_KEY="${ANON_KEY}"
+export SUPABASE_SERVICE_KEY="${SERVICE_ROLE_KEY}"
+export SUPABASE_PUBLISHABLE_KEY="${SUPABASE_PUBLISHABLE_KEY:-}"
+export SUPABASE_SECRET_KEY="${SUPABASE_SECRET_KEY:-}"
+export ANON_KEY_ASYMMETRIC="${ANON_KEY_ASYMMETRIC:-}"
+export SERVICE_ROLE_KEY_ASYMMETRIC="${SERVICE_ROLE_KEY_ASYMMETRIC:-}"
+export DASHBOARD_USERNAME="${DASHBOARD_USERNAME}"
+export DASHBOARD_PASSWORD="${DASHBOARD_PASSWORD}"
+
+export PATH=/usr/local/openresty/bin:${PATH}
+
+exec /home/kong/kong-entrypoint.sh

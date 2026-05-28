@@ -2,3 +2,32 @@
 command = "dart"
 args = ["mcp-server", "--force-roots-fallback"]
 enabled = true
+
+[mcp_servers.dart.tools.add_roots]
+approval_mode = "approve"
+
+[mcp_servers.dart.tools.pub]
+approval_mode = "approve"
+
+[mcp_servers.dart.tools.read_package_uris]
+approval_mode = "approve"
+
+[mcp_servers.dart.tools.list_devices]
+approval_mode = "approve"
+
+[mcp_servers.dart.tools.launch_app]
+approval_mode = "approve"
+
+[mcp_servers.dart.tools.list_running_apps]
+approval_mode = "approve"
+
+[mcp_servers.dart.tools.dart_format]
+approval_mode = "approve"
+
+[mcp_servers.XcodeBuildMCP]
+command = "npx"
+args = ["-y", "xcodebuildmcp@latest", "mcp"]
+
+[mcp_servers.docs]
+type = "http"
+url = "https://docs.powersync.com/mcp"

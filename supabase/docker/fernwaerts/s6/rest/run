@@ -1,0 +1,16 @@
+#!/command/with-contenv sh
+# PostgREST binds to 127.0.0.2 so it can keep upstream's default port 3000
+# despite Studio also listening on :3000. Kong routes to it via 127.0.0.2:3000
+# directly in kong.yml.
+exec 2>&1
+export PGRST_SERVER_HOST=127.0.0.2
+export PGRST_DB_URI="postgres://authenticator:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable"
+export PGRST_DB_SCHEMAS="public,storage,graphql_public"
+export PGRST_DB_MAX_ROWS="${PGRST_DB_MAX_ROWS:-1000}"
+export PGRST_DB_EXTRA_SEARCH_PATH="${PGRST_DB_EXTRA_SEARCH_PATH:-public}"
+export PGRST_DB_ANON_ROLE=anon
+export PGRST_JWT_SECRET="${JWT_SECRET}"
+export PGRST_DB_USE_LEGACY_GUCS=false
+export PGRST_APP_SETTINGS_JWT_SECRET="${JWT_SECRET}"
+export PGRST_APP_SETTINGS_JWT_EXP="${JWT_EXPIRY}"
+exec /opt/rest/postgrest
