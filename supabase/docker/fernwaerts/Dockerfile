@@ -108,16 +108,13 @@ RUN apt-get purge -y curl xz-utils \
      && apt-get autoremove -y \
      && rm -rf /var/lib/apt/lists/*
 
-# ── Node.js 24 ────────────────────────────────────────────────────────────────
-# https://github.com/nodesource/distributions
+# ── Node.js 20 ────────────────────────────────────────────────────────────────
+# Copy postgres-meta's Node.js 20 binary to match its native addon ABI.
+# postgres-meta and Studio both support Node.js 20.
 RUN apt-get update && apt-get install -y --no-install-recommends \
-     ca-certificates curl gnupg \
-     && rm -rf /var/lib/apt/lists/* \
-     && curl -fsSL https://deb.nodesource.com/setup_24.x | bash - \
-     && apt-get install -y --no-install-recommends nodejs
-RUN apt-get purge -y curl gnupg \
-     && apt-get autoremove -y \
+     libstdc++6 \
      && rm -rf /var/lib/apt/lists/*
+COPY --from=src-meta /usr/local/bin/node /usr/local/bin/node
 
 # ── Vector v0.53.0 ────────────────────────────────────────────────────────────
 # https://github.com/vectordotdev/vector/blob/v0.53.0/distribution/docker/alpine/Dockerfile
@@ -152,6 +149,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
      libyaml-0-2 \
      && rm -rf /var/lib/apt/lists/*
 COPY --from=src-powersync /app /opt/powersync/
+RUN mkdir -p /opt/powersync-node/bin
+COPY --from=src-powersync /usr/local/bin/node /opt/powersync-node/bin/node
 COPY supabase/powersync/config/powersync.yaml  /etc/powersync/powersync.yaml
 COPY supabase/powersync/config/sync_rules.yaml /etc/powersync/sync_rules.yaml
 

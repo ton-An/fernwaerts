@@ -7,4 +7,4 @@ export PS_STORAGE_SOURCE_URI="postgres://powersync_storage_user:${PS_STORAGE_PAS
 export PS_PORT=7901
 export PS_SUPABASE_JWT_SECRET="${JWT_SECRET}"
 cd /opt/powersync/service
-exec node lib/entry.js start -r unified
+exec /opt/powersync-node/bin/node lib/entry.js start -r unified
