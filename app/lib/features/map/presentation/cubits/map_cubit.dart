@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
+import 'package:location_history/features/location_tracking/domain/models/activity_segment.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
+import 'package:location_history/features/location_tracking/domain/usecases/compute_activity_segments.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/get_locations_by_date.dart';
 import 'package:location_history/features/map/presentation/cubits/map_state.dart';
 
@@ -20,9 +22,13 @@ import 'package:location_history/features/map/presentation/cubits/map_state.dart
 /// {@endtemplate}
 class MapCubit extends Cubit<MapState> {
   /// {@macro map_cubit}
-  MapCubit({required this.getLocationData}) : super(const MapInitialState());
+  MapCubit({
+    required this.getLocationData,
+    required this.computeActivitySegmentsUseCase,
+  }) : super(const MapInitialState());
 
   final GetLocationsByDate getLocationData;
+  final ComputeActivitySegments computeActivitySegmentsUseCase;
 
   StreamSubscription? locationsStreamSubscription;
 
@@ -54,5 +60,29 @@ class MapCubit extends Cubit<MapState> {
         },
       );
     });
+  }
+
+  /// Computes activity segments for the currently loaded locations.
+  ///
+  /// Emits:
+  /// - [MapLocationsLoaded] with computed activity segments when locations are
+  ///   loaded.
+  Future<void> computeActivitySegments() async {
+    final MapState currentState = state;
+
+    if (currentState is! MapLocationsLoaded) {
+      return;
+    }
+
+    final List<ActivitySegment> activitySegments =
+        await computeActivitySegmentsUseCase(locations: currentState.locations);
+
+    emit(
+      MapLocationsLoaded(
+        locations: currentState.locations,
+        activitySegments: activitySegments,
+        showActivitySegments: true,
+      ),
+    );
   }
 }

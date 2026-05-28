@@ -1,4 +1,5 @@
 import 'package:location_history/core/failures/failure.dart';
+import 'package:location_history/features/location_tracking/domain/models/activity_segment.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
 
 /// {@template map_state}
@@ -22,9 +23,15 @@ class MapInitialState extends MapState {
 /// {@endtemplate}
 class MapLocationsLoaded extends MapState {
   /// {@macro map_locations_loaded}
-  const MapLocationsLoaded({required this.locations});
+  const MapLocationsLoaded({
+    required this.locations,
+    this.activitySegments = const [],
+    this.showActivitySegments = false,
+  });
 
   final List<Location> locations;
+  final List<ActivitySegment> activitySegments;
+  final bool showActivitySegments;
 }
 
 /// {@template map_locations_error}

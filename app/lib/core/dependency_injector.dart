@@ -47,7 +47,9 @@ import 'package:location_history/features/location_tracking/data/repository_impl
 import 'package:location_history/features/location_tracking/data/repository_implementations/location_tracking_repository_impl.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
+import 'package:location_history/features/location_tracking/domain/usecases/compute_activity_segments.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/get_locations_by_date.dart';
+import 'package:location_history/features/map/presentation/cubits/map_animation_cubit.dart';
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
 import 'package:location_history/features/settings/data/datasources/settings_remote_data_source.dart';
 import 'package:location_history/features/settings/data/repository_implementations/settings_repository_impl.dart';
@@ -260,7 +262,13 @@ void registerCalendarDependencies() {
 /// sources.
 void registerLocationTrackingDependencies() {
   // -- Presentation -- //
-  getIt.registerFactory(() => MapCubit(getLocationData: getIt()));
+  getIt.registerFactory(() => MapAnimationCubit());
+  getIt.registerFactory(
+    () => MapCubit(
+      getLocationData: getIt(),
+      computeActivitySegmentsUseCase: getIt(),
+    ),
+  );
 
   // -- Domain -- //
   getIt.registerLazySingleton(
@@ -277,6 +285,9 @@ void registerLocationTrackingDependencies() {
       authenticationRepository: getIt(),
       locationDataRepository: getIt(),
     ),
+  );
+  getIt.registerLazySingleton(
+    () => ComputeActivitySegments(locationDataRepository: getIt()),
   );
   getIt.registerLazySingleton<LocationTrackingRepository>(
     () => LocationTrackingRepositoryImpl(

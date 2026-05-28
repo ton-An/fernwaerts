@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/drift/drift_database.dart';
+import 'package:location_history/features/location_tracking/domain/models/activity_segment.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
 
 /// {@template location_data_remote_data_source}
@@ -24,6 +25,15 @@ abstract class LocationDataRemoteDataSource {
   /// Throws:
   /// - Storage or sync exceptions from the underlying database layer
   Future<void> saveLocation({required Location location});
+
+  /// Saves an activity segment to the synced local database.
+  ///
+  /// Parameters:
+  /// - activitySegment: [ActivitySegment] to save
+  ///
+  /// Throws:
+  /// - Storage or sync exceptions from the underlying database layer
+  Future<void> saveActivitySegment({required ActivitySegment activitySegment});
 
   /// Watches locations recorded within a date range.
   ///
@@ -83,5 +93,23 @@ class LocationDataRemoteDataSourceImpl implements LocationDataRemoteDataSource {
     await driftDatabase
         .into(driftDatabase.locations)
         .insert(location.toInsertable());
+  }
+
+  @override
+  Future<void> saveActivitySegment({
+    required ActivitySegment activitySegment,
+  }) async {
+    final DriftAppDatabase driftDatabase = await supabaseHandler.driftDatabase;
+
+    await driftDatabase
+        .into(driftDatabase.activitySegments)
+        .insert(
+          ActivitySegmentsCompanion.insert(
+            id: activitySegment.id,
+            userId: activitySegment.userId,
+            startLocationId: Value(activitySegment.startLocationId),
+            endLocationId: Value(activitySegment.endLocationId),
+          ),
+        );
   }
 }

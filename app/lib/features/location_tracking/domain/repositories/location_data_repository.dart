@@ -1,5 +1,5 @@
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
-import 'package:location_history/features/location_tracking/domain/models/movement_segment.dart';
+import 'package:location_history/features/location_tracking/domain/models/activity_segment.dart';
 
 /// {@template location_data_repository}
 /// Repository contract for persisted location history data.
@@ -32,12 +32,9 @@ abstract class LocationDataRepository {
     required DateTime end,
   });
 
-  /// Saves a movement segment.
+  /// Saves an activity segment.
   ///
   /// Parameters:
-  /// - movementSegment: [MovementSegment] to save
-  ///
-  /// Throws:
-  /// - [UnimplementedError] until segment persistence is wired up
-  Future<void> saveMovementSegment({required MovementSegment movementSegment});
+  /// - activitySegment: [ActivitySegment] to save
+  Future<void> saveActivitySegment({required ActivitySegment activitySegment});
 }

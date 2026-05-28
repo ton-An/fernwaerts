@@ -1,6 +1,6 @@
 import 'package:location_history/features/location_tracking/data/datasources/location_data_remote_data_source.dart';
+import 'package:location_history/features/location_tracking/domain/models/activity_segment.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
-import 'package:location_history/features/location_tracking/domain/models/movement_segment.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 
 /*
@@ -12,8 +12,7 @@ import 'package:location_history/features/location_tracking/domain/repositories/
 /// Data-layer implementation of [LocationDataRepository].
 ///
 /// This repository delegates persisted location reads and writes to
-/// [LocationDataRemoteDataSource]. Movement-segment persistence is not
-/// implemented yet.
+/// [LocationDataRemoteDataSource].
 /// {@endtemplate}
 class LocationDataRepositoryImpl extends LocationDataRepository {
   /// {@macro location_data_repository_impl}
@@ -35,9 +34,11 @@ class LocationDataRepositoryImpl extends LocationDataRepository {
   }
 
   @override
-  Future<void> saveMovementSegment({required MovementSegment movementSegment}) {
-    // TODO: implement persisted movement-segment writes once the schema and
-    // sync pipeline support them.
-    throw UnimplementedError();
+  Future<void> saveActivitySegment({
+    required ActivitySegment activitySegment,
+  }) async {
+    await locationRemoteDataSource.saveActivitySegment(
+      activitySegment: activitySegment,
+    );
   }
 }
