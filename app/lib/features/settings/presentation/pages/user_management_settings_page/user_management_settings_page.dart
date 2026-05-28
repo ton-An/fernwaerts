@@ -40,7 +40,7 @@ class UserManagementSettingsPage extends StatelessWidget {
         ),
 
         SettingsPageLink(
-          title: AppLocalizations.of(context)!.createNewUser,
+          title: AppLocalizations.of(context)!.inviteNewUser,
           onPressed: () {
             context.push(InviteNewUserSettingsPage.route);
           },
