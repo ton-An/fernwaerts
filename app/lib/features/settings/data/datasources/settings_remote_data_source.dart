@@ -71,7 +71,7 @@ abstract class SettingsRemoteDataSource {
   /// - [Future] resolving to a [Stream] of [User] lists ordered by username
   ///
   /// Throws:
-  /// - Storage or sync exceptions from the underlying database layer
+  /// - [PostgrestException] for Supabase/Postgres read failures
   Future<Stream<List<User>>> watchUsers();
 }
 

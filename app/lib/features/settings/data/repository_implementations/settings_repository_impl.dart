@@ -194,7 +194,7 @@ class SettingsRepositoryImpl extends SettingsRepository {
       await for (final List<User> users in usersStream) {
         yield Right(users);
       }
-    } catch (_) {
+    } on PostgrestException {
       yield const Left(DatabaseReadFailure());
     }
   }

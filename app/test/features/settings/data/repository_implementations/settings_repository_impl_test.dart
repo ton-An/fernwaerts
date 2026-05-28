@@ -173,7 +173,20 @@ void main() {
       verify(() => mockSettingsRemoteDataSource.watchUsers());
     });
 
-    test('should return a database read failure when watching users fails', () {
+    test('should return a database read failure on Postgres read errors', () {
+      // arrange
+      when(
+        () => mockSettingsRemoteDataSource.watchUsers(),
+      ).thenThrow(tPostgresException);
+
+      // act
+      final result = settingsRepositoryImpl.watchUsers();
+
+      // assert
+      expect(result, emits(const Left(DatabaseReadFailure())));
+    });
+
+    test('should not convert unrelated exceptions to read failures', () {
       // arrange
       when(
         () => mockSettingsRemoteDataSource.watchUsers(),
@@ -183,7 +196,7 @@ void main() {
       final result = settingsRepositoryImpl.watchUsers();
 
       // assert
-      expect(result, emits(const Left(DatabaseReadFailure())));
+      expect(result, emitsError(isA<ArgumentError>()));
     });
   });
 
