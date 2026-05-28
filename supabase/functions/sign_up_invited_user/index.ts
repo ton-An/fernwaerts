@@ -63,6 +63,7 @@ Deno.serve(async (request) => {
   await setUserPassword(supabase, user.id, password);
 
   await completeDbEntry(supabase, user.id, username);
+  await acceptUserRole(supabase, user.id);
 
   return new Response(null, { status: 200 });
 });
@@ -96,4 +97,12 @@ async function completeDbEntry(
     .from("users")
     .update({ username: username })
     .eq("id", userId);
+}
+
+async function acceptUserRole(supabase: Supabase, userId: string) {
+  await supabase
+    .from("user_roles")
+    .update({ accepted_at: new Date().toISOString() })
+    .eq("user_id", userId)
+    .is("accepted_at", null);
 }

@@ -90,6 +90,7 @@ async function inviteNewUser(
   }
 
   await addUserToDB(supabase, newUser.user.id, email);
+  await addPendingMemberRole(supabase, newUser.user.id);
 
   return new Response(null, {
     status: 200,
@@ -141,5 +142,12 @@ async function addUserToDB(
     id: userId,
     username: "",
     email: email,
+  });
+}
+
+async function addPendingMemberRole(supabase: Supabase, userId: string) {
+  await supabase.from("user_roles").insert({
+    user_id: userId,
+    role: "member",
   });
 }

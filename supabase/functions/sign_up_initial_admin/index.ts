@@ -110,6 +110,7 @@ async function makeUserAdmin(supabase: Supabase, userId: string) {
   await supabase.from("user_roles").insert({
     user_id: userId,
     role: "admin",
+    accepted_at: new Date().toISOString(),
   });
 }
 
