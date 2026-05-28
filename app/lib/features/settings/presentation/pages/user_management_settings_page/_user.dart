@@ -17,7 +17,6 @@ class _User extends StatelessWidget {
     final bool invitePending = user.username.trim().isEmpty;
 
     return Container(
-      margin: EdgeInsets.only(bottom: theme.spacing.xxSmall),
       padding: EdgeInsets.symmetric(
         horizontal: theme.spacing.medium,
         vertical: theme.spacing.medium,

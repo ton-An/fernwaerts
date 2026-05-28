@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/features/authentication/domain/models/user.dart';
+import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/user_management_cubit/user_management_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/user_management_cubit/user_management_state.dart';
 import 'package:location_history/features/settings/presentation/pages/invite_new_user_settings_page/invite_new_user_settings_page.dart';
@@ -53,19 +53,28 @@ class UserManagementSettingsPage extends StatelessWidget {
           style: theme.text.title3.copyWith(fontWeight: FontWeight.w600),
         ),
         const XXSmallGap(),
-        BlocBuilder<UserManagementCubit, UserManagementState>(
-          builder: (context, state) {
-            return switch (state) {
-              UserManagementLoaded(:final users) => Column(
-                children: [for (final User user in users) _User(user: user)],
-              ),
-              UserManagementFailure(:final failure) => Text(
-                failure.message,
-                style: theme.text.body,
-              ),
-              _ => const CupertinoActivityIndicator(),
-            };
+        BlocListener<UserManagementCubit, UserManagementState>(
+          listener: (BuildContext context, UserManagementState state) {
+            if (state is UserManagementFailure) {
+              context.read<InAppNotificationCubit>().sendFailureNotification(
+                state.failure,
+              );
+            }
           },
+          child: BlocBuilder<UserManagementCubit, UserManagementState>(
+            builder: (BuildContext context, UserManagementState state) {
+              if (state is UserManagementLoaded) {
+                return Column(
+                  children: [
+                    for (final User user in state.users) _User(user: user),
+                    const XSmallGap(),
+                  ],
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
+          ),
         ),
       ],
     );
