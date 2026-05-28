@@ -34,8 +34,7 @@ FROM journeyapps/powersync-service:1.21.0   AS src-powersync
 FROM supabase/postgres-meta:v0.96.3         AS src-meta
 
 # https://github.com/supabase/supabase/blob/5f6060197e9e7de016dc7a50c18fdffa65eff9a5/apps/studio/Dockerfile
-# (image tag encodes the commit SHA: 2026.04.27-sha-5f6060197e9e7de016dc7a50c18fdffa65eff9a5)
-FROM supabase/studio:2026.04.27-sha-5f6060197e9e7de016dc7a50c18fdffa65eff9a5 AS src-studio
+FROM supabase/studio:2026.04.27-sha-5f60601 AS src-studio
 
 # https://github.com/Logflare/logflare/blob/v1.36.1/Dockerfile
 # (repo is Logflare/logflare, not supabase/logflare)
