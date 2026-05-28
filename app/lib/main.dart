@@ -27,6 +27,7 @@ import 'package:location_history/features/calendar/presentation/cubits/monthly_c
 import 'package:location_history/features/calendar/presentation/cubits/yearly_calendar_cubit/yearly_calendar_cubit.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/in_app_notification/presentation/widgets/in_app_notification_listener.dart';
+import 'package:location_history/features/map/presentation/cubits/map_animation_cubit.dart';
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
 import 'package:location_history/features/settings/presentation/cubits/account_settings_cubit/account_settings_cubit.dart';
@@ -294,6 +295,9 @@ class _MainAppState extends State<MainApp> {
                                     getIt<CalendarDateSelectionCubit>(),
                           ),
                           BlocProvider(create: (context) => getIt<MapCubit>()),
+                          BlocProvider(
+                            create: (context) => getIt<MapAnimationCubit>(),
+                          ),
                         ],
                         child: const MapPage(),
                       ),

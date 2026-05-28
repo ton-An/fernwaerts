@@ -1,9 +1,10 @@
 part of 'location_history_modal.dart';
 
 class _LocationListItem extends StatelessWidget {
-  const _LocationListItem({required this.location});
+  const _LocationListItem({required this.location, this.onTap});
 
   final Location location;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class _LocationListItem extends StatelessWidget {
     );
 
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
-    return Row(
+    final Widget content = Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const _PlaceIcon(type: PlaceType.other),
@@ -41,5 +42,11 @@ class _LocationListItem extends StatelessWidget {
         ),
       ],
     );
+
+    if (onTap == null) {
+      return content;
+    }
+
+    return FadeTapDetector(onTap: onTap, child: content);
   }
 }

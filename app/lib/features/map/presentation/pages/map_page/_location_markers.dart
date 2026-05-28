@@ -3,8 +3,8 @@ part of 'map_page.dart';
 /// {@template location_markers}
 /// The marker and polyline layer for the [MapPage].
 ///
-/// It converts chronological map points into colored markers and connecting
-/// polylines.
+/// It renders the full raw location path as polylines and highlights selected
+/// segment endpoints with markers.
 ///
 /// The marker color is interpolated across the timeline gradient and each
 /// marker, except the final point or points that are nearly identical, gets a
@@ -12,86 +12,119 @@ part of 'map_page.dart';
 /// {@endtemplate}
 class _LocationMarkers extends StatelessWidget {
   /// {@macro location_markers}
-  const _LocationMarkers({required this.points});
+  const _LocationMarkers({
+    required this.markerPoints,
+    required this.pathPoints,
+  });
 
-  final List<LatLng> points;
+  final List<_SegmentEndpointMarker> markerPoints;
+  final List<LatLng> pathPoints;
 
   @override
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    final (List<Marker>, List<Polyline>) points = _generateMarkers(
+    final List<Marker> markers = _generateMarkers(
       gradientColors: theme.colors.timelineGradient,
     );
-
-    final List<Marker> markers = points.$1.reversed.toList();
-    final List<Polyline> polylines = points.$2;
+    final List<Polyline> polylines = _generatePolylines(
+      gradientColors: theme.colors.timelineGradient,
+    );
 
     return Stack(
       children: [
         PolylineLayer(polylines: polylines),
-        MarkerLayer(markers: markers.reversed.toList()),
+        MarkerLayer(markers: markers),
       ],
     );
   }
 
-  /// Builds the markers and path segments for the current [points].
-  (List<Marker>, List<Polyline>) _generateMarkers({
-    required List<Color> gradientColors,
-  }) {
+  /// Builds highlighted markers for the current [markerPoints].
+  List<Marker> _generateMarkers({required List<Color> gradientColors}) {
     final List<Marker> markers = [];
-    final List<Polyline> polylines = [];
 
-    for (int i = 0; i < points.length; i++) {
-      final bool isLastPoint = i == points.length - 1;
+    for (int i = 0; i < markerPoints.length; i++) {
+      final _SegmentEndpointMarker markerPoint = markerPoints[i];
 
-      double? angleToNextPoint;
+      double? arrowRotation;
       Offset? arrowOffset;
 
-      if (!isLastPoint) {
-        angleToNextPoint = _calculateAngleToNextPoint(
-          point: points[i],
-          nextPoint: points[i + 1],
+      final LatLng? nextPathPoint = _getNextPathPoint(markerPoint.point);
+
+      if (nextPathPoint != null) {
+        arrowRotation = _calculateAngleToNextPoint(
+          point: markerPoint.point,
+          nextPoint: nextPathPoint,
         );
 
-        arrowOffset = Offset.fromDirection(angleToNextPoint - pi / 2, 20);
+        arrowOffset = Offset.fromDirection(arrowRotation - pi / 2, 20);
       }
 
       final Color markerColor = _interpolateColors(
         gradientColors,
-        i / points.length,
+        i / markerPoints.length,
       );
 
       final bool isNextPointIdentical =
-          isLastPoint
+          nextPathPoint == null
               ? true
               : _isNextPointIdentical(
-                point: points[i],
-                nextPoint: points[i + 1],
+                point: markerPoint.point,
+                nextPoint: nextPathPoint,
               );
 
       markers.add(
         _SingleLocationMarker(
-          point: points[i],
+          point: markerPoint.point,
           arrowOffset: arrowOffset,
-          arrowRotation: angleToNextPoint,
+          arrowRotation: arrowRotation,
           color: markerColor,
           displayArrow: !isNextPointIdentical,
+          type: markerPoint.type,
         ),
       );
+    }
 
+    return markers;
+  }
+
+  LatLng? _getNextPathPoint(LatLng markerPoint) {
+    final int pathIndex = pathPoints.indexWhere(
+      (LatLng pathPoint) =>
+          pathPoint.latitude == markerPoint.latitude &&
+          pathPoint.longitude == markerPoint.longitude,
+    );
+
+    if (pathIndex < 0 || pathIndex >= pathPoints.length - 1) {
+      return null;
+    }
+
+    return pathPoints[pathIndex + 1];
+  }
+
+  /// Builds the raw location path for the current [pathPoints].
+  List<Polyline> _generatePolylines({required List<Color> gradientColors}) {
+    final List<Polyline> polylines = [];
+
+    for (int i = 0; i < pathPoints.length; i++) {
+      final bool isLastPoint = i == pathPoints.length - 1;
       if (!isLastPoint) {
+        final Color pathColor = _interpolateColors(
+          gradientColors,
+          i / pathPoints.length,
+        );
+
         polylines.add(
           Polyline(
-            points: [points[i], points[i + 1]],
-            color: markerColor.withValues(alpha: .6),
+            points: [pathPoints[i], pathPoints[i + 1]],
+            color: pathColor.withValues(alpha: .6),
             strokeWidth: 14,
           ),
         );
       }
     }
 
-    return (markers, polylines);
+    return polylines;
   }
 
   /// Calculates the rotation angle from [point] to [nextPoint].
@@ -146,3 +179,12 @@ class _LocationMarkers extends StatelessWidget {
     return color;
   }
 }
+
+class _SegmentEndpointMarker {
+  const _SegmentEndpointMarker({required this.point, required this.type});
+
+  final LatLng point;
+  final _SegmentEndpointMarkerType type;
+}
+
+enum _SegmentEndpointMarkerType { start, end }

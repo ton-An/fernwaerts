@@ -17,35 +17,31 @@ class _LocationList extends StatelessWidget {
       child: BlocBuilder<MapCubit, MapState>(
         builder: (BuildContext context, MapState state) {
           if (state is MapLocationsLoaded) {
-            if (state.locations.isEmpty) {
-              return ListView(
-                padding: EdgeInsets.all(theme.spacing.xMedium),
-                shrinkWrap: true,
-                controller: scrollController,
-                children: [
-                  Center(
-                    child: Text(
-                      'No Data :)',
-                      style: theme.text.title3.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: theme.colors.text.withValues(alpha: .4),
-                      ),
-                    ),
-                  ),
-                ],
+            if (state.activitySegments.isEmpty) {
+              return _EmptyList(
+                scrollController: scrollController,
+                message: 'No activity segments',
               );
             }
+
+            final Map<String, Location> locationsById = {
+              for (final Location location in state.locations)
+                location.id: location,
+            };
 
             return ListView.builder(
               padding: EdgeInsets.all(theme.spacing.xMedium),
               shrinkWrap: true,
-              itemCount: state.locations.length,
+              itemCount: state.activitySegments.length,
               controller: scrollController,
               itemBuilder: (context, index) {
                 return Column(
                   children: [
-                    _LocationListItem(location: state.locations[index]),
-                    if (index != state.locations.length - 1)
+                    _ActivitySegmentListItem(
+                      activitySegment: state.activitySegments[index],
+                      locationsById: locationsById,
+                    ),
+                    if (index != state.activitySegments.length - 1)
                       Container(
                         margin: EdgeInsets.only(
                           left: theme.spacing.xMedium - theme.spacing.tiny,
@@ -67,6 +63,34 @@ class _LocationList extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class _EmptyList extends StatelessWidget {
+  const _EmptyList({required this.scrollController, required this.message});
+
+  final ScrollController scrollController;
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
+    return ListView(
+      padding: EdgeInsets.all(theme.spacing.xMedium),
+      shrinkWrap: true,
+      controller: scrollController,
+      children: [
+        Center(
+          child: Text(
+            message,
+            style: theme.text.title3.copyWith(
+              fontWeight: FontWeight.w700,
+              color: theme.colors.text.withValues(alpha: .4),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
