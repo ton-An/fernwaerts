@@ -123,9 +123,9 @@ class PsBackendConnector extends PowerSyncBackendConnector {
       } else if (op.op == UpdateType.delete) {
         await table.delete().eq('id', op.id);
       }
-
-      // All operations successful.
-      await transaction.complete();
     }
+
+    // All operations successful.
+    await transaction.complete();
   }
 }
