@@ -66,8 +66,10 @@ class UserManagementSettingsPage extends StatelessWidget {
               if (state is UserManagementLoaded) {
                 return Column(
                   children: [
-                    for (final User user in state.users) _User(user: user),
-                    const XSmallGap(),
+                    for (final User user in state.users) ...[
+                      _User(user: user),
+                      const XSmallGap(),
+                    ],
                   ],
                 );
               } else {
