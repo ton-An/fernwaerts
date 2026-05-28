@@ -32,6 +32,7 @@ import 'package:location_history/features/map/presentation/pages/map_page/map_pa
 import 'package:location_history/features/settings/presentation/cubits/account_settings_cubit/account_settings_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/invite_new_user_cubit/invite_new_user_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/password_change_cubit/password_change_cubit.dart';
+import 'package:location_history/features/settings/presentation/cubits/user_management_cubit/user_management_cubit.dart';
 import 'package:location_history/features/settings/presentation/page_routes/settings_slide_transition_page.dart';
 import 'package:location_history/features/settings/presentation/pages/account_settings_page/account_settings_page.dart';
 import 'package:location_history/features/settings/presentation/pages/debug_page.dart';
@@ -315,6 +316,12 @@ class _MainAppState extends State<MainApp> {
                               BlocProvider(
                                 create:
                                     (context) => getIt<InviteNewUserCubit>(),
+                              ),
+                              BlocProvider(
+                                create:
+                                    (context) =>
+                                        getIt<UserManagementCubit>()
+                                          ..watchUsers(),
                               ),
                             ],
                             child: SettingsPageWrapper(

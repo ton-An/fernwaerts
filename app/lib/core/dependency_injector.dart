@@ -55,9 +55,11 @@ import 'package:location_history/features/settings/domain/repositories/settings_
 import 'package:location_history/features/settings/domain/usecases/change_password.dart';
 import 'package:location_history/features/settings/domain/usecases/invite_new_user.dart';
 import 'package:location_history/features/settings/domain/usecases/update_email.dart';
+import 'package:location_history/features/settings/domain/usecases/watch_users.dart';
 import 'package:location_history/features/settings/presentation/cubits/account_settings_cubit/account_settings_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/invite_new_user_cubit/invite_new_user_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/password_change_cubit/password_change_cubit.dart';
+import 'package:location_history/features/settings/presentation/cubits/user_management_cubit/user_management_cubit.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
@@ -306,6 +308,7 @@ void registerSettingsDependencies() {
   getIt.registerFactory(
     () => InviteNewUserCubit(inviteNewUserUseCase: getIt()),
   );
+  getIt.registerFactory(() => UserManagementCubit(watchUsersUseCase: getIt()));
 
   //-- Domain -- //
   getIt.registerLazySingleton(() => UpdateEmail(settingsRepository: getIt()));
@@ -313,6 +316,7 @@ void registerSettingsDependencies() {
     () => ChangePassword(settingsRepository: getIt()),
   );
   getIt.registerLazySingleton(() => InviteNewUser(settingsRepository: getIt()));
+  getIt.registerLazySingleton(() => WatchUsers(settingsRepository: getIt()));
 
   //-- Data -- //
   getIt.registerLazySingleton<SettingsRepository>(

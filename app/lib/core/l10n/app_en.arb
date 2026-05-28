@@ -54,6 +54,8 @@
     "createNewUser": "Create new User",
     "yourUsers": "Your Users",
     "users": "Users",
+    "invitePending": "Invite pending",
+    "pending": "Pending",
     "emailSent": "E-Mail Sent",
     "checkInboxForVerificationMail": "Check your inbox for the verification email.",
     "newPasswordsDoNotMatch": "Your new passwords do not match",

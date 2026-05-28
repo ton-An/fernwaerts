@@ -12,13 +12,15 @@ class _User extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations localizations = AppLocalizations.of(context)!;
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
+    final bool invitePending = user.username.trim().isEmpty;
 
     return Container(
-      margin: EdgeInsets.only(bottom: theme.spacing.xSmall),
+      margin: EdgeInsets.only(bottom: theme.spacing.xxSmall),
       padding: EdgeInsets.symmetric(
-        vertical: theme.spacing.medium,
         horizontal: theme.spacing.medium,
+        vertical: theme.spacing.medium,
       ),
       decoration: BoxDecoration(
         color: theme.colors.translucentBackgroundContrast,
@@ -26,26 +28,66 @@ class _User extends StatelessWidget {
       ),
       child: Row(
         children: [
+          Container(
+            height: 36,
+            width: 36,
+            decoration: BoxDecoration(
+              color: theme.colors.backgroundContrast.withValues(alpha: 0.08),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              CupertinoIcons.person,
+              color: theme.colors.backgroundContrast,
+              size: 20,
+            ),
+          ),
+          const XXSmallGap(),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (!invitePending) ...[
+                  Text(
+                    user.username,
+                    style: theme.text.headline.copyWith(height: 1),
+                  ),
+                  const SmallGap(),
+                ],
                 Text(
-                  user.username,
-                  style: theme.text.body.copyWith(fontWeight: FontWeight.w600),
+                  user.email,
+                  style: theme.text.body.copyWith(height: 1),
+                  overflow: TextOverflow.ellipsis,
                 ),
-                const SmallGap(),
-                Text(user.email, style: theme.text.body),
               ],
             ),
           ),
           const XSmallGap(),
-          Icon(
-            CupertinoIcons.chevron_right,
-            color: theme.colors.backgroundContrast,
-          ),
+          if (invitePending) _PendingInviteBadge(label: localizations.pending),
         ],
       ),
+    );
+  }
+}
+
+class _PendingInviteBadge extends StatelessWidget {
+  const _PendingInviteBadge({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
+
+    return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: theme.spacing.small + theme.spacing.xTiny,
+        horizontal: theme.spacing.xSmall,
+      ),
+      decoration: BoxDecoration(
+        color: theme.colors.translucentBackgroundContrast,
+        borderRadius: BorderRadius.circular(theme.radii.small),
+      ),
+      child: Text(label, style: theme.text.headline.copyWith(height: 1)),
     );
   }
 }

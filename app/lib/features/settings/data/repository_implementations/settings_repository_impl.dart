@@ -11,9 +11,11 @@ import 'package:location_history/core/failures/authentication/passwords_must_dif
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/core/failures/networking/server_type.dart';
+import 'package:location_history/core/failures/storage/database_read_failure.dart';
+import 'package:location_history/features/authentication/domain/models/user.dart';
 import 'package:location_history/features/settings/data/datasources/settings_remote_data_source.dart';
 import 'package:location_history/features/settings/domain/repositories/settings_repository.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 
 /// {@template settings_repository_impl}
 /// Settings repository implementation that maps Supabase errors to failures.
@@ -180,6 +182,20 @@ class SettingsRepositoryImpl extends SettingsRepository {
       );
 
       return Left(failure);
+    }
+  }
+
+  @override
+  Stream<Either<Failure, List<User>>> watchUsers() async* {
+    try {
+      final Stream<List<User>> usersStream =
+          await settingsRemoteDataSource.watchUsers();
+
+      await for (final List<User> users in usersStream) {
+        yield Right(users);
+      }
+    } catch (_) {
+      yield const Left(DatabaseReadFailure());
     }
   }
 }

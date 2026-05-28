@@ -1,6 +1,8 @@
 import 'package:http/http.dart';
 import 'package:location_history/core/data/datasources/supabase_handler.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:location_history/core/drift/drift_database.dart';
+import 'package:location_history/features/authentication/domain/models/user.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide User;
 
 /*
   To-Do:
@@ -59,6 +61,18 @@ abstract class SettingsRemoteDataSource {
   /// - [FunctionException] for Edge Function validation or mail delivery errors
   /// - [ClientException] for network or Supabase client transport errors
   Future<void> inviteNewUser({required String email});
+
+  /// Watches the synced public user profiles available to the current user.
+  ///
+  /// PowerSync sync rules determine whether this contains only the current user
+  /// or all users visible through `read.users`.
+  ///
+  /// Returns:
+  /// - [Future] resolving to a [Stream] of [User] lists ordered by username
+  ///
+  /// Throws:
+  /// - Storage or sync exceptions from the underlying database layer
+  Future<Stream<List<User>>> watchUsers();
 }
 
 /// {@template settings_remote_data_source_impl}
@@ -104,5 +118,12 @@ class SettingsRemoteDataSourceImpl extends SettingsRemoteDataSource {
       'invite_user',
       body: {'email': email},
     );
+  }
+
+  @override
+  Future<Stream<List<User>>> watchUsers() async {
+    final DriftAppDatabase driftDatabase = await supabaseHandler.driftDatabase;
+
+    return (driftDatabase.select(driftDatabase.users)).watch();
   }
 }

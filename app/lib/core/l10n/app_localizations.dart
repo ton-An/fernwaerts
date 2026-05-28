@@ -418,6 +418,18 @@ abstract class AppLocalizations {
   /// **'Users'**
   String get users;
 
+  /// No description provided for @invitePending.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite pending'**
+  String get invitePending;
+
+  /// No description provided for @pending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get pending;
+
   /// No description provided for @emailSent.
   ///
   /// In en, this message translates to:

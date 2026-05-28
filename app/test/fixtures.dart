@@ -12,6 +12,8 @@ import 'package:location_history/features/authentication/domain/models/powersync
 import 'package:location_history/features/authentication/domain/models/raw_device.dart';
 import 'package:location_history/features/authentication/domain/models/server_info.dart';
 import 'package:location_history/features/authentication/domain/models/supabase_info.dart';
+import 'package:location_history/features/authentication/domain/models/user.dart'
+    as domain;
 import 'package:location_history/features/location_tracking/domain/enums/activity_type.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
@@ -123,6 +125,12 @@ const String tPassword = 'VeryStrongPassword';
 const String tOtp = '424242';
 
 const String tUserId = '1234567890';
+const domain.User tUser = domain.User(
+  id: tUserId,
+  username: tUsername,
+  email: tEmail,
+);
+const List<domain.User> tUsers = [tUser];
 const String tDeviceId = '1234567890';
 const String tAppVersion = '0.0.1';
 

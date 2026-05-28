@@ -11,6 +11,7 @@ import 'package:location_history/core/failures/authentication/weak_password_fail
 import 'package:location_history/core/failures/networking/send_timeout_failure.dart';
 import 'package:location_history/core/failures/networking/server_type.dart';
 import 'package:location_history/core/failures/networking/status_code_not_ok_failure.dart';
+import 'package:location_history/core/failures/storage/database_read_failure.dart';
 import 'package:location_history/features/settings/data/repository_implementations/settings_repository_impl.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -154,6 +155,35 @@ void main() {
           serverType: ServerType.supabase,
         ),
       );
+    });
+  });
+
+  group('watchUsers', () {
+    test('should return visible users from the data source stream', () async {
+      // arrange
+      when(
+        () => mockSettingsRemoteDataSource.watchUsers(),
+      ).thenAnswer((_) async => Stream.value(tUsers));
+
+      // act
+      final result = settingsRepositoryImpl.watchUsers();
+
+      // assert
+      await expectLater(result, emits(const Right(tUsers)));
+      verify(() => mockSettingsRemoteDataSource.watchUsers());
+    });
+
+    test('should return a database read failure when watching users fails', () {
+      // arrange
+      when(
+        () => mockSettingsRemoteDataSource.watchUsers(),
+      ).thenThrow(tArgumentError);
+
+      // act
+      final result = settingsRepositoryImpl.watchUsers();
+
+      // assert
+      expect(result, emits(const Left(DatabaseReadFailure())));
     });
   });
 

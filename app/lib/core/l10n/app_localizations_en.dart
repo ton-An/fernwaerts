@@ -178,6 +178,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get users => 'Users';
 
   @override
+  String get invitePending => 'Invite pending';
+
+  @override
+  String get pending => 'Pending';
+
+  @override
   String get emailSent => 'E-Mail Sent';
 
   @override
