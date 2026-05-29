@@ -27,7 +27,7 @@ class _MapState extends State<_Map> with SingleTickerProviderStateMixin {
   String? appPackageName;
 
   List<LatLng> _pathPoints = [];
-  List<_SegmentEndpointMarker> _markerPoints = [];
+  List<_LocationMarkerPoint> _markerPoints = [];
   LatLng? _animationStartCenter;
   LatLng? _animationTarget;
   double? _animationStartZoom;
@@ -99,31 +99,10 @@ class _MapState extends State<_Map> with SingleTickerProviderStateMixin {
         for (final Location location in mapState.locations)
           LatLng(location.latitude, location.longitude),
       ];
-      final List<_SegmentEndpointMarker> markerPoints = [];
-
-      for (final activitySegment in mapState.activitySegments) {
-        final Location? startLocation =
-            locationsById[activitySegment.startLocationId];
-        final Location? endLocation =
-            locationsById[activitySegment.endLocationId];
-
-        if (startLocation == null || endLocation == null) {
-          continue;
-        }
-
-        markerPoints.add(
-          _SegmentEndpointMarker(
-            point: LatLng(startLocation.latitude, startLocation.longitude),
-            type: _SegmentEndpointMarkerType.start,
-          ),
-        );
-        markerPoints.add(
-          _SegmentEndpointMarker(
-            point: LatLng(endLocation.latitude, endLocation.longitude),
-            type: _SegmentEndpointMarkerType.end,
-          ),
-        );
-      }
+      final List<_LocationMarkerPoint> markerPoints = _timelineMarkerPoints(
+        activitySegments: mapState.activitySegments,
+        locationsById: locationsById,
+      );
 
       setState(() {
         _pathPoints = pathPoints;
@@ -136,6 +115,48 @@ class _MapState extends State<_Map> with SingleTickerProviderStateMixin {
         mapState.failure,
       );
     }
+  }
+
+  List<_LocationMarkerPoint> _timelineMarkerPoints({
+    required List<ActivitySegment> activitySegments,
+    required Map<String, Location> locationsById,
+  }) {
+    final List<_LocationMarkerPoint> markerPoints = [];
+
+    if (activitySegments.isEmpty) {
+      return markerPoints;
+    }
+
+    for (int i = 0; i <= activitySegments.length; i++) {
+      final Location? location =
+          locationsById[_locationIdForTimelinePlace(
+            activitySegments: activitySegments,
+            segmentIndex: i,
+          )];
+
+      if (location == null) {
+        continue;
+      }
+
+      markerPoints.add(
+        _LocationMarkerPoint(
+          point: LatLng(location.latitude, location.longitude),
+        ),
+      );
+    }
+
+    return markerPoints;
+  }
+
+  String? _locationIdForTimelinePlace({
+    required List<ActivitySegment> activitySegments,
+    required int segmentIndex,
+  }) {
+    if (segmentIndex == 0) {
+      return activitySegments.first.startLocationId;
+    }
+
+    return activitySegments[segmentIndex - 1].endLocationId;
   }
 
   void _mapAnimationCubitListener(

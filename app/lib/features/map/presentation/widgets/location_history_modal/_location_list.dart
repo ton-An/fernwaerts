@@ -32,24 +32,38 @@ class _LocationList extends StatelessWidget {
             return ListView.builder(
               padding: EdgeInsets.all(theme.spacing.xMedium),
               shrinkWrap: true,
-              itemCount: state.activitySegments.length,
+              itemCount: state.activitySegments.length * 2 + 1,
               controller: scrollController,
               itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    _ActivitySegmentListItem(
-                      activitySegment: state.activitySegments[index],
-                      locationsById: locationsById,
-                    ),
-                    if (index != state.activitySegments.length - 1)
-                      Container(
-                        margin: EdgeInsets.only(
-                          left: theme.spacing.xMedium - theme.spacing.tiny,
-                        ),
-                        alignment: Alignment.centerLeft,
-                        child: const _DottedHistoryLine(),
-                      ),
-                  ],
+                final bool isLocationRow = index.isEven;
+
+                if (isLocationRow) {
+                  final int segmentIndex = index ~/ 2;
+                  final String? locationId = _locationIdForTimelinePlace(
+                    activitySegments: state.activitySegments,
+                    segmentIndex: segmentIndex,
+                  );
+                  final Location? location = locationsById[locationId];
+
+                  if (location == null) {
+                    return const SizedBox.shrink();
+                  }
+
+                  return _LocationListItem(
+                    location: location,
+                    onTap: () {
+                      context.read<MapAnimationCubit>().animateToLocation(
+                        location,
+                      );
+                    },
+                  );
+                }
+
+                final int segmentIndex = index ~/ 2;
+
+                return _ActivitySegmentListItem(
+                  activitySegment: state.activitySegments[segmentIndex],
+                  locationsById: locationsById,
                 );
               },
             );
@@ -64,6 +78,17 @@ class _LocationList extends StatelessWidget {
         },
       ),
     );
+  }
+
+  String? _locationIdForTimelinePlace({
+    required List<ActivitySegment> activitySegments,
+    required int segmentIndex,
+  }) {
+    if (segmentIndex == 0) {
+      return activitySegments.first.startLocationId;
+    }
+
+    return activitySegments[segmentIndex - 1].endLocationId;
   }
 }
 

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:location_history/features/location_tracking/domain/enums/activity_type.dart';
 import 'package:location_history/features/location_tracking/domain/models/activity_segment.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
@@ -6,14 +8,17 @@ import 'package:location_history/features/location_tracking/domain/repositories/
 /// {@template compute_activity_segments}
 /// Computes and persists activity segments from raw location points.
 ///
-/// The first implementation uses conservative point-level activity signals to
-/// derive continuous movement intervals for the currently loaded locations.
+/// The first implementation derives movement intervals between inferred
+/// stationary place boundaries for the currently loaded locations.
 /// {@endtemplate}
 class ComputeActivitySegments {
   /// {@macro compute_activity_segments}
   const ComputeActivitySegments({required this.locationDataRepository});
 
   static const double _unknownMovementSpeedThreshold = 1;
+  static const Duration _minimumStationaryGap = Duration(minutes: 5);
+  static const double _stationaryImpliedSpeedThreshold = 0.5;
+  static const double _earthRadiusInMeters = 6371000;
 
   final LocationDataRepository locationDataRepository;
 
@@ -64,38 +69,101 @@ class ComputeActivitySegments {
   }
 
   List<ActivitySegment> _deriveActivitySegments(List<Location> locations) {
+    final List<_PlaceBoundary> placeBoundaries = _derivePlaceBoundaries(
+      locations,
+    );
     final List<ActivitySegment> activitySegments = [];
-    Location? segmentStart;
-    Location? lastMovingLocation;
 
-    for (final Location location in locations) {
-      if (_isMoving(location)) {
-        segmentStart ??= location;
-        lastMovingLocation = location;
-        continue;
-      }
-
-      if (segmentStart != null && lastMovingLocation != null) {
-        _addSegmentIfValid(
-          activitySegments: activitySegments,
-          segmentStart: segmentStart,
-          segmentEnd: lastMovingLocation,
-        );
-      }
-
-      segmentStart = null;
-      lastMovingLocation = null;
-    }
-
-    if (segmentStart != null && lastMovingLocation != null) {
+    for (int i = 0; i < placeBoundaries.length - 1; i++) {
       _addSegmentIfValid(
         activitySegments: activitySegments,
-        segmentStart: segmentStart,
-        segmentEnd: lastMovingLocation,
+        segmentStart: placeBoundaries[i].departureLocation,
+        segmentEnd: placeBoundaries[i + 1].arrivalLocation,
       );
     }
 
     return activitySegments;
+  }
+
+  List<_PlaceBoundary> _derivePlaceBoundaries(List<Location> locations) {
+    final List<_PlaceBoundary> placeBoundaries = [];
+    Location? pendingArrivalLocation;
+    Location? lastMovingLocation;
+
+    for (final Location location in locations) {
+      if (_isMoving(location)) {
+        if (pendingArrivalLocation != null) {
+          placeBoundaries.add(
+            _PlaceBoundary(
+              arrivalLocation: pendingArrivalLocation,
+              departureLocation: location,
+            ),
+          );
+          pendingArrivalLocation = null;
+        } else if (lastMovingLocation != null &&
+            _hasStationaryGap(
+              previousLocation: lastMovingLocation,
+              location: location,
+            )) {
+          placeBoundaries.add(
+            _PlaceBoundary(
+              arrivalLocation: lastMovingLocation,
+              departureLocation: location,
+            ),
+          );
+        }
+
+        lastMovingLocation = location;
+        continue;
+      }
+
+      pendingArrivalLocation ??= lastMovingLocation;
+    }
+
+    return placeBoundaries;
+  }
+
+  bool _hasStationaryGap({
+    required Location previousLocation,
+    required Location location,
+  }) {
+    final Duration elapsed = location.timestamp.difference(
+      previousLocation.timestamp,
+    );
+
+    if (elapsed <= _minimumStationaryGap) {
+      return false;
+    }
+
+    final double distanceInMeters = _distanceInMeters(
+      from: previousLocation,
+      to: location,
+    );
+    final double impliedSpeedInMetersPerSecond =
+        distanceInMeters / elapsed.inMilliseconds * 1000;
+
+    return impliedSpeedInMetersPerSecond < _stationaryImpliedSpeedThreshold;
+  }
+
+  double _distanceInMeters({required Location from, required Location to}) {
+    final double fromLatitude = _degreesToRadians(from.latitude);
+    final double toLatitude = _degreesToRadians(to.latitude);
+    final double latitudeDelta = _degreesToRadians(to.latitude - from.latitude);
+    final double longitudeDelta = _degreesToRadians(
+      to.longitude - from.longitude,
+    );
+
+    final double haversine =
+        pow(sin(latitudeDelta / 2), 2).toDouble() +
+        cos(fromLatitude) *
+            cos(toLatitude) *
+            pow(sin(longitudeDelta / 2), 2).toDouble();
+
+    return 2 * _earthRadiusInMeters * asin(sqrt(haversine));
+  }
+
+  double _degreesToRadians(double degrees) {
+    return degrees * pi / 180;
   }
 
   void _addSegmentIfValid({
@@ -130,4 +198,14 @@ class ComputeActivitySegments {
         return false;
     }
   }
+}
+
+class _PlaceBoundary {
+  const _PlaceBoundary({
+    required this.arrivalLocation,
+    required this.departureLocation,
+  });
+
+  final Location arrivalLocation;
+  final Location departureLocation;
 }

@@ -38,22 +38,10 @@ class _ActivitySegmentListItem extends StatelessWidget {
 
     return Column(
       children: [
-        _LocationListItem(
-          location: startLocation,
-          onTap: () {
-            context.read<MapAnimationCubit>().animateToLocation(startLocation);
-          },
-        ),
         _ActivitySegmentConnector(
           activityType: activityType,
           distance: distance,
           duration: duration,
-        ),
-        _LocationListItem(
-          location: endLocation,
-          onTap: () {
-            context.read<MapAnimationCubit>().animateToLocation(endLocation);
-          },
         ),
       ],
     );

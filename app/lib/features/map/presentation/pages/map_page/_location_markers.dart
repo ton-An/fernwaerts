@@ -4,11 +4,11 @@ part of 'map_page.dart';
 /// The marker and polyline layer for the [MapPage].
 ///
 /// It renders the full raw location path as polylines and highlights selected
-/// segment endpoints with markers.
+/// inferred place boundary points with markers.
 ///
-/// The marker color is interpolated across the timeline gradient and each
-/// marker, except the final point or points that are nearly identical, gets a
-/// direction arrow toward the next point.
+/// The marker color is interpolated across the timeline gradient. Direction
+/// arrows are rendered separately for meaningful path movement, with a fallback
+/// cadence so long dense paths still show direction.
 /// {@endtemplate}
 class _LocationMarkers extends StatelessWidget {
   /// {@macro location_markers}
@@ -17,14 +17,21 @@ class _LocationMarkers extends StatelessWidget {
     required this.pathPoints,
   });
 
-  final List<_SegmentEndpointMarker> markerPoints;
+  final List<_LocationMarkerPoint> markerPoints;
   final List<LatLng> pathPoints;
+
+  static const double _directionArrowDistanceThresholdInMeters = 50;
+  static const int _maxLocationsBetweenDirectionArrows = 10;
+  static const int _minimumDirectionDistanceInMeters = 5;
 
   @override
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
     final List<Marker> markers = _generateMarkers(
+      gradientColors: theme.colors.timelineGradient,
+    );
+    final List<Marker> arrowMarkers = _generateDirectionArrowMarkers(
       gradientColors: theme.colors.timelineGradient,
     );
     final List<Polyline> polylines = _generatePolylines(
@@ -34,7 +41,7 @@ class _LocationMarkers extends StatelessWidget {
     return Stack(
       children: [
         PolylineLayer(polylines: polylines),
-        MarkerLayer(markers: markers),
+        MarkerLayer(markers: [...arrowMarkers, ...markers]),
       ],
     );
   }
@@ -43,63 +50,79 @@ class _LocationMarkers extends StatelessWidget {
   List<Marker> _generateMarkers({required List<Color> gradientColors}) {
     final List<Marker> markers = [];
 
-    for (int i = 0; i < markerPoints.length; i++) {
-      final _SegmentEndpointMarker markerPoint = markerPoints[i];
+    for (final _LocationMarkerPoint markerPoint in markerPoints) {
+      final int pathIndex = _pathIndexForPoint(markerPoint.point);
 
-      double? arrowRotation;
-      Offset? arrowOffset;
-
-      final LatLng? nextPathPoint = _getNextPathPoint(markerPoint.point);
-
-      if (nextPathPoint != null) {
-        arrowRotation = _calculateAngleToNextPoint(
-          point: markerPoint.point,
-          nextPoint: nextPathPoint,
-        );
-
-        arrowOffset = Offset.fromDirection(arrowRotation - pi / 2, 20);
+      if (pathIndex < 0) {
+        continue;
       }
 
       final Color markerColor = _interpolateColors(
         gradientColors,
-        i / markerPoints.length,
+        pathIndex / pathPoints.length,
       );
 
-      final bool isNextPointIdentical =
-          nextPathPoint == null
-              ? true
-              : _isNextPointIdentical(
-                point: markerPoint.point,
-                nextPoint: nextPathPoint,
-              );
-
       markers.add(
-        _SingleLocationMarker(
-          point: markerPoint.point,
-          arrowOffset: arrowOffset,
-          arrowRotation: arrowRotation,
-          color: markerColor,
-          displayArrow: !isNextPointIdentical,
-          type: markerPoint.type,
-        ),
+        _SingleLocationMarker(point: markerPoint.point, color: markerColor),
       );
     }
 
     return markers;
   }
 
-  LatLng? _getNextPathPoint(LatLng markerPoint) {
-    final int pathIndex = pathPoints.indexWhere(
+  int _pathIndexForPoint(LatLng point) {
+    return pathPoints.indexWhere(
       (LatLng pathPoint) =>
-          pathPoint.latitude == markerPoint.latitude &&
-          pathPoint.longitude == markerPoint.longitude,
+          pathPoint.latitude == point.latitude &&
+          pathPoint.longitude == point.longitude,
     );
+  }
 
-    if (pathIndex < 0 || pathIndex >= pathPoints.length - 1) {
-      return null;
+  List<Marker> _generateDirectionArrowMarkers({
+    required List<Color> gradientColors,
+  }) {
+    final List<Marker> arrows = [];
+    int lastArrowIndex = 0;
+
+    for (int i = 0; i < pathPoints.length - 1; i++) {
+      final LatLng point = pathPoints[i];
+      final LatLng nextPoint = pathPoints[i + 1];
+      final double distanceToNextPoint = _distanceInMeters(
+        point: point,
+        nextPoint: nextPoint,
+      );
+
+      if (distanceToNextPoint < _minimumDirectionDistanceInMeters) {
+        continue;
+      }
+
+      final bool exceedsDistanceThreshold =
+          distanceToNextPoint > _directionArrowDistanceThresholdInMeters;
+      final bool reachedFallbackCadence =
+          i - lastArrowIndex >= _maxLocationsBetweenDirectionArrows;
+
+      if (!exceedsDistanceThreshold && !reachedFallbackCadence) {
+        continue;
+      }
+
+      final Color arrowColor = _directionArrowColor(
+        _interpolateColors(gradientColors, i / pathPoints.length),
+      );
+
+      arrows.add(
+        _DirectionArrowMarker(
+          point: point,
+          rotation: _calculateAngleToNextPoint(
+            point: point,
+            nextPoint: nextPoint,
+          ),
+          color: arrowColor,
+        ),
+      );
+      lastArrowIndex = i;
     }
 
-    return pathPoints[pathIndex + 1];
+    return arrows;
   }
 
   /// Builds the raw location path for the current [pathPoints].
@@ -144,22 +167,10 @@ class _LocationMarkers extends StatelessWidget {
     return (bearingRad + 2 * pi) % (2 * pi);
   }
 
-  /// Whether [nextPoint] is close enough to [point] to hide the direction arrow.
-  bool _isNextPointIdentical({
-    required LatLng point,
-    required LatLng nextPoint,
-  }) {
+  double _distanceInMeters({required LatLng point, required LatLng nextPoint}) {
     const Distance distanceUtils = Distance();
 
-    final double distance = distanceUtils.as(
-      LengthUnit.Meter,
-      point,
-      nextPoint,
-    );
-
-    const int minDistanceInMeters = 5;
-
-    return distance < minDistanceInMeters;
+    return distanceUtils.as(LengthUnit.Meter, point, nextPoint);
   }
 
   /// Interpolates the timeline marker color for position [t].
@@ -180,11 +191,8 @@ class _LocationMarkers extends StatelessWidget {
   }
 }
 
-class _SegmentEndpointMarker {
-  const _SegmentEndpointMarker({required this.point, required this.type});
+class _LocationMarkerPoint {
+  const _LocationMarkerPoint({required this.point});
 
   final LatLng point;
-  final _SegmentEndpointMarkerType type;
 }
-
-enum _SegmentEndpointMarkerType { start, end }
