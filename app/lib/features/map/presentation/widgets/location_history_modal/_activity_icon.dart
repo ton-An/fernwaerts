@@ -19,12 +19,15 @@ class _ActivityIcon extends StatelessWidget {
     switch (type) {
       case ActivityType.running:
         return Icons.directions_run;
-      case ActivityType.cycling:
+      case ActivityType.onBicycle:
         return Icons.directions_bike_rounded;
-      case ActivityType.walking:
-        return Icons.directions_walk;
-      case ActivityType.driving:
+      case ActivityType.inVehicle:
         return Icons.directions_car;
+      case ActivityType.walking:
+      case ActivityType.onFoot:
+      case ActivityType.still:
+      case ActivityType.unknown:
+        return Icons.directions_walk;
     }
   }
 }

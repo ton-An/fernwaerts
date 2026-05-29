@@ -13,8 +13,8 @@ enum PlaceType { groceryStore, restaurant, park, museum, other }
 ///
 /// A [Place] represents a visit on the map timeline. It has one representative
 /// coordinate for marker placement and an [Address] for human-readable context.
-/// It is a [LocationHistoryItem] so it can be rendered alongside movement
-/// [Activity] entries in one chronological history.
+/// It is a [LocationHistoryItem] so it can be rendered alongside other timeline
+/// entries in one chronological history.
 /// {@endtemplate}
 @freezed
 sealed class Place extends LocationHistoryItem with _$Place {

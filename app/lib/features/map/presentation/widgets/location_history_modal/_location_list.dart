@@ -16,87 +16,62 @@ class _LocationList extends StatelessWidget {
       bottomOptions: const EdgeFadeOptions(enabled: false),
       child: BlocBuilder<MapCubit, MapState>(
         builder: (BuildContext context, MapState state) {
-          if (state is MapLocationsLoaded) {
-            if (state.activitySegments.isEmpty) {
-              return _EmptyList(
-                scrollController: scrollController,
-                message: 'No activity segments',
-              );
-            }
-
-            final Map<String, Location> locationsById = {
-              for (final Location location in state.locations)
-                location.id: location,
-            };
-
-            return ListView.builder(
-              padding: EdgeInsets.all(theme.spacing.xMedium),
-              shrinkWrap: true,
-              itemCount: state.activitySegments.length * 2 + 1,
-              controller: scrollController,
-              itemBuilder: (context, index) {
-                final bool isLocationRow = index.isEven;
-
-                if (isLocationRow) {
-                  final int segmentIndex = index ~/ 2;
-                  final String? locationId = _locationIdForTimelinePlace(
-                    activitySegments: state.activitySegments,
-                    segmentIndex: segmentIndex,
-                  );
-                  final Location? location = locationsById[locationId];
-
-                  if (location == null) {
-                    return const SizedBox.shrink();
-                  }
-
-                  return _LocationListItem(
-                    location: location,
-                    onTap: () {
-                      context.read<MapAnimationCubit>().animateToLocation(
-                        location,
-                      );
-                    },
-                  );
-                }
-
-                final int segmentIndex = index ~/ 2;
-
-                return _ActivitySegmentListItem(
-                  activitySegment: state.activitySegments[segmentIndex],
-                  locationsById: locationsById,
-                );
-              },
-            );
+          if (state is! MapLocationsLoaded || state.activitySegments.isEmpty) {
+            return _EmptyList(scrollController: scrollController);
           }
 
           return ListView(
             padding: EdgeInsets.all(theme.spacing.xMedium),
             shrinkWrap: true,
             controller: scrollController,
-            children: const [],
+            children: _timelineRows(context, state),
           );
         },
       ),
     );
   }
 
-  String? _locationIdForTimelinePlace({
-    required List<ActivitySegment> activitySegments,
-    required int segmentIndex,
-  }) {
-    if (segmentIndex == 0) {
-      return activitySegments.first.startLocationId;
+  /// Builds the alternating place / activity-segment rows for the timeline.
+  List<Widget> _timelineRows(BuildContext context, MapLocationsLoaded state) {
+    final Map<String, Location> locationsById = {
+      for (final Location location in state.locations) location.id: location,
+    };
+    final List<String> boundaryLocationIds =
+        state.activitySegments.boundaryLocationIds;
+
+    final List<Widget> rows = [];
+    for (int i = 0; i < boundaryLocationIds.length; i++) {
+      final Location? location = locationsById[boundaryLocationIds[i]];
+      if (location != null) {
+        rows.add(
+          _LocationListItem(
+            location: location,
+            onTap:
+                () => context.read<MapAnimationCubit>().animateToLocation(
+                  location,
+                ),
+          ),
+        );
+      }
+
+      if (i < state.activitySegments.length) {
+        rows.add(
+          _ActivitySegmentListItem(
+            activitySegment: state.activitySegments[i],
+            locationsById: locationsById,
+          ),
+        );
+      }
     }
 
-    return activitySegments[segmentIndex - 1].endLocationId;
+    return rows;
   }
 }
 
 class _EmptyList extends StatelessWidget {
-  const _EmptyList({required this.scrollController, required this.message});
+  const _EmptyList({required this.scrollController});
 
   final ScrollController scrollController;
-  final String message;
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +83,7 @@ class _EmptyList extends StatelessWidget {
       children: [
         Center(
           child: Text(
-            message,
+            AppLocalizations.of(context)!.noData,
             style: theme.text.title3.copyWith(
               fontWeight: FontWeight.w700,
               color: theme.colors.text.withValues(alpha: .4),

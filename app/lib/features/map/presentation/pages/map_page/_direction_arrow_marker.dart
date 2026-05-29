@@ -1,39 +1,5 @@
 part of 'map_page.dart';
 
-/// {@template single_location_marker}
-/// A circular timeline marker for an inferred location or place point.
-/// {@endtemplate}
-class _SingleLocationMarker extends Marker {
-  /// {@macro single_location_marker}
-  _SingleLocationMarker({required super.point, required Color color})
-    : super(
-        width: 38,
-        height: 38,
-        child: Center(
-          child: Container(
-            width: 30,
-            height: 30,
-            decoration: BoxDecoration(
-              color: color,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: color.withValues(alpha: .22),
-                  blurRadius: 0,
-                  spreadRadius: 6,
-                ),
-              ],
-            ),
-            child: Icon(
-              Icons.place,
-              size: 19,
-              color: Colors.white.withValues(alpha: .92),
-            ),
-          ),
-        ),
-      );
-}
-
 /// {@template direction_arrow_marker}
 /// Direction-only path marker for sampled raw location points.
 /// {@endtemplate}
@@ -44,22 +10,33 @@ class _DirectionArrowMarker extends Marker {
     required double rotation,
     required Color color,
   }) : super(
-         width: 30,
-         height: 30,
+         width: _markerSize,
+         height: _markerSize,
          child: Center(
            child: Transform.rotate(
              angle: rotation,
              child: CustomPaint(
-               size: const Size(24, 26),
-               painter: _DirectionArrowPainter(color: color),
+               size: const Size(_arrowWidth, _arrowHeight),
+               painter: _DirectionArrowShapePainter(color: color),
              ),
            ),
          ),
        );
+
+  static const double _markerSize = 30;
+  static const double _arrowWidth = 24;
+  static const double _arrowHeight = 26;
 }
 
-class _DirectionArrowPainter extends CustomPainter {
-  const _DirectionArrowPainter({required this.color});
+class _DirectionArrowShapePainter extends CustomPainter {
+  const _DirectionArrowShapePainter({required this.color});
+
+  static const double _tipYFraction = .08;
+  static const double _baseYFraction = .86;
+  static const double _baseXInset = .16;
+  static const double _cornerRadius = 2.5;
+  static const double _shadowOpacity = .22;
+  static const double _shadowElevation = 2;
 
   final Color color;
 
@@ -67,7 +44,12 @@ class _DirectionArrowPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final ui.Path arrow = _roundedTrianglePath(size);
 
-    canvas.drawShadow(arrow, Colors.black.withValues(alpha: .22), 2, true);
+    canvas.drawShadow(
+      arrow,
+      Colors.black.withValues(alpha: _shadowOpacity),
+      _shadowElevation,
+      true,
+    );
 
     final Paint fillPaint =
         Paint()
@@ -79,11 +61,10 @@ class _DirectionArrowPainter extends CustomPainter {
 
   ui.Path _roundedTrianglePath(Size size) {
     final List<Offset> points = [
-      Offset(size.width / 2, size.height * .08),
-      Offset(size.width * .84, size.height * .86),
-      Offset(size.width * .16, size.height * .86),
+      Offset(size.width / 2, size.height * _tipYFraction),
+      Offset(size.width * (1 - _baseXInset), size.height * _baseYFraction),
+      Offset(size.width * _baseXInset, size.height * _baseYFraction),
     ];
-    const double radius = 2.5;
 
     final ui.Path path = ui.Path();
 
@@ -94,9 +75,13 @@ class _DirectionArrowPainter extends CustomPainter {
       final Offset start = _pointTowards(
         from: point,
         to: previous,
-        distance: radius,
+        distance: _cornerRadius,
       );
-      final Offset end = _pointTowards(from: point, to: next, distance: radius);
+      final Offset end = _pointTowards(
+        from: point,
+        to: next,
+        distance: _cornerRadius,
+      );
 
       if (i == 0) {
         path.moveTo(start.dx, start.dy);
@@ -125,17 +110,17 @@ class _DirectionArrowPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_DirectionArrowPainter oldDelegate) {
+  bool shouldRepaint(_DirectionArrowShapePainter oldDelegate) {
     return oldDelegate.color != color;
   }
 }
 
-Color _directionArrowColor(Color color) {
-  final HSLColor hslColor = HSLColor.fromColor(color);
-
+Color _directionArrowMarkerColor(Color color) {
+  const double darkLightnessThreshold = .5;
   const double lightnessChangeAmount = .15;
 
-  final bool isDark = hslColor.lightness < 0.5;
+  final HSLColor hslColor = HSLColor.fromColor(color);
+  final bool isDark = hslColor.lightness < darkLightnessThreshold;
   final double adjustedLightness = (isDark
           ? hslColor.lightness + lightnessChangeAmount
           : hslColor.lightness - lightnessChangeAmount)

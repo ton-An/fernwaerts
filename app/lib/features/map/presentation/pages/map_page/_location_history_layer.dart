@@ -1,7 +1,12 @@
 part of 'map_page.dart';
 
-/// {@template location_markers}
-/// The marker and polyline layer for the [MapPage].
+/* 
+  To-Do:
+    - [ ] Tune arrow offset and rotation accuracy over long distances
+*/
+
+/// {@template location_history_layer}
+/// The path, direction, and place marker layer for the [MapPage].
 ///
 /// It renders the full raw location path as polylines and highlights selected
 /// inferred place boundary points with markers.
@@ -10,25 +15,27 @@ part of 'map_page.dart';
 /// arrows are rendered separately for meaningful path movement, with a fallback
 /// cadence so long dense paths still show direction.
 /// {@endtemplate}
-class _LocationMarkers extends StatelessWidget {
-  /// {@macro location_markers}
-  const _LocationMarkers({
-    required this.markerPoints,
+class _LocationHistoryLayer extends StatelessWidget {
+  /// {@macro location_history_layer}
+  const _LocationHistoryLayer({
+    required this.placeMarkers,
     required this.pathPoints,
   });
 
-  final List<_LocationMarkerPoint> markerPoints;
-  final List<LatLng> pathPoints;
-
   static const double _directionArrowDistanceThresholdInMeters = 50;
   static const int _maxLocationsBetweenDirectionArrows = 10;
-  static const int _minimumDirectionDistanceInMeters = 5;
+  static const double _minimumDirectionDistanceInMeters = 5;
+  static const double _pathStrokeWidth = 14;
+  static const double _pathOpacity = .6;
+
+  final List<_PlaceTimelineMarker> placeMarkers;
+  final List<LatLng> pathPoints;
 
   @override
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    final List<Marker> markers = _generateMarkers(
+    final List<Marker> placeMarkerWidgets = _generatePlaceMarkers(
       gradientColors: theme.colors.timelineGradient,
     );
     final List<Marker> arrowMarkers = _generateDirectionArrowMarkers(
@@ -41,41 +48,20 @@ class _LocationMarkers extends StatelessWidget {
     return Stack(
       children: [
         PolylineLayer(polylines: polylines),
-        MarkerLayer(markers: [...arrowMarkers, ...markers]),
+        MarkerLayer(markers: [...arrowMarkers, ...placeMarkerWidgets]),
       ],
     );
   }
 
-  /// Builds highlighted markers for the current [markerPoints].
-  List<Marker> _generateMarkers({required List<Color> gradientColors}) {
-    final List<Marker> markers = [];
-
-    for (final _LocationMarkerPoint markerPoint in markerPoints) {
-      final int pathIndex = _pathIndexForPoint(markerPoint.point);
-
-      if (pathIndex < 0) {
-        continue;
-      }
-
-      final Color markerColor = _interpolateColors(
-        gradientColors,
-        pathIndex / pathPoints.length,
-      );
-
-      markers.add(
-        _SingleLocationMarker(point: markerPoint.point, color: markerColor),
-      );
-    }
-
-    return markers;
-  }
-
-  int _pathIndexForPoint(LatLng point) {
-    return pathPoints.indexWhere(
-      (LatLng pathPoint) =>
-          pathPoint.latitude == point.latitude &&
-          pathPoint.longitude == point.longitude,
-    );
+  /// Builds highlighted markers for the current [placeMarkers].
+  List<Marker> _generatePlaceMarkers({required List<Color> gradientColors}) {
+    return [
+      for (final _PlaceTimelineMarker placeMarker in placeMarkers)
+        _PlaceMarker(
+          point: placeMarker.point,
+          color: _timelineColor(gradientColors, placeMarker.timelinePosition),
+        ),
+    ];
   }
 
   List<Marker> _generateDirectionArrowMarkers({
@@ -105,8 +91,8 @@ class _LocationMarkers extends StatelessWidget {
         continue;
       }
 
-      final Color arrowColor = _directionArrowColor(
-        _interpolateColors(gradientColors, i / pathPoints.length),
+      final Color arrowColor = _directionArrowMarkerColor(
+        _timelineColor(gradientColors, i / pathPoints.length),
       );
 
       arrows.add(
@@ -129,22 +115,19 @@ class _LocationMarkers extends StatelessWidget {
   List<Polyline> _generatePolylines({required List<Color> gradientColors}) {
     final List<Polyline> polylines = [];
 
-    for (int i = 0; i < pathPoints.length; i++) {
-      final bool isLastPoint = i == pathPoints.length - 1;
-      if (!isLastPoint) {
-        final Color pathColor = _interpolateColors(
-          gradientColors,
-          i / pathPoints.length,
-        );
+    for (int i = 0; i < pathPoints.length - 1; i++) {
+      final Color pathColor = _timelineColor(
+        gradientColors,
+        i / pathPoints.length,
+      );
 
-        polylines.add(
-          Polyline(
-            points: [pathPoints[i], pathPoints[i + 1]],
-            color: pathColor.withValues(alpha: .6),
-            strokeWidth: 14,
-          ),
-        );
-      }
+      polylines.add(
+        Polyline(
+          points: [pathPoints[i], pathPoints[i + 1]],
+          color: pathColor.withValues(alpha: _pathOpacity),
+          strokeWidth: _pathStrokeWidth,
+        ),
+      );
     }
 
     return polylines;
@@ -173,8 +156,8 @@ class _LocationMarkers extends StatelessWidget {
     return distanceUtils.as(LengthUnit.Meter, point, nextPoint);
   }
 
-  /// Interpolates the timeline marker color for position [t].
-  Color _interpolateColors(List<Color> colors, double t) {
+  /// Interpolates the timeline color for position [t].
+  Color _timelineColor(List<Color> colors, double t) {
     if (colors.length == 1 || t <= 0) return colors.first;
     if (t >= 1) return colors.last;
 
@@ -191,8 +174,6 @@ class _LocationMarkers extends StatelessWidget {
   }
 }
 
-class _LocationMarkerPoint {
-  const _LocationMarkerPoint({required this.point});
-
-  final LatLng point;
-}
+/// A place marker paired with its fractional position along the timeline
+/// gradient, in the range 0 to 1.
+typedef _PlaceTimelineMarker = ({LatLng point, double timelinePosition});

@@ -190,6 +190,12 @@ abstract class AppLocalizations {
   /// **'Your History'**
   String get yourHistory;
 
+  /// No description provided for @noData.
+  ///
+  /// In en, this message translates to:
+  /// **'No Data'**
+  String get noData;
+
   /// No description provided for @serverDetails.
   ///
   /// In en, this message translates to:

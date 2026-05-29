@@ -1,16 +1,11 @@
 part of 'map_page.dart';
 
-/* 
-  To-Do:
-    - [ ] Tune arrow offset and rotation accuracy over long distances
-*/
-
 /// {@template map_page_map}
 /// The core map component of the [MapPage].
 ///
 /// It renders OpenStreetMap tiles, listens to [MapCubit], converts loaded
 /// locations into map coordinates, and delegates marker rendering to
-/// [_LocationMarkers].
+/// [_LocationHistoryLayer].
 /// {@endtemplate}
 class _Map extends StatefulWidget {
   /// {@macro map_page_map}
@@ -21,17 +16,16 @@ class _Map extends StatefulWidget {
 }
 
 class _MapState extends State<_Map> with SingleTickerProviderStateMixin {
+  static const double _minFocusZoom = 12;
+
   late final MapController _mapController;
   late final AnimationController _mapAnimationController;
 
-  String? appPackageName;
+  String? _appPackageName;
 
   List<LatLng> _pathPoints = [];
-  List<_LocationMarkerPoint> _markerPoints = [];
-  LatLng? _animationStartCenter;
-  LatLng? _animationTarget;
-  double? _animationStartZoom;
-  double? _animationTargetZoom;
+  List<_PlaceTimelineMarker> _placeMarkers = [];
+  _CameraAnimation? _cameraAnimation;
 
   @override
   void initState() {
@@ -69,11 +63,11 @@ class _MapState extends State<_Map> with SingleTickerProviderStateMixin {
         children: [
           TileLayer(
             urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            userAgentPackageName: appPackageName ?? 'location_history',
+            userAgentPackageName: _appPackageName ?? 'location_history',
           ),
 
-          _LocationMarkers(
-            markerPoints: _markerPoints,
+          _LocationHistoryLayer(
+            placeMarkers: _placeMarkers,
             pathPoints: _pathPoints,
           ),
         ],
@@ -83,30 +77,26 @@ class _MapState extends State<_Map> with SingleTickerProviderStateMixin {
 
   /// Loads the package name used by the OpenStreetMap tile user agent.
   Future<void> _setAppPackageName() async {
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
-    appPackageName = packageInfo.packageName;
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _appPackageName = packageInfo.packageName;
+    });
   }
 
   /// Updates displayed points or forwards map-loading failures to notifications.
   void _mapCubitListener(BuildContext context, MapState mapState) {
     if (mapState is MapLocationsLoaded) {
-      final Map<String, Location> locationsById = {
-        for (final Location location in mapState.locations)
-          location.id: location,
-      };
-      final List<LatLng> pathPoints = [
-        for (final Location location in mapState.locations)
-          LatLng(location.latitude, location.longitude),
-      ];
-      final List<_LocationMarkerPoint> markerPoints = _timelineMarkerPoints(
-        activitySegments: mapState.activitySegments,
-        locationsById: locationsById,
-      );
-
       setState(() {
-        _pathPoints = pathPoints;
-        _markerPoints = markerPoints;
+        _pathPoints = _pathPointsFrom(mapState.locations);
+        _placeMarkers = _placeTimelineMarkers(
+          activitySegments: mapState.activitySegments,
+          locations: mapState.locations,
+        );
       });
     }
 
@@ -117,46 +107,42 @@ class _MapState extends State<_Map> with SingleTickerProviderStateMixin {
     }
   }
 
-  List<_LocationMarkerPoint> _timelineMarkerPoints({
-    required List<ActivitySegment> activitySegments,
-    required Map<String, Location> locationsById,
-  }) {
-    final List<_LocationMarkerPoint> markerPoints = [];
+  List<LatLng> _pathPointsFrom(List<Location> locations) {
+    return [
+      for (final Location location in locations)
+        LatLng(location.latitude, location.longitude),
+    ];
+  }
 
-    if (activitySegments.isEmpty) {
-      return markerPoints;
+  /// Builds a marker for each inferred place, colored by its position along the
+  /// timeline gradient.
+  List<_PlaceTimelineMarker> _placeTimelineMarkers({
+    required List<ActivitySegment> activitySegments,
+    required List<Location> locations,
+  }) {
+    if (activitySegments.isEmpty || locations.isEmpty) {
+      return [];
     }
 
-    for (int i = 0; i <= activitySegments.length; i++) {
-      final Location? location =
-          locationsById[_locationIdForTimelinePlace(
-            activitySegments: activitySegments,
-            segmentIndex: i,
-          )];
+    final Map<String, int> indexById = {
+      for (int i = 0; i < locations.length; i++) locations[i].id: i,
+    };
 
-      if (location == null) {
+    final List<_PlaceTimelineMarker> placeMarkers = [];
+    for (final String locationId in activitySegments.boundaryLocationIds) {
+      final int? index = indexById[locationId];
+      if (index == null) {
         continue;
       }
 
-      markerPoints.add(
-        _LocationMarkerPoint(
-          point: LatLng(location.latitude, location.longitude),
-        ),
-      );
+      final Location location = locations[index];
+      placeMarkers.add((
+        point: LatLng(location.latitude, location.longitude),
+        timelinePosition: index / locations.length,
+      ));
     }
 
-    return markerPoints;
-  }
-
-  String? _locationIdForTimelinePlace({
-    required List<ActivitySegment> activitySegments,
-    required int segmentIndex,
-  }) {
-    if (segmentIndex == 0) {
-      return activitySegments.first.startLocationId;
-    }
-
-    return activitySegments[segmentIndex - 1].endLocationId;
+    return placeMarkers;
   }
 
   void _mapAnimationCubitListener(
@@ -175,41 +161,52 @@ class _MapState extends State<_Map> with SingleTickerProviderStateMixin {
     required Location location,
     required WebfabrikThemeData theme,
   }) {
-    final LatLng target = LatLng(location.latitude, location.longitude);
     final double startZoom = _mapController.camera.zoom;
 
-    _animationStartCenter = _mapController.camera.center;
-    _animationTarget = target;
-    _animationStartZoom = startZoom;
-    _animationTargetZoom = startZoom < 12 ? 12 : startZoom;
+    _cameraAnimation = _CameraAnimation(
+      start: _mapController.camera.center,
+      end: LatLng(location.latitude, location.longitude),
+      startZoom: startZoom,
+      endZoom: math.max(startZoom, _minFocusZoom),
+    );
 
     _mapAnimationController.duration = theme.durations.medium;
     _mapAnimationController.forward(from: 0);
   }
 
   void _moveMapWithAnimation() {
-    final LatLng? startCenter = _animationStartCenter;
-    final LatLng? target = _animationTarget;
-    final double? startZoom = _animationStartZoom;
-    final double? targetZoom = _animationTargetZoom;
+    final _CameraAnimation? animation = _cameraAnimation;
 
-    if (startCenter == null ||
-        target == null ||
-        startZoom == null ||
-        targetZoom == null) {
+    if (animation == null) {
       return;
     }
 
-    final double value = Curves.easeInOut.transform(
-      _mapAnimationController.value,
-    );
-    final double latitude =
-        startCenter.latitude + (target.latitude - startCenter.latitude) * value;
-    final double longitude =
-        startCenter.longitude +
-        (target.longitude - startCenter.longitude) * value;
-    final double zoom = startZoom + (targetZoom - startZoom) * value;
+    final double t = Curves.easeInOut.transform(_mapAnimationController.value);
 
-    _mapController.move(LatLng(latitude, longitude), zoom);
+    _mapController.move(animation.centerAt(t), animation.zoomAt(t));
   }
+}
+
+/// Linear interpolation between two map camera positions.
+class _CameraAnimation {
+  const _CameraAnimation({
+    required this.start,
+    required this.end,
+    required this.startZoom,
+    required this.endZoom,
+  });
+
+  final LatLng start;
+  final LatLng end;
+  final double startZoom;
+  final double endZoom;
+
+  LatLng centerAt(double t) {
+    return LatLng(
+      start.latitude + (end.latitude - start.latitude) * t,
+      start.longitude + (end.longitude - start.longitude) * t,
+    );
+  }
+
+  double zoomAt(double t) => startZoom + (endZoom - startZoom) * t;
 }

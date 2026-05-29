@@ -3,25 +3,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/core/misc/number_formatter.dart';
 import 'package:location_history/core/misc/time_date_formatter.dart';
 import 'package:location_history/core/widgets/fade_tap_detector.dart';
-import 'package:location_history/features/location_tracking/domain/enums/activity_type.dart'
-    as tracking;
+import 'package:location_history/features/location_tracking/domain/enums/activity_type.dart';
 import 'package:location_history/features/location_tracking/domain/models/activity_segment.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
-import 'package:location_history/features/map/presentation/cubits/map_animation_cubit.dart';
-import 'package:location_history/features/map/domain/models/activity.dart';
 import 'package:location_history/features/map/domain/models/place.dart';
+import 'package:location_history/features/map/presentation/cubits/map_animation_cubit.dart';
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
 import 'package:location_history/features/map/presentation/cubits/map_state.dart';
 import 'package:location_history/features/settings/presentation/pages/main_settings_page/main_settings_page.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_activity_icon.dart';
-part '_activity_list_item.dart';
 part '_activity_segment_list_item.dart';
 part '_dotted_history_line.dart';
 part '_header.dart';
@@ -30,7 +27,6 @@ part '_location_list_item.dart';
 part '_modal_handle.dart';
 part '_place_icon.dart';
 part '_place_list_item.dart';
-part '_vertical_list_item_divider.dart';
 
 /* To-Do:
     - [ ] Factor in velocity of drag to determine if a drag was significant

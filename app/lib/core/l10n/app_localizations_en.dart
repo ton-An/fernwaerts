@@ -58,6 +58,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get yourHistory => 'Your History';
 
   @override
+  String get noData => 'No Data';
+
+  @override
   String get serverDetails => 'Server Details';
 
   @override

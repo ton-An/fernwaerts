@@ -15,6 +15,7 @@
     "admin": "Admin",
     "settings": "Settings",
     "yourHistory": "Your History",
+    "noData": "No Data",
     "serverDetails": "Server Details",
     "serverDetailsDescription": "Enter the URL of your server",
     "serverDetailsHint": "It should look like this: https://example.com",

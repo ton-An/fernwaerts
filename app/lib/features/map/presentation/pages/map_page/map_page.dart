@@ -24,11 +24,12 @@ import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_attribution_legend.dart';
+part '_direction_arrow_marker.dart';
 part '_legend_container.dart';
-part '_location_markers.dart';
+part '_location_history_layer.dart';
 part '_map.dart';
 part '_modal.dart';
-part '_single_location_marker.dart';
+part '_place_marker.dart';
 part '_time_gradient_legend.dart';
 
 /// {@template map_page}
