@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart';
+import 'package:location_history/core/drift/activity_type_sql_converter.dart';
 import 'package:location_history/features/authentication/domain/enums/operating_system.dart';
 import 'package:location_history/features/authentication/domain/models/device.dart';
 import 'package:location_history/features/authentication/domain/models/user.dart';

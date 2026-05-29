@@ -18,9 +18,9 @@ class _ActivityIcon extends StatelessWidget {
   IconData getIcon(ActivityType type) {
     switch (type) {
       case ActivityType.running:
-        return Icons.run_circle;
+        return Icons.directions_run;
       case ActivityType.cycling:
-        return Icons.pedal_bike;
+        return Icons.directions_bike_rounded;
       case ActivityType.walking:
         return Icons.directions_walk;
       case ActivityType.driving:

@@ -31,6 +31,8 @@ class MapCubit extends Cubit<MapState> {
   final ComputeActivitySegments computeActivitySegmentsUseCase;
 
   StreamSubscription? locationsStreamSubscription;
+  int _locationLoadGeneration = 0;
+  int _locationEmissionGeneration = 0;
 
   /// Loads the locations whose timestamps fall within [start] and [end].
   ///
@@ -46,6 +48,7 @@ class MapCubit extends Cubit<MapState> {
     required DateTime end,
   }) async {
     locationsStreamSubscription?.cancel();
+    final int loadGeneration = ++_locationLoadGeneration;
 
     final Stream<Either<Failure, List<Location>>> locationsEitherStream =
         getLocationData(start: start, end: end);
@@ -55,11 +58,35 @@ class MapCubit extends Cubit<MapState> {
     ) {
       locationsEither.fold(
         (Failure failure) => emit(MapLocationsError(failure: failure)),
-        (List<Location> locations) {
-          emit(MapLocationsLoaded(locations: locations));
-        },
+        (List<Location> locations) => _computeAndEmitLoadedLocations(
+          locations: locations,
+          loadGeneration: loadGeneration,
+          emissionGeneration: ++_locationEmissionGeneration,
+        ),
       );
     });
+  }
+
+  Future<void> _computeAndEmitLoadedLocations({
+    required List<Location> locations,
+    required int loadGeneration,
+    required int emissionGeneration,
+  }) async {
+    final List<ActivitySegment> activitySegments =
+        await computeActivitySegmentsUseCase(locations: locations);
+
+    if (loadGeneration != _locationLoadGeneration ||
+        emissionGeneration != _locationEmissionGeneration) {
+      return;
+    }
+
+    emit(
+      MapLocationsLoaded(
+        locations: locations,
+        activitySegments: activitySegments,
+        showActivitySegments: true,
+      ),
+    );
   }
 
   /// Computes activity segments for the currently loaded locations.

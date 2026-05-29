@@ -7,6 +7,8 @@ import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/core/misc/number_formatter.dart';
 import 'package:location_history/core/misc/time_date_formatter.dart';
 import 'package:location_history/core/widgets/fade_tap_detector.dart';
+import 'package:location_history/features/location_tracking/domain/enums/activity_type.dart'
+    as tracking;
 import 'package:location_history/features/location_tracking/domain/models/activity_segment.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
 import 'package:location_history/features/map/presentation/cubits/map_animation_cubit.dart';

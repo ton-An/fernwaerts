@@ -28,13 +28,6 @@ class _Header extends StatelessWidget {
           Row(
             children: [
               SmallIconButton(
-                icon: CupertinoIcons.arrow_2_circlepath,
-                onPressed: () {
-                  context.read<MapCubit>().computeActivitySegments();
-                },
-              ),
-              const XXSmallGap(),
-              SmallIconButton(
                 icon: CupertinoIcons.settings,
                 onPressed: () {
                   context.go(MainSettingsPage.route);

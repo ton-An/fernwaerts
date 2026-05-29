@@ -5,5 +5,5 @@ class ActivityTypes extends Table {
   @override
   String get tableName => 'activity_types';
 
-  TextColumn get id => textEnum<ActivityType>()();
+  TextColumn get id => text().map(const ActivityTypeSqlConverter())();
 }
