@@ -26,12 +26,10 @@ class MapLocationsLoaded extends MapState {
   const MapLocationsLoaded({
     required this.locations,
     this.activitySegments = const [],
-    this.showActivitySegments = false,
   });
 
   final List<Location> locations;
   final List<ActivitySegment> activitySegments;
-  final bool showActivitySegments;
 }
 
 /// {@template map_locations_error}

@@ -264,10 +264,7 @@ void registerLocationTrackingDependencies() {
   // -- Presentation -- //
   getIt.registerFactory(() => MapAnimationCubit());
   getIt.registerFactory(
-    () => MapCubit(
-      getLocationData: getIt(),
-      computeActivitySegmentsUseCase: getIt(),
-    ),
+    () => MapCubit(getLocationData: getIt(), computeActivitySegments: getIt()),
   );
 
   // -- Domain -- //
@@ -286,9 +283,7 @@ void registerLocationTrackingDependencies() {
       locationDataRepository: getIt(),
     ),
   );
-  getIt.registerLazySingleton(
-    () => ComputeActivitySegments(locationDataRepository: getIt()),
-  );
+  getIt.registerLazySingleton(() => const ComputeActivitySegments());
   getIt.registerLazySingleton<LocationTrackingRepository>(
     () => LocationTrackingRepositoryImpl(
       iosLocationTrackingLocalDataSource: getIt(),

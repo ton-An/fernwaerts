@@ -3,69 +3,39 @@ import 'dart:math';
 import 'package:location_history/features/location_tracking/domain/enums/activity_type.dart';
 import 'package:location_history/features/location_tracking/domain/models/activity_segment.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
-import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 
 /// {@template compute_activity_segments}
-/// Computes and persists activity segments from raw location points.
+/// Computes activity segments from raw location points.
 ///
-/// The first implementation derives movement intervals between inferred
-/// stationary place boundaries for the currently loaded locations.
+/// A segment is the movement interval between two inferred stationary places:
+/// it spans from the departure of one place to the arrival at the next, and
+/// carries the dominant activity type recorded across that interval.
+///
+/// Parameters:
+/// - locations: [List] of [Location] points to derive segments from
+///
+/// Returns:
+/// - [List] of [ActivitySegment] values ordered by time
 /// {@endtemplate}
 class ComputeActivitySegments {
   /// {@macro compute_activity_segments}
-  const ComputeActivitySegments({required this.locationDataRepository});
+  const ComputeActivitySegments();
 
   static const double _unknownMovementSpeedThreshold = 1;
   static const Duration _minimumStationaryGap = Duration(minutes: 5);
   static const double _stationaryImpliedSpeedThreshold = 0.5;
   static const double _earthRadiusInMeters = 6371000;
 
-  final LocationDataRepository locationDataRepository;
-
   /// {@macro compute_activity_segments}
-  ///
-  /// Parameters:
-  /// - locations: [List] of [Location] points to derive segments from
-  ///
-  /// Returns:
-  /// - [List] of persisted [ActivitySegment] values
-  ///
-  /// Throws:
-  /// - [ArgumentError] when [locations] contains multiple user IDs
-  Future<List<ActivitySegment>> call({
-    required List<Location> locations,
-  }) async {
+  List<ActivitySegment> call({required List<Location> locations}) {
     if (locations.length < 2) {
       return const [];
     }
 
-    _validateSingleUser(locations);
-
     final List<Location> sortedLocations = List<Location>.from(locations)
       ..sort((a, b) => a.timestamp.compareTo(b.timestamp));
 
-    final List<ActivitySegment> activitySegments = _deriveActivitySegments(
-      sortedLocations,
-    );
-
-    // for (final ActivitySegment activitySegment in activitySegments) {
-    //   await locationDataRepository.saveActivitySegment(
-    //     activitySegment: activitySegment,
-    //   );
-    // }
-
-    return activitySegments;
-  }
-
-  void _validateSingleUser(List<Location> locations) {
-    final String userId = locations.first.userId;
-    final bool hasMixedUsers = locations.any(
-      (Location location) => location.userId != userId,
-    );
-
-    if (hasMixedUsers) {
-      throw ArgumentError('Cannot compute activity segments for mixed users.');
-    }
+    return _deriveActivitySegments(sortedLocations);
   }
 
   List<ActivitySegment> _deriveActivitySegments(List<Location> locations) {
@@ -75,10 +45,24 @@ class ComputeActivitySegments {
     final List<ActivitySegment> activitySegments = [];
 
     for (int i = 0; i < placeBoundaries.length - 1; i++) {
-      _addSegmentIfValid(
-        activitySegments: activitySegments,
-        segmentStart: placeBoundaries[i].departureLocation,
-        segmentEnd: placeBoundaries[i + 1].arrivalLocation,
+      final Location segmentStart = placeBoundaries[i].departureLocation;
+      final Location segmentEnd = placeBoundaries[i + 1].arrivalLocation;
+
+      if (segmentStart.id == segmentEnd.id) {
+        continue;
+      }
+
+      activitySegments.add(
+        ActivitySegment(
+          userId: segmentStart.userId,
+          startLocationId: segmentStart.id,
+          endLocationId: segmentEnd.id,
+          activityType: _dominantActivityType(
+            locations: locations,
+            segmentStart: segmentStart,
+            segmentEnd: segmentEnd,
+          ),
+        ),
       );
     }
 
@@ -166,22 +150,38 @@ class ComputeActivitySegments {
     return degrees * pi / 180;
   }
 
-  void _addSegmentIfValid({
-    required List<ActivitySegment> activitySegments,
+  /// Most frequent moving activity type recorded between [segmentStart] and
+  /// [segmentEnd]. Stationary and unknown samples are ignored, and [walking] is
+  /// used when no moving samples fall in the interval.
+  ActivityType _dominantActivityType({
+    required List<Location> locations,
     required Location segmentStart,
     required Location segmentEnd,
   }) {
-    if (segmentStart.id == segmentEnd.id) {
-      return;
+    final Map<ActivityType, int> counts = {};
+
+    for (final Location location in locations) {
+      if (location.timestamp.isBefore(segmentStart.timestamp) ||
+          location.timestamp.isAfter(segmentEnd.timestamp)) {
+        continue;
+      }
+      if (location.activityType == ActivityType.still ||
+          location.activityType == ActivityType.unknown) {
+        continue;
+      }
+
+      counts.update(
+        location.activityType,
+        (int value) => value + 1,
+        ifAbsent: () => 1,
+      );
     }
 
-    activitySegments.add(
-      ActivitySegment(
-        userId: segmentStart.userId,
-        startLocationId: segmentStart.id,
-        endLocationId: segmentEnd.id,
-      ),
-    );
+    if (counts.isEmpty) {
+      return ActivityType.walking;
+    }
+
+    return counts.entries.reduce((a, b) => a.value >= b.value ? a : b).key;
   }
 
   bool _isMoving(Location location) {
