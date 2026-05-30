@@ -58,7 +58,7 @@ void main() {
       () => mockLocationDataRepository.saveLocation(
         location: any(named: 'location'),
       ),
-    ).thenAnswer((_) async => Future.value());
+    ).thenAnswer((_) async => const Right(None()));
   });
 
   setUpAll(() {

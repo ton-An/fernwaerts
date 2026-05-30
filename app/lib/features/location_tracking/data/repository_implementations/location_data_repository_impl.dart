@@ -1,12 +1,11 @@
+import 'package:fpdart/fpdart.dart';
+import 'package:location_history/core/failures/failure.dart';
+import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/location_tracking/data/datasources/location_data_remote_data_source.dart';
 import 'package:location_history/features/location_tracking/domain/models/activity_segment.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
-
-/*
-  To-Do:
-    - [ ] add failures to methods
-*/
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// {@template location_data_repository_impl}
 /// Data-layer implementation of [LocationDataRepository].
@@ -29,16 +28,30 @@ class LocationDataRepositoryImpl extends LocationDataRepository {
   }
 
   @override
-  Future<void> saveLocation({required Location location}) async {
-    await locationRemoteDataSource.saveLocation(location: location);
+  Future<Either<Failure, None>> saveLocation({
+    required Location location,
+  }) async {
+    try {
+      await locationRemoteDataSource.saveLocation(location: location);
+
+      return const Right(None());
+    } on PostgrestException {
+      return const Left(StorageWriteFailure());
+    }
   }
 
   @override
-  Future<void> saveActivitySegment({
+  Future<Either<Failure, None>> saveActivitySegment({
     required ActivitySegment activitySegment,
   }) async {
-    await locationRemoteDataSource.saveActivitySegment(
-      activitySegment: activitySegment,
-    );
+    try {
+      await locationRemoteDataSource.saveActivitySegment(
+        activitySegment: activitySegment,
+      );
+
+      return const Right(None());
+    } on PostgrestException {
+      return const Left(StorageWriteFailure());
+    }
   }
 }

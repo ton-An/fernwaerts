@@ -1,5 +1,8 @@
-import 'package:location_history/features/location_tracking/domain/models/location.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:location_history/core/failures/failure.dart';
+import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/location_tracking/domain/models/activity_segment.dart';
+import 'package:location_history/features/location_tracking/domain/models/location.dart';
 
 /// {@template location_data_repository}
 /// Repository contract for persisted location history data.
@@ -16,7 +19,10 @@ abstract class LocationDataRepository {
   ///
   /// Parameters:
   /// - location: [Location] to save
-  Future<void> saveLocation({required Location location});
+  ///
+  /// Failures:
+  /// - [StorageWriteFailure]
+  Future<Either<Failure, None>> saveLocation({required Location location});
 
   /// Watches locations recorded within a date range.
   ///
@@ -36,5 +42,10 @@ abstract class LocationDataRepository {
   ///
   /// Parameters:
   /// - activitySegment: [ActivitySegment] to save
-  Future<void> saveActivitySegment({required ActivitySegment activitySegment});
+  ///
+  /// Failures:
+  /// - [StorageWriteFailure]
+  Future<Either<Failure, None>> saveActivitySegment({
+    required ActivitySegment activitySegment,
+  });
 }
