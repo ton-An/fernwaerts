@@ -8,8 +8,7 @@ class ActivityTypeSqlConverter extends TypeConverter<ActivityType, String> {
   const ActivityTypeSqlConverter();
 
   @override
-  ActivityType fromSql(String fromDb) =>
-      ActivityType.fromBGActivityType(bgActivityType: fromDb);
+  ActivityType fromSql(String fromDb) => ActivityType.fromString(fromDb);
 
   @override
   String toSql(ActivityType value) => value.toString();
