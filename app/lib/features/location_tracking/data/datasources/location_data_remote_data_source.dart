@@ -3,6 +3,7 @@ import 'package:location_history/core/data/datasources/supabase_handler.dart';
 import 'package:location_history/core/drift/drift_database.dart';
 import 'package:location_history/features/location_tracking/domain/models/activity_segment.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// {@template location_data_remote_data_source}
 /// Data source contract for persisted, synced location history data.
@@ -23,7 +24,7 @@ abstract class LocationDataRemoteDataSource {
   /// - location: [Location] to save
   ///
   /// Throws:
-  /// - Storage or sync exceptions from the underlying database layer
+  /// - [PostgrestException] for Supabase/Postgres write failures
   Future<void> saveLocation({required Location location});
 
   /// Saves an activity segment to the synced local database.
@@ -32,7 +33,7 @@ abstract class LocationDataRemoteDataSource {
   /// - activitySegment: [ActivitySegment] to save
   ///
   /// Throws:
-  /// - Storage or sync exceptions from the underlying database layer
+  /// - [PostgrestException] for Supabase/Postgres write failures
   Future<void> saveActivitySegment({required ActivitySegment activitySegment});
 
   /// Watches locations recorded within a date range.
@@ -49,7 +50,8 @@ abstract class LocationDataRemoteDataSource {
   ///   the range
   ///
   /// Throws:
-  /// - Storage or sync exceptions from the underlying database layer
+  /// - [DriftWrappedException] when the underlying database query fails
+  /// - [CancellationException] when Drift cancels the query
   Future<Stream<List<Location>>> getLocationsByDate({
     required DateTime start,
     required DateTime end,
@@ -106,9 +108,9 @@ class LocationDataRemoteDataSourceImpl implements LocationDataRemoteDataSource {
         .insert(
           ActivitySegmentsCompanion.insert(
             id: activitySegment.id,
-            userId: activitySegment.userId,
-            startLocationId: Value(activitySegment.startLocationId),
-            endLocationId: Value(activitySegment.endLocationId),
+            userId: activitySegment.startLocation.userId,
+            startLocationId: Value(activitySegment.startLocation.id),
+            endLocationId: Value(activitySegment.endLocation.id),
           ),
         );
   }

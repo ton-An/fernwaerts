@@ -21,6 +21,7 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 part '_activity_icon.dart';
 part '_activity_segment_list_item.dart';
 part '_dotted_history_line.dart';
+part '_empty_list.dart';
 part '_header.dart';
 part '_location_list.dart';
 part '_location_list_item.dart';

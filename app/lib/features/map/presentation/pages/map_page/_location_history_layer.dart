@@ -28,7 +28,7 @@ class _LocationHistoryLayer extends StatelessWidget {
   static const double _pathStrokeWidth = 14;
   static const double _pathOpacity = .6;
 
-  final List<_PlaceTimelineMarker> placeMarkers;
+  final List<_PlaceBoundaryMarkerData> placeMarkers;
   final List<LatLng> pathPoints;
 
   @override
@@ -56,7 +56,7 @@ class _LocationHistoryLayer extends StatelessWidget {
   /// Builds highlighted markers for the current [placeMarkers].
   List<Marker> _generatePlaceMarkers({required List<Color> gradientColors}) {
     return [
-      for (final _PlaceTimelineMarker placeMarker in placeMarkers)
+      for (final _PlaceBoundaryMarkerData placeMarker in placeMarkers)
         _PlaceMarker(
           point: placeMarker.point,
           color: _timelineColor(gradientColors, placeMarker.timelinePosition),
@@ -176,4 +176,4 @@ class _LocationHistoryLayer extends StatelessWidget {
 
 /// A place marker paired with its fractional position along the timeline
 /// gradient, in the range 0 to 1.
-typedef _PlaceTimelineMarker = ({LatLng point, double timelinePosition});
+typedef _PlaceBoundaryMarkerData = ({LatLng point, double timelinePosition});

@@ -33,64 +33,19 @@ class _LocationList extends StatelessWidget {
 
   /// Builds the alternating place / activity-segment rows for the timeline.
   List<Widget> _timelineRows(BuildContext context, MapLocationsLoaded state) {
-    final Map<String, Location> locationsById = {
-      for (final Location location in state.locations) location.id: location,
-    };
-    final List<String> boundaryLocationIds =
-        state.activitySegments.boundaryLocationIds;
+    final List<Location> boundaryLocations =
+        state.activitySegments.boundaryLocations;
 
     final List<Widget> rows = [];
-    for (int i = 0; i < boundaryLocationIds.length; i++) {
-      final Location? location = locationsById[boundaryLocationIds[i]];
-      if (location != null) {
-        rows.add(
-          _LocationListItem(
-            location: location,
-            onTap:
-                () => context.read<MapAnimationCubit>().animateToLocation(
-                  location,
-                ),
-          ),
-        );
-      }
+    for (int i = 0; i < boundaryLocations.length; i++) {
+      final Location location = boundaryLocations[i];
+      rows.add(_LocationListItem(location: location));
 
       if (i < state.activitySegments.length) {
-        rows.add(
-          _ActivitySegmentListItem(
-            activitySegment: state.activitySegments[i],
-            locationsById: locationsById,
-          ),
-        );
+        rows.add(_ActivityListItem(activitySegment: state.activitySegments[i]));
       }
     }
 
     return rows;
-  }
-}
-
-class _EmptyList extends StatelessWidget {
-  const _EmptyList({required this.scrollController});
-
-  final ScrollController scrollController;
-
-  @override
-  Widget build(BuildContext context) {
-    final WebfabrikThemeData theme = WebfabrikTheme.of(context);
-    return ListView(
-      padding: EdgeInsets.all(theme.spacing.xMedium),
-      shrinkWrap: true,
-      controller: scrollController,
-      children: [
-        Center(
-          child: Text(
-            AppLocalizations.of(context)!.noData,
-            style: theme.text.title3.copyWith(
-              fontWeight: FontWeight.w700,
-              color: theme.colors.text.withValues(alpha: .4),
-            ),
-          ),
-        ),
-      ],
-    );
   }
 }

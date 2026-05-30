@@ -1,30 +1,25 @@
 part of 'location_history_modal.dart';
 
-class _ActivitySegmentListItem extends StatelessWidget {
-  const _ActivitySegmentListItem({
-    required this.activitySegment,
-    required this.locationsById,
-  });
+class _ActivityListItem extends StatelessWidget {
+  const _ActivityListItem({required this.activitySegment});
 
   final ActivitySegment activitySegment;
-  final Map<String, Location> locationsById;
 
   @override
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
     final String languageCode = Localizations.localeOf(context).languageCode;
 
-    final Location startLocation =
-        locationsById[activitySegment.startLocationId]!;
-    final Location endLocation = locationsById[activitySegment.endLocationId]!;
-
     final String distance = NumberFormatter.formatDistance(
-      _distanceInKilometers(startLocation, endLocation),
+      _distanceInKilometers(
+        activitySegment.startLocation,
+        activitySegment.endLocation,
+      ),
       languageCode,
     );
     final String duration = TimeDateFormatter.getDuration(
-      startLocation.timestamp,
-      endLocation.timestamp,
+      activitySegment.startLocation.timestamp,
+      activitySegment.endLocation.timestamp,
     );
 
     return Row(

@@ -54,9 +54,8 @@ class ComputeActivitySegments {
 
       activitySegments.add(
         ActivitySegment(
-          userId: segmentStart.userId,
-          startLocationId: segmentStart.id,
-          endLocationId: segmentEnd.id,
+          startLocation: segmentStart,
+          endLocation: segmentEnd,
           activityType: _dominantActivityType(
             locations: locations,
             segmentStart: segmentStart,

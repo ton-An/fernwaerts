@@ -24,7 +24,7 @@ class _MapState extends State<_Map> with SingleTickerProviderStateMixin {
   String? _appPackageName;
 
   List<LatLng> _pathPoints = [];
-  List<_PlaceTimelineMarker> _placeMarkers = [];
+  List<_PlaceBoundaryMarkerData> _placeMarkers = [];
   _CameraAnimation? _cameraAnimation;
 
   @override
@@ -116,7 +116,7 @@ class _MapState extends State<_Map> with SingleTickerProviderStateMixin {
 
   /// Builds a marker for each inferred place, colored by its position along the
   /// timeline gradient.
-  List<_PlaceTimelineMarker> _placeTimelineMarkers({
+  List<_PlaceBoundaryMarkerData> _placeTimelineMarkers({
     required List<ActivitySegment> activitySegments,
     required List<Location> locations,
   }) {
@@ -128,14 +128,13 @@ class _MapState extends State<_Map> with SingleTickerProviderStateMixin {
       for (int i = 0; i < locations.length; i++) locations[i].id: i,
     };
 
-    final List<_PlaceTimelineMarker> placeMarkers = [];
-    for (final String locationId in activitySegments.boundaryLocationIds) {
-      final int? index = indexById[locationId];
+    final List<_PlaceBoundaryMarkerData> placeMarkers = [];
+    for (final Location location in activitySegments.boundaryLocations) {
+      final int? index = indexById[location.id];
       if (index == null) {
         continue;
       }
 
-      final Location location = locations[index];
       placeMarkers.add((
         point: LatLng(location.latitude, location.longitude),
         timelinePosition: index / locations.length,
