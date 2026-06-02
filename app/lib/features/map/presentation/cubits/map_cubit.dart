@@ -8,11 +8,6 @@ import 'package:location_history/features/location_tracking/domain/usecases/comp
 import 'package:location_history/features/location_tracking/domain/usecases/get_locations_by_date.dart';
 import 'package:location_history/features/map/presentation/cubits/map_state.dart';
 
-/*
-  To-Do:
-    - [ ] Add tests
-*/
-
 /// {@template map_cubit}
 /// Coordinates map presentation state for the active calendar selection.
 ///
