@@ -24,6 +24,14 @@ Guidance for coding agents working in `app/`.
 - Generated files include `*.freezed.dart`, `*.g.dart`, Drift outputs, generated
   localizations, and generated asset/icon files. Update source files and
   regenerate instead of editing generated output.
+- Name non-obvious numeric literals as `static const` fields instead of inlining
+  magic numbers such as sizes, thresholds, ratios, or durations.
+- Place `static const` members directly below the constructor, above instance
+  fields.
+- Do not hardcode user-facing strings. Add or reuse localization keys and read
+  display text through generated localizations instead.
+- Prefer existing theme tokens (spacing, radii, durations, colors) and shared
+  helpers over hand-rolled values or duplicated math.
 
 ## Layout
 

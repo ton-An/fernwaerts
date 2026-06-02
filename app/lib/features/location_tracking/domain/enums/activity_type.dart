@@ -24,15 +24,16 @@ enum ActivityType {
   /// The activity value is missing or not recognized.
   unknown;
 
-  /// Converts a background location plugin activity string to [ActivityType].
+  /// Creates an [ActivityType] from a storage/plugin activity string.
   ///
   /// Parameters:
-  /// - bgActivityType: [String] plugin activity value to convert
+  /// - value: [String] storage/plugin activity value to convert
   ///
   /// Returns:
-  /// - [unknown] when the plugin value is unsupported
-  static ActivityType fromBGActivityType({required String bgActivityType}) {
-    switch (bgActivityType) {
+  /// - [ActivityType] matching [value], or [ActivityType.unknown] when the
+  ///   value is unsupported
+  static ActivityType fromString(String value) {
+    switch (value) {
       case 'still':
         return ActivityType.still;
       case 'walking':

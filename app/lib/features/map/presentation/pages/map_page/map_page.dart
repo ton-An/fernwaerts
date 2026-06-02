@@ -1,3 +1,6 @@
+import 'dart:math' as math;
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -9,6 +12,10 @@ import 'package:location_history/features/calendar/presentation/cubits/calendar_
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_state.dart';
 import 'package:location_history/features/calendar/presentation/widgets/calendar_composite/calendar_composite.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
+import 'package:location_history/features/location_tracking/domain/models/activity_segment.dart';
+import 'package:location_history/features/location_tracking/domain/models/location.dart';
+import 'package:location_history/features/map/presentation/cubits/map_animation_cubit.dart';
+import 'package:location_history/features/map/presentation/cubits/map_animation_state.dart';
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
 import 'package:location_history/features/map/presentation/cubits/map_state.dart';
 import 'package:location_history/features/map/presentation/widgets/location_history_modal/location_history_modal.dart';
@@ -17,11 +24,12 @@ import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_attribution_legend.dart';
+part '_direction_arrow_marker.dart';
 part '_legend_container.dart';
-part '_location_markers.dart';
+part '_location_history_layer.dart';
 part '_map.dart';
 part '_modal.dart';
-part '_single_location_marker.dart';
+part '_place_marker.dart';
 part '_time_gradient_legend.dart';
 
 /// {@template map_page}

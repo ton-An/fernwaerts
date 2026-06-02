@@ -6,7 +6,7 @@ export SUPABASE_PUBLIC_URL="${SUPABASE_PUBLIC_URL}"
 export SUPABASE_ANON_KEY="${ANON_KEY}"
 export SUPABASE_SERVICE_ROLE_KEY="${SERVICE_ROLE_KEY}"
 export SUPABASE_DB_URL="postgresql://postgres:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable"
-export POWERSYNC_URL="http://127.0.0.1:7901"
+export POWERSYNC_URL="${POWERSYNC_EXTERNAL_URL:-http://127.0.0.1:7901}"
 export SITE_URL="${SITE_URL}"
 export VERIFY_JWT=false
 exec /opt/functions/edge-runtime start --main-service /opt/migrate/supabase/functions/main

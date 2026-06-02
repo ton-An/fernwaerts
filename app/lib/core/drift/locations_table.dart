@@ -23,7 +23,8 @@ class Locations extends Table {
   RealColumn get altitudeAccuracy => real().named('altitude_accuracy')();
 
   TextColumn get activityType =>
-      textEnum<ActivityType>()
+      text()
+          .map(const ActivityTypeSqlConverter())
           .named('activity_type_id')
           .withDefault(const Constant('unknown'))();
   RealColumn get activityConfidence => real().named('activity_confidence')();

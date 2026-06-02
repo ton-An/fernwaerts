@@ -1,3 +1,4 @@
+import 'package:battery_plus/battery_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_activity_recognition/flutter_activity_recognition.dart';
@@ -41,13 +42,19 @@ import 'package:location_history/features/calendar/presentation/cubits/decennial
 import 'package:location_history/features/calendar/presentation/cubits/monthly_calendar_cubit/monthly_calendar_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/yearly_calendar_cubit/yearly_calendar_cubit.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
+import 'package:location_history/features/location_tracking/data/datasources/activity_recognition_local_data_source.dart';
+import 'package:location_history/features/location_tracking/data/datasources/battery_local_data_source.dart';
 import 'package:location_history/features/location_tracking/data/datasources/ios_location_tracking_local_data_source.dart';
 import 'package:location_history/features/location_tracking/data/datasources/location_data_remote_data_source.dart';
+import 'package:location_history/features/location_tracking/data/repository_implementations/battery_repository_impl.dart';
 import 'package:location_history/features/location_tracking/data/repository_implementations/location_data_repository_impl.dart';
 import 'package:location_history/features/location_tracking/data/repository_implementations/location_tracking_repository_impl.dart';
+import 'package:location_history/features/location_tracking/domain/repositories/battery_repository.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
+import 'package:location_history/features/location_tracking/domain/usecases/compute_activity_segments.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/get_locations_by_date.dart';
+import 'package:location_history/features/map/presentation/cubits/map_animation_cubit.dart';
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
 import 'package:location_history/features/settings/data/datasources/settings_remote_data_source.dart';
 import 'package:location_history/features/settings/data/repository_implementations/settings_repository_impl.dart';
@@ -87,6 +94,7 @@ void registerThirdPartyDependencies() {
   // -- Data -- //
   getIt.registerLazySingleton(() => Dio());
   getIt.registerLazySingleton(() => const FlutterSecureStorage());
+  getIt.registerLazySingleton(() => Battery());
   getIt.registerLazySingleton(() => FlutterActivityRecognition.instance);
   getIt.registerLazySingleton(() => DeviceInfoPlugin());
   getIt.registerSingletonAsync<PackageInfo>(
@@ -260,7 +268,10 @@ void registerCalendarDependencies() {
 /// sources.
 void registerLocationTrackingDependencies() {
   // -- Presentation -- //
-  getIt.registerFactory(() => MapCubit(getLocationData: getIt()));
+  getIt.registerFactory(() => MapAnimationCubit());
+  getIt.registerFactory(
+    () => MapCubit(getLocationData: getIt(), computeActivitySegments: getIt()),
+  );
 
   // -- Domain -- //
   getIt.registerLazySingleton(
@@ -270,6 +281,7 @@ void registerLocationTrackingDependencies() {
       deviceRepository: getIt(),
       locationTrackingRepository: getIt(),
       locationDataRepository: getIt(),
+      batteryRepository: getIt(),
     ),
   );
   getIt.registerLazySingleton(
@@ -278,8 +290,10 @@ void registerLocationTrackingDependencies() {
       locationDataRepository: getIt(),
     ),
   );
+  getIt.registerLazySingleton(() => const ComputeActivitySegments());
   getIt.registerLazySingleton<LocationTrackingRepository>(
     () => LocationTrackingRepositoryImpl(
+      activityRecognitionLocalDataSource: getIt(),
       iosLocationTrackingLocalDataSource: getIt(),
     ),
   );
@@ -287,6 +301,17 @@ void registerLocationTrackingDependencies() {
   // -- Data -- //
   getIt.registerLazySingleton<LocationDataRepository>(
     () => LocationDataRepositoryImpl(locationRemoteDataSource: getIt()),
+  );
+  getIt.registerLazySingleton<BatteryRepository>(
+    () => BatteryRepositoryImpl(batteryLocalDataSource: getIt()),
+  );
+  getIt.registerLazySingleton<ActivityRecognitionLocalDataSource>(
+    () => ActivityRecognitionLocalDataSourceImpl(
+      flutterActivityRecognition: getIt(),
+    ),
+  );
+  getIt.registerLazySingleton<BatteryLocalDataSource>(
+    () => BatteryLocalDataSourceImpl(battery: getIt()),
   );
   getIt.registerLazySingleton<IOSLocationTrackingLocalDataSource>(
     () => const IOSLocationTrackingLocalDataSourceImpl(),

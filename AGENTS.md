@@ -11,6 +11,9 @@ Repository-wide guidance for coding agents.
 - Check `git status` before editing.
 - Do not revert user changes or unrelated local modifications.
 - Keep changes scoped to the task.
+- Reuse utilities, helpers, and packages already used in the codebase before
+  adding new ones, and factor shared logic into one place instead of duplicating
+  it across files.
 - Prefer `rg` for search.
 - For Dart and Flutter package, dependency, `pub`, hot reload/restart,
   package-source inspection, and API documentation lookup tasks, use the Dart

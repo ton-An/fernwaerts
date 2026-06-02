@@ -16,57 +16,36 @@ class _LocationList extends StatelessWidget {
       bottomOptions: const EdgeFadeOptions(enabled: false),
       child: BlocBuilder<MapCubit, MapState>(
         builder: (BuildContext context, MapState state) {
-          if (state is MapLocationsLoaded) {
-            if (state.locations.isEmpty) {
-              return ListView(
-                padding: EdgeInsets.all(theme.spacing.xMedium),
-                shrinkWrap: true,
-                controller: scrollController,
-                children: [
-                  Center(
-                    child: Text(
-                      'No Data :)',
-                      style: theme.text.title3.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: theme.colors.text.withValues(alpha: .4),
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            }
-
-            return ListView.builder(
-              padding: EdgeInsets.all(theme.spacing.xMedium),
-              shrinkWrap: true,
-              itemCount: state.locations.length,
-              controller: scrollController,
-              itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    _LocationListItem(location: state.locations[index]),
-                    if (index != state.locations.length - 1)
-                      Container(
-                        margin: EdgeInsets.only(
-                          left: theme.spacing.xMedium - theme.spacing.tiny,
-                        ),
-                        alignment: Alignment.centerLeft,
-                        child: const _DottedHistoryLine(),
-                      ),
-                  ],
-                );
-              },
-            );
+          if (state is! MapLocationsLoaded || state.activitySegments.isEmpty) {
+            return _EmptyList(scrollController: scrollController);
           }
 
           return ListView(
             padding: EdgeInsets.all(theme.spacing.xMedium),
             shrinkWrap: true,
             controller: scrollController,
-            children: const [],
+            children: _timelineRows(context, state),
           );
         },
       ),
     );
+  }
+
+  /// Builds the alternating place / activity-segment rows for the timeline.
+  List<Widget> _timelineRows(BuildContext context, MapLocationsLoaded state) {
+    final List<Location> boundaryLocations =
+        state.activitySegments.boundaryLocations;
+
+    final List<Widget> rows = [];
+    for (int i = 0; i < boundaryLocations.length; i++) {
+      final Location location = boundaryLocations[i];
+      rows.add(_LocationListItem(location: location));
+
+      if (i < state.activitySegments.length) {
+        rows.add(_ActivityListItem(activitySegment: state.activitySegments[i]));
+      }
+    }
+
+    return rows;
   }
 }

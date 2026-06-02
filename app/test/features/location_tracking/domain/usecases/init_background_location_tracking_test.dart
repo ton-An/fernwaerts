@@ -1,7 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
+import 'package:location_history/features/location_tracking/domain/models/battery_status.dart';
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
+import 'package:location_history/features/location_tracking/domain/models/recognized_activity.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/init_background_location_tracking.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -14,6 +16,7 @@ void main() {
   late MockAuthenticationRepository mockAuthenticationRepository;
   late MockDeviceRepository mockDeviceRepository;
   late MockLocationTrackingRepository mockLocationTrackingRepository;
+  late MockBatteryRepository mockBatteryRepository;
   late MockLocationDataRepository mockLocationDataRepository;
 
   setUp(() {
@@ -21,12 +24,14 @@ void main() {
     mockAuthenticationRepository = MockAuthenticationRepository();
     mockDeviceRepository = MockDeviceRepository();
     mockLocationTrackingRepository = MockLocationTrackingRepository();
+    mockBatteryRepository = MockBatteryRepository();
     mockLocationDataRepository = MockLocationDataRepository();
     initBackgroundLocationTracking = InitBackgroundLocationTracking(
       authenticationRepository: mockAuthenticationRepository,
       deviceRepository: mockDeviceRepository,
       locationTrackingRepository: mockLocationTrackingRepository,
       locationDataRepository: mockLocationDataRepository,
+      batteryRepository: mockBatteryRepository,
       initializeApp: mockInitializeApp,
     );
   });
@@ -55,10 +60,16 @@ void main() {
       (_) => Stream<RecordedLocation>.fromIterable(tRecordedLocations),
     );
     when(
+      () => mockLocationTrackingRepository.activityChangeStream(),
+    ).thenAnswer((_) => const Stream<RecognizedActivity>.empty());
+    when(
       () => mockLocationDataRepository.saveLocation(
         location: any(named: 'location'),
       ),
-    ).thenAnswer((_) async => Future.value());
+    ).thenAnswer((_) async => const Right(None()));
+    when(
+      () => mockBatteryRepository.getBatteryStatus(),
+    ).thenAnswer((_) async => BatteryStatus.unknown);
   });
 
   setUpAll(() {

@@ -13,7 +13,7 @@ class _LocationListItem extends StatelessWidget {
     );
 
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
-    return Row(
+    final Widget content = Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const _PlaceIcon(type: PlaceType.other),
@@ -40,6 +40,12 @@ class _LocationListItem extends StatelessWidget {
           ),
         ),
       ],
+    );
+
+    return FadeTapDetector(
+      onTap:
+          () => context.read<MapAnimationCubit>().animateToLocation(location),
+      child: content,
     );
   }
 }

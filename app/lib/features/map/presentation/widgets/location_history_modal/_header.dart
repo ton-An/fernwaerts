@@ -27,8 +27,6 @@ class _Header extends StatelessWidget {
           ),
           Row(
             children: [
-              SmallIconButton(icon: CupertinoIcons.pencil, onPressed: () {}),
-              const XXSmallGap(),
               SmallIconButton(
                 icon: CupertinoIcons.settings,
                 onPressed: () {

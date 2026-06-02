@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/failure.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
+import 'package:location_history/features/location_tracking/domain/usecases/compute_activity_segments.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/get_locations_by_date.dart';
 import 'package:location_history/features/map/presentation/cubits/map_state.dart';
 
@@ -20,9 +21,13 @@ import 'package:location_history/features/map/presentation/cubits/map_state.dart
 /// {@endtemplate}
 class MapCubit extends Cubit<MapState> {
   /// {@macro map_cubit}
-  MapCubit({required this.getLocationData}) : super(const MapInitialState());
+  MapCubit({
+    required this.getLocationData,
+    required this.computeActivitySegments,
+  }) : super(const MapInitialState());
 
   final GetLocationsByDate getLocationData;
+  final ComputeActivitySegments computeActivitySegments;
 
   StreamSubscription? locationsStreamSubscription;
 
@@ -35,10 +40,7 @@ class MapCubit extends Cubit<MapState> {
   /// Emits:
   /// - [MapLocationsLoaded] each time the location stream returns data.
   /// - [MapLocationsError] when the location stream reports a [Failure].
-  void loadLocationsByDate({
-    required DateTime start,
-    required DateTime end,
-  }) async {
+  void loadLocationsByDate({required DateTime start, required DateTime end}) {
     locationsStreamSubscription?.cancel();
 
     final Stream<Either<Failure, List<Location>>> locationsEitherStream =
@@ -49,9 +51,12 @@ class MapCubit extends Cubit<MapState> {
     ) {
       locationsEither.fold(
         (Failure failure) => emit(MapLocationsError(failure: failure)),
-        (List<Location> locations) {
-          emit(MapLocationsLoaded(locations: locations));
-        },
+        (List<Location> locations) => emit(
+          MapLocationsLoaded(
+            locations: locations,
+            activitySegments: computeActivitySegments(locations: locations),
+          ),
+        ),
       );
     });
   }
