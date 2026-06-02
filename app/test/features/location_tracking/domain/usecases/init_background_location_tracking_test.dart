@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
+import 'package:location_history/features/location_tracking/domain/models/recognized_activity.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/init_background_location_tracking.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -54,6 +55,9 @@ void main() {
     ).thenAnswer(
       (_) => Stream<RecordedLocation>.fromIterable(tRecordedLocations),
     );
+    when(
+      () => mockLocationTrackingRepository.activityChangeStream(),
+    ).thenAnswer((_) => const Stream<RecognizedActivity>.empty());
     when(
       () => mockLocationDataRepository.saveLocation(
         location: any(named: 'location'),

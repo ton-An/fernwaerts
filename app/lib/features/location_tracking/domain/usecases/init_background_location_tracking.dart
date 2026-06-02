@@ -10,9 +10,9 @@ import 'package:location_history/core/failures/storage/storage_read_failure.dart
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/authentication/domain/repositories/device_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_app.dart';
-import 'package:location_history/features/location_tracking/domain/enums/activity_type.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
+import 'package:location_history/features/location_tracking/domain/models/recognized_activity.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
 
@@ -51,6 +51,10 @@ class InitBackgroundLocationTracking {
   final DeviceRepository deviceRepository;
   final LocationTrackingRepository locationTrackingRepository;
   final LocationDataRepository locationDataRepository;
+
+  StreamSubscription<RecordedLocation>? _locationSubscription;
+  StreamSubscription<RecognizedActivity>? _activitySubscription;
+  RecognizedActivity _latestActivity = RecognizedActivity.unknown;
 
   /// {@macro init_background_location_tracking}
   Future<Either<Failure, None>> call() async {
@@ -101,16 +105,30 @@ class InitBackgroundLocationTracking {
   }) {
     final Stream<RecordedLocation> locationStream =
         locationTrackingRepository.locationChangeStream();
+    final Stream<RecognizedActivity> activityStream =
+        locationTrackingRepository.activityChangeStream();
 
     Timer? distanceFilterTimeout;
 
-    locationStream.listen((RecordedLocation recordedLocation) async {
+    _locationSubscription?.cancel();
+    _activitySubscription?.cancel();
+    _latestActivity = RecognizedActivity.unknown;
+
+    _activitySubscription = activityStream.listen((
+      RecognizedActivity activity,
+    ) {
+      _latestActivity = activity;
+    });
+
+    _locationSubscription = locationStream.listen((
+      RecordedLocation recordedLocation,
+    ) async {
       final Location location = Location.fromRecordedLocation(
         recordedLocation: recordedLocation,
         userId: userId,
         deviceId: deviceId,
-        activityType: ActivityType.unknown,
-        activityConfidence: -1,
+        activityType: _latestActivity.type,
+        activityConfidence: _latestActivity.confidence,
         batteryLevel: -1,
         isDeviceCharging: false,
       );

@@ -41,6 +41,7 @@ import 'package:location_history/features/calendar/presentation/cubits/decennial
 import 'package:location_history/features/calendar/presentation/cubits/monthly_calendar_cubit/monthly_calendar_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/yearly_calendar_cubit/yearly_calendar_cubit.dart';
 import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
+import 'package:location_history/features/location_tracking/data/datasources/activity_recognition_local_data_source.dart';
 import 'package:location_history/features/location_tracking/data/datasources/ios_location_tracking_local_data_source.dart';
 import 'package:location_history/features/location_tracking/data/datasources/location_data_remote_data_source.dart';
 import 'package:location_history/features/location_tracking/data/repository_implementations/location_data_repository_impl.dart';
@@ -286,6 +287,7 @@ void registerLocationTrackingDependencies() {
   getIt.registerLazySingleton(() => const ComputeActivitySegments());
   getIt.registerLazySingleton<LocationTrackingRepository>(
     () => LocationTrackingRepositoryImpl(
+      activityRecognitionLocalDataSource: getIt(),
       iosLocationTrackingLocalDataSource: getIt(),
     ),
   );
@@ -293,6 +295,11 @@ void registerLocationTrackingDependencies() {
   // -- Data -- //
   getIt.registerLazySingleton<LocationDataRepository>(
     () => LocationDataRepositoryImpl(locationRemoteDataSource: getIt()),
+  );
+  getIt.registerLazySingleton<ActivityRecognitionLocalDataSource>(
+    () => ActivityRecognitionLocalDataSourceImpl(
+      flutterActivityRecognition: getIt(),
+    ),
   );
   getIt.registerLazySingleton<IOSLocationTrackingLocalDataSource>(
     () => const IOSLocationTrackingLocalDataSourceImpl(),
