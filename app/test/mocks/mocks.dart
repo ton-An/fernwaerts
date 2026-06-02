@@ -20,6 +20,7 @@ import 'package:location_history/features/authentication/domain/usecases/initial
 import 'package:location_history/features/authentication/domain/usecases/save_device_info_to_db.dart';
 import 'package:location_history/features/authentication/domain/usecases/sign_in.dart';
 import 'package:location_history/features/location_tracking/data/datasources/location_data_remote_data_source.dart';
+import 'package:location_history/features/location_tracking/domain/repositories/battery_repository.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
 import 'package:location_history/features/settings/data/datasources/settings_remote_data_source.dart';
@@ -112,6 +113,8 @@ class MockSaveDeviceInfo extends Mock implements SaveDeviceInfo {}
 // -- Location Tracking
 class MockLocationTrackingRepository extends Mock
     implements LocationTrackingRepository {}
+
+class MockBatteryRepository extends Mock implements BatteryRepository {}
 
 class MockLocationDataRepository extends Mock
     implements LocationDataRepository {}
