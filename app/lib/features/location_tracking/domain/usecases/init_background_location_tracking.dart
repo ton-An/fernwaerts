@@ -10,9 +10,11 @@ import 'package:location_history/core/failures/storage/storage_read_failure.dart
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/authentication/domain/repositories/device_repository.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_app.dart';
+import 'package:location_history/features/location_tracking/domain/models/battery_status.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
-import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
 import 'package:location_history/features/location_tracking/domain/models/recognized_activity.dart';
+import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
+import 'package:location_history/features/location_tracking/domain/repositories/battery_repository.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
 
@@ -44,6 +46,7 @@ class InitBackgroundLocationTracking {
     required this.deviceRepository,
     required this.locationTrackingRepository,
     required this.locationDataRepository,
+    required this.batteryRepository,
   });
 
   final InitializeApp initializeApp;
@@ -51,6 +54,7 @@ class InitBackgroundLocationTracking {
   final DeviceRepository deviceRepository;
   final LocationTrackingRepository locationTrackingRepository;
   final LocationDataRepository locationDataRepository;
+  final BatteryRepository batteryRepository;
 
   StreamSubscription<RecordedLocation>? _locationSubscription;
   StreamSubscription<RecognizedActivity>? _activitySubscription;
@@ -123,14 +127,17 @@ class InitBackgroundLocationTracking {
     _locationSubscription = locationStream.listen((
       RecordedLocation recordedLocation,
     ) async {
+      final BatteryStatus batteryStatus =
+          await batteryRepository.getBatteryStatus();
+
       final Location location = Location.fromRecordedLocation(
         recordedLocation: recordedLocation,
         userId: userId,
         deviceId: deviceId,
         activityType: _latestActivity.type,
         activityConfidence: _latestActivity.confidence,
-        batteryLevel: -1,
-        isDeviceCharging: false,
+        batteryLevel: batteryStatus.level,
+        isDeviceCharging: batteryStatus.isDeviceCharging,
       );
 
       distanceFilterTimeout = await _updateDistanceFilter(
