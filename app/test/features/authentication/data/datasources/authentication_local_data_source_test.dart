@@ -39,32 +39,15 @@ void main() {
       ).thenAnswer((_) async => tPowersyncUrl);
     });
 
-    test('should read the server url key from storage', () async {
+    test('should read and return the saved server info from storage', () async {
       // act
-      await authenticationLocalDataSource.getSavedServerInfo();
+      final result = await authenticationLocalDataSource.getSavedServerInfo();
 
       // assert
       verify(() => mockSecureStorage.read(key: 'server_url'));
-    });
-
-    test('should read the anon key from storage', () async {
-      // arrange
-
-      // act
-      await authenticationLocalDataSource.getSavedServerInfo();
-
-      // assert
       verify(() => mockSecureStorage.read(key: 'anon_key'));
-    });
-
-    test('should read the power sync url from storage', () async {
-      // arrange
-
-      // act
-      await authenticationLocalDataSource.getSavedServerInfo();
-
-      // assert
       verify(() => mockSecureStorage.read(key: 'powersync_url'));
+      expect(result, tServerInfo);
     });
 
     test(
@@ -84,7 +67,7 @@ void main() {
     );
 
     test(
-      'should throw a NoSavedServerFailure if the anon key is null ',
+      'should throw a NoSavedServerFailure if the powersync url is null ',
       () async {
         // arrange
         when(
@@ -114,16 +97,6 @@ void main() {
         );
       },
     );
-
-    test('should return the server info', () async {
-      // arrange
-
-      // act
-      final result = await authenticationLocalDataSource.getSavedServerInfo();
-
-      // assert
-      expect(result, tServerInfo);
-    });
   });
 
   group('removeSavedServer()', () {
@@ -132,27 +105,13 @@ void main() {
         () => mockSecureStorage.delete(key: any(named: 'key')),
       ).thenAnswer((_) => Future.value());
     });
-    test('should delete the saved server url', () async {
+    test('should delete the saved server info', () async {
       // act
       await authenticationLocalDataSource.removeSavedServer();
 
       // assert
       verify(() => mockSecureStorage.delete(key: 'server_url'));
-    });
-
-    test('should delete the anon key', () async {
-      // act
-      await authenticationLocalDataSource.removeSavedServer();
-
-      // assert
       verify(() => mockSecureStorage.delete(key: 'anon_key'));
-    });
-
-    test('should delete the powersync url', () async {
-      // act
-      await authenticationLocalDataSource.removeSavedServer();
-
-      // assert
       verify(() => mockSecureStorage.delete(key: 'powersync_url'));
     });
   });
@@ -167,7 +126,7 @@ void main() {
       ).thenAnswer((_) => Future.value());
     });
 
-    test('should save the server url', () async {
+    test('should save the server info', () async {
       // act
       await authenticationLocalDataSource.saveServerInfo(
         serverInfo: tServerInfo,
@@ -178,25 +137,7 @@ void main() {
         () =>
             mockSecureStorage.write(key: 'server_url', value: tServerUrlString),
       );
-    });
-
-    test('should save the anon key', () async {
-      // act
-      await authenticationLocalDataSource.saveServerInfo(
-        serverInfo: tServerInfo,
-      );
-
-      // assert
       verify(() => mockSecureStorage.write(key: 'anon_key', value: tAnonKey));
-    });
-
-    test('should save the power sync url', () async {
-      // act
-      await authenticationLocalDataSource.saveServerInfo(
-        serverInfo: tServerInfo,
-      );
-
-      // assert
       verify(
         () =>
             mockSecureStorage.write(key: 'powersync_url', value: tPowersyncUrl),
