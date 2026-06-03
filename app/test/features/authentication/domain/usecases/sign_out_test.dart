@@ -23,6 +23,9 @@ void main() {
       () => mockAuthenticationRepository.signOut(),
     ).thenAnswer((_) => Future.value());
     when(
+      () => mockAuthenticationRepository.resetPowerSync(),
+    ).thenAnswer((_) => Future.value());
+    when(
       () => mockLocationTrackingRepository.stopTracking(),
     ).thenAnswer((_) => Future.value());
     when(
@@ -31,6 +34,14 @@ void main() {
     when(
       () => mockAuthenticationRepository.deleteLocalDBCache(),
     ).thenAnswer((_) => Future.value());
+  });
+
+  test('should reset PowerSync', () async {
+    // act
+    await signOut();
+
+    // assert
+    verify(() => mockAuthenticationRepository.resetPowerSync());
   });
 
   test('should sign out the user', () async {

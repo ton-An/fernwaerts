@@ -9,8 +9,9 @@ import 'package:location_history/features/location_tracking/domain/repositories/
 /// {@template sign_out}
 /// Signs out the current user and clears local session state.
 ///
-/// The flow signs out of auth, stops location tracking, deletes the local
-/// database cache, and removes saved local authentication/server storage.
+/// The flow resets PowerSync, signs out of auth, stops location tracking,
+/// deletes the local database cache, and removes saved local
+/// authentication/server storage.
 ///
 /// Failures:
 /// - [StorageWriteFailure]
@@ -30,10 +31,16 @@ class SignOut {
 
   /// {@macro sign_out}
   Future<Either<Failure, None>> call() {
-    return _signOut();
+    return _resetPowerSync();
   }
 
-  Future<Either<Failure, None>> _signOut() async {
+  Future<Either<Failure, None>> _resetPowerSync() async {
+    await authenticationRepository.resetPowerSync();
+
+    return signOut();
+  }
+
+  Future<Either<Failure, None>> signOut() async {
     await authenticationRepository.signOut();
 
     return _stopTracking();

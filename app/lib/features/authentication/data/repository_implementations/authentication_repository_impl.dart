@@ -262,6 +262,11 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   }
 
   @override
+  Future<void> resetPowerSync() async {
+    await authRemoteDataSource.resetPowerSync();
+  }
+
+  @override
   Future<Either<Failure, None>> saveServerInfo({
     required ServerInfo serverInfo,
   }) async {

@@ -166,6 +166,9 @@ abstract class AuthenticationRepository {
   /// Signs out the current user from the configured auth client.
   Future<void> signOut();
 
+  /// Clears the PowerSync-backed local database for the current session.
+  Future<void> resetPowerSync();
+
   /// Removes the saved server info from local storage.
   ///
   /// Failures:

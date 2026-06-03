@@ -12,11 +12,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:powersync/powersync.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-/*
-  To-Do:
-    - [ ] fix late already initialized exception
-*/
-
 /// {@template supabase_handler}
 /// Initializes and exposes the app-wide Supabase and PowerSync-backed Drift
 /// clients.
@@ -32,10 +27,11 @@ class SupabaseHandler {
   final Completer<SupabaseClient> _clientCompleter =
       Completer<SupabaseClient>();
 
-  final Completer<DriftAppDatabase> _driftDatabaseCompleter =
+  Completer<DriftAppDatabase> _driftDatabaseCompleter =
       Completer<DriftAppDatabase>();
 
-  late final DriftAppDatabase _driftDatabase;
+  DriftAppDatabase? _driftDatabase;
+  PowerSyncDatabase? _powerSyncDatabase;
 
   /// The initialized Supabase client.
   ///
@@ -55,7 +51,7 @@ class SupabaseHandler {
   /// for [initializePowerSync] to complete.
   Future<DriftAppDatabase> get driftDatabase {
     if (_driftDatabaseCompleter.isCompleted) {
-      return Future.value(_driftDatabase);
+      return Future.value(_driftDatabase!);
     } else {
       return _driftDatabaseCompleter.future;
     }
@@ -105,6 +101,23 @@ class SupabaseHandler {
     if (!_driftDatabaseCompleter.isCompleted) {
       _driftDatabaseCompleter.complete(_driftDatabase);
     }
+  }
+
+  /// Clears synced local data and closes the PowerSync-backed database.
+  ///
+  /// A later sign-in creates a fresh database instance for the same SQLite file.
+  Future<void> resetPowerSync() async {
+    final PowerSyncDatabase? powersyncDb = _powerSyncDatabase;
+    if (powersyncDb == null || powersyncDb.closed) {
+      return;
+    }
+
+    await powersyncDb.disconnectAndClear();
+    await _driftDatabase?.close();
+    await powersyncDb.close();
+    _driftDatabase = null;
+    _powerSyncDatabase = null;
+    _driftDatabaseCompleter = Completer<DriftAppDatabase>();
   }
 
   /// Disposes the global Supabase instance.
