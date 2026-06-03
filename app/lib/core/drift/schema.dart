@@ -31,8 +31,6 @@ Schema schema = const Schema(([
     Column.text('os_id'),
     Column.text('os_version'),
     Column.text('app_version'),
-    Column.text('created_at'),
-    Column.text('updated_at'),
   ]),
   Table('raw_location_data', [
     Column.text('user_id'),

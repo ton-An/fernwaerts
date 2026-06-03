@@ -50,9 +50,7 @@ streams:
           os_id,
           os_version,
           app_version,
-          manufacturer,
-          created_at,
-          updated_at
+          manufacturer
         FROM devices
         WHERE user_id IN current_user_id
       - |

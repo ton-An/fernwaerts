@@ -20,8 +20,6 @@ class Device extends Equatable {
     required this.operatingSystem,
     required this.osVersion,
     required this.appVersion,
-    required this.createdAt,
-    required this.updatedAt,
   }) : id = id ?? (const Uuid()).v4();
 
   /// Rebuilds a device record from database values.
@@ -34,8 +32,6 @@ class Device extends Equatable {
     required OperatingSystem operatingSystem,
     required String osVersion,
     required String appVersion,
-    required DateTime createdAt,
-    required DateTime updatedAt,
   }) {
     return Device(
       id: id,
@@ -46,8 +42,6 @@ class Device extends Equatable {
       operatingSystem: operatingSystem,
       osVersion: osVersion,
       appVersion: appVersion,
-      createdAt: createdAt,
-      updatedAt: updatedAt,
     );
   }
 
@@ -59,8 +53,6 @@ class Device extends Equatable {
   final OperatingSystem operatingSystem;
   final String osVersion;
   final String appVersion;
-  final DateTime createdAt;
-  final DateTime updatedAt;
 
   /// Creates a user-scoped device record from platform-provided device info.
   ///
@@ -73,8 +65,6 @@ class Device extends Equatable {
     required String appVersion,
     required String userId,
   }) {
-    final DateTime now = DateTime.now();
-
     return Device(
       userId: userId,
       name: rawDevice.name,
@@ -83,8 +73,6 @@ class Device extends Equatable {
       operatingSystem: rawDevice.os,
       osVersion: rawDevice.osVersion,
       appVersion: appVersion,
-      createdAt: now,
-      updatedAt: now,
     );
   }
 
@@ -98,7 +86,5 @@ class Device extends Equatable {
     operatingSystem,
     osVersion,
     appVersion,
-    createdAt,
-    updatedAt,
   ];
 }

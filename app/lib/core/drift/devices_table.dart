@@ -20,9 +20,4 @@ class Devices extends Table {
       textEnum<OperatingSystem>().named('os_id')();
   TextColumn get osVersion => text().named('os_version')();
   TextColumn get appVersion => text().named('app_version')();
-
-  DateTimeColumn get createdAt =>
-      dateTime().named('created_at').clientDefault(() => DateTime.now())();
-  DateTimeColumn get updatedAt =>
-      dateTime().named('updated_at').clientDefault(() => DateTime.now())();
 }
