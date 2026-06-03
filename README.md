@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="https://codecov.io/gh/ton-An/fernwaerts">
-    <img src="https://codecov.io/gh/ton-An/fernwaerts/branch/main/graph/badge.svg?token=X5F77OEGXS"/>
+    <img src="https://codecov.io/gh/ton-An/fernwaerts/graph/badge.svg?token=X5F77OEGXS"/>
   </a>
   <a href="LICENSE">
     <img src="https://img.shields.io/badge/License-AGPL V3-blue.svg" />
