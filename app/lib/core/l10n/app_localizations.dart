@@ -537,6 +537,258 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Accept'**
   String get accept;
+
+  /// No description provided for @semanticGetStartedButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Get started'**
+  String get semanticGetStartedButton;
+
+  /// No description provided for @semanticServerUrlField.
+  ///
+  /// In en, this message translates to:
+  /// **'Server URL'**
+  String get semanticServerUrlField;
+
+  /// No description provided for @semanticServerContinueButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with server URL'**
+  String get semanticServerContinueButton;
+
+  /// No description provided for @semanticAdminUsernameField.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin username'**
+  String get semanticAdminUsernameField;
+
+  /// No description provided for @semanticAdminEmailField.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin email'**
+  String get semanticAdminEmailField;
+
+  /// No description provided for @semanticAdminPasswordField.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin password'**
+  String get semanticAdminPasswordField;
+
+  /// No description provided for @semanticAdminConfirmPasswordField.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm admin password'**
+  String get semanticAdminConfirmPasswordField;
+
+  /// No description provided for @semanticCreateAdminButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Create initial admin'**
+  String get semanticCreateAdminButton;
+
+  /// No description provided for @semanticSignInEmailField.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in email'**
+  String get semanticSignInEmailField;
+
+  /// No description provided for @semanticSignInPasswordField.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in password'**
+  String get semanticSignInPasswordField;
+
+  /// No description provided for @semanticSignInButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get semanticSignInButton;
+
+  /// No description provided for @semanticInviteUsernameField.
+  ///
+  /// In en, this message translates to:
+  /// **'Invited user username'**
+  String get semanticInviteUsernameField;
+
+  /// No description provided for @semanticInvitePasswordField.
+  ///
+  /// In en, this message translates to:
+  /// **'Invited user password'**
+  String get semanticInvitePasswordField;
+
+  /// No description provided for @semanticInviteConfirmPasswordField.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm invited user password'**
+  String get semanticInviteConfirmPasswordField;
+
+  /// No description provided for @semanticAcceptInviteButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept invite'**
+  String get semanticAcceptInviteButton;
+
+  /// No description provided for @semanticAuthenticationBackButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Go back in authentication flow'**
+  String get semanticAuthenticationBackButton;
+
+  /// No description provided for @semanticMapSettingsButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Open settings'**
+  String get semanticMapSettingsButton;
+
+  /// No description provided for @semanticAccountSettingsLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Open account settings'**
+  String get semanticAccountSettingsLink;
+
+  /// No description provided for @semanticUserManagementLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Open user management'**
+  String get semanticUserManagementLink;
+
+  /// No description provided for @semanticInviteNewUserLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Open invite new user'**
+  String get semanticInviteNewUserLink;
+
+  /// No description provided for @semanticInviteNewUserEmailField.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite user email'**
+  String get semanticInviteNewUserEmailField;
+
+  /// No description provided for @semanticInviteNewUserButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Send user invite'**
+  String get semanticInviteNewUserButton;
+
+  /// No description provided for @semanticChangePasswordLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Open change password'**
+  String get semanticChangePasswordLink;
+
+  /// No description provided for @semanticNewEmailAddressField.
+  ///
+  /// In en, this message translates to:
+  /// **'New email address'**
+  String get semanticNewEmailAddressField;
+
+  /// No description provided for @semanticSaveEmailAddressButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save email address'**
+  String get semanticSaveEmailAddressButton;
+
+  /// No description provided for @semanticNewPasswordField.
+  ///
+  /// In en, this message translates to:
+  /// **'New password'**
+  String get semanticNewPasswordField;
+
+  /// No description provided for @semanticConfirmNewPasswordField.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm new password'**
+  String get semanticConfirmNewPasswordField;
+
+  /// No description provided for @semanticSavePasswordButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save new password'**
+  String get semanticSavePasswordButton;
+
+  /// No description provided for @semanticSignOutButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get semanticSignOutButton;
+
+  /// No description provided for @semanticConfirmDialogActionButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm dialog action'**
+  String get semanticConfirmDialogActionButton;
+
+  /// No description provided for @semanticCancelDialogActionButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel dialog action'**
+  String get semanticCancelDialogActionButton;
+
+  /// No description provided for @semanticSettingsFooterBackButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Go back in settings'**
+  String get semanticSettingsFooterBackButton;
+
+  /// No description provided for @semanticCalendarPreviousButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Show previous calendar period'**
+  String get semanticCalendarPreviousButton;
+
+  /// No description provided for @semanticCalendarNextButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Show next calendar period'**
+  String get semanticCalendarNextButton;
+
+  /// No description provided for @semanticCalendarStepperPreviousButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Move selection backward'**
+  String get semanticCalendarStepperPreviousButton;
+
+  /// No description provided for @semanticCalendarStepperNextButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Move selection forward'**
+  String get semanticCalendarStepperNextButton;
+
+  /// No description provided for @semanticCalendarDateButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Toggle calendar picker'**
+  String get semanticCalendarDateButton;
+
+  /// No description provided for @semanticOpenSourceLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Open source repository'**
+  String get semanticOpenSourceLink;
+
+  /// No description provided for @semanticOpenStreetMapAttributionLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Open OpenStreetMap attribution'**
+  String get semanticOpenStreetMapAttributionLink;
+
+  /// No description provided for @semanticNotification.
+  ///
+  /// In en, this message translates to:
+  /// **'In-app notification'**
+  String get semanticNotification;
+
+  /// No description provided for @semanticNotificationDismiss.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss notification'**
+  String get semanticNotificationDismiss;
+
+  /// No description provided for @semanticLocationListItem.
+  ///
+  /// In en, this message translates to:
+  /// **'Show location on map'**
+  String get semanticLocationListItem;
 }
 
 class _AppLocalizationsDelegate

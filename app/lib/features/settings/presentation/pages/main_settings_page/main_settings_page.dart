@@ -45,31 +45,43 @@ class MainSettingsPage extends StatelessWidget {
     return SettingsListView(
       children: [
         SettingsSectionTitle(title: AppLocalizations.of(context)!.account),
-        SettingsPageLink(
-          title: AppLocalizations.of(context)!.authentication,
-          onPressed: () {
-            context.go(AccountSettingsPage.route);
-          },
+        Semantics(
+          label: AppLocalizations.of(context)!.semanticAccountSettingsLink,
+          button: true,
+          child: SettingsPageLink(
+            title: AppLocalizations.of(context)!.authentication,
+            onPressed: () {
+              context.go(AccountSettingsPage.route);
+            },
+          ),
         ),
         const XXMediumGap(),
 
         SettingsSectionTitle(title: AppLocalizations.of(context)!.admin),
-        SettingsPageLink(
-          title: AppLocalizations.of(context)!.userManagement,
-          onPressed: () {
-            context.go(UserManagementSettingsPage.route);
-          },
+        Semantics(
+          label: AppLocalizations.of(context)!.semanticUserManagementLink,
+          button: true,
+          child: SettingsPageLink(
+            title: AppLocalizations.of(context)!.userManagement,
+            onPressed: () {
+              context.go(UserManagementSettingsPage.route);
+            },
+          ),
         ),
         const XXMediumGap(),
         const OpenSourceInfo(),
         const XXMediumGap(),
-        CustomCupertinoTextButton(
-          text: AppLocalizations.of(context)!.signOut,
-          textColor: theme.colors.backgroundContrast.withValues(alpha: .75),
-          color: theme.colors.translucentBackgroundContrast.withValues(
-            alpha: .16,
+        Semantics(
+          label: AppLocalizations.of(context)!.semanticSignOutButton,
+          button: true,
+          child: CustomCupertinoTextButton(
+            text: AppLocalizations.of(context)!.signOut,
+            textColor: theme.colors.backgroundContrast.withValues(alpha: .75),
+            color: theme.colors.translucentBackgroundContrast.withValues(
+              alpha: .16,
+            ),
+            onPressed: () => _signOut(context),
           ),
-          onPressed: () => _signOut(context),
         ),
         const XXMediumGap(),
         const _VersionTag(),
@@ -84,6 +96,10 @@ class MainSettingsPage extends StatelessWidget {
       message: AppLocalizations.of(context)!.signOutMessage,
       submitButtonLabel: AppLocalizations.of(context)!.yes,
       cancelButtonLabel: AppLocalizations.of(context)!.cancel,
+      submitButtonSemanticsLabel:
+          AppLocalizations.of(context)!.semanticConfirmDialogActionButton,
+      cancelButtonSemanticsLabel:
+          AppLocalizations.of(context)!.semanticCancelDialogActionButton,
       onSubmit: () {
         getIt<SignOut>().call();
         context.pop();

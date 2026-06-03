@@ -23,6 +23,10 @@ class _CalendarHeader extends StatelessWidget {
                       children: [
                         _NavigationButton(
                           icon: Icons.arrow_back_ios_new_rounded,
+                          semanticLabel:
+                              AppLocalizations.of(
+                                context,
+                              )!.semanticCalendarPreviousButton,
                           onPressed:
                               () => _onBackwardPressed(
                                 context,
@@ -47,6 +51,10 @@ class _CalendarHeader extends StatelessWidget {
                         ),
                         _NavigationButton(
                           icon: Icons.arrow_forward_ios_rounded,
+                          semanticLabel:
+                              AppLocalizations.of(
+                                context,
+                              )!.semanticCalendarNextButton,
                           onPressed:
                               () => _onForwardPressed(
                                 context,

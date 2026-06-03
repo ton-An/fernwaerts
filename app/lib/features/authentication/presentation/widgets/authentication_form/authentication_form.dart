@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/features/settings/presentation/pages/debug_page.dart';
 import 'package:super_keyboard/super_keyboard.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
@@ -28,6 +29,7 @@ class AuthenticationForm extends StatelessWidget {
     this.showBackButton = false,
     this.onBackPressed,
     this.hint,
+    this.buttonSemanticsLabel,
   });
 
   /// The icon to display at the top of the form.
@@ -45,8 +47,11 @@ class AuthenticationForm extends StatelessWidget {
   /// The text to display on the main action button.
   final String buttonText;
 
-  /// A list of [CustomCupertinoTextField] widgets for user input.
-  final List<CustomCupertinoTextField> textFields;
+  /// Optional semantics label for the main action button.
+  final String? buttonSemanticsLabel;
+
+  /// Text fields and related form controls for user input.
+  final List<Widget> textFields;
 
   /// Whether the form is currently in a loading state (e.g., submitting data).
   ///
@@ -106,10 +111,14 @@ class AuthenticationForm extends StatelessWidget {
                 if (textFields.last != textField) const MediumGap(),
               ],
               const XXMediumGap(),
-              CustomCupertinoTextButton(
-                text: buttonText,
-                onPressed: onButtonPressed,
-                isLoading: isLoading,
+              Semantics(
+                label: buttonSemanticsLabel,
+                button: true,
+                child: CustomCupertinoTextButton(
+                  text: buttonText,
+                  onPressed: onButtonPressed,
+                  isLoading: isLoading,
+                ),
               ),
               AnimatedSize(
                 duration: theme.durations.medium,

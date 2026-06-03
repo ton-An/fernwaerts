@@ -73,38 +73,51 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
 
             const MediumGap(),
 
-            CustomCupertinoTextField(
-              hint: AppLocalizations.of(context)!.newEmailAddress,
-              controller: _emailController,
-              onChanged: (_) {},
+            Semantics(
+              label: AppLocalizations.of(context)!.semanticNewEmailAddressField,
+              textField: true,
+              child: CustomCupertinoTextField(
+                hint: AppLocalizations.of(context)!.newEmailAddress,
+                controller: _emailController,
+                onChanged: (_) {},
+              ),
             ),
 
             const MediumGap(),
 
-            SettingsPageLink(
-              title: AppLocalizations.of(context)!.changePassword,
-              onPressed: () {
-                context.go(PasswordChangeSettingsPage.route);
-              },
+            Semantics(
+              label: AppLocalizations.of(context)!.semanticChangePasswordLink,
+              button: true,
+              child: SettingsPageLink(
+                title: AppLocalizations.of(context)!.changePassword,
+                onPressed: () {
+                  context.go(PasswordChangeSettingsPage.route);
+                },
+              ),
             ),
 
             const XXMediumGap(),
-            CustomCupertinoButton(
-              color: theme.colors.primary,
-              isLoading: state is SendingVerificationEmail,
-              onPressed:
-                  _allowSave()
-                      ? () {
-                        context.read<AccountSettingsCubit>().updateEmail(
-                          _emailController.text..trim(),
-                        );
-                      }
-                      : null,
-              child: Text(
-                AppLocalizations.of(context)!.save,
-                textAlign: TextAlign.center,
-                style: theme.text.headline.copyWith(
-                  color: theme.colors.primaryContrast,
+            Semantics(
+              label:
+                  AppLocalizations.of(context)!.semanticSaveEmailAddressButton,
+              button: true,
+              child: CustomCupertinoButton(
+                color: theme.colors.primary,
+                isLoading: state is SendingVerificationEmail,
+                onPressed:
+                    _allowSave()
+                        ? () {
+                          context.read<AccountSettingsCubit>().updateEmail(
+                            _emailController.text..trim(),
+                          );
+                        }
+                        : null,
+                child: Text(
+                  AppLocalizations.of(context)!.save,
+                  textAlign: TextAlign.center,
+                  style: theme.text.headline.copyWith(
+                    color: theme.colors.primaryContrast,
+                  ),
                 ),
               ),
             ),

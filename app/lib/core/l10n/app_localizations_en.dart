@@ -240,4 +240,133 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accept => 'Accept';
+
+  @override
+  String get semanticGetStartedButton => 'Get started';
+
+  @override
+  String get semanticServerUrlField => 'Server URL';
+
+  @override
+  String get semanticServerContinueButton => 'Continue with server URL';
+
+  @override
+  String get semanticAdminUsernameField => 'Admin username';
+
+  @override
+  String get semanticAdminEmailField => 'Admin email';
+
+  @override
+  String get semanticAdminPasswordField => 'Admin password';
+
+  @override
+  String get semanticAdminConfirmPasswordField => 'Confirm admin password';
+
+  @override
+  String get semanticCreateAdminButton => 'Create initial admin';
+
+  @override
+  String get semanticSignInEmailField => 'Sign in email';
+
+  @override
+  String get semanticSignInPasswordField => 'Sign in password';
+
+  @override
+  String get semanticSignInButton => 'Sign in';
+
+  @override
+  String get semanticInviteUsernameField => 'Invited user username';
+
+  @override
+  String get semanticInvitePasswordField => 'Invited user password';
+
+  @override
+  String get semanticInviteConfirmPasswordField =>
+      'Confirm invited user password';
+
+  @override
+  String get semanticAcceptInviteButton => 'Accept invite';
+
+  @override
+  String get semanticAuthenticationBackButton =>
+      'Go back in authentication flow';
+
+  @override
+  String get semanticMapSettingsButton => 'Open settings';
+
+  @override
+  String get semanticAccountSettingsLink => 'Open account settings';
+
+  @override
+  String get semanticUserManagementLink => 'Open user management';
+
+  @override
+  String get semanticInviteNewUserLink => 'Open invite new user';
+
+  @override
+  String get semanticInviteNewUserEmailField => 'Invite user email';
+
+  @override
+  String get semanticInviteNewUserButton => 'Send user invite';
+
+  @override
+  String get semanticChangePasswordLink => 'Open change password';
+
+  @override
+  String get semanticNewEmailAddressField => 'New email address';
+
+  @override
+  String get semanticSaveEmailAddressButton => 'Save email address';
+
+  @override
+  String get semanticNewPasswordField => 'New password';
+
+  @override
+  String get semanticConfirmNewPasswordField => 'Confirm new password';
+
+  @override
+  String get semanticSavePasswordButton => 'Save new password';
+
+  @override
+  String get semanticSignOutButton => 'Sign out';
+
+  @override
+  String get semanticConfirmDialogActionButton => 'Confirm dialog action';
+
+  @override
+  String get semanticCancelDialogActionButton => 'Cancel dialog action';
+
+  @override
+  String get semanticSettingsFooterBackButton => 'Go back in settings';
+
+  @override
+  String get semanticCalendarPreviousButton => 'Show previous calendar period';
+
+  @override
+  String get semanticCalendarNextButton => 'Show next calendar period';
+
+  @override
+  String get semanticCalendarStepperPreviousButton => 'Move selection backward';
+
+  @override
+  String get semanticCalendarStepperNextButton => 'Move selection forward';
+
+  @override
+  String get semanticCalendarDateButton => 'Toggle calendar picker';
+
+  @override
+  String get semanticOpenSourceLink => 'Open source repository';
+
+  @override
+  String get semanticOpenStreetMapAttributionLink =>
+      'Open OpenStreetMap attribution';
+
+  @override
+  String get semanticNotification => 'In-app notification';
+
+  @override
+  String get semanticNotificationDismiss => 'Dismiss notification';
+
+  @override
+  String get semanticLocationListItem => 'Show location on map';
 }

@@ -69,25 +69,34 @@ class _InviteNewUserSettingsPageState extends State<InviteNewUserSettingsPage> {
 
             const MediumGap(),
 
-            CustomCupertinoTextField(
-              hint: AppLocalizations.of(context)!.usersEmail,
-              controller: _emailController,
-              onChanged: (_) {},
+            Semantics(
+              label:
+                  AppLocalizations.of(context)!.semanticInviteNewUserEmailField,
+              textField: true,
+              child: CustomCupertinoTextField(
+                hint: AppLocalizations.of(context)!.usersEmail,
+                controller: _emailController,
+                onChanged: (_) {},
+              ),
             ),
 
             const MediumGap(),
-            CustomCupertinoTextButton(
-              color: theme.colors.primary,
-              isLoading: state is InviteNewUserLoading,
-              onPressed:
-                  _allowInvite()
-                      ? () {
-                        context.read<InviteNewUserCubit>().inviteNewUser(
-                          email: _emailController.text,
-                        );
-                      }
-                      : null,
-              text: AppLocalizations.of(context)!.invite,
+            Semantics(
+              label: AppLocalizations.of(context)!.semanticInviteNewUserButton,
+              button: true,
+              child: CustomCupertinoTextButton(
+                color: theme.colors.primary,
+                isLoading: state is InviteNewUserLoading,
+                onPressed:
+                    _allowInvite()
+                        ? () {
+                          context.read<InviteNewUserCubit>().inviteNewUser(
+                            email: _emailController.text,
+                          );
+                        }
+                        : null,
+                text: AppLocalizations.of(context)!.invite,
+              ),
             ),
           ],
         );

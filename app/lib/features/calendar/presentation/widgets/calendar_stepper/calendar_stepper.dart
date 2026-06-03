@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_date_selection_cubit/calendar_date_selection_state.dart';
 import 'package:location_history/features/calendar/presentation/cubits/calendar_expansion_cubit/calendar_expansion_cubit.dart';
@@ -54,6 +55,10 @@ class CalendarStepper extends StatelessWidget {
                 children: [
                   _NavigationButton(
                     icon: Icons.arrow_back_ios_new_rounded,
+                    semanticLabel:
+                        AppLocalizations.of(
+                          context,
+                        )!.semanticCalendarStepperPreviousButton,
                     onPressed: () {
                       context.read<CalendarDateSelectionCubit>().shiftSelection(
                         forward: false,
@@ -68,6 +73,10 @@ class CalendarStepper extends StatelessWidget {
                   ),
                   _NavigationButton(
                     icon: Icons.arrow_forward_ios_rounded,
+                    semanticLabel:
+                        AppLocalizations.of(
+                          context,
+                        )!.semanticCalendarStepperNextButton,
                     onPressed: () {
                       context.read<CalendarDateSelectionCubit>().shiftSelection(
                         forward: true,

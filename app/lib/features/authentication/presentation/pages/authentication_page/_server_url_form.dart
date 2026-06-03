@@ -26,11 +26,17 @@ class _ServerUrlFormState extends State<_ServerUrlForm> {
           description: AppLocalizations.of(context)!.serverDetailsDescription,
           hint: AppLocalizations.of(context)!.serverDetailsHint,
           buttonText: AppLocalizations.of(context)!.continueButton,
+          buttonSemanticsLabel:
+              AppLocalizations.of(context)!.semanticServerContinueButton,
           textFields: [
-            CustomCupertinoTextField(
-              hint: AppLocalizations.of(context)!.serverUrl,
-              controller: _urlEditController,
-              onChanged: (_) {},
+            Semantics(
+              label: AppLocalizations.of(context)!.semanticServerUrlField,
+              textField: true,
+              child: CustomCupertinoTextField(
+                hint: AppLocalizations.of(context)!.serverUrl,
+                controller: _urlEditController,
+                onChanged: (_) {},
+              ),
             ),
           ],
           onButtonPressed: () {

@@ -112,20 +112,23 @@ class _DismissibleState extends State<_Dismissible>
   Widget build(BuildContext context) {
     super.build(context);
 
-    return GestureDetector(
-      onVerticalDragStart: _handleDragStart,
-      onVerticalDragUpdate: _handleDragUpdate,
-      onVerticalDragEnd: _handleDragEnd,
-      child: BlocBuilder<InAppNotificationCubit, InAppNotificationState>(
-        builder: (context, state) {
-          return SlideTransition(
-            position:
-                state is InAppNotificationDelivering
-                    ? _entryAnimation
-                    : _moveAnimation,
-            child: KeyedSubtree(key: _contentKey, child: widget.child),
-          );
-        },
+    return Semantics(
+      label: AppLocalizations.of(context)!.semanticNotificationDismiss,
+      child: GestureDetector(
+        onVerticalDragStart: _handleDragStart,
+        onVerticalDragUpdate: _handleDragUpdate,
+        onVerticalDragEnd: _handleDragEnd,
+        child: BlocBuilder<InAppNotificationCubit, InAppNotificationState>(
+          builder: (context, state) {
+            return SlideTransition(
+              position:
+                  state is InAppNotificationDelivering
+                      ? _entryAnimation
+                      : _moveAnimation,
+              child: KeyedSubtree(key: _contentKey, child: widget.child),
+            );
+          },
+        ),
       ),
     );
   }

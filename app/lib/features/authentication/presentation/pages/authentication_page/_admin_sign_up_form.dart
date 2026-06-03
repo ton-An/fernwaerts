@@ -32,33 +32,54 @@ class _AdminSignUpFormState extends State<_AdminSignUpForm> {
           label: AppLocalizations.of(context)!.createAdmin,
           description: AppLocalizations.of(context)!.adminSignUpDescription,
           buttonText: AppLocalizations.of(context)!.createAdmin,
+          buttonSemanticsLabel:
+              AppLocalizations.of(context)!.semanticCreateAdminButton,
           textFields: [
-            CustomCupertinoTextField(
-              hint: AppLocalizations.of(context)!.username,
-              controller: _usernameController,
-              autofillHints: const [AutofillHints.newUsername],
-              onChanged: (_) {},
+            Semantics(
+              label: AppLocalizations.of(context)!.semanticAdminUsernameField,
+              textField: true,
+              child: CustomCupertinoTextField(
+                hint: AppLocalizations.of(context)!.username,
+                controller: _usernameController,
+                autofillHints: const [AutofillHints.newUsername],
+                onChanged: (_) {},
+              ),
             ),
-            CustomCupertinoTextField(
-              hint: AppLocalizations.of(context)!.email,
-              controller: _emailController,
-              autofillHints: const [AutofillHints.email],
-              keyboardType: TextInputType.emailAddress,
-              onChanged: (_) {},
+            Semantics(
+              label: AppLocalizations.of(context)!.semanticAdminEmailField,
+              textField: true,
+              child: CustomCupertinoTextField(
+                hint: AppLocalizations.of(context)!.email,
+                controller: _emailController,
+                autofillHints: const [AutofillHints.email],
+                keyboardType: TextInputType.emailAddress,
+                onChanged: (_) {},
+              ),
             ),
-            CustomCupertinoTextField(
-              hint: AppLocalizations.of(context)!.password,
-              controller: _passwordController,
-              autofillHints: const [AutofillHints.newPassword],
-              obscureText: true,
-              onChanged: (_) {},
+            Semantics(
+              label: AppLocalizations.of(context)!.semanticAdminPasswordField,
+              textField: true,
+              child: CustomCupertinoTextField(
+                hint: AppLocalizations.of(context)!.password,
+                controller: _passwordController,
+                autofillHints: const [AutofillHints.newPassword],
+                obscureText: true,
+                onChanged: (_) {},
+              ),
             ),
-            CustomCupertinoTextField(
-              hint: AppLocalizations.of(context)!.confirmPassword,
-              controller: _confirmPasswordController,
-              autofillHints: const [AutofillHints.newPassword],
-              obscureText: true,
-              onChanged: (_) {},
+            Semantics(
+              label:
+                  AppLocalizations.of(
+                    context,
+                  )!.semanticAdminConfirmPasswordField,
+              textField: true,
+              child: CustomCupertinoTextField(
+                hint: AppLocalizations.of(context)!.confirmPassword,
+                controller: _confirmPasswordController,
+                autofillHints: const [AutofillHints.newPassword],
+                obscureText: true,
+                onChanged: (_) {},
+              ),
             ),
           ],
           onButtonPressed: () {

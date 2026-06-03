@@ -37,11 +37,18 @@ class _Footer extends StatelessWidget {
             onTap: () {
               context.pop();
             },
-            child: SmallIconButton(
-              icon: isMainPage ? CupertinoIcons.clear : CupertinoIcons.back,
-              onPressed: () {
-                context.pop();
-              },
+            child: Semantics(
+              label:
+                  AppLocalizations.of(
+                    context,
+                  )!.semanticSettingsFooterBackButton,
+              button: true,
+              child: SmallIconButton(
+                icon: isMainPage ? CupertinoIcons.clear : CupertinoIcons.back,
+                onPressed: () {
+                  context.pop();
+                },
+              ),
             ),
           ),
           Text(

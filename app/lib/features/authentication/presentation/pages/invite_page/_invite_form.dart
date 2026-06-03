@@ -29,26 +29,43 @@ class _InviteFormState extends State<_InviteForm> {
           label: AppLocalizations.of(context)!.acceptInvite,
           description: AppLocalizations.of(context)!.acceptInviteDescription,
           buttonText: AppLocalizations.of(context)!.accept,
+          buttonSemanticsLabel:
+              AppLocalizations.of(context)!.semanticAcceptInviteButton,
           textFields: [
-            CustomCupertinoTextField(
-              hint: AppLocalizations.of(context)!.username,
-              controller: _usernameController,
-              autofillHints: const [AutofillHints.newUsername],
-              onChanged: (_) {},
+            Semantics(
+              label: AppLocalizations.of(context)!.semanticInviteUsernameField,
+              textField: true,
+              child: CustomCupertinoTextField(
+                hint: AppLocalizations.of(context)!.username,
+                controller: _usernameController,
+                autofillHints: const [AutofillHints.newUsername],
+                onChanged: (_) {},
+              ),
             ),
-            CustomCupertinoTextField(
-              hint: AppLocalizations.of(context)!.password,
-              controller: _passwordController,
-              autofillHints: const [AutofillHints.newPassword],
-              obscureText: true,
-              onChanged: (_) {},
+            Semantics(
+              label: AppLocalizations.of(context)!.semanticInvitePasswordField,
+              textField: true,
+              child: CustomCupertinoTextField(
+                hint: AppLocalizations.of(context)!.password,
+                controller: _passwordController,
+                autofillHints: const [AutofillHints.newPassword],
+                obscureText: true,
+                onChanged: (_) {},
+              ),
             ),
-            CustomCupertinoTextField(
-              hint: AppLocalizations.of(context)!.confirmPassword,
-              controller: _confirmPasswordController,
-              autofillHints: const [AutofillHints.newPassword],
-              obscureText: true,
-              onChanged: (_) {},
+            Semantics(
+              label:
+                  AppLocalizations.of(
+                    context,
+                  )!.semanticInviteConfirmPasswordField,
+              textField: true,
+              child: CustomCupertinoTextField(
+                hint: AppLocalizations.of(context)!.confirmPassword,
+                controller: _confirmPasswordController,
+                autofillHints: const [AutofillHints.newPassword],
+                obscureText: true,
+                onChanged: (_) {},
+              ),
             ),
           ],
           onButtonPressed: () {

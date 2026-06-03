@@ -28,20 +28,30 @@ class _SignInFormState extends State<_SignInForm> {
           label: AppLocalizations.of(context)!.signIn,
           description: AppLocalizations.of(context)!.signInDescription,
           buttonText: AppLocalizations.of(context)!.signIn,
+          buttonSemanticsLabel:
+              AppLocalizations.of(context)!.semanticSignInButton,
           textFields: [
-            CustomCupertinoTextField(
-              hint: AppLocalizations.of(context)!.email,
-              controller: _emailController,
-              autofillHints: const [AutofillHints.email],
-              keyboardType: TextInputType.emailAddress,
-              onChanged: (_) {},
+            Semantics(
+              label: AppLocalizations.of(context)!.semanticSignInEmailField,
+              textField: true,
+              child: CustomCupertinoTextField(
+                hint: AppLocalizations.of(context)!.email,
+                controller: _emailController,
+                autofillHints: const [AutofillHints.email],
+                keyboardType: TextInputType.emailAddress,
+                onChanged: (_) {},
+              ),
             ),
-            CustomCupertinoTextField(
-              hint: AppLocalizations.of(context)!.password,
-              controller: _passwordController,
-              obscureText: true,
-              autofillHints: const [AutofillHints.password],
-              onChanged: (_) {},
+            Semantics(
+              label: AppLocalizations.of(context)!.semanticSignInPasswordField,
+              textField: true,
+              child: CustomCupertinoTextField(
+                hint: AppLocalizations.of(context)!.password,
+                controller: _passwordController,
+                obscureText: true,
+                autofillHints: const [AutofillHints.password],
+                onChanged: (_) {},
+              ),
             ),
           ],
           onButtonPressed: () {

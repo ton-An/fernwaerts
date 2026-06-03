@@ -61,47 +61,51 @@ class _DateButtonState extends State<_DateButton>
         final String dateString = _getDateString(context, dateSelectionState);
         return BlocBuilder<CalendarExpansionCubit, CalendarExpansionState>(
           builder: (context, expansionState) {
-            return GestureDetector(
-              onTapDown: (_) {
-                _fadeController.forward();
-              },
-              onTapUp: (_) {
-                _fadeController.forward().then((_) {
-                  _fadeController.reverse();
-                });
+            return Semantics(
+              label: AppLocalizations.of(context)!.semanticCalendarDateButton,
+              button: true,
+              child: GestureDetector(
+                onTapDown: (_) {
+                  _fadeController.forward();
+                },
+                onTapUp: (_) {
+                  _fadeController.forward().then((_) {
+                    _fadeController.reverse();
+                  });
 
-                context.read<CalendarExpansionCubit>().toggleExpansion();
-              },
-              onTapCancel: () {
-                _fadeController.forward().then((_) {
-                  _fadeController.reverse();
-                });
-              },
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(theme.radii.medium),
-                child: Container(
-                  height: CalendarStepper.height,
-                  color: theme.colors.background,
-                  child: ColoredBox(
-                    color: theme.colors.text.withAlpha(_fadeAnimation.value),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          dateString,
-                          textAlign: TextAlign.center,
-                          style: _getLabelStyle(theme),
-                        ),
-                        SizedBox(width: theme.spacing.xSmall),
-                        AnimatedRotation(
-                          duration: theme.durations.short,
-                          turns: expansionState is CalendarCollapsed ? 0 : .5,
-                          child: Icon(
-                            CupertinoIcons.arrow_down_circle_fill,
-                            color: theme.colors.primary,
+                  context.read<CalendarExpansionCubit>().toggleExpansion();
+                },
+                onTapCancel: () {
+                  _fadeController.forward().then((_) {
+                    _fadeController.reverse();
+                  });
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(theme.radii.medium),
+                  child: Container(
+                    height: CalendarStepper.height,
+                    color: theme.colors.background,
+                    child: ColoredBox(
+                      color: theme.colors.text.withAlpha(_fadeAnimation.value),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            dateString,
+                            textAlign: TextAlign.center,
+                            style: _getLabelStyle(theme),
                           ),
-                        ),
-                      ],
+                          SizedBox(width: theme.spacing.xSmall),
+                          AnimatedRotation(
+                            duration: theme.durations.short,
+                            turns: expansionState is CalendarCollapsed ? 0 : .5,
+                            child: Icon(
+                              CupertinoIcons.arrow_down_circle_fill,
+                              color: theme.colors.primary,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

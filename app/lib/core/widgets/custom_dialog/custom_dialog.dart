@@ -20,6 +20,8 @@ class CustomDialog extends StatelessWidget {
     required this.cancelButtonLabel,
     required this.onSubmit,
     required this.onCancel,
+    this.submitButtonSemanticsLabel,
+    this.cancelButtonSemanticsLabel,
   });
 
   final String title;
@@ -28,6 +30,8 @@ class CustomDialog extends StatelessWidget {
   final String cancelButtonLabel;
   final VoidCallback onSubmit;
   final VoidCallback onCancel;
+  final String? submitButtonSemanticsLabel;
+  final String? cancelButtonSemanticsLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -64,24 +68,32 @@ class CustomDialog extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Expanded(
-                      child: _Button(
-                        label: cancelButtonLabel,
-                        highlight: false,
-                        onPressed: () async {
-                          await Future.delayed(theme.durations.xTiny);
-                          onCancel();
-                        },
+                      child: Semantics(
+                        label: cancelButtonSemanticsLabel,
+                        button: true,
+                        child: _Button(
+                          label: cancelButtonLabel,
+                          highlight: false,
+                          onPressed: () async {
+                            await Future.delayed(theme.durations.xTiny);
+                            onCancel();
+                          },
+                        ),
                       ),
                     ),
                     const XXSmallGap(),
                     Expanded(
-                      child: _Button(
-                        label: submitButtonLabel,
-                        highlight: true,
-                        onPressed: () async {
-                          await Future.delayed(theme.durations.short);
-                          onSubmit();
-                        },
+                      child: Semantics(
+                        label: submitButtonSemanticsLabel,
+                        button: true,
+                        child: _Button(
+                          label: submitButtonLabel,
+                          highlight: true,
+                          onPressed: () async {
+                            await Future.delayed(theme.durations.short);
+                            onSubmit();
+                          },
+                        ),
                       ),
                     ),
                   ],
@@ -113,6 +125,8 @@ class CustomDialog extends StatelessWidget {
     required String cancelButtonLabel,
     required VoidCallback onSubmit,
     required VoidCallback onCancel,
+    String? submitButtonSemanticsLabel,
+    String? cancelButtonSemanticsLabel,
   }) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
@@ -160,6 +174,8 @@ class CustomDialog extends StatelessWidget {
           cancelButtonLabel: cancelButtonLabel,
           onSubmit: onSubmit,
           onCancel: onCancel,
+          submitButtonSemanticsLabel: submitButtonSemanticsLabel,
+          cancelButtonSemanticsLabel: cancelButtonSemanticsLabel,
         );
       },
     );

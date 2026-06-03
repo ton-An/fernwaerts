@@ -39,11 +39,15 @@ class UserManagementSettingsPage extends StatelessWidget {
           description: AppLocalizations.of(context)!.userManagementDescription,
         ),
 
-        SettingsPageLink(
-          title: AppLocalizations.of(context)!.inviteNewUser,
-          onPressed: () {
-            context.push(InviteNewUserSettingsPage.route);
-          },
+        Semantics(
+          label: AppLocalizations.of(context)!.semanticInviteNewUserLink,
+          button: true,
+          child: SettingsPageLink(
+            title: AppLocalizations.of(context)!.inviteNewUser,
+            onPressed: () {
+              context.push(InviteNewUserSettingsPage.route);
+            },
+          ),
         ),
 
         const XXMediumGap(),

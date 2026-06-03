@@ -1,10 +1,15 @@
 part of 'calendar_stepper.dart';
 
 class _NavigationButton extends StatefulWidget {
-  const _NavigationButton({required this.icon, required this.onPressed});
+  const _NavigationButton({
+    required this.icon,
+    required this.onPressed,
+    required this.semanticLabel,
+  });
 
   final IconData icon;
   final VoidCallback onPressed;
+  final String semanticLabel;
 
   @override
   State<_NavigationButton> createState() => _NavigationButtonState();
@@ -50,33 +55,37 @@ class _NavigationButtonState extends State<_NavigationButton>
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    return GestureDetector(
-      onTapDown: (_) {
-        _fadeController.forward();
-      },
-      onTapUp: (_) {
-        _fadeController.forward().then((_) {
-          _fadeController.reverse();
-        });
-        widget.onPressed();
-      },
-      onTapCancel: () {
-        _fadeController.forward().then((_) {
-          _fadeController.reverse();
-        });
-      },
-      child: SizedOverflowBox(
-        size: const Size(CalendarStepper.height, CalendarStepper.height),
-        child: Container(
-          width: CalendarStepper.height + 30,
-          height: CalendarStepper.height,
-          decoration: BoxDecoration(
-            color: theme.colors.text.withAlpha(_fadeAnimation.value),
-            borderRadius: BorderRadius.horizontal(
-              left: Radius.circular(theme.radii.medium),
+    return Semantics(
+      label: widget.semanticLabel,
+      button: true,
+      child: GestureDetector(
+        onTapDown: (_) {
+          _fadeController.forward();
+        },
+        onTapUp: (_) {
+          _fadeController.forward().then((_) {
+            _fadeController.reverse();
+          });
+          widget.onPressed();
+        },
+        onTapCancel: () {
+          _fadeController.forward().then((_) {
+            _fadeController.reverse();
+          });
+        },
+        child: SizedOverflowBox(
+          size: const Size(CalendarStepper.height, CalendarStepper.height),
+          child: Container(
+            width: CalendarStepper.height + 30,
+            height: CalendarStepper.height,
+            decoration: BoxDecoration(
+              color: theme.colors.text.withAlpha(_fadeAnimation.value),
+              borderRadius: BorderRadius.horizontal(
+                left: Radius.circular(theme.radii.medium),
+              ),
             ),
+            child: Icon(widget.icon, color: theme.colors.text),
           ),
-          child: Icon(widget.icon, color: theme.colors.text),
         ),
       ),
     );
