@@ -1,5 +1,9 @@
 create extension if not exists "moddatetime" with schema "extensions";
 
+create extension if not exists "pgtap" with schema "extensions";
+
+create extension if not exists "postgis" with schema "extensions";
+
 create type "public"."activity_type" as enum ('still', 'walking', 'on_foot', 'running', 'on_bicycle', 'in_vehicle', 'unknown');
 
 create type "public"."location_recording_trigger" as enum ('standard', 'significant_change');
@@ -31,8 +35,8 @@ alter table "public"."activity_segments" enable row level security;
     "os_version" text not null,
     "app_version" text not null,
     "manufacturer" text not null,
-    "created_at" timestamp with time zone not null,
-    "updated_at" timestamp with time zone not null
+    "created_at" timestamp with time zone not null default (now() AT TIME ZONE 'utc'::text),
+    "updated_at" timestamp with time zone not null default (now() AT TIME ZONE 'utc'::text)
       );
 
 
@@ -215,10 +219,6 @@ alter table "public"."visits" validate constraint "visits_user_id_fkey";
 
 alter table "public"."visits" add constraint "visits_user_id_id_key" UNIQUE using index "visits_user_id_id_key";
 
--- PowerSync role must exist before grants reference it.
--- Password is set at deploy time by migrate.sh (runtime secret; not in migrations).
-create role powersync_role with replication bypassrls login;
-
 set check_function_bodies = off;
 
 CREATE OR REPLACE FUNCTION public.has_permission(requested_permission public.permissions)
@@ -246,8 +246,6 @@ grant select on table "public"."activity_segments" to "authenticated";
 
 grant update on table "public"."activity_segments" to "authenticated";
 
-grant select on table "public"."activity_segments" to "powersync_role";
-
 grant delete on table "public"."activity_segments" to "service_role";
 
 grant insert on table "public"."activity_segments" to "service_role";
@@ -261,14 +259,6 @@ grant trigger on table "public"."activity_segments" to "service_role";
 grant truncate on table "public"."activity_segments" to "service_role";
 
 grant update on table "public"."activity_segments" to "service_role";
-
-grant insert on table "public"."devices" to "authenticated";
-
-grant select on table "public"."devices" to "authenticated";
-
-grant update on table "public"."devices" to "authenticated";
-
-grant select on table "public"."devices" to "powersync_role";
 
 grant delete on table "public"."devices" to "service_role";
 
@@ -287,8 +277,6 @@ grant update on table "public"."devices" to "service_role";
 grant select on table "public"."public_info" to "anon";
 
 grant select on table "public"."public_info" to "authenticated";
-
-grant select on table "public"."public_info" to "powersync_role";
 
 grant delete on table "public"."public_info" to "service_role";
 
@@ -310,8 +298,6 @@ grant select on table "public"."raw_location_data" to "authenticated";
 
 grant update on table "public"."raw_location_data" to "authenticated";
 
-grant select on table "public"."raw_location_data" to "powersync_role";
-
 grant delete on table "public"."raw_location_data" to "service_role";
 
 grant insert on table "public"."raw_location_data" to "service_role";
@@ -327,8 +313,6 @@ grant truncate on table "public"."raw_location_data" to "service_role";
 grant update on table "public"."raw_location_data" to "service_role";
 
 grant select on table "public"."role_permissions" to "authenticated";
-
-grant select on table "public"."role_permissions" to "powersync_role";
 
 grant delete on table "public"."role_permissions" to "service_role";
 
@@ -346,8 +330,6 @@ grant update on table "public"."role_permissions" to "service_role";
 
 grant select on table "public"."user_roles" to "authenticated";
 
-grant select on table "public"."user_roles" to "powersync_role";
-
 grant delete on table "public"."user_roles" to "service_role";
 
 grant insert on table "public"."user_roles" to "service_role";
@@ -361,8 +343,6 @@ grant trigger on table "public"."user_roles" to "service_role";
 grant truncate on table "public"."user_roles" to "service_role";
 
 grant update on table "public"."user_roles" to "service_role";
-
-grant select on table "public"."users" to "powersync_role";
 
 grant delete on table "public"."users" to "service_role";
 
@@ -383,8 +363,6 @@ grant insert on table "public"."visits" to "authenticated";
 grant select on table "public"."visits" to "authenticated";
 
 grant update on table "public"."visits" to "authenticated";
-
-grant select on table "public"."visits" to "powersync_role";
 
 grant delete on table "public"."visits" to "service_role";
 
@@ -539,14 +517,16 @@ using ((( SELECT auth.uid() AS uid) = user_id))
 with check ((( SELECT auth.uid() AS uid) = user_id));
 
 
+CREATE TRIGGER handle_updated_at BEFORE UPDATE ON public.devices FOR EACH ROW EXECUTE FUNCTION extensions.moddatetime('updated_at');
+
 CREATE TRIGGER handle_updated_at BEFORE UPDATE ON public.user_roles FOR EACH ROW EXECUTE FUNCTION extensions.moddatetime('updated_at');
 
 CREATE TRIGGER handle_updated_at BEFORE UPDATE ON public.users FOR EACH ROW EXECUTE FUNCTION extensions.moddatetime('updated_at');
 
-------------------------
--- Manual modifications
--- (not captured by db diff: revokes, seed data, powersync role/publication)
-------------------------
+-- Manual modifications (not captured by db diff)
+
+-- PowerSync replication role (password set at deploy time).
+create role powersync_role with replication bypassrls login;
 
 -- activity_segments
 revoke select, insert, update, delete, references, trigger, truncate on table "public"."activity_segments" from anon;
@@ -554,7 +534,10 @@ revoke delete, references, trigger, truncate on table "public"."activity_segment
 
 -- devices
 revoke select, insert, update, delete, references, trigger, truncate on table "public"."devices" from anon;
-revoke delete, references, trigger, truncate on table "public"."devices" from authenticated;
+revoke select, insert, update, delete, references, trigger, truncate on table "public"."devices" from authenticated;
+grant select (id, user_id, name, model, os_id, os_version, app_version, manufacturer) on table "public"."devices" to authenticated;
+grant insert (id, user_id, name, model, os_id, os_version, app_version, manufacturer) on table "public"."devices" to authenticated;
+grant update (id, user_id, name, model, os_id, os_version, app_version, manufacturer) on table "public"."devices" to authenticated;
 
 -- public_info
 revoke insert, update, delete, references, trigger, truncate on table "public"."public_info" from anon;
@@ -580,15 +563,18 @@ revoke select, insert, update, delete, references, trigger, truncate on table "p
 revoke select, insert, update, delete, references, trigger, truncate on table "public"."visits" from anon;
 revoke delete, references, trigger, truncate on table "public"."visits" from authenticated;
 
--- Seed data
-insert into "public"."role_permissions" ("id", "role", "permission") values
-  ('9c7ff33b-08d9-4082-b966-c503f6ec2207', 'admin', 'read.users'),
-  ('35e876c2-809c-4d3d-9a01-56e1cabbeddf', 'admin', 'write.users');
+-- PowerSync read access and publication
+grant select on
+  public.public_info,
+  public.role_permissions,
+  public.users,
+  public.devices,
+  public.raw_location_data,
+  public.activity_segments,
+  public.visits,
+  public.user_roles
+to powersync_role;
 
-insert into "public"."public_info" ("name", "value") values
-  ('is_set_up', 'false');
-
--- PowerSync publication
 create publication powersync for table
   public.public_info,
   public.role_permissions,
@@ -598,3 +584,12 @@ create publication powersync for table
   public.activity_segments,
   public.visits,
   public.user_roles;
+
+-- Seed data
+insert into "public"."role_permissions" ("id", "role", "permission") values
+  ('9c7ff33b-08d9-4082-b966-c503f6ec2207', 'admin', 'read.users'),
+  ('35e876c2-809c-4d3d-9a01-56e1cabbeddf', 'admin', 'write.users');
+
+insert into "public"."public_info" ("name", "value") values
+  ('is_set_up', 'false');
+

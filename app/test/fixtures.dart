@@ -301,8 +301,6 @@ final Device tDevice = Device(
   operatingSystem: OperatingSystem.ios,
   osVersion: '18.4.1',
   appVersion: '0.0.1',
-  createdAt: tStartDate,
-  updatedAt: tEndDate,
 );
 
 const RawDevice tAndroidRawDevice = RawDevice(

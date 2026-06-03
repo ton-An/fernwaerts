@@ -7,8 +7,8 @@ create table "public"."devices" (
   "os_version" text not null,
   "app_version" text not null,
   "manufacturer" text not null,
-  "created_at" timestamp with time zone not null,
-  "updated_at" timestamp with time zone not null,
+  "created_at" timestamp with time zone not null default (now() at time zone 'utc'::text),
+  "updated_at" timestamp with time zone not null default (now() at time zone 'utc'::text),
   primary key ("id"),
   unique ("user_id", "id")
 );
