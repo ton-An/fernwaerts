@@ -82,12 +82,6 @@ done
 
 echo "[e2e] running flutter integration test..."
 
-# Auto-grant iOS permissions as soon as Flutter installs the app on the
-# simulator. simctl can only grant for a bundle that's already in the
-# simulator's TCC database — i.e. installed — so we poll for the install
-# instead of granting up front. The window between install and the first
-# permission API call inside the test (after admin signup completes) is
-# several seconds; the 0.3s poll lands comfortably inside it.
 BUNDLE_ID="${BUNDLE_ID:-eu.antons-webfabrik.location-history.dev}"
 SIM_ID=""
 for ((i=1; i<=$#; i++)); do
@@ -95,22 +89,22 @@ for ((i=1; i<=$#; i++)); do
     j=$((i+1)); SIM_ID="${!j}"; break
   fi
 done
-GRANT_WATCHER_PID=""
-if [[ -n "$SIM_ID" ]]; then
-  (
-    until xcrun simctl listapps "$SIM_ID" 2>/dev/null \
-        | grep -q "\"$BUNDLE_ID\""; do
-      sleep 0.3
-    done
-    for svc in location location-always motion; do
-      xcrun simctl privacy "$SIM_ID" grant "$svc" "$BUNDLE_ID" \
-        >/dev/null 2>&1 || true
-    done
-    echo "[e2e] iOS permissions auto-granted to $BUNDLE_ID" >&2
-  ) &
-  GRANT_WATCHER_PID=$!
-fi
-trap '[[ -n "$GRANT_WATCHER_PID" ]] && kill "$GRANT_WATCHER_PID" 2>/dev/null; cleanup' EXIT INT TERM
 
 cd "$APP_DIR"
+
+if [[ -n "$SIM_ID" ]]; then
+  flutter build ios --simulator --debug --flavor "${FLAVOR:-Development}"
+  APP_BUNDLE_PATH="$APP_DIR/build/ios/iphonesimulator/Runner.app"
+  if [[ ! -d "$APP_BUNDLE_PATH" ]]; then
+    echo "[e2e] expected simulator app bundle not found: $APP_BUNDLE_PATH" >&2
+    exit 1
+  fi
+  xcrun simctl install "$SIM_ID" "$APP_BUNDLE_PATH"
+  for svc in location location-always motion; do
+    xcrun simctl privacy "$SIM_ID" grant "$svc" "$BUNDLE_ID" \
+      >/dev/null 2>&1 || true
+  done
+  echo "[e2e] iOS permissions pre-granted to $BUNDLE_ID" >&2
+fi
+
 flutter test --flavor "${FLAVOR:-Development}" integration_test/e2e_test.dart "$@"
