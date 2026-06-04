@@ -16,7 +16,7 @@ concurrency:
 
 permissions:
   contents: read
-  packages: write
+  packages: read
 
 jobs:
   changes:
@@ -70,34 +70,36 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push e2e app backend image
+      - name: Build e2e app backend image
         uses: docker/build-push-action@v7
         with:
           context: .
           file: supabase/docker/fernwaerts/Dockerfile
           platforms: linux/amd64
-          tags: ghcr.io/ton-an/fernwaerts:${{ github.sha }}
-          push: true
+          tags: ghcr.io/ton-an/fernwaerts:${{ needs.changes.outputs.image_version }}
+          outputs: type=docker,dest=/tmp/fernwaerts.tar
           cache-from: type=gha,scope=fernwaerts
           cache-to: type=gha,scope=fernwaerts,mode=max
 
-      - name: Build and push e2e postgres image
+      - name: Build e2e postgres image
         uses: docker/build-push-action@v7
         with:
           context: .
           file: supabase/docker/fernwaerts-postgres/Dockerfile
           platforms: linux/amd64
-          tags: ghcr.io/ton-an/fernwaerts-postgres:${{ github.sha }}
-          push: true
+          tags: ghcr.io/ton-an/fernwaerts-postgres:${{ needs.changes.outputs.image_version }}
+          outputs: type=docker,dest=/tmp/fernwaerts-postgres.tar
           cache-from: type=gha,scope=fernwaerts-postgres
           cache-to: type=gha,scope=fernwaerts-postgres,mode=max
+
+      - name: Upload backend images
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-backend-images
+          path: |
+            /tmp/fernwaerts.tar
+            /tmp/fernwaerts-postgres.tar
+          retention-days: 1
 
   e2e:
     needs: [changes, build_backend_images]
@@ -120,7 +122,23 @@ jobs:
         env:
           LIMA_START_ARGS: --cpus 4 --memory 8
 
+      - name: Download backend images
+        if: needs.changes.outputs.build_backend_images == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: e2e-backend-images
+          path: /tmp/e2e-backend-images
+
+      - name: Load backend images
+        if: needs.changes.outputs.build_backend_images == 'true'
+        run: |
+          set -euo pipefail
+
+          docker load --input /tmp/e2e-backend-images/fernwaerts.tar
+          docker load --input /tmp/e2e-backend-images/fernwaerts-postgres.tar
+
       - name: Log in to GitHub Container Registry
+        if: needs.changes.outputs.build_backend_images != 'true'
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
