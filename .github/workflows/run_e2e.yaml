@@ -19,20 +19,23 @@ permissions:
 
 jobs:
   e2e:
-    runs-on: macos-15-intel
+    runs-on: macos-26
     timeout-minutes: 45
 
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
 
-      - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_16.4.app
+      - name: Show Xcode version
+        run: xcodebuild -version
 
       - name: Set up Docker
         uses: docker/setup-docker-action@v4
         env:
           LIMA_START_ARGS: --cpus 4 --memory 8
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Install and set Flutter version
         uses: subosito/flutter-action@v2
@@ -50,11 +53,11 @@ jobs:
 
       - name: Build e2e backend images
         run: |
-          docker build \
+          docker buildx build --load \
             -f supabase/docker/fernwaerts/Dockerfile \
             -t ghcr.io/ton-an/fernwaerts:dev \
             .
-          docker build \
+          docker buildx build --load \
             -f supabase/docker/fernwaerts-postgres/Dockerfile \
             -t ghcr.io/ton-an/fernwaerts-postgres:dev \
             .
@@ -64,14 +67,18 @@ jobs:
           set -euo pipefail
 
           runtime_id="$(xcrun simctl list runtimes available \
-            | awk -F ' - ' '/iOS 18\.5/ { print $NF; exit }')"
+            | awk -F ' - ' '/iOS 26/ { print $NF; exit }')"
           if [ -z "$runtime_id" ]; then
             runtime_id="$(xcrun simctl list runtimes available \
               | awk -F ' - ' '/iOS / { print $NF; exit }')"
           fi
 
           device_type="$(xcrun simctl list devicetypes \
-            | awk -F '[()]' '/iPhone 16 / { print $2; exit }')"
+            | awk -F '[()]' '/iPhone 17 / { print $2; exit }')"
+          if [ -z "$device_type" ]; then
+            device_type="$(xcrun simctl list devicetypes \
+              | awk -F '[()]' '/iPhone 16 / { print $2; exit }')"
+          fi
           if [ -z "$device_type" ]; then
             device_type="$(xcrun simctl list devicetypes \
               | awk -F '[()]' '/iPhone/ { print $2; exit }')"
