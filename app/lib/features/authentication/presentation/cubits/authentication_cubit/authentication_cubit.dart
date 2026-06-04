@@ -166,14 +166,5 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
 
   void _requestNecessaryPermissions() async {
     await requestNecessaryPermissions();
-    _initBackgroundLocationTracking();
-  }
-
-  void _initBackgroundLocationTracking() async {
-    final initTrackingEither = await initBackgroundLocationTracking();
-
-    initTrackingEither.fold((Failure failure) {
-      emit(AuthenticationFailure(failure: failure));
-    }, (_) {});
   }
 }
