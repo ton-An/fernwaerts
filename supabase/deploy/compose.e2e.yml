@@ -1,0 +1,94 @@
+# Docker Compose overlay for running the Flutter e2e suite against a real
+# self-host backend.
+#
+# Adds Mailpit (captures every SMTP message sent by GoTrue and exposes them
+# over an HTTP API on port 8025) and routes the fernwaerts container's SMTP
+# settings at it so invite and OTP emails can be retrieved deterministically
+# from the tests.
+#
+# Run together with the main compose file from `supabase/deploy/`:
+#
+#   docker compose -f compose.yml -f compose.e2e.yml up -d
+#
+# The runner script at `app/tool/run_e2e.sh` performs this for you.
+
+name: fernwaerts
+
+services:
+  # GoTrue refuses to send mail over an unencrypted connection, so Mailpit
+  # needs a TLS cert to advertise STARTTLS, and Go's net/smtp client verifies
+  # the cert with SANs and against the system trust store.
+  #
+  # This init container generates a SAN-enabled self-signed cert and writes a
+  # ca-bundle (system roots + our cert) that the fernwaerts container loads
+  # via SSL_CERT_FILE so its STARTTLS handshake to Mailpit succeeds.
+  mail-tls-init:
+    image: alpine:3.20
+    command:
+      - sh
+      - -c
+      - |
+        set -e
+        if [ ! -f /certs/cert.pem ]; then
+          apk add --no-cache openssl ca-certificates
+          openssl req -x509 -newkey rsa:2048 -nodes \
+            -keyout /certs/key.pem -out /certs/cert.pem \
+            -days 365 -subj "/CN=mailpit" \
+            -addext "subjectAltName=DNS:mailpit"
+          cat /etc/ssl/certs/ca-certificates.crt /certs/cert.pem \
+            > /certs/ca-bundle.pem
+        fi
+    volumes:
+      - mail-certs:/certs
+
+  mailpit:
+    image: axllent/mailpit:v1.20
+    restart: unless-stopped
+    depends_on:
+      mail-tls-init:
+        condition: service_completed_successfully
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    environment:
+      # Accept any (or no) auth — the test backend is the only sender.
+      MP_SMTP_AUTH_ACCEPT_ANY: "true"
+      MP_SMTP_AUTH_ALLOW_INSECURE: "true"
+      MP_SMTP_TLS_CERT: /certs/cert.pem
+      MP_SMTP_TLS_KEY: /certs/key.pem
+    volumes:
+      - mail-certs:/certs:ro
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:8025/readyz"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  fernwaerts:
+    depends_on:
+      db:
+        condition: service_healthy
+      mailpit:
+        condition: service_healthy
+    environment:
+      SMTP_HOST: mailpit
+      SMTP_PORT: "1025"
+      SMTP_USER: "test"
+      SMTP_PASS: "test"
+      SMTP_ADMIN_EMAIL: "admin@fernwaerts.test"
+      SMTP_SENDER_NAME: "Fernwaerts e2e"
+      # Keep autoconfirm off — invite/OTP flows depend on real email tokens.
+      ENABLE_EMAIL_AUTOCONFIRM: "false"
+      DISABLE_SIGNUP: "true"
+      SITE_URL: "http://localhost:3000"
+      API_EXTERNAL_URL: "http://localhost:8000"
+      SUPABASE_PUBLIC_URL: "http://localhost:8000"
+      POWERSYNC_EXTERNAL_URL: "http://localhost:7901"
+      # GoTrue is statically linked Go; it honors SSL_CERT_FILE for the SMTP
+      # STARTTLS handshake.
+      SSL_CERT_FILE: /e2e-certs/ca-bundle.pem
+    volumes:
+      - mail-certs:/e2e-certs:ro
+
+volumes:
+  mail-certs:
