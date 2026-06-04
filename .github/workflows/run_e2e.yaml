@@ -58,55 +58,8 @@ jobs:
           echo "build_backend_images=$build_backend_images" >> "$GITHUB_OUTPUT"
           echo "image_version=$image_version" >> "$GITHUB_OUTPUT"
 
-  build_backend_images:
-    needs: changes
-    if: needs.changes.outputs.build_backend_images == 'true'
-    runs-on: ubuntu-24.04
-
-    steps:
-      - name: Checkout the code
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build e2e app backend image
-        uses: docker/build-push-action@v7
-        with:
-          context: .
-          file: supabase/docker/fernwaerts/Dockerfile
-          platforms: linux/amd64
-          tags: ghcr.io/ton-an/fernwaerts:${{ needs.changes.outputs.image_version }}
-          outputs: type=docker,dest=/tmp/fernwaerts.tar
-          cache-from: type=gha,scope=fernwaerts
-          cache-to: type=gha,scope=fernwaerts,mode=max
-
-      - name: Build e2e postgres image
-        uses: docker/build-push-action@v7
-        with:
-          context: .
-          file: supabase/docker/fernwaerts-postgres/Dockerfile
-          platforms: linux/amd64
-          tags: ghcr.io/ton-an/fernwaerts-postgres:${{ needs.changes.outputs.image_version }}
-          outputs: type=docker,dest=/tmp/fernwaerts-postgres.tar
-          cache-from: type=gha,scope=fernwaerts-postgres
-          cache-to: type=gha,scope=fernwaerts-postgres,mode=max
-
-      - name: Upload backend images
-        uses: actions/upload-artifact@v4
-        with:
-          name: e2e-backend-images
-          path: |
-            /tmp/fernwaerts.tar
-            /tmp/fernwaerts-postgres.tar
-          retention-days: 1
-
   e2e:
-    needs: [changes, build_backend_images]
-    if: |
-      always()
-      && needs.changes.result == 'success'
-      && (needs.build_backend_images.result == 'success' || needs.build_backend_images.result == 'skipped')
+    needs: changes
     runs-on: ubuntu-24.04
     timeout-minutes: 45
 
@@ -114,20 +67,33 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v4
 
-      - name: Download backend images
+      - name: Set up Docker Buildx
         if: needs.changes.outputs.build_backend_images == 'true'
-        uses: actions/download-artifact@v4
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build e2e app backend image
+        if: needs.changes.outputs.build_backend_images == 'true'
+        uses: docker/build-push-action@v7
         with:
-          name: e2e-backend-images
-          path: /tmp/e2e-backend-images
+          context: .
+          file: supabase/docker/fernwaerts/Dockerfile
+          platforms: linux/amd64
+          tags: ghcr.io/ton-an/fernwaerts:${{ needs.changes.outputs.image_version }}
+          load: true
+          cache-from: type=gha,scope=fernwaerts
+          cache-to: type=gha,scope=fernwaerts,mode=max
 
-      - name: Load backend images
+      - name: Build e2e postgres image
         if: needs.changes.outputs.build_backend_images == 'true'
-        run: |
-          set -euo pipefail
-
-          docker load --input /tmp/e2e-backend-images/fernwaerts.tar
-          docker load --input /tmp/e2e-backend-images/fernwaerts-postgres.tar
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: supabase/docker/fernwaerts-postgres/Dockerfile
+          platforms: linux/amd64
+          tags: ghcr.io/ton-an/fernwaerts-postgres:${{ needs.changes.outputs.image_version }}
+          load: true
+          cache-from: type=gha,scope=fernwaerts-postgres
+          cache-to: type=gha,scope=fernwaerts-postgres,mode=max
 
       - name: Log in to GitHub Container Registry
         if: needs.changes.outputs.build_backend_images != 'true'
