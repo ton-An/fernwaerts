@@ -138,8 +138,13 @@ class InviteCubit extends Cubit<InviteState> {
     final Either<Failure, None> requestPermissionsEither =
         await requestNecessaryPermissions();
 
-    requestPermissionsEither.fold((Failure failure) {
-      emit(InviteFailure(failure: failure));
-    }, (_) {});
+    requestPermissionsEither.fold(
+      (Failure failure) {
+        emit(InviteFailure(failure: failure));
+      },
+      (_) {
+        emit(const InviteSuccess());
+      },
+    );
   }
 }
