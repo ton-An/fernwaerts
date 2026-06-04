@@ -36,6 +36,14 @@ void main() {
     ).thenAnswer((_) => Future.value());
   });
 
+  test('should stop location tracking', () async {
+    // act
+    await signOut();
+
+    // assert
+    verify(() => mockLocationTrackingRepository.stopTracking());
+  });
+
   test('should reset PowerSync', () async {
     // act
     await signOut();
@@ -51,14 +59,6 @@ void main() {
     // assert
     verify(() => mockAuthenticationRepository.signOut());
     expect(result, const Right(None()));
-  });
-
-  test('should stop location tracking', () async {
-    // act
-    await signOut();
-
-    // assert
-    verify(() => mockLocationTrackingRepository.stopTracking());
   });
 
   test('should delete the local DB cache ', () async {
