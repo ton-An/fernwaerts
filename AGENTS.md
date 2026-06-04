@@ -89,6 +89,14 @@ When editing any `AGENTS.md`:
   `Co-authored-by: Codex <codex@openai.com>`.
 - Use short snake_case branch names, for example `pre_alpha_polish` or
   `location_visualization`.
+- Keep PR descriptions succinct. Use the repository's recent PRs as the model:
+  a brief summary paragraph, a short bullet list of important changes, any
+  notable bug fixes or behavior changes, and the exact verification command.
+- Do not include exhaustive file-by-file walkthroughs, implementation diaries,
+  tool-generated marketing copy, or generic risk/test boilerplate in PR
+  descriptions.
+- Mention only reviewer-relevant context: what changed, why it matters, how it
+  was verified, and any known follow-up.
 
 ## Cross-Project Workflows
 
