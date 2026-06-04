@@ -1,0 +1,91 @@
+name: Run e2e tests
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - app/**
+      - supabase/**
+      - .github/workflows/run_e2e.yaml
+
+  workflow_dispatch:
+
+concurrency:
+  group: e2e-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    runs-on: macos-15-intel
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_16.4.app
+
+      - name: Set up Docker
+        uses: docker/setup-docker-action@v4
+        env:
+          LIMA_START_ARGS: --cpus 4 --memory 8
+
+      - name: Install and set Flutter version
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Restore packages
+        working-directory: ./app
+        run: flutter pub get
+
+      - name: Generate build runner files
+        working-directory: ./app
+        run: flutter pub run build_runner build
+
+      - name: Build e2e backend images
+        run: |
+          docker build \
+            -f supabase/docker/fernwaerts/Dockerfile \
+            -t ghcr.io/ton-an/fernwaerts:dev \
+            .
+          docker build \
+            -f supabase/docker/fernwaerts-postgres/Dockerfile \
+            -t ghcr.io/ton-an/fernwaerts-postgres:dev \
+            .
+
+      - name: Boot iOS simulator
+        run: |
+          set -euo pipefail
+
+          runtime_id="$(xcrun simctl list runtimes available \
+            | awk -F ' - ' '/iOS 18\.5/ { print $NF; exit }')"
+          if [ -z "$runtime_id" ]; then
+            runtime_id="$(xcrun simctl list runtimes available \
+              | awk -F ' - ' '/iOS / { print $NF; exit }')"
+          fi
+
+          device_type="$(xcrun simctl list devicetypes \
+            | awk -F '[()]' '/iPhone 16 / { print $2; exit }')"
+          if [ -z "$device_type" ]; then
+            device_type="$(xcrun simctl list devicetypes \
+              | awk -F '[()]' '/iPhone/ { print $2; exit }')"
+          fi
+
+          simulator_id="$(xcrun simctl create "Fernwaerts E2E" \
+            "$device_type" "$runtime_id")"
+          xcrun simctl boot "$simulator_id"
+          xcrun simctl bootstatus "$simulator_id" -b
+          echo "SIMULATOR_ID=$simulator_id" >> "$GITHUB_ENV"
+
+      - name: Run e2e suite
+        env:
+          FLAVOR: Development
+          FERNWAERTS_VERSION: dev
+        run: >
+          bash app/tool/run_e2e.sh
+          -d "$SIMULATOR_ID"
+          --dart-define=E2E_SERVER_URL=http://127.0.0.1:8000
+          --dart-define=E2E_MAILPIT_URL=http://127.0.0.1:8025
