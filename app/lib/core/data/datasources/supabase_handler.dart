@@ -96,6 +96,7 @@ class SupabaseHandler {
 
     await powersyncDb.connect(connector: psBackendConnector);
 
+    _powerSyncDatabase = powersyncDb;
     _driftDatabase = DriftAppDatabase(SqliteAsyncDriftConnection(powersyncDb));
 
     if (!_driftDatabaseCompleter.isCompleted) {
