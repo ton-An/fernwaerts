@@ -141,7 +141,7 @@ jobs:
           arch: x86_64
           profile: pixel_6
           script: |
-            set -euo pipefail
+            set -eu
 
             device_id="$(adb devices | awk 'NR > 1 && $2 == "device" { print $1; exit }')"
             if [ -z "$device_id" ]; then
