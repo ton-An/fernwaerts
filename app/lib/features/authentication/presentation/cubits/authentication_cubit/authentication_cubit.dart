@@ -165,6 +165,11 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   }
 
   void _requestNecessaryPermissions() async {
-    await requestNecessaryPermissions();
+    final Either<Failure, None> requestPermissionsEither =
+        await requestNecessaryPermissions();
+
+    requestPermissionsEither.fold((Failure failure) {
+      emit(AuthenticationFailure(failure: failure));
+    }, (_) {});
   }
 }
