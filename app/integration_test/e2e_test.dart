@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -19,7 +21,6 @@ import 'package:location_history/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import 'e2e_support/e2e_config.dart';
-import 'e2e_support/e2e_stubs.dart';
 import 'e2e_support/mailpit_client.dart';
 import 'e2e_support/test_actions.dart';
 
@@ -38,7 +39,6 @@ void main() {
 
   setUpAll(() async {
     initGetIt();
-    registerE2EStubs();
     await getIt.isReady<PackageInfo>();
     // The simulator keychain persists across runs; a stale server URL or
     // session token from a previous run would route the app past the splash
@@ -57,10 +57,8 @@ void main() {
           .then((req) => req.close())
           .timeout(const Duration(seconds: 5));
       await probe.drain<void>();
-      // ignore: avoid_print
       print('[e2e] backend probe (HttpClient): HTTP ${probe.statusCode}');
     } catch (e) {
-      // ignore: avoid_print
       print('[e2e] backend probe (HttpClient) FAILED: $e');
     } finally {
       client.close(force: true);
@@ -72,19 +70,20 @@ void main() {
     getIt<Dio>().interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) {
-          // ignore: avoid_print
           print('[e2e] dio REQ ${options.method} ${options.uri}');
           handler.next(options);
         },
         onResponse: (response, handler) {
-          // ignore: avoid_print
-          print('[e2e] dio RES ${response.statusCode} ${response.requestOptions.uri}');
+          print(
+            '[e2e] dio RES ${response.statusCode} ${response.requestOptions.uri}',
+          );
           handler.next(response);
         },
         onError: (err, handler) {
-          // ignore: avoid_print
-          print('[e2e] dio ERR type=${err.type} uri=${err.requestOptions.uri} '
-              'msg=${err.message} err=${err.error}');
+          print(
+            '[e2e] dio ERR type=${err.type} uri=${err.requestOptions.uri} '
+            'msg=${err.message} err=${err.error}',
+          );
           handler.next(err);
         },
       ),
@@ -93,34 +92,30 @@ void main() {
 
   tearDownAll(() => mail.close());
 
-  testWidgets(
-    'auth surface — admin signup, sign in, invite, accept, '
-    'password reset, email change',
-    (WidgetTester tester) async {
-      await tester.pumpWidget(const MainApp());
-      // The splash routes itself; the first thing we can drive is whatever
-      // page it lands on. Without a saved server URL that's
-      // [AuthenticationPage].
-      await pumpUntil(tester, find.byType(AuthenticationPage));
+  testWidgets('auth surface — admin signup, sign in, invite, accept, '
+      'password reset, email change', (WidgetTester tester) async {
+    await tester.pumpWidget(const MainApp());
+    // The splash routes itself; the first thing we can drive is whatever
+    // page it lands on. Without a saved server URL that's
+    // [AuthenticationPage].
+    await pumpUntil(tester, find.byType(AuthenticationPage));
 
-      await _initialAdminSignUp(tester);
-      await _signOut(tester);
+    await _initialAdminSignUp(tester);
+    await _signOut(tester);
 
-      await _signInAsAdmin(tester);
-      final inviteUri = await _sendInvitation(tester, mail);
-      await _returnToMap(tester);
-      await _signOut(tester);
+    await _signInAsAdmin(tester);
+    final inviteUri = await _sendInvitation(tester, mail);
+    await _returnToMap(tester);
+    await _signOut(tester);
 
-      await _acceptInvite(tester, inviteUri);
-      await _signOut(tester);
+    await _acceptInvite(tester, inviteUri);
+    await _signOut(tester);
 
-      await _signInAsAdmin(tester);
-      await _resetPasswordWithOtp(tester, mail);
-      await _returnToMap(tester);
-      await _changeEmail(tester, mail);
-    },
-    timeout: const Timeout(Duration(minutes: 5)),
-  );
+    await _signInAsAdmin(tester);
+    await _resetPasswordWithOtp(tester, mail);
+    await _returnToMap(tester);
+    await _changeEmail(tester, mail);
+  }, timeout: const Timeout(Duration(minutes: 5)));
 }
 
 // ---------------------------------------------------------------------------
@@ -199,8 +194,7 @@ Future<Uri> _sendInvitation(WidgetTester tester, MailpitClient mail) async {
 
   await mail.deleteAll();
 
-  dismissActiveNotification();
-  await tester.pump(const Duration(milliseconds: 300));
+  await dismissNotificationIfPresent(tester, l10n.semanticNotificationDismiss);
   await tapSemantic(tester, l10n.semanticMapSettingsButton);
   await pumpUntil(tester, find.byType(MainSettingsPage));
 
@@ -233,8 +227,7 @@ Future<void> _signOut(WidgetTester tester) async {
   await pumpUntil(tester, find.byType(MapPage));
   final l10n = _l10n(tester);
 
-  dismissActiveNotification();
-  await tester.pump(const Duration(milliseconds: 300));
+  await dismissNotificationIfPresent(tester, l10n.semanticNotificationDismiss);
   await tapSemantic(tester, l10n.semanticMapSettingsButton);
   await pumpUntil(tester, find.byType(MainSettingsPage));
 
@@ -266,13 +259,14 @@ Future<void> _acceptInvite(WidgetTester tester, Uri inviteUri) async {
     reason: 'No serverUrl in invite callback: $callback',
   );
 
-  final deepLink = Uri(
-    path: InvitePage.route,
-    queryParameters: {
-      'serverUrl': serverUrlFromCallback,
-      'refreshToken': refreshToken,
-    },
-  ).toString();
+  final deepLink =
+      Uri(
+        path: InvitePage.route,
+        queryParameters: {
+          'serverUrl': serverUrlFromCallback,
+          'refreshToken': refreshToken,
+        },
+      ).toString();
   goTo(tester, deepLink);
 
   await pumpUntil(tester, find.byType(InvitePage));
@@ -313,8 +307,7 @@ Future<void> _resetPasswordWithOtp(
 
   await mail.deleteAll();
 
-  dismissActiveNotification();
-  await tester.pump(const Duration(milliseconds: 300));
+  await dismissNotificationIfPresent(tester, l10n.semanticNotificationDismiss);
   await tapSemantic(tester, l10n.semanticMapSettingsButton);
   await pumpUntil(tester, find.byType(MainSettingsPage));
 
@@ -375,8 +368,7 @@ Future<void> _changeEmail(WidgetTester tester, MailpitClient mail) async {
   final l10n = _l10n(tester);
 
   await mail.deleteAll();
-  dismissActiveNotification();
-  await tester.pump(const Duration(milliseconds: 300));
+  await dismissNotificationIfPresent(tester, l10n.semanticNotificationDismiss);
 
   await tapSemantic(tester, l10n.semanticMapSettingsButton);
   await pumpUntil(tester, find.byType(MainSettingsPage));
@@ -415,9 +407,10 @@ AppLocalizations _l10n(WidgetTester tester) {
 Future<Uri> _resolveInviteRedirect(Uri verifyUrl) async {
   // GoTrue emits links pointing at `${apiExternalUrl}/verify`, but Kong only
   // routes `/auth/v1/verify`. Rewrite once before issuing the request.
-  final routed = verifyUrl.path.startsWith('/auth/v1/')
-      ? verifyUrl
-      : verifyUrl.replace(path: '/auth/v1${verifyUrl.path}');
+  final routed =
+      verifyUrl.path.startsWith('/auth/v1/')
+          ? verifyUrl
+          : verifyUrl.replace(path: '/auth/v1${verifyUrl.path}');
   // Hop over the docker host so the simulator can reach Kong with whatever
   // host the test config points at.
   final viaSimulator = routed.replace(

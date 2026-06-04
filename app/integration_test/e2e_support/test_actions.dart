@@ -1,21 +1,12 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 
 import 'e2e_config.dart';
 
-/// Reusable UI primitives the e2e flows compose on top of.
-///
-/// Every interactive widget in the auth and settings surface has a stable
-/// `Semantics(label: ...)` ancestor, so we drive the UI by semantic label
-/// rather than by widget type or text. This insulates the suite from
-/// theme/copy changes.
-
-/// Pumps until [matcher] is satisfied, polling every animation frame.
-///
-/// Use instead of `pumpAndSettle` when the screen contains a steady-state
-/// animation (looping video, indeterminate spinner) that would make
-/// `pumpAndSettle` time out.
+/// Pumps while animations may be active, unlike `pumpAndSettle`.
 Future<void> pumpUntil(
   WidgetTester tester,
   Finder matcher, {
@@ -28,7 +19,6 @@ Future<void> pumpUntil(
       return;
     }
   }
-  // ignore: avoid_print
   print('[e2e] timeout waiting for $matcher. Current semantic labels:');
   final labels = <String>{};
   for (final element in find.byType(Semantics).evaluate()) {
@@ -37,15 +27,12 @@ Future<void> pumpUntil(
     if (label != null && label.isNotEmpty) labels.add(label);
   }
   for (final label in labels) {
-    // ignore: avoid_print
     print('  - "$label"');
   }
-  // ignore: avoid_print
   print('[e2e] visible text:');
   for (final element in find.byType(Text).evaluate().take(40)) {
     final t = (element.widget as Text).data;
     if (t != null && t.isNotEmpty) {
-      // ignore: avoid_print
       print('  - "$t"');
     }
   }
@@ -67,23 +54,13 @@ Future<void> pumpUntilGone(
   fail('Timed out waiting for $matcher to disappear');
 }
 
-/// Finds the `Semantics` widget whose [SemanticsProperties.label] matches
-/// [label] exactly. Matching widgets directly (rather than via the rendered
-/// semantics tree) sidesteps the need for a live SemanticsBinding and works
-/// uniformly across all test environments.
+/// Finds widgets by their stable app semantics labels.
 Finder findBySemanticLabel(String label) => find.byWidgetPredicate(
-  (Widget widget) =>
-      widget is Semantics &&
-      widget.properties.label == label,
+  (Widget widget) => widget is Semantics && widget.properties.label == label,
   description: 'Semantics(label: "$label")',
 );
 
-/// Taps the widget with the given semantic [label] and settles short
-/// animations afterwards.
-///
-/// The settings stack slides in with animation, so the first frame the widget
-/// exists in the tree isn't safe to tap yet (hit-test would land on the
-/// moving widget's previous frame). A small pre-tap pump lets that finish.
+/// Waits for a semantic target before tapping through animated settings views.
 Future<void> tapSemantic(WidgetTester tester, String label) async {
   await pumpUntil(tester, findBySemanticLabel(label));
   await tester.pump(const Duration(milliseconds: 400));
@@ -91,10 +68,7 @@ Future<void> tapSemantic(WidgetTester tester, String label) async {
   await tester.pump(const Duration(milliseconds: 100));
 }
 
-/// Enters [text] into the editable field nested inside the `Semantics` with
-/// the given [label]. The `CustomCupertinoTextField` widgets used across the
-/// app wrap a single `EditableText`, so a `descendant` search resolves to a
-/// unique target.
+/// Types into the editable field wrapped by a semantic label.
 Future<void> enterTextInto(
   WidgetTester tester,
   String label,
@@ -110,8 +84,19 @@ Future<void> enterTextInto(
   await tester.pump(const Duration(milliseconds: 50));
 }
 
-/// Navigates the app via its real [GoRouter] instance — used to deliver the
-/// invite deep link the way Supabase's email redirect would.
+/// Clears a visible notification through the UI instead of DI internals.
+Future<void> dismissNotificationIfPresent(
+  WidgetTester tester,
+  String label,
+) async {
+  final notification = findBySemanticLabel(label);
+  if (notification.evaluate().isEmpty) return;
+
+  await tester.fling(notification.first, const Offset(0, -300), 1000);
+  await tester.pump(const Duration(milliseconds: 300));
+}
+
+/// Delivers deep links to the app router inside the running test app.
 void goTo(WidgetTester tester, String location) {
   final context = tester.element(find.byType(Navigator).first);
   GoRouter.of(context).go(location);
