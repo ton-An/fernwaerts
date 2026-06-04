@@ -62,9 +62,26 @@ Finder findBySemanticLabel(String label) => find.byWidgetPredicate(
 
 /// Waits for a semantic target before tapping through animated settings views.
 Future<void> tapSemantic(WidgetTester tester, String label) async {
-  await pumpUntil(tester, findBySemanticLabel(label));
+  final semanticTarget = findBySemanticLabel(label);
+  await pumpUntil(tester, semanticTarget);
   await tester.pump(const Duration(milliseconds: 400));
-  await tester.tap(findBySemanticLabel(label).first);
+  final tappableTarget = find.descendant(
+    of: semanticTarget.first,
+    matching: find.byWidgetPredicate(
+      (Widget widget) =>
+          widget is GestureDetector &&
+          (widget.onTap != null ||
+              widget.onTapDown != null ||
+              widget.onTapUp != null),
+      description: 'tappable descendant of "$label"',
+    ),
+  );
+
+  if (tappableTarget.evaluate().isNotEmpty) {
+    await tester.tap(tappableTarget.first);
+  } else {
+    await tester.tap(semanticTarget.first);
+  }
   await tester.pump(const Duration(milliseconds: 100));
 }
 
