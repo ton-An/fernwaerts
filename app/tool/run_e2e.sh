@@ -7,10 +7,10 @@
 # then tears the stack down on exit.
 #
 # Usage (run from anywhere):
-#     app/tool/run_e2e.sh                  # default device
-#     app/tool/run_e2e.sh -d <device-id>   # pin a specific device
-#     KEEP_STACK=1 app/tool/run_e2e.sh     # leave the backend running after
-#     FERNWAERTS_VERSION=dev …             # use a locally built bundle image
+#     app/tool/run_e2e.sh --platform android -d emulator-5554
+#     app/tool/run_e2e.sh --platform ios -d <simulator-id>
+#     KEEP_STACK=1 app/tool/run_e2e.sh            # leave the backend running
+#     FERNWAERTS_VERSION=dev ...                  # use a locally built image
 #
 # The Supabase config below is a self-contained test fixture: deterministic
 # secrets so the JWTs verify, all bound to localhost. It is not appropriate
@@ -43,7 +43,143 @@ cd "$DEPLOY_DIR"
 
 COMPOSE=(docker compose -f compose.yml -f compose.e2e.yml)
 
+TARGET_PLATFORM=""
+DEVICE_ID=""
+FLUTTER_ARGS=()
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --platform)
+      if [[ -z "${2:-}" ]]; then
+        echo "[e2e] --platform requires a value" >&2
+        exit 64
+      fi
+      TARGET_PLATFORM="$2"
+      shift 2
+      ;;
+    --platform=*)
+      TARGET_PLATFORM="${1#*=}"
+      shift
+      ;;
+    -d|--device-id)
+      if [[ -z "${2:-}" ]]; then
+        echo "[e2e] $1 requires a value" >&2
+        exit 64
+      fi
+      DEVICE_ID="$2"
+      FLUTTER_ARGS+=("$1" "$2")
+      shift 2
+      ;;
+    --device-id=*)
+      DEVICE_ID="${1#*=}"
+      FLUTTER_ARGS+=("$1")
+      shift
+      ;;
+    *)
+      FLUTTER_ARGS+=("$1")
+      shift
+      ;;
+  esac
+done
+
+TARGET_PLATFORM="$(printf '%s' "$TARGET_PLATFORM" | tr '[:upper:]' '[:lower:]')"
+if [[ -z "$TARGET_PLATFORM" ]]; then
+  echo "[e2e] --platform is required" >&2
+  echo "[e2e] expected one of: android, ios" >&2
+  exit 64
+fi
+
+case "$TARGET_PLATFORM" in
+  android|ios) ;;
+  *)
+    echo "[e2e] unsupported platform: $TARGET_PLATFORM" >&2
+    echo "[e2e] expected one of: android, ios" >&2
+    exit 64
+    ;;
+esac
+
+has_dart_define() {
+  local key="$1"
+  local index
+  for index in "${!FLUTTER_ARGS[@]}"; do
+    local arg="${FLUTTER_ARGS[$index]}"
+    if [[ "$arg" == "--dart-define=$key="* || "$arg" == "-D$key="* ]]; then
+      return 0
+    fi
+    if [[ "$arg" == "--dart-define" || "$arg" == "-D" ]]; then
+      local next_index=$((index + 1))
+      if [[ "${FLUTTER_ARGS[$next_index]:-}" == "$key="* ]]; then
+        return 0
+      fi
+    fi
+  done
+  return 1
+}
+
+if [[ "$TARGET_PLATFORM" == "android" ]]; then
+  DEFAULT_SERVER_URL="http://10.0.2.2:8000"
+  DEFAULT_MAILPIT_URL="http://10.0.2.2:8025"
+  DEFAULT_API_EXTERNAL_URL="http://10.0.2.2:8000"
+  DEFAULT_POWERSYNC_EXTERNAL_URL="http://10.0.2.2:7901"
+else
+  DEFAULT_SERVER_URL="http://127.0.0.1:8000"
+  DEFAULT_MAILPIT_URL="http://127.0.0.1:8025"
+  DEFAULT_API_EXTERNAL_URL="http://localhost:8000"
+  DEFAULT_POWERSYNC_EXTERNAL_URL="http://localhost:7901"
+fi
+if [[ "$TARGET_PLATFORM" == "android" ]]; then
+  case "${API_EXTERNAL_URL:-}" in
+    ""|"http://localhost:8000"|"http://127.0.0.1:8000")
+      export API_EXTERNAL_URL="$DEFAULT_API_EXTERNAL_URL"
+      ;;
+  esac
+  case "${SUPABASE_PUBLIC_URL:-}" in
+    ""|"http://localhost:8000"|"http://127.0.0.1:8000")
+      export SUPABASE_PUBLIC_URL="$DEFAULT_API_EXTERNAL_URL"
+      ;;
+  esac
+  case "${POWERSYNC_EXTERNAL_URL:-}" in
+    ""|"http://localhost:7901"|"http://127.0.0.1:7901")
+      export POWERSYNC_EXTERNAL_URL="$DEFAULT_POWERSYNC_EXTERNAL_URL"
+      ;;
+  esac
+else
+  export API_EXTERNAL_URL="${API_EXTERNAL_URL:-$DEFAULT_API_EXTERNAL_URL}"
+  export SUPABASE_PUBLIC_URL="${SUPABASE_PUBLIC_URL:-$DEFAULT_API_EXTERNAL_URL}"
+  export POWERSYNC_EXTERNAL_URL="${POWERSYNC_EXTERNAL_URL:-$DEFAULT_POWERSYNC_EXTERNAL_URL}"
+fi
+echo "[e2e] advertising API at $API_EXTERNAL_URL"
+echo "[e2e] advertising PowerSync at $POWERSYNC_EXTERNAL_URL"
+
+ANDROID_PACKAGE_ID="${ANDROID_PACKAGE_ID:-eu.antons_webfabrik.location_history.dev}"
+
+grant_android_permissions() {
+  local device_id="$1"
+  for permission in \
+    android.permission.ACCESS_COARSE_LOCATION \
+    android.permission.ACCESS_FINE_LOCATION \
+    android.permission.ACCESS_BACKGROUND_LOCATION \
+    android.permission.ACTIVITY_RECOGNITION \
+    android.permission.POST_NOTIFICATIONS; do
+    adb -s "$device_id" shell pm grant "$ANDROID_PACKAGE_ID" "$permission" \
+      >/dev/null 2>&1 || true
+  done
+}
+
+if ! has_dart_define E2E_SERVER_URL; then
+  FLUTTER_ARGS+=(
+    "--dart-define=E2E_SERVER_URL=${E2E_SERVER_URL:-$DEFAULT_SERVER_URL}"
+  )
+fi
+if ! has_dart_define E2E_MAILPIT_URL; then
+  FLUTTER_ARGS+=(
+    "--dart-define=E2E_MAILPIT_URL=${E2E_MAILPIT_URL:-$DEFAULT_MAILPIT_URL}"
+  )
+fi
+
 cleanup() {
+  if [[ -n "${PERMISSION_WATCHER_PID:-}" ]]; then
+    kill "$PERMISSION_WATCHER_PID" >/dev/null 2>&1 || true
+  fi
   if [[ "${KEEP_STACK:-0}" == "1" ]]; then
     echo "[e2e] KEEP_STACK=1 — leaving backend running on http://localhost:8000" >&2
     return
@@ -80,31 +216,56 @@ while ! curl -fsS "http://localhost:8025/readyz" >/dev/null 2>&1; do
   sleep 1
 done
 
-echo "[e2e] running flutter integration test..."
-
-BUNDLE_ID="${BUNDLE_ID:-eu.antons-webfabrik.location-history.dev}"
-SIM_ID=""
-for ((i=1; i<=$#; i++)); do
-  if [[ "${!i}" == "-d" ]]; then
-    j=$((i+1)); SIM_ID="${!j}"; break
-  fi
-done
+echo "[e2e] running flutter integration test on $TARGET_PLATFORM..."
 
 cd "$APP_DIR"
 
-if [[ -n "$SIM_ID" ]]; then
+if [[ "$TARGET_PLATFORM" == "ios" && -n "$DEVICE_ID" ]]; then
+  IOS_BUNDLE_ID="${IOS_BUNDLE_ID:-eu.antons-webfabrik.location-history.dev}"
   flutter build ios --simulator --debug --flavor "${FLAVOR:-Development}"
   APP_BUNDLE_PATH="$APP_DIR/build/ios/iphonesimulator/Runner.app"
   if [[ ! -d "$APP_BUNDLE_PATH" ]]; then
     echo "[e2e] expected simulator app bundle not found: $APP_BUNDLE_PATH" >&2
     exit 1
   fi
-  xcrun simctl install "$SIM_ID" "$APP_BUNDLE_PATH"
+  xcrun simctl install "$DEVICE_ID" "$APP_BUNDLE_PATH"
   for svc in location location-always motion; do
-    xcrun simctl privacy "$SIM_ID" grant "$svc" "$BUNDLE_ID" \
+    xcrun simctl privacy "$DEVICE_ID" grant "$svc" "$IOS_BUNDLE_ID" \
       >/dev/null 2>&1 || true
   done
-  echo "[e2e] iOS permissions pre-granted to $BUNDLE_ID" >&2
+  echo "[e2e] iOS permissions pre-granted to $IOS_BUNDLE_ID" >&2
 fi
 
-flutter test --flavor "${FLAVOR:-Development}" integration_test/e2e_test.dart "$@"
+if [[ "$TARGET_PLATFORM" == "android" && -n "$DEVICE_ID" ]]; then
+  ANDROID_FLAVOR="${FLAVOR:-development}"
+  flutter build apk --debug --flavor "$ANDROID_FLAVOR"
+  APK_PATH="$APP_DIR/build/app/outputs/flutter-apk/app-$ANDROID_FLAVOR-debug.apk"
+  if [[ ! -f "$APK_PATH" ]]; then
+    echo "[e2e] expected Android APK not found: $APK_PATH" >&2
+    exit 1
+  fi
+  adb -s "$DEVICE_ID" install -r "$APK_PATH" >/dev/null
+  grant_android_permissions "$DEVICE_ID"
+  echo "[e2e] Android permissions pre-granted to $ANDROID_PACKAGE_ID" >&2
+fi
+
+TEST_COMMAND=(flutter test)
+if [[ "$TARGET_PLATFORM" == "ios" ]]; then
+  TEST_COMMAND+=(--flavor "${FLAVOR:-Development}")
+elif [[ "$TARGET_PLATFORM" == "android" ]]; then
+  TEST_COMMAND+=(--flavor "${FLAVOR:-development}")
+fi
+TEST_COMMAND+=(integration_test/e2e_test.dart)
+
+if [[ "$TARGET_PLATFORM" == "android" && -n "$DEVICE_ID" ]]; then
+  (
+    deadline=$(( $(date +%s) + 90 ))
+    while (( $(date +%s) < deadline )); do
+      grant_android_permissions "$DEVICE_ID"
+      sleep 1
+    done
+  ) &
+  PERMISSION_WATCHER_PID=$!
+fi
+
+"${TEST_COMMAND[@]}" "${FLUTTER_ARGS[@]}"

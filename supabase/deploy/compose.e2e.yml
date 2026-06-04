@@ -81,9 +81,9 @@ services:
       ENABLE_EMAIL_AUTOCONFIRM: "false"
       DISABLE_SIGNUP: "true"
       SITE_URL: "http://localhost:3000"
-      API_EXTERNAL_URL: "http://localhost:8000"
-      SUPABASE_PUBLIC_URL: "http://localhost:8000"
-      POWERSYNC_EXTERNAL_URL: "http://localhost:7901"
+      API_EXTERNAL_URL: ${API_EXTERNAL_URL:-http://localhost:8000}
+      SUPABASE_PUBLIC_URL: ${SUPABASE_PUBLIC_URL:-http://localhost:8000}
+      POWERSYNC_EXTERNAL_URL: ${POWERSYNC_EXTERNAL_URL:-http://localhost:7901}
       # GoTrue is statically linked Go; it honors SSL_CERT_FILE for the SMTP
       # STARTTLS handshake.
       SSL_CERT_FILE: /e2e-certs/ca-bundle.pem
