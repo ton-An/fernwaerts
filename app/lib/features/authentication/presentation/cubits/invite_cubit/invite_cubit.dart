@@ -138,26 +138,8 @@ class InviteCubit extends Cubit<InviteState> {
     final Either<Failure, None> requestPermissionsEither =
         await requestNecessaryPermissions();
 
-    requestPermissionsEither.fold(
-      (Failure failure) {
-        emit(InviteFailure(failure: failure));
-      },
-      (None none) {
-        _initBackgroundLocationTracking();
-      },
-    );
-  }
-
-  void _initBackgroundLocationTracking() async {
-    final initTrackingEither = await initBackgroundLocationTracking();
-
-    initTrackingEither.fold(
-      (Failure failure) {
-        emit(InviteFailure(failure: failure));
-      },
-      (_) {
-        emit(const InviteSuccess());
-      },
-    );
+    requestPermissionsEither.fold((Failure failure) {
+      emit(InviteFailure(failure: failure));
+    }, (_) {});
   }
 }
