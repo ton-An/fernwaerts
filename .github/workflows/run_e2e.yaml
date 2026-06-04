@@ -19,7 +19,7 @@ permissions:
 
 jobs:
   e2e:
-    runs-on: macos-26
+    runs-on: macos-26-intel
     timeout-minutes: 45
 
     steps:
@@ -30,7 +30,7 @@ jobs:
         run: xcodebuild -version
 
       - name: Set up Docker
-        uses: docker/setup-docker-action@v4
+        uses: docker/setup-docker-action@v5
         env:
           LIMA_START_ARGS: --cpus 4 --memory 8
 
@@ -51,16 +51,25 @@ jobs:
         working-directory: ./app
         run: flutter pub run build_runner build
 
-      - name: Build e2e backend images
-        run: |
-          docker buildx build --load \
-            -f supabase/docker/fernwaerts/Dockerfile \
-            -t ghcr.io/ton-an/fernwaerts:dev \
-            .
-          docker buildx build --load \
-            -f supabase/docker/fernwaerts-postgres/Dockerfile \
-            -t ghcr.io/ton-an/fernwaerts-postgres:dev \
-            .
+      - name: Build e2e app backend image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: supabase/docker/fernwaerts/Dockerfile
+          tags: ghcr.io/ton-an/fernwaerts:dev
+          load: true
+          cache-from: type=gha,scope=fernwaerts
+          cache-to: type=gha,scope=fernwaerts,mode=max
+
+      - name: Build e2e postgres image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: supabase/docker/fernwaerts-postgres/Dockerfile
+          tags: ghcr.io/ton-an/fernwaerts-postgres:dev
+          load: true
+          cache-from: type=gha,scope=fernwaerts-postgres
+          cache-to: type=gha,scope=fernwaerts-postgres,mode=max
 
       - name: Boot iOS simulator
         run: |
