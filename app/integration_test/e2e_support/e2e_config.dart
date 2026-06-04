@@ -8,17 +8,11 @@ class E2EConfig {
   E2EConfig._();
 
   /// Public URL the app uses to reach the Supabase/PowerSync backend.
-  static const String serverUrl = String.fromEnvironment(
-    'E2E_SERVER_URL',
-    defaultValue: 'http://192.168.0.47:8000',
-  );
+  static const String serverUrl = String.fromEnvironment('E2E_SERVER_URL');
 
   /// Mailpit HTTP API base URL. Tests poll this to retrieve invite links and
   /// reauthentication OTPs that GoTrue emails out.
-  static const String mailpitUrl = String.fromEnvironment(
-    'E2E_MAILPIT_URL',
-    defaultValue: 'http://192.168.0.47:8025',
-  );
+  static const String mailpitUrl = String.fromEnvironment('E2E_MAILPIT_URL');
 
   static const String adminUsername = 'e2e-admin';
   static const String adminEmail = 'admin@fernwaerts.test';
