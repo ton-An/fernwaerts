@@ -140,13 +140,4 @@ jobs:
           target: google_apis
           arch: x86_64
           profile: pixel_6
-          script: |
-            set -eu
-
-            device_id="$(adb devices | awk 'NR > 1 && $2 == "device" { print $1; exit }')"
-            if [ -z "$device_id" ]; then
-              echo "No Android emulator device found" >&2
-              adb devices >&2
-              exit 1
-            fi
-            bash app/tool/run_e2e.sh --platform android -d "$device_id"
+          script: bash app/tool/run_e2e.sh --platform android

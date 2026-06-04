@@ -97,6 +97,18 @@ case "$TARGET_PLATFORM" in
     ;;
 esac
 
+if [[ "$TARGET_PLATFORM" == "android" && -z "$DEVICE_ID" ]]; then
+  DEVICE_ID="$(
+    adb devices | awk 'NR > 1 && $2 == "device" { print $1; exit }'
+  )"
+  if [[ -z "$DEVICE_ID" ]]; then
+    echo "[e2e] no Android emulator device found" >&2
+    adb devices >&2
+    exit 1
+  fi
+  FLUTTER_ARGS+=("-d" "$DEVICE_ID")
+fi
+
 has_dart_define() {
   local key="$1"
   local index
