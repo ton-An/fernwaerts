@@ -165,7 +165,7 @@ Repository behavior:
 3. Keep exception-to-`Failure` mapping in the repository implementation.
 4. Put platform/storage/HTTP/Supabase/PowerSync calls in data sources.
 5. Document data source behavior on the abstract data source contract.
-6. Test failure mapping and non-trivial success behavior.
+6. Test success and failure mapping.
 
 Cubit-backed screen:
 
