@@ -2,7 +2,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/authentication/device_info_platform_not_supported_failure.dart';
 import 'package:location_history/core/failures/authentication/invalid_credentials_failure.dart';
 import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
-import 'package:location_history/core/failures/failure.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/domain/models/powersync_info.dart';
 import 'package:location_history/features/authentication/domain/models/server_info.dart';

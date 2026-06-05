@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:location_history/core/failures/failure.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 import 'package:location_history/features/settings/domain/usecases/change_password.dart';
 import 'package:location_history/features/settings/presentation/cubits/password_change_cubit/password_change_state.dart';
 

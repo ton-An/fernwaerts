@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:location_history/core/failures/failure.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_app.dart';
 import 'package:location_history/features/authentication/domain/usecases/request_necessary_permissions.dart';
 import 'package:location_history/features/authentication/presentation/cubits/splash_cubit/splash_state.dart';

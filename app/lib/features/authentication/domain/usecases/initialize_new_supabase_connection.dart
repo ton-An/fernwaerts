@@ -1,5 +1,5 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:location_history/core/failures/failure.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
 import 'package:location_history/core/failures/networking/invalid_server_url_failure.dart';
 import 'package:location_history/core/failures/networking/likely_configuration_failure.dart';

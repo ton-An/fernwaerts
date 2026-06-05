@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/data/datasources/platform_wrapper.dart';
 import 'package:location_history/core/failures/authentication/device_info_platform_not_supported_failure.dart';
-import 'package:location_history/core/failures/failure.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/data/datasources/android_device_local_data_source.dart';

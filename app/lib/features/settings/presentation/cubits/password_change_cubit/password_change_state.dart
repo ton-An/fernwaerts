@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:location_history/core/failures/failure.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 /// {@template password_change_state}
 /// Base state for password change actions.

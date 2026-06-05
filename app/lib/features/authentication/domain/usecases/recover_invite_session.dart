@@ -1,6 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/authentication/expired_refresh_token_failure.dart';
-import 'package:location_history/core/failures/failure.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 
 /// {@template recover_invite_session}

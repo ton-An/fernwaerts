@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:location_history/core/failures/failure.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 import 'package:location_history/features/authentication/domain/models/user.dart';
 import 'package:location_history/features/settings/domain/usecases/watch_users.dart';
 import 'package:location_history/features/settings/presentation/cubits/user_management_cubit/user_management_state.dart';

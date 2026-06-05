@@ -41,7 +41,6 @@ import 'package:location_history/features/calendar/presentation/cubits/calendar_
 import 'package:location_history/features/calendar/presentation/cubits/decennially_calendar_cubit/decennially_calendar_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/monthly_calendar_cubit/monthly_calendar_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/yearly_calendar_cubit/yearly_calendar_cubit.dart';
-import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/location_tracking/data/datasources/activity_recognition_local_data_source.dart';
 import 'package:location_history/features/location_tracking/data/datasources/battery_local_data_source.dart';
 import 'package:location_history/features/location_tracking/data/datasources/ios_location_tracking_local_data_source.dart';
@@ -69,6 +68,7 @@ import 'package:location_history/features/settings/presentation/cubits/password_
 import 'package:location_history/features/settings/presentation/cubits/user_management_cubit/user_management_cubit.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:talker_flutter/talker_flutter.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 import '../features/location_tracking/domain/usecases/init_background_location_tracking.dart';
 
