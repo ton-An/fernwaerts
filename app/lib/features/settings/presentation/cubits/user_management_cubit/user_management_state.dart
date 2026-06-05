@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:location_history/core/failures/failure.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 import 'package:location_history/features/authentication/domain/models/user.dart';
 
 /// {@template user_management_state}

@@ -132,6 +132,19 @@ topics.
   `- name: [Type] description`, with the parameter name first and the linked
   type immediately after the colon.
 
+## Testing Strategy
+
+- Add unit tests for behavior, not for thin pass-through wrappers.
+- Prioritize unit tests for business rules, branching, sequencing, failure
+  mapping, calculations, stream handling, and sensitive data boundaries.
+- Do not add tests that only prove one layer calls the next with the same
+  arguments unless that call order or condition is the behavior being protected.
+- Repository tests should focus on exception-to-`Failure` mapping and meaningful
+  data transformations. Data source tests should focus on storage keys, request
+  shape, platform mapping, Drift queries, and thrown failures.
+- Use integration or end-to-end tests for cross-layer flows that cannot be
+  trusted through isolated unit tests.
+
 ## Change Workflows
 
 Use case:
@@ -140,7 +153,8 @@ Use case:
 2. Depend on repository contracts.
 3. Return `Either<Failure, T>` for recoverable failures.
 4. Register in `lib/core/dependency_injector.dart`.
-5. Add/update focused tests under matching `test/features/...`.
+5. Add/update focused tests under matching `test/features/...` when the use
+   case owns behavior beyond simple delegation.
 6. Treat the signature as the primary contract. Add docs only for behavior,
    failure semantics, or constraints that the signature cannot express.
 
@@ -162,7 +176,9 @@ Cubit-backed screen:
 5. Register injectable Cubits in `dependency_injector.dart`.
 6. Wire navigable routes in `lib/main.dart`.
 7. Document Cubit states and public methods with emitted states.
-8. Cover state changes with Cubit/widget tests when behavior changes.
+8. Cover state changes with Cubit/widget tests when the Cubit owns branching,
+   sequencing, subscriptions, or other behavior beyond loading/success/failure
+   mapping.
 
 Synced data:
 

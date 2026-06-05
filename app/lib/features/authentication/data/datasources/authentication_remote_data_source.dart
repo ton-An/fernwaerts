@@ -147,6 +147,9 @@ abstract class AuthenticationRemoteDataSource {
   /// Signs out the current user from the initialized Supabase auth connection.
   Future<void> signOut();
 
+  /// Clears the PowerSync-backed local database for the current session.
+  Future<void> resetPowerSync();
+
   /// Gets the server's Supabase anon key from the bootstrap endpoint.
   ///
   /// Parameters:
@@ -348,6 +351,11 @@ class AuthRemoteDataSourceImpl extends AuthenticationRemoteDataSource {
     final SupabaseClient supabaseClient = await supabaseHandler.client;
 
     await supabaseClient.auth.signOut();
+  }
+
+  @override
+  Future<void> resetPowerSync() async {
+    await supabaseHandler.resetPowerSync();
   }
 
   @override

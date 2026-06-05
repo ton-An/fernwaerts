@@ -1,10 +1,15 @@
 part of 'calendar.dart';
 
 class _NavigationButton extends StatefulWidget {
-  const _NavigationButton({required this.icon, required this.onPressed});
+  const _NavigationButton({
+    required this.icon,
+    required this.onPressed,
+    required this.semanticLabel,
+  });
 
   final IconData icon;
   final VoidCallback onPressed;
+  final String semanticLabel;
 
   @override
   State<_NavigationButton> createState() => _NavigationButtonState();
@@ -51,27 +56,33 @@ class _NavigationButtonState extends State<_NavigationButton>
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTapDown: (_) {
-        _fadeController.forward();
-      },
-      onTapUp: (_) {
-        _fadeController.forward().then((_) {
-          _fadeController.reverse();
-        });
-        widget.onPressed();
-      },
-      onTapCancel: () {
-        _fadeController.forward().then((_) {
-          _fadeController.reverse();
-        });
-      },
-      child: Opacity(
-        opacity: _fadeAnimation.value,
-        child: Padding(
-          padding: EdgeInsets.all(theme.spacing.xMedium - theme.spacing.small),
-          child: Icon(widget.icon, color: theme.colors.text),
+    return Semantics(
+      label: widget.semanticLabel,
+      button: true,
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTapDown: (_) {
+          _fadeController.forward();
+        },
+        onTapUp: (_) {
+          _fadeController.forward().then((_) {
+            _fadeController.reverse();
+          });
+          widget.onPressed();
+        },
+        onTapCancel: () {
+          _fadeController.forward().then((_) {
+            _fadeController.reverse();
+          });
+        },
+        child: Opacity(
+          opacity: _fadeAnimation.value,
+          child: Padding(
+            padding: EdgeInsets.all(
+              theme.spacing.xMedium - theme.spacing.small,
+            ),
+            child: Icon(widget.icon, color: theme.colors.text),
+          ),
         ),
       ),
     );

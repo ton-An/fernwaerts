@@ -5,17 +5,20 @@ class _Button extends StatelessWidget {
     required this.label,
     required this.highlight,
     required this.onPressed,
+    required this.semanticLabel,
   });
 
   final String label;
   final bool highlight;
   final VoidCallback onPressed;
+  final String? semanticLabel;
 
   @override
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
     return FadeTapDetector(
+      semanticLabel: semanticLabel,
       onTap: onPressed,
       child: Container(
         padding: EdgeInsets.symmetric(vertical: theme.spacing.xxSmall),

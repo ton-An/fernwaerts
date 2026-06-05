@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:location_history/core/failures/failure.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 /// {@template invite_new_user_state}
 /// Base state for invite-new-user actions.

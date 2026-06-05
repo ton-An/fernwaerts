@@ -13,6 +13,8 @@ class _BackButton extends StatelessWidget {
           alignment: Alignment.topLeft,
           child: SmallIconButton(
             icon: CupertinoIcons.back,
+            semanticLabel:
+                AppLocalizations.of(context)!.semanticAuthenticationBackButton,
             alignmentOffset: const Offset(-1, 0),
             onPressed: onPressed ?? () {},
           ),

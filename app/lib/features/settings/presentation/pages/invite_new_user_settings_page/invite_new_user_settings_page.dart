@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
-import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/invite_new_user_cubit/invite_new_user_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/invite_new_user_cubit/invite_new_user_state.dart';
 import 'package:location_history/features/settings/presentation/pages/user_management_settings_page/user_management_settings_page.dart';
@@ -71,12 +70,17 @@ class _InviteNewUserSettingsPageState extends State<InviteNewUserSettingsPage> {
 
             CustomCupertinoTextField(
               hint: AppLocalizations.of(context)!.usersEmail,
+              semanticLabel:
+                  AppLocalizations.of(context)!.semanticInviteNewUserEmailField,
               controller: _emailController,
               onChanged: (_) {},
             ),
 
             const MediumGap(),
             CustomCupertinoTextButton(
+              text: AppLocalizations.of(context)!.invite,
+              semanticLabel:
+                  AppLocalizations.of(context)!.semanticInviteNewUserButton,
               color: theme.colors.primary,
               isLoading: state is InviteNewUserLoading,
               onPressed:
@@ -87,7 +91,6 @@ class _InviteNewUserSettingsPageState extends State<InviteNewUserSettingsPage> {
                         );
                       }
                       : null,
-              text: AppLocalizations.of(context)!.invite,
             ),
           ],
         );

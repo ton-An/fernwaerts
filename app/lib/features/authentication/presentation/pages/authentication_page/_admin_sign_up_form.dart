@@ -32,15 +32,21 @@ class _AdminSignUpFormState extends State<_AdminSignUpForm> {
           label: AppLocalizations.of(context)!.createAdmin,
           description: AppLocalizations.of(context)!.adminSignUpDescription,
           buttonText: AppLocalizations.of(context)!.createAdmin,
+          buttonSemanticsLabel:
+              AppLocalizations.of(context)!.semanticCreateAdminButton,
           textFields: [
             CustomCupertinoTextField(
               hint: AppLocalizations.of(context)!.username,
+              semanticLabel:
+                  AppLocalizations.of(context)!.semanticAdminUsernameField,
               controller: _usernameController,
               autofillHints: const [AutofillHints.newUsername],
               onChanged: (_) {},
             ),
             CustomCupertinoTextField(
               hint: AppLocalizations.of(context)!.email,
+              semanticLabel:
+                  AppLocalizations.of(context)!.semanticAdminEmailField,
               controller: _emailController,
               autofillHints: const [AutofillHints.email],
               keyboardType: TextInputType.emailAddress,
@@ -48,6 +54,8 @@ class _AdminSignUpFormState extends State<_AdminSignUpForm> {
             ),
             CustomCupertinoTextField(
               hint: AppLocalizations.of(context)!.password,
+              semanticLabel:
+                  AppLocalizations.of(context)!.semanticAdminPasswordField,
               controller: _passwordController,
               autofillHints: const [AutofillHints.newPassword],
               obscureText: true,
@@ -55,6 +63,10 @@ class _AdminSignUpFormState extends State<_AdminSignUpForm> {
             ),
             CustomCupertinoTextField(
               hint: AppLocalizations.of(context)!.confirmPassword,
+              semanticLabel:
+                  AppLocalizations.of(
+                    context,
+                  )!.semanticAdminConfirmPasswordField,
               controller: _confirmPasswordController,
               autofillHints: const [AutofillHints.newPassword],
               obscureText: true,

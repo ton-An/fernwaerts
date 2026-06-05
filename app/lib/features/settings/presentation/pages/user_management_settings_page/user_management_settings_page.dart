@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
 import 'package:location_history/features/authentication/domain/models/user.dart';
-import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/user_management_cubit/user_management_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/user_management_cubit/user_management_state.dart';
 import 'package:location_history/features/settings/presentation/pages/invite_new_user_settings_page/invite_new_user_settings_page.dart';
@@ -41,6 +40,8 @@ class UserManagementSettingsPage extends StatelessWidget {
 
         SettingsPageLink(
           title: AppLocalizations.of(context)!.inviteNewUser,
+          semanticLabel:
+              AppLocalizations.of(context)!.semanticInviteNewUserLink,
           onPressed: () {
             context.push(InviteNewUserSettingsPage.route);
           },

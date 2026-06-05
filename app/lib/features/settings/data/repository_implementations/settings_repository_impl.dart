@@ -9,7 +9,7 @@ import 'package:location_history/core/failures/authentication/need_otp_reauthent
 import 'package:location_history/core/failures/authentication/otp_invalid_failure.dart';
 import 'package:location_history/core/failures/authentication/passwords_must_differ.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
-import 'package:location_history/core/failures/failure.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 import 'package:location_history/core/failures/networking/server_type.dart';
 import 'package:location_history/core/failures/storage/database_read_failure.dart';
 import 'package:location_history/features/authentication/domain/models/user.dart';

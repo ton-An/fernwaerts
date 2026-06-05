@@ -1,4 +1,4 @@
-import 'package:location_history/core/failures/failure.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 /// {@template authentication_state}
 /// Base state for the server setup, sign-in, and initial admin sign-up flow.

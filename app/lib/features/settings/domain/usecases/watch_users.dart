@@ -1,5 +1,5 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:location_history/core/failures/failure.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 import 'package:location_history/core/failures/storage/database_read_failure.dart';
 import 'package:location_history/features/authentication/domain/models/user.dart';
 import 'package:location_history/features/settings/domain/repositories/settings_repository.dart';

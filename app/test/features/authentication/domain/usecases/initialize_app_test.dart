@@ -85,6 +85,11 @@ void main() {
   test(
     'should return a not signed in failure if the user is not signed in',
     () async {
+      // arrange
+      when(
+        () => mockAuthenticationRepository.isSignedIn(),
+      ).thenAnswer((_) async => false);
+
       // act
       final result = await initializeSavedServerConnection();
 
@@ -105,7 +110,11 @@ void main() {
 
       // assert
       expect(result, const Right(None()));
-      verify(() => mockAuthenticationRepository.getSavedServerInfo()).called(1);
+      verify(
+        () => mockAuthenticationRepository.initializeSyncServerConnection(
+          powersyncInfo: tPowersyncInfo,
+        ),
+      ).called(1);
     },
   );
 

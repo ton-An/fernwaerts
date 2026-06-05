@@ -29,6 +29,8 @@ class _Header extends StatelessWidget {
             children: [
               SmallIconButton(
                 icon: CupertinoIcons.settings,
+                semanticLabel:
+                    AppLocalizations.of(context)!.semanticMapSettingsButton,
                 onPressed: () {
                   context.go(MainSettingsPage.route);
                 },

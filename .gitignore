@@ -17,3 +17,4 @@ TODOs.md
 *.timestamp-*.mjs
 location_history.iml
 .env
+/build

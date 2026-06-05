@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:location_history/core/widgets/fade_tap_detector.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 /// {@template settings_page_link}
@@ -11,6 +10,7 @@ class SettingsPageLink extends StatelessWidget {
     super.key,
     required this.title,
     required this.onPressed,
+    this.semanticLabel,
     this.showDivider = true,
   });
 
@@ -20,6 +20,9 @@ class SettingsPageLink extends StatelessWidget {
   /// Callback invoked when the row or trailing icon is tapped.
   final VoidCallback onPressed;
 
+  /// Optional accessibility label for the tappable row.
+  final String? semanticLabel;
+
   /// Whether to show the divider below this row.
   final bool showDivider;
 
@@ -28,6 +31,7 @@ class SettingsPageLink extends StatelessWidget {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
     return FadeTapDetector(
+      semanticLabel: semanticLabel,
       onTap: onPressed,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,10 +42,15 @@ class SettingsPageLink extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(title, style: theme.text.body.copyWith()),
-                SmallIconButton(
-                  icon: CupertinoIcons.forward,
-                  onPressed: onPressed,
-                  alignmentOffset: const Offset(1, 0),
+                Padding(
+                  padding: EdgeInsets.all(theme.spacing.xSmall),
+                  child: Transform.translate(
+                    offset: const Offset(1, 0),
+                    child: Icon(
+                      CupertinoIcons.forward,
+                      color: theme.colors.text,
+                    ),
+                  ),
                 ),
               ],
             ),

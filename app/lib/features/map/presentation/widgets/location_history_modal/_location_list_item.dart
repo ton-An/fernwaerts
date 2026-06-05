@@ -43,6 +43,7 @@ class _LocationListItem extends StatelessWidget {
     );
 
     return FadeTapDetector(
+      semanticLabel: AppLocalizations.of(context)!.semanticLocationListItem,
       onTap:
           () => context.read<MapAnimationCubit>().animateToLocation(location),
       child: content,

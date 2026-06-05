@@ -7,7 +7,7 @@ import 'package:location_history/core/failures/authentication/account_already_se
 import 'package:location_history/core/failures/authentication/expired_refresh_token_failure.dart';
 import 'package:location_history/core/failures/authentication/invalid_credentials_failure.dart';
 import 'package:location_history/core/failures/authentication/weak_password_failure.dart';
-import 'package:location_history/core/failures/failure.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 import 'package:location_history/core/failures/networking/connection_failure.dart';
 import 'package:location_history/core/failures/networking/server_type.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
@@ -259,6 +259,11 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
   @override
   Future<void> signOut() async {
     await authRemoteDataSource.signOut();
+  }
+
+  @override
+  Future<void> resetPowerSync() async {
+    await authRemoteDataSource.resetPowerSync();
   }
 
   @override

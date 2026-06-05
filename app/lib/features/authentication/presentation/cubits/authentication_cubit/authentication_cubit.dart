@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:location_history/core/failures/failure.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 import 'package:location_history/features/authentication/domain/models/supabase_info.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_new_supabase_connection.dart';
 import 'package:location_history/features/authentication/domain/usecases/is_server_set_up.dart';
@@ -165,14 +165,10 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   }
 
   void _requestNecessaryPermissions() async {
-    await requestNecessaryPermissions();
-    _initBackgroundLocationTracking();
-  }
+    final Either<Failure, None> requestPermissionsEither =
+        await requestNecessaryPermissions();
 
-  void _initBackgroundLocationTracking() async {
-    final initTrackingEither = await initBackgroundLocationTracking();
-
-    initTrackingEither.fold((Failure failure) {
+    requestPermissionsEither.fold((Failure failure) {
       emit(AuthenticationFailure(failure: failure));
     }, (_) {});
   }

@@ -1,0 +1,80 @@
+name: Run e2e tests
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - app/**
+      - supabase/**
+      - .github/workflows/run_e2e.yaml
+
+  workflow_dispatch:
+
+concurrency:
+  group: e2e-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  e2e:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4
+
+      - name: Build e2e app backend image
+        run: |
+          docker build \
+            -f supabase/docker/fernwaerts/Dockerfile \
+            -t ghcr.io/ton-an/fernwaerts:${{ github.sha }} \
+            .
+
+      - name: Build e2e postgres image
+        run: |
+          docker build \
+            -f supabase/docker/fernwaerts-postgres/Dockerfile \
+            -t ghcr.io/ton-an/fernwaerts-postgres:${{ github.sha }} \
+            .
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' \
+            | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Install and set Flutter version
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Restore packages
+        working-directory: ./app
+        run: flutter pub get
+
+      - name: Generate build runner files
+        working-directory: ./app
+        run: flutter pub run build_runner build
+
+      - name: Run e2e suite
+        uses: reactivecircus/android-emulator-runner@v2
+        env:
+          FLAVOR: development
+          FERNWAERTS_VERSION: ${{ github.sha }}
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          script: bash app/tool/run_e2e.sh --platform android

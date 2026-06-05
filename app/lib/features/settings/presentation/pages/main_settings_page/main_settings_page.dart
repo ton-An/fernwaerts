@@ -47,6 +47,8 @@ class MainSettingsPage extends StatelessWidget {
         SettingsSectionTitle(title: AppLocalizations.of(context)!.account),
         SettingsPageLink(
           title: AppLocalizations.of(context)!.authentication,
+          semanticLabel:
+              AppLocalizations.of(context)!.semanticAccountSettingsLink,
           onPressed: () {
             context.go(AccountSettingsPage.route);
           },
@@ -56,6 +58,8 @@ class MainSettingsPage extends StatelessWidget {
         SettingsSectionTitle(title: AppLocalizations.of(context)!.admin),
         SettingsPageLink(
           title: AppLocalizations.of(context)!.userManagement,
+          semanticLabel:
+              AppLocalizations.of(context)!.semanticUserManagementLink,
           onPressed: () {
             context.go(UserManagementSettingsPage.route);
           },
@@ -65,6 +69,7 @@ class MainSettingsPage extends StatelessWidget {
         const XXMediumGap(),
         CustomCupertinoTextButton(
           text: AppLocalizations.of(context)!.signOut,
+          semanticLabel: AppLocalizations.of(context)!.semanticSignOutButton,
           textColor: theme.colors.backgroundContrast.withValues(alpha: .75),
           color: theme.colors.translucentBackgroundContrast.withValues(
             alpha: .16,
@@ -84,6 +89,10 @@ class MainSettingsPage extends StatelessWidget {
       message: AppLocalizations.of(context)!.signOutMessage,
       submitButtonLabel: AppLocalizations.of(context)!.yes,
       cancelButtonLabel: AppLocalizations.of(context)!.cancel,
+      submitButtonSemanticsLabel:
+          AppLocalizations.of(context)!.semanticConfirmDialogActionButton,
+      cancelButtonSemanticsLabel:
+          AppLocalizations.of(context)!.semanticCancelDialogActionButton,
       onSubmit: () {
         getIt<SignOut>().call();
         context.pop();

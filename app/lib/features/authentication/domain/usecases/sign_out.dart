@@ -1,5 +1,5 @@
 import 'package:fpdart/fpdart.dart';
-import 'package:location_history/core/failures/failure.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
@@ -9,8 +9,9 @@ import 'package:location_history/features/location_tracking/domain/repositories/
 /// {@template sign_out}
 /// Signs out the current user and clears local session state.
 ///
-/// The flow signs out of auth, stops location tracking, deletes the local
-/// database cache, and removes saved local authentication/server storage.
+/// The flow stops location tracking, resets PowerSync, signs out of auth,
+/// deletes the local database cache, and removes saved local
+/// authentication/server storage.
 ///
 /// Failures:
 /// - [StorageWriteFailure]
@@ -30,17 +31,23 @@ class SignOut {
 
   /// {@macro sign_out}
   Future<Either<Failure, None>> call() {
-    return _signOut();
-  }
-
-  Future<Either<Failure, None>> _signOut() async {
-    await authenticationRepository.signOut();
-
     return _stopTracking();
   }
 
   Future<Either<Failure, None>> _stopTracking() async {
     await locationTrackingRepository.stopTracking();
+
+    return _resetPowerSync();
+  }
+
+  Future<Either<Failure, None>> _resetPowerSync() async {
+    await authenticationRepository.resetPowerSync();
+
+    return signOut();
+  }
+
+  Future<Either<Failure, None>> signOut() async {
+    await authenticationRepository.signOut();
 
     return _deleteLocalDBCache();
   }

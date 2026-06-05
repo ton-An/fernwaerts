@@ -1,4 +1,4 @@
-import 'package:location_history/core/failures/failure.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 /// {@template invite_state}
 /// Base state for accepting a user invite from a deep link.

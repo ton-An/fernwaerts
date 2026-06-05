@@ -1,4 +1,4 @@
-import 'package:location_history/core/failures/failure.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 /// {@template splash_state}
 /// Base state for app startup and saved-session initialization.

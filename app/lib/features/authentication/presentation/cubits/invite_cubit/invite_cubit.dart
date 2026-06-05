@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/authentication/invalid_invite_link_failure.dart';
-import 'package:location_history/core/failures/failure.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 import 'package:location_history/features/authentication/domain/models/supabase_info.dart';
 import 'package:location_history/features/authentication/domain/usecases/accept_invite.dart';
 import 'package:location_history/features/authentication/domain/usecases/initialize_new_supabase_connection.dart';
@@ -139,19 +139,6 @@ class InviteCubit extends Cubit<InviteState> {
         await requestNecessaryPermissions();
 
     requestPermissionsEither.fold(
-      (Failure failure) {
-        emit(InviteFailure(failure: failure));
-      },
-      (None none) {
-        _initBackgroundLocationTracking();
-      },
-    );
-  }
-
-  void _initBackgroundLocationTracking() async {
-    final initTrackingEither = await initBackgroundLocationTracking();
-
-    initTrackingEither.fold(
       (Failure failure) {
         emit(InviteFailure(failure: failure));
       },

@@ -29,15 +29,21 @@ class _InviteFormState extends State<_InviteForm> {
           label: AppLocalizations.of(context)!.acceptInvite,
           description: AppLocalizations.of(context)!.acceptInviteDescription,
           buttonText: AppLocalizations.of(context)!.accept,
+          buttonSemanticsLabel:
+              AppLocalizations.of(context)!.semanticAcceptInviteButton,
           textFields: [
             CustomCupertinoTextField(
               hint: AppLocalizations.of(context)!.username,
+              semanticLabel:
+                  AppLocalizations.of(context)!.semanticInviteUsernameField,
               controller: _usernameController,
               autofillHints: const [AutofillHints.newUsername],
               onChanged: (_) {},
             ),
             CustomCupertinoTextField(
               hint: AppLocalizations.of(context)!.password,
+              semanticLabel:
+                  AppLocalizations.of(context)!.semanticInvitePasswordField,
               controller: _passwordController,
               autofillHints: const [AutofillHints.newPassword],
               obscureText: true,
@@ -45,6 +51,10 @@ class _InviteFormState extends State<_InviteForm> {
             ),
             CustomCupertinoTextField(
               hint: AppLocalizations.of(context)!.confirmPassword,
+              semanticLabel:
+                  AppLocalizations.of(
+                    context,
+                  )!.semanticInviteConfirmPasswordField,
               controller: _confirmPasswordController,
               autofillHints: const [AutofillHints.newPassword],
               obscureText: true,

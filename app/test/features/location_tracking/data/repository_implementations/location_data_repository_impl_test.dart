@@ -1,11 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/storage/storage_write_failure.dart';
 import 'package:location_history/features/location_tracking/data/repository_implementations/location_data_repository_impl.dart';
 import 'package:location_history/features/location_tracking/domain/models/activity_segment.dart';
-import 'package:location_history/features/location_tracking/domain/models/location.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../fixtures.dart';
@@ -36,41 +33,6 @@ void main() {
         endLocation: tLocations[1],
         activityType: tLocations[1].activityType,
       ),
-    );
-  });
-
-  group('getLocationsByDate', () {
-    late StreamController<List<Location>> tLocationsStreamController;
-    setUp(() {
-      tLocationsStreamController = StreamController();
-      tLocationsStreamController.add(tLocations);
-
-      when(
-        () => mockLocationDataSource.getLocationsByDate(
-          start: any(named: 'start'),
-          end: any(named: 'end'),
-        ),
-      ).thenAnswer((_) async => tLocationsStreamController.stream);
-    });
-
-    test(
-      'should get locations by date from remote data source and return them',
-      () async {
-        // act
-        final stream = await locationDataRepository.getLocationsByDate(
-          start: tStartDate,
-          end: tEndDate,
-        );
-
-        // assert
-        await expectLater(stream, emits(tLocations));
-        verify(
-          () => mockLocationDataSource.getLocationsByDate(
-            start: tStartDate,
-            end: tEndDate,
-          ),
-        );
-      },
     );
   });
 

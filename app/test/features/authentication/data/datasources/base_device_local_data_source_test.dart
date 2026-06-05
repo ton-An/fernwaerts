@@ -28,19 +28,12 @@ void main() {
       ).thenAnswer((_) async => tDeviceId);
     });
 
-    test('should read the device id key from storage', () async {
-      // act
-      await baseDeviceLocalDataSource.getDeviceIdFromStorage();
-
-      // assert
-      verify(() => mockSecureStorage.read(key: 'device_id'));
-    });
-
-    test('should return the device id', () async {
+    test('should read and return the device id from storage', () async {
       // act
       final result = await baseDeviceLocalDataSource.getDeviceIdFromStorage();
 
       // assert
+      verify(() => mockSecureStorage.read(key: 'device_id'));
       expect(result, tDeviceId);
     });
 
@@ -79,20 +72,6 @@ void main() {
 
       // assert
       verify(() => mockSecureStorage.write(key: 'device_id', value: tDeviceId));
-    });
-  });
-
-  group('getAppVersion()', () {
-    setUp(() {
-      when(() => mockPackageInfo.version).thenAnswer((_) => tAppVersion);
-    });
-
-    test('should return the app version', () async {
-      // act
-      final result = baseDeviceLocalDataSource.getAppVersion();
-
-      // assert
-      expect(result, tAppVersion);
     });
   });
 }

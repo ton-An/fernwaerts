@@ -15,6 +15,8 @@ class _AttributionLegend extends StatelessWidget {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
     return FadeTapDetector(
+      semanticLabel:
+          AppLocalizations.of(context)!.semanticOpenStreetMapAttributionLink,
       onTap: () {
         launchUrlString(attributionUrl);
       },

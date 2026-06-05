@@ -46,6 +46,8 @@ class _Welcome extends StatelessWidget {
           const XXMediumGap(),
           CustomCupertinoTextButton(
             text: AppLocalizations.of(context)!.getStarted,
+            semanticLabel:
+                AppLocalizations.of(context)!.semanticGetStartedButton,
             onPressed: () {
               context.read<AuthenticationCubit>().toServerDetails();
             },

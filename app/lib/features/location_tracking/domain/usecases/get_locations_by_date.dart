@@ -1,6 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/authentication/not_signed_in_failure.dart';
-import 'package:location_history/core/failures/failure.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 import 'package:location_history/features/authentication/domain/repositories/authentication_repository.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_data_repository.dart';

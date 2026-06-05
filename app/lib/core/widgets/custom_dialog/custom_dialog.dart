@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:location_history/core/widgets/fade_tap_detector.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_button.dart';
@@ -20,6 +19,8 @@ class CustomDialog extends StatelessWidget {
     required this.cancelButtonLabel,
     required this.onSubmit,
     required this.onCancel,
+    this.submitButtonSemanticsLabel,
+    this.cancelButtonSemanticsLabel,
   });
 
   final String title;
@@ -28,6 +29,8 @@ class CustomDialog extends StatelessWidget {
   final String cancelButtonLabel;
   final VoidCallback onSubmit;
   final VoidCallback onCancel;
+  final String? submitButtonSemanticsLabel;
+  final String? cancelButtonSemanticsLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +70,7 @@ class CustomDialog extends StatelessWidget {
                       child: _Button(
                         label: cancelButtonLabel,
                         highlight: false,
+                        semanticLabel: cancelButtonSemanticsLabel,
                         onPressed: () async {
                           await Future.delayed(theme.durations.xTiny);
                           onCancel();
@@ -78,6 +82,7 @@ class CustomDialog extends StatelessWidget {
                       child: _Button(
                         label: submitButtonLabel,
                         highlight: true,
+                        semanticLabel: submitButtonSemanticsLabel,
                         onPressed: () async {
                           await Future.delayed(theme.durations.short);
                           onSubmit();
@@ -113,6 +118,8 @@ class CustomDialog extends StatelessWidget {
     required String cancelButtonLabel,
     required VoidCallback onSubmit,
     required VoidCallback onCancel,
+    String? submitButtonSemanticsLabel,
+    String? cancelButtonSemanticsLabel,
   }) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
@@ -160,6 +167,8 @@ class CustomDialog extends StatelessWidget {
           cancelButtonLabel: cancelButtonLabel,
           onSubmit: onSubmit,
           onCancel: onCancel,
+          submitButtonSemanticsLabel: submitButtonSemanticsLabel,
+          cancelButtonSemanticsLabel: cancelButtonSemanticsLabel,
         );
       },
     );

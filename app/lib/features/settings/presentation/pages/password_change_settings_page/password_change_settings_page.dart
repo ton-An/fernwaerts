@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location_history/core/failures/authentication/need_otp_reauthentication_failure.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
-import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/password_change_cubit/password_change_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/password_change_cubit/password_change_state.dart';
 import 'package:location_history/features/settings/presentation/pages/account_settings_page/account_settings_page.dart';
@@ -92,6 +91,8 @@ class _PasswordChangeSettingsPageState
 
             CustomCupertinoTextField(
               hint: AppLocalizations.of(context)!.newPassword,
+              semanticLabel:
+                  AppLocalizations.of(context)!.semanticNewPasswordField,
               controller: _newPasswordController,
               obscureText: true,
               onChanged: (_) {},
@@ -101,6 +102,8 @@ class _PasswordChangeSettingsPageState
 
             CustomCupertinoTextField(
               hint: AppLocalizations.of(context)!.confirmNewPassword,
+              semanticLabel:
+                  AppLocalizations.of(context)!.semanticConfirmNewPasswordField,
               controller: _newRepeatedPasswordController,
               obscureText: true,
               onChanged: (_) {},
@@ -124,6 +127,8 @@ class _PasswordChangeSettingsPageState
 
             const MediumGap(),
             CustomCupertinoButton(
+              semanticLabel:
+                  AppLocalizations.of(context)!.semanticSavePasswordButton,
               color: theme.colors.primary,
               isLoading: state is PasswordChangeLoading,
               onPressed:
