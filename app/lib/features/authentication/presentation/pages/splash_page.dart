@@ -38,9 +38,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    // [MainApp] already seeds the cubit before routing so the deep-link
-    // redirect can read its state. Re-triggering here would race the
-    // in-flight Supabase.initialize call.
+
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
         setState(() {
