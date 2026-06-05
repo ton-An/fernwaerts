@@ -16,50 +16,9 @@ concurrency:
 
 permissions:
   contents: read
-  packages: read
 
 jobs:
-  changes:
-    runs-on: ubuntu-24.04
-    outputs:
-      build_backend_images: ${{ steps.detect.outputs.build_backend_images }}
-      image_version: ${{ steps.detect.outputs.image_version }}
-
-    steps:
-      - name: Checkout the code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Detect backend image changes
-        id: detect
-        run: |
-          set -euo pipefail
-
-          build_backend_images=false
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            build_backend_images=true
-          else
-            git diff --name-only \
-              "${{ github.event.pull_request.base.sha }}" \
-              "${{ github.sha }}" > changed-files.txt
-
-            if grep -Eq '^(supabase/|\.github/workflows/run_e2e\.yaml$)' changed-files.txt; then
-              build_backend_images=true
-            fi
-          fi
-
-          if [[ "$build_backend_images" == "true" ]]; then
-            image_version="${{ github.sha }}"
-          else
-            image_version="latest"
-          fi
-
-          echo "build_backend_images=$build_backend_images" >> "$GITHUB_OUTPUT"
-          echo "image_version=$image_version" >> "$GITHUB_OUTPUT"
-
   e2e:
-    needs: changes
     runs-on: ubuntu-24.04
     timeout-minutes: 45
 
@@ -67,41 +26,19 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        if: needs.changes.outputs.build_backend_images == 'true'
-        uses: docker/setup-buildx-action@v3
-
       - name: Build e2e app backend image
-        if: needs.changes.outputs.build_backend_images == 'true'
-        uses: docker/build-push-action@v7
-        with:
-          context: .
-          file: supabase/docker/fernwaerts/Dockerfile
-          platforms: linux/amd64
-          tags: ghcr.io/ton-an/fernwaerts:${{ needs.changes.outputs.image_version }}
-          load: true
-          cache-from: type=gha,scope=fernwaerts
-          cache-to: type=gha,scope=fernwaerts,mode=max
+        run: |
+          docker build \
+            -f supabase/docker/fernwaerts/Dockerfile \
+            -t ghcr.io/ton-an/fernwaerts:${{ github.sha }} \
+            .
 
       - name: Build e2e postgres image
-        if: needs.changes.outputs.build_backend_images == 'true'
-        uses: docker/build-push-action@v7
-        with:
-          context: .
-          file: supabase/docker/fernwaerts-postgres/Dockerfile
-          platforms: linux/amd64
-          tags: ghcr.io/ton-an/fernwaerts-postgres:${{ needs.changes.outputs.image_version }}
-          load: true
-          cache-from: type=gha,scope=fernwaerts-postgres
-          cache-to: type=gha,scope=fernwaerts-postgres,mode=max
-
-      - name: Log in to GitHub Container Registry
-        if: needs.changes.outputs.build_backend_images != 'true'
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          docker build \
+            -f supabase/docker/fernwaerts-postgres/Dockerfile \
+            -t ghcr.io/ton-an/fernwaerts-postgres:${{ github.sha }} \
+            .
 
       - name: Enable KVM
         run: |
@@ -134,7 +71,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         env:
           FLAVOR: development
-          FERNWAERTS_VERSION: ${{ needs.changes.outputs.image_version }}
+          FERNWAERTS_VERSION: ${{ github.sha }}
         with:
           api-level: 35
           target: google_apis
