@@ -11,15 +11,12 @@ class _BackButton extends StatelessWidget {
       children: [
         Align(
           alignment: Alignment.topLeft,
-          child: Semantics(
-            label:
+          child: SmallIconButton(
+            icon: CupertinoIcons.back,
+            semanticLabel:
                 AppLocalizations.of(context)!.semanticAuthenticationBackButton,
-            button: true,
-            child: SmallIconButton(
-              icon: CupertinoIcons.back,
-              alignmentOffset: const Offset(-1, 0),
-              onPressed: onPressed ?? () {},
-            ),
+            alignmentOffset: const Offset(-1, 0),
+            onPressed: onPressed ?? () {},
           ),
         ),
         const XTinyGap(),

@@ -111,14 +111,11 @@ class AuthenticationForm extends StatelessWidget {
                 if (textFields.last != textField) const MediumGap(),
               ],
               const XXMediumGap(),
-              Semantics(
-                label: buttonSemanticsLabel,
-                button: true,
-                child: CustomCupertinoTextButton(
-                  text: buttonText,
-                  onPressed: onButtonPressed,
-                  isLoading: isLoading,
-                ),
+              CustomCupertinoTextButton(
+                text: buttonText,
+                semanticLabel: buttonSemanticsLabel,
+                onPressed: onButtonPressed,
+                isLoading: isLoading,
               ),
               AnimatedSize(
                 duration: theme.durations.medium,

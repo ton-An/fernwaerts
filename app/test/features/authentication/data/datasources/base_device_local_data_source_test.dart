@@ -9,13 +9,15 @@ import '../../../../mocks/mocks.dart';
 void main() {
   late BaseDeviceLocalDataSource baseDeviceLocalDataSource;
   late MockFlutterSecureStorage mockSecureStorage;
+  late MockPackageInfo mockPackageInfo;
 
   setUp(() {
     mockSecureStorage = MockFlutterSecureStorage();
+    mockPackageInfo = MockPackageInfo();
 
     baseDeviceLocalDataSource = BaseDeviceLocalDataSourceImpl(
       secureStorage: mockSecureStorage,
-      packageInfo: MockPackageInfo(),
+      packageInfo: mockPackageInfo,
     );
   });
 

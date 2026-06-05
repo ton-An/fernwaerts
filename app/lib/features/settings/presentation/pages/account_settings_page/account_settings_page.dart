@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
-import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/account_settings_cubit/account_settings_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/account_settings_cubit/account_settings_state.dart';
 import 'package:location_history/features/settings/presentation/pages/main_settings_page/main_settings_page.dart';
 import 'package:location_history/features/settings/presentation/pages/password_change_settings_page/password_change_settings_page.dart';
 import 'package:location_history/features/settings/presentation/widgets/settings_list_view.dart';
-import 'package:location_history/features/settings/presentation/widgets/settings_section_title.dart';
 import 'package:location_history/features/settings/presentation/widgets/settings_page_link.dart';
+import 'package:location_history/features/settings/presentation/widgets/settings_section_title.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 /// {@template account_settings_page}
@@ -73,51 +72,44 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
 
             const MediumGap(),
 
-            Semantics(
-              label: AppLocalizations.of(context)!.semanticNewEmailAddressField,
-              textField: true,
-              child: CustomCupertinoTextField(
-                hint: AppLocalizations.of(context)!.newEmailAddress,
-                controller: _emailController,
-                onChanged: (_) {},
-              ),
+            CustomCupertinoTextField(
+              hint: AppLocalizations.of(context)!.newEmailAddress,
+              semanticLabel:
+                  AppLocalizations.of(context)!.semanticNewEmailAddressField,
+              controller: _emailController,
+              onChanged: (_) {},
             ),
 
             const MediumGap(),
 
-            Semantics(
-              label: AppLocalizations.of(context)!.semanticChangePasswordLink,
-              button: true,
-              child: SettingsPageLink(
-                title: AppLocalizations.of(context)!.changePassword,
-                onPressed: () {
-                  context.go(PasswordChangeSettingsPage.route);
-                },
-              ),
+            SettingsPageLink(
+              title: AppLocalizations.of(context)!.changePassword,
+              semanticLabel:
+                  AppLocalizations.of(context)!.semanticChangePasswordLink,
+              onPressed: () {
+                context.go(PasswordChangeSettingsPage.route);
+              },
             ),
 
             const XXMediumGap(),
-            Semantics(
-              label:
+            CustomCupertinoButton(
+              semanticLabel:
                   AppLocalizations.of(context)!.semanticSaveEmailAddressButton,
-              button: true,
-              child: CustomCupertinoButton(
-                color: theme.colors.primary,
-                isLoading: state is SendingVerificationEmail,
-                onPressed:
-                    _allowSave()
-                        ? () {
-                          context.read<AccountSettingsCubit>().updateEmail(
-                            _emailController.text..trim(),
-                          );
-                        }
-                        : null,
-                child: Text(
-                  AppLocalizations.of(context)!.save,
-                  textAlign: TextAlign.center,
-                  style: theme.text.headline.copyWith(
-                    color: theme.colors.primaryContrast,
-                  ),
+              color: theme.colors.primary,
+              isLoading: state is SendingVerificationEmail,
+              onPressed:
+                  _allowSave()
+                      ? () {
+                        context.read<AccountSettingsCubit>().updateEmail(
+                          _emailController.text..trim(),
+                        );
+                      }
+                      : null,
+              child: Text(
+                AppLocalizations.of(context)!.save,
+                textAlign: TextAlign.center,
+                style: theme.text.headline.copyWith(
+                  color: theme.colors.primaryContrast,
                 ),
               ),
             ),

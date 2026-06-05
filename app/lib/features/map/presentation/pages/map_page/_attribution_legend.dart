@@ -14,20 +14,18 @@ class _AttributionLegend extends StatelessWidget {
   Widget build(BuildContext context) {
     final WebfabrikThemeData theme = WebfabrikTheme.of(context);
 
-    return Semantics(
-      label: AppLocalizations.of(context)!.semanticOpenStreetMapAttributionLink,
-      button: true,
-      child: FadeTapDetector(
-        onTap: () {
-          launchUrlString(attributionUrl);
-        },
-        child: _LegendContainer(
-          child: Text(
-            AppLocalizations.of(context)!.openStreetMapAttribution,
-            style: theme.text.subhead.copyWith(
-              height: 1,
-              color: theme.colors.text.withValues(alpha: .7),
-            ),
+    return FadeTapDetector(
+      semanticLabel:
+          AppLocalizations.of(context)!.semanticOpenStreetMapAttributionLink,
+      onTap: () {
+        launchUrlString(attributionUrl);
+      },
+      child: _LegendContainer(
+        child: Text(
+          AppLocalizations.of(context)!.openStreetMapAttribution,
+          style: theme.text.subhead.copyWith(
+            height: 1,
+            color: theme.colors.text.withValues(alpha: .7),
           ),
         ),
       ),

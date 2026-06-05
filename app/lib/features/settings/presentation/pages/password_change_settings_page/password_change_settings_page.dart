@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location_history/core/failures/authentication/need_otp_reauthentication_failure.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
-import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/password_change_cubit/password_change_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/password_change_cubit/password_change_state.dart';
 import 'package:location_history/features/settings/presentation/pages/account_settings_page/account_settings_page.dart';
@@ -90,29 +89,24 @@ class _PasswordChangeSettingsPageState
 
             const MediumGap(),
 
-            Semantics(
-              label: AppLocalizations.of(context)!.semanticNewPasswordField,
-              textField: true,
-              child: CustomCupertinoTextField(
-                hint: AppLocalizations.of(context)!.newPassword,
-                controller: _newPasswordController,
-                obscureText: true,
-                onChanged: (_) {},
-              ),
+            CustomCupertinoTextField(
+              hint: AppLocalizations.of(context)!.newPassword,
+              semanticLabel:
+                  AppLocalizations.of(context)!.semanticNewPasswordField,
+              controller: _newPasswordController,
+              obscureText: true,
+              onChanged: (_) {},
             ),
 
             const MediumGap(),
 
-            Semantics(
-              label:
+            CustomCupertinoTextField(
+              hint: AppLocalizations.of(context)!.confirmNewPassword,
+              semanticLabel:
                   AppLocalizations.of(context)!.semanticConfirmNewPasswordField,
-              textField: true,
-              child: CustomCupertinoTextField(
-                hint: AppLocalizations.of(context)!.confirmNewPassword,
-                controller: _newRepeatedPasswordController,
-                obscureText: true,
-                onChanged: (_) {},
-              ),
+              controller: _newRepeatedPasswordController,
+              obscureText: true,
+              onChanged: (_) {},
             ),
 
             if (_displayOTPField) ...[
@@ -132,30 +126,28 @@ class _PasswordChangeSettingsPageState
             ),
 
             const MediumGap(),
-            Semantics(
-              label: AppLocalizations.of(context)!.semanticSavePasswordButton,
-              button: true,
-              child: CustomCupertinoButton(
-                color: theme.colors.primary,
-                isLoading: state is PasswordChangeLoading,
-                onPressed:
-                    _allowSave()
-                        ? () {
-                          context.read<PasswordChangeCubit>().changePassword(
-                            newPassword: _newPasswordController.text,
-                            otp:
-                                _otpController.text.isNotEmpty
-                                    ? _otpController.text
-                                    : null,
-                          );
-                        }
-                        : null,
-                child: Text(
-                  AppLocalizations.of(context)!.save,
-                  textAlign: TextAlign.center,
-                  style: theme.text.headline.copyWith(
-                    color: theme.colors.primaryContrast,
-                  ),
+            CustomCupertinoButton(
+              semanticLabel:
+                  AppLocalizations.of(context)!.semanticSavePasswordButton,
+              color: theme.colors.primary,
+              isLoading: state is PasswordChangeLoading,
+              onPressed:
+                  _allowSave()
+                      ? () {
+                        context.read<PasswordChangeCubit>().changePassword(
+                          newPassword: _newPasswordController.text,
+                          otp:
+                              _otpController.text.isNotEmpty
+                                  ? _otpController.text
+                                  : null,
+                        );
+                      }
+                      : null,
+              child: Text(
+                AppLocalizations.of(context)!.save,
+                textAlign: TextAlign.center,
+                style: theme.text.headline.copyWith(
+                  color: theme.colors.primaryContrast,
                 ),
               ),
             ),

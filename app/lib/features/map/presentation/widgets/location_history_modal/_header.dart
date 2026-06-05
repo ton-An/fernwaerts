@@ -27,15 +27,13 @@ class _Header extends StatelessWidget {
           ),
           Row(
             children: [
-              Semantics(
-                label: AppLocalizations.of(context)!.semanticMapSettingsButton,
-                button: true,
-                child: SmallIconButton(
-                  icon: CupertinoIcons.settings,
-                  onPressed: () {
-                    context.go(MainSettingsPage.route);
-                  },
-                ),
+              SmallIconButton(
+                icon: CupertinoIcons.settings,
+                semanticLabel:
+                    AppLocalizations.of(context)!.semanticMapSettingsButton,
+                onPressed: () {
+                  context.go(MainSettingsPage.route);
+                },
               ),
             ],
           ),

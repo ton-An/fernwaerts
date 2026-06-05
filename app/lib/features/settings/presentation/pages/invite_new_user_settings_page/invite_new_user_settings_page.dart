@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:location_history/core/l10n/app_localizations.dart';
-import 'package:location_history/features/in_app_notification/presentation/cubit/in_app_notification_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/invite_new_user_cubit/invite_new_user_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/invite_new_user_cubit/invite_new_user_state.dart';
 import 'package:location_history/features/settings/presentation/pages/user_management_settings_page/user_management_settings_page.dart';
@@ -69,34 +68,29 @@ class _InviteNewUserSettingsPageState extends State<InviteNewUserSettingsPage> {
 
             const MediumGap(),
 
-            Semantics(
-              label:
+            CustomCupertinoTextField(
+              hint: AppLocalizations.of(context)!.usersEmail,
+              semanticLabel:
                   AppLocalizations.of(context)!.semanticInviteNewUserEmailField,
-              textField: true,
-              child: CustomCupertinoTextField(
-                hint: AppLocalizations.of(context)!.usersEmail,
-                controller: _emailController,
-                onChanged: (_) {},
-              ),
+              controller: _emailController,
+              onChanged: (_) {},
             ),
 
             const MediumGap(),
-            Semantics(
-              label: AppLocalizations.of(context)!.semanticInviteNewUserButton,
-              button: true,
-              child: CustomCupertinoTextButton(
-                color: theme.colors.primary,
-                isLoading: state is InviteNewUserLoading,
-                onPressed:
-                    _allowInvite()
-                        ? () {
-                          context.read<InviteNewUserCubit>().inviteNewUser(
-                            email: _emailController.text,
-                          );
-                        }
-                        : null,
-                text: AppLocalizations.of(context)!.invite,
-              ),
+            CustomCupertinoTextButton(
+              text: AppLocalizations.of(context)!.invite,
+              semanticLabel:
+                  AppLocalizations.of(context)!.semanticInviteNewUserButton,
+              color: theme.colors.primary,
+              isLoading: state is InviteNewUserLoading,
+              onPressed:
+                  _allowInvite()
+                      ? () {
+                        context.read<InviteNewUserCubit>().inviteNewUser(
+                          email: _emailController.text,
+                        );
+                      }
+                      : null,
             ),
           ],
         );

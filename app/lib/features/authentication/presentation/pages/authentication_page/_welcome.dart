@@ -44,15 +44,13 @@ class _Welcome extends StatelessWidget {
             style: theme.text.body.copyWith(height: 1.45),
           ),
           const XXMediumGap(),
-          Semantics(
-            label: AppLocalizations.of(context)!.semanticGetStartedButton,
-            button: true,
-            child: CustomCupertinoTextButton(
-              text: AppLocalizations.of(context)!.getStarted,
-              onPressed: () {
-                context.read<AuthenticationCubit>().toServerDetails();
-              },
-            ),
+          CustomCupertinoTextButton(
+            text: AppLocalizations.of(context)!.getStarted,
+            semanticLabel:
+                AppLocalizations.of(context)!.semanticGetStartedButton,
+            onPressed: () {
+              context.read<AuthenticationCubit>().toServerDetails();
+            },
           ),
         ],
       ),

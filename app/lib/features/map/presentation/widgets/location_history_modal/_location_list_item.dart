@@ -42,14 +42,11 @@ class _LocationListItem extends StatelessWidget {
       ],
     );
 
-    return Semantics(
-      label: AppLocalizations.of(context)!.semanticLocationListItem,
-      button: true,
-      child: FadeTapDetector(
-        onTap:
-            () => context.read<MapAnimationCubit>().animateToLocation(location),
-        child: content,
-      ),
+    return FadeTapDetector(
+      semanticLabel: AppLocalizations.of(context)!.semanticLocationListItem,
+      onTap:
+          () => context.read<MapAnimationCubit>().animateToLocation(location),
+      child: content,
     );
   }
 }

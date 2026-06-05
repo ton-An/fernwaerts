@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:location_history/core/widgets/fade_tap_detector.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_button.dart';
@@ -68,32 +67,26 @@ class CustomDialog extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Expanded(
-                      child: Semantics(
-                        label: cancelButtonSemanticsLabel,
-                        button: true,
-                        child: _Button(
-                          label: cancelButtonLabel,
-                          highlight: false,
-                          onPressed: () async {
-                            await Future.delayed(theme.durations.xTiny);
-                            onCancel();
-                          },
-                        ),
+                      child: _Button(
+                        label: cancelButtonLabel,
+                        highlight: false,
+                        semanticLabel: cancelButtonSemanticsLabel,
+                        onPressed: () async {
+                          await Future.delayed(theme.durations.xTiny);
+                          onCancel();
+                        },
                       ),
                     ),
                     const XXSmallGap(),
                     Expanded(
-                      child: Semantics(
-                        label: submitButtonSemanticsLabel,
-                        button: true,
-                        child: _Button(
-                          label: submitButtonLabel,
-                          highlight: true,
-                          onPressed: () async {
-                            await Future.delayed(theme.durations.short);
-                            onSubmit();
-                          },
-                        ),
+                      child: _Button(
+                        label: submitButtonLabel,
+                        highlight: true,
+                        semanticLabel: submitButtonSemanticsLabel,
+                        onPressed: () async {
+                          await Future.delayed(theme.durations.short);
+                          onSubmit();
+                        },
                       ),
                     ),
                   ],
