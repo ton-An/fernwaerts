@@ -3,6 +3,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 import 'e2e_config.dart';
 
@@ -102,15 +103,12 @@ Future<void> enterTextInto(
 }
 
 /// Clears a visible notification through the UI instead of DI internals.
-Future<void> dismissNotificationIfPresent(
-  WidgetTester tester,
-  String label,
-) async {
-  final notification = findBySemanticLabel(label);
+Future<void> dismissNotificationIfPresent(WidgetTester tester, String _) async {
+  final notification = find.byType(InAppNotificationWidget);
   if (notification.evaluate().isEmpty) return;
 
   await tester.fling(notification.first, const Offset(0, -300), 1000);
-  await tester.pump(const Duration(milliseconds: 300));
+  await pumpUntilGone(tester, notification);
 }
 
 /// Delivers deep links to the app router inside the running test app.

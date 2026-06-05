@@ -212,6 +212,7 @@ Future<Uri> _sendInvitation(WidgetTester tester, MailpitClient mail) async {
   await tapSemantic(tester, l10n.semanticInviteNewUserButton);
 
   final message = await mail.waitForLatestTo(E2EConfig.invitedEmail);
+  await dismissNotificationIfPresent(tester, l10n.semanticNotificationDismiss);
   return message.confirmationUrl;
 }
 
