@@ -162,7 +162,7 @@ void main() {
   });
 
   group('signIn', () {
-    test('emits success and starts local tracking setup', () async {
+    test('emits success and requests permissions', () async {
       // arrange
       cubit.supabaseInfo = tSupabaseInfo;
 
@@ -181,39 +181,7 @@ void main() {
       // assert
       await expectedStates;
       verify(() => mockRequestNecessaryPermissions()).called(1);
-      verify(() => mockInitBackgroundLocationTracking()).called(1);
     });
-
-    test(
-      'emits a failure when background tracking fails after success',
-      () async {
-        // arrange
-        cubit.supabaseInfo = tSupabaseInfo;
-        when(
-          () => mockInitBackgroundLocationTracking(),
-        ).thenAnswer((_) async => const Left(StorageWriteFailure()));
-
-        // arrange
-        final expectedStates = expectLater(
-          cubit.stream,
-          emitsInOrder([
-            isA<AuthenticationLoading>(),
-            isA<AuthenticationSuccess>(),
-            isA<AuthenticationFailure>().having(
-              (state) => state.failure,
-              'failure',
-              const StorageWriteFailure(),
-            ),
-          ]),
-        );
-
-        // act
-        cubit.signIn(email: tEmail, password: tPassword);
-
-        // assert
-        await expectedStates;
-      },
-    );
   });
 
   group('signUpAdmin', () {

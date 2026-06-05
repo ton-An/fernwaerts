@@ -151,36 +151,32 @@ void main() {
       );
     });
 
-    test(
-      'starts local tracking setup after accepting initialized invite',
-      () async {
-        // arrange
-        final initStates = expectLater(
-          cubit.stream,
-          emitsInOrder([isA<InviteLoading>(), isA<InviteInitial>()]),
-        );
+    test('requests permissions after accepting invite', () async {
+      // arrange
+      final initStates = expectLater(
+        cubit.stream,
+        emitsInOrder([isA<InviteLoading>(), isA<InviteInitial>()]),
+      );
 
-        // act
-        cubit.initializeInvite(serverUrl: tServerUrlString, refreshToken: tOtp);
+      // act
+      cubit.initializeInvite(serverUrl: tServerUrlString, refreshToken: tOtp);
 
-        // assert
-        await initStates;
+      // assert
+      await initStates;
 
-        // arrange
-        final expectedStates = expectLater(
-          cubit.stream,
-          emitsInOrder([isA<InviteLoading>(), isA<InviteSuccess>()]),
-        );
+      // arrange
+      final expectedStates = expectLater(
+        cubit.stream,
+        emitsInOrder([isA<InviteLoading>(), isA<InviteSuccess>()]),
+      );
 
-        // act
-        cubit.acceptInvite(username: tUsername, password: tPassword);
+      // act
+      cubit.acceptInvite(username: tUsername, password: tPassword);
 
-        // assert
-        await expectedStates;
-        verify(() => mockRequestNecessaryPermissions()).called(1);
-        verify(() => mockInitBackgroundLocationTracking()).called(1);
-      },
-    );
+      // assert
+      await expectedStates;
+      verify(() => mockRequestNecessaryPermissions()).called(1);
+    });
 
     test(
       'emits a failure when permission setup fails after accepting',
