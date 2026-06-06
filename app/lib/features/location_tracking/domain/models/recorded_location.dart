@@ -1,4 +1,5 @@
-import 'package:background_location_2/background_location.dart' as bg;
+import 'package:location_history/features/location_tracking/domain/enums/activity_type.dart';
+import 'package:tracelet/tracelet.dart' as tracelet;
 
 /// {@template recorded_location}
 /// Raw location update emitted by the platform tracking plugin.
@@ -20,6 +21,10 @@ class RecordedLocation {
     required this.headingAccuracy,
     required this.ellipsoidalAltitude,
     required this.altitudeAccuracy,
+    required this.activityType,
+    required this.activityConfidence,
+    required this.batteryLevel,
+    required this.isDeviceCharging,
   });
 
   final DateTime timestamp;
@@ -37,6 +42,12 @@ class RecordedLocation {
   final double ellipsoidalAltitude;
   final double altitudeAccuracy;
 
+  final ActivityType activityType;
+  final double activityConfidence;
+
+  final double batteryLevel;
+  final bool isDeviceCharging;
+
   /// Converts a `background_location_2` update into a domain value.
   ///
   /// The plugin reports timestamp values in milliseconds since epoch; the domain
@@ -44,20 +55,39 @@ class RecordedLocation {
   ///
   /// Parameters:
   /// - bgLocation: [bg.Location] to convert
-  static RecordedLocation fromBGLocation({required bg.Location bgLocation}) {
+  static RecordedLocation fromTraceletLocation({
+    required tracelet.Location traceletLocation,
+  }) {
     return RecordedLocation(
-      timestamp: DateTime.fromMicrosecondsSinceEpoch(
-        bgLocation.time.floor() * 1000,
+      timestamp: DateTime.parse(traceletLocation.timestamp),
+      latitude: traceletLocation.coords.latitude,
+      longitude: traceletLocation.coords.longitude,
+      coordinatesAccuracy: traceletLocation.coords.accuracy,
+      speed: traceletLocation.coords.speed,
+      speedAccuracy: traceletLocation.coords.speedAccuracy,
+      heading: traceletLocation.coords.heading,
+      headingAccuracy: traceletLocation.coords.headingAccuracy,
+      ellipsoidalAltitude: traceletLocation.coords.altitude,
+      altitudeAccuracy: traceletLocation.coords.altitudeAccuracy,
+      activityType: ActivityType.fromTraceletType(
+        traceletLocation.activity.type,
       ),
-      latitude: bgLocation.latitude,
-      longitude: bgLocation.longitude,
-      coordinatesAccuracy: bgLocation.accuracy,
-      speed: bgLocation.speed,
-      speedAccuracy: bgLocation.speedAccuracy,
-      heading: bgLocation.bearing,
-      headingAccuracy: bgLocation.bearingAccuracy,
-      ellipsoidalAltitude: bgLocation.ellipsoidalAltitude,
-      altitudeAccuracy: bgLocation.altitudeAccuracy,
+      activityConfidence: _confidenceFromTraclet(
+        traceletLocation.activity.confidence,
+      ),
+      batteryLevel: traceletLocation.battery.level,
+      isDeviceCharging: traceletLocation.battery.isCharging,
     );
+  }
+
+  static double _confidenceFromTraclet(tracelet.ActivityConfidence confidence) {
+    switch (confidence) {
+      case tracelet.ActivityConfidence.high:
+        return 0.9;
+      case tracelet.ActivityConfidence.medium:
+        return 0.65;
+      case tracelet.ActivityConfidence.low:
+        return 0.25;
+    }
   }
 }

@@ -35,6 +35,15 @@ class _Header extends StatelessWidget {
                   context.go(MainSettingsPage.route);
                 },
               ),
+              const SmallGap(),
+              SmallIconButton(
+                icon: CupertinoIcons.share,
+                semanticLabel:
+                    AppLocalizations.of(context)!.semanticMapSettingsButton,
+                onPressed: () {
+                  TraceletDoctor.show(context);
+                },
+              ),
             ],
           ),
         ],

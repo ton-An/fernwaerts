@@ -1,5 +1,4 @@
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
-import 'package:location_history/features/location_tracking/domain/models/recognized_activity.dart';
 
 /// {@template location_tracking_repository}
 /// Repository contract for background location tracking.
@@ -27,12 +26,6 @@ abstract class LocationTrackingRepository {
   /// Emits:
   /// - [RecordedLocation] values reported by the device
   Stream<RecordedLocation> locationChangeStream();
-
-  /// Streams activity classifications emitted by the platform.
-  ///
-  /// Emits:
-  /// - [RecognizedActivity] values reported by the device
-  Stream<RecognizedActivity> activityChangeStream();
 
   /// Updates the distance filter for the tracking service.
   ///

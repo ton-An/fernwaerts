@@ -117,10 +117,6 @@ class Location extends Equatable {
     required RecordedLocation recordedLocation,
     required String userId,
     required String deviceId,
-    required ActivityType activityType,
-    required double activityConfidence,
-    required double batteryLevel,
-    required bool isDeviceCharging,
   }) {
     return Location(
       userId: userId,
@@ -135,10 +131,10 @@ class Location extends Equatable {
       headingAccuracy: recordedLocation.headingAccuracy,
       ellipsoidalAltitude: recordedLocation.ellipsoidalAltitude,
       altitudeAccuracy: recordedLocation.altitudeAccuracy,
-      activityType: activityType,
-      activityConfidence: activityConfidence,
-      batteryLevel: batteryLevel,
-      isDeviceCharging: isDeviceCharging,
+      activityType: recordedLocation.activityType,
+      activityConfidence: recordedLocation.activityConfidence,
+      batteryLevel: recordedLocation.batteryLevel,
+      isDeviceCharging: recordedLocation.isDeviceCharging,
     );
   }
 

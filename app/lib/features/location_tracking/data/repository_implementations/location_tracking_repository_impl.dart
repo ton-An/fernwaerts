@@ -1,7 +1,5 @@
-import 'package:location_history/features/location_tracking/data/datasources/activity_recognition_local_data_source.dart';
 import 'package:location_history/features/location_tracking/data/datasources/ios_location_tracking_local_data_source.dart';
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
-import 'package:location_history/features/location_tracking/domain/models/recognized_activity.dart';
 import 'package:location_history/features/location_tracking/domain/repositories/location_tracking_repository.dart';
 
 /// {@template location_tracking_repository_impl}
@@ -13,11 +11,9 @@ import 'package:location_history/features/location_tracking/domain/repositories/
 class LocationTrackingRepositoryImpl extends LocationTrackingRepository {
   /// {@macro location_tracking_repository_impl}
   const LocationTrackingRepositoryImpl({
-    required this.activityRecognitionLocalDataSource,
     required this.iosLocationTrackingLocalDataSource,
   });
 
-  final ActivityRecognitionLocalDataSource activityRecognitionLocalDataSource;
   final IOSLocationTrackingLocalDataSource iosLocationTrackingLocalDataSource;
 
   @override
@@ -33,11 +29,6 @@ class LocationTrackingRepositoryImpl extends LocationTrackingRepository {
   @override
   Stream<RecordedLocation> locationChangeStream() {
     return iosLocationTrackingLocalDataSource.locationChangeStream();
-  }
-
-  @override
-  Stream<RecognizedActivity> activityChangeStream() {
-    return activityRecognitionLocalDataSource.activityChangeStream();
   }
 
   @override

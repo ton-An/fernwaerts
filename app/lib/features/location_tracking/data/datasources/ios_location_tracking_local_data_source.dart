@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:background_location_2/background_location.dart';
 import 'package:flutter/services.dart';
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
+import 'package:tracelet/tracelet.dart';
 
 /*
   To-Do:
@@ -65,20 +65,22 @@ class IOSLocationTrackingLocalDataSourceImpl
 
   @override
   Future<void> initTracking() async {
-    await BackgroundLocation.stopLocationService();
-    await BackgroundLocation.startLocationService(
-      distanceFilter: 100,
-      fastestInterval: 0,
-      interval: 0,
-      startOnBoot: true,
-      backgroundCallback: (_) => '',
-      priority: LocationPriority.priorityHighAccuracy,
+    print(await Tracelet.requestLocationAuthorization());
+    print((await Tracelet.getHealth()).motionPermission);
+    await Tracelet.ready(
+      const Config(
+        ios: IosConfig(preventSuspend: true),
+        app: AppConfig(startOnBoot: true, stopOnTerminate: false),
+        geo: GeoConfig(periodicLocationInterval: 60),
+        logger: LoggerConfig(debug: true, logLevel: LogLevel.verbose),
+      ),
     );
+    await Tracelet.startBackgroundTask();
   }
 
   @override
   Future<void> stopTracking() async {
-    await BackgroundLocation.stopLocationService();
+    // await BackgroundLocation.stopLocationService();
   }
 
   @override
@@ -86,10 +88,11 @@ class IOSLocationTrackingLocalDataSourceImpl
     final StreamController<RecordedLocation> locationChangeStreamController =
         StreamController();
 
-    BackgroundLocation.getLocationUpdates((Location bgLocation) {
-      final RecordedLocation location = RecordedLocation.fromBGLocation(
-        bgLocation: bgLocation,
+    Tracelet.locationStream.listen((Location traceletLocation) {
+      final RecordedLocation location = RecordedLocation.fromTraceletLocation(
+        traceletLocation: traceletLocation,
       );
+
       locationChangeStreamController.add(location);
     });
 
@@ -98,6 +101,6 @@ class IOSLocationTrackingLocalDataSourceImpl
 
   @override
   Future<void> updateDistanceFilter({required double distanceFilter}) async {
-    await BackgroundLocation.updateDistanceFilter(distanceFilter);
+    // await BackgroundLocation.updateDistanceFilter(distanceFilter);
   }
 }

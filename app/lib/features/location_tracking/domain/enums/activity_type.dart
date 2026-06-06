@@ -1,3 +1,5 @@
+import 'package:tracelet/tracelet.dart' as tracelet;
+
 /// Activity classification reported for a recorded location.
 ///
 /// Values mirror the activity strings currently handled from the background
@@ -69,6 +71,27 @@ enum ActivityType {
         return 'in_vehicle';
       case ActivityType.unknown:
         return 'unknown';
+    }
+  }
+
+  static ActivityType fromTraceletType(
+    tracelet.ActivityType traceletActivityType,
+  ) {
+    switch (traceletActivityType) {
+      case tracelet.ActivityType.still:
+        return ActivityType.still;
+      case tracelet.ActivityType.walking:
+        return ActivityType.walking;
+      case tracelet.ActivityType.running:
+        return ActivityType.running;
+      case tracelet.ActivityType.onFoot:
+        return ActivityType.onFoot;
+      case tracelet.ActivityType.inVehicle:
+        return ActivityType.inVehicle;
+      case tracelet.ActivityType.onBicycle:
+        return ActivityType.onBicycle;
+      case tracelet.ActivityType.unknown:
+        return ActivityType.unknown;
     }
   }
 }

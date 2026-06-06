@@ -54,8 +54,8 @@ dependencies:
   flutter_activity_recognition: ^4.0.0
   flutter_map: ^8.1.1
   latlong2: ^0.9.1
-  background_location_2: 
-    git: https://github.com/ton-An/background_location
+  tracelet: ^3.2.5
+  tracelet_doctor: ^3.2.5
   
   # Networking
   dio: ^5.8.0+1
