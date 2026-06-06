@@ -281,6 +281,7 @@ final IosDeviceInfo tIOSDeviceInfo = IosDeviceInfo.setMockInitialValues(
   localizedModel: 'localizedModel',
   isPhysicalDevice: true,
   isiOSAppOnMac: false,
+  isiOSAppOnVision: false,
   physicalRamSize: 42,
   availableRamSize: 21,
   utsname: IosUtsname.setMockInitialValues(
@@ -343,7 +344,6 @@ final AndroidDeviceInfo tAndroidDeviceInfo =
       brand: tAndroidRawDevice.manufacturer,
       isLowRamDevice: false,
       physicalRamSize: 42,
-      serialNumber: 'serialNumber',
       supportedAbis: ['supportedAbis'],
       systemFeatures: ['systemFeatures'],
       supported32BitAbis: ['supported32BitAbis'],
