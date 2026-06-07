@@ -154,6 +154,10 @@ List<RecordedLocation> tRecordedLocations = [
     headingAccuracy: 19.73,
     ellipsoidalAltitude: 369.16,
     altitudeAccuracy: 5.81,
+    activityType: ActivityType.walking,
+    activityConfidence: 0.9,
+    batteryLevel: 0.75,
+    isDeviceCharging: false,
   ),
   RecordedLocation(
     timestamp: DateTime(2025, 5, 5),
@@ -166,6 +170,10 @@ List<RecordedLocation> tRecordedLocations = [
     headingAccuracy: 19.73,
     ellipsoidalAltitude: 369.16,
     altitudeAccuracy: 5.81,
+    activityType: ActivityType.running,
+    activityConfidence: 0.65,
+    batteryLevel: 0.74,
+    isDeviceCharging: false,
   ),
   RecordedLocation(
     timestamp: DateTime(2025, 5, 5),
@@ -178,6 +186,10 @@ List<RecordedLocation> tRecordedLocations = [
     headingAccuracy: 19.73,
     ellipsoidalAltitude: 369.16,
     altitudeAccuracy: 5.81,
+    activityType: ActivityType.inVehicle,
+    activityConfidence: 0.65,
+    batteryLevel: 0.73,
+    isDeviceCharging: false,
   ),
   RecordedLocation(
     timestamp: DateTime(2025, 5, 5),
@@ -190,6 +202,10 @@ List<RecordedLocation> tRecordedLocations = [
     headingAccuracy: 19.73,
     ellipsoidalAltitude: 369.16,
     altitudeAccuracy: 5.81,
+    activityType: ActivityType.inVehicle,
+    activityConfidence: 0.25,
+    batteryLevel: 0.72,
+    isDeviceCharging: false,
   ),
 ];
 
@@ -205,6 +221,10 @@ List<RecordedLocation> tSlowSpeedRecordedLocations = [
     headingAccuracy: 19.73,
     ellipsoidalAltitude: 369.16,
     altitudeAccuracy: 5.81,
+    activityType: ActivityType.walking,
+    activityConfidence: 0.65,
+    batteryLevel: 0.75,
+    isDeviceCharging: false,
   ),
   RecordedLocation(
     timestamp: DateTime(2025, 5, 5),
@@ -217,6 +237,10 @@ List<RecordedLocation> tSlowSpeedRecordedLocations = [
     headingAccuracy: 19.73,
     ellipsoidalAltitude: 369.16,
     altitudeAccuracy: 5.81,
+    activityType: ActivityType.walking,
+    activityConfidence: 0.65,
+    batteryLevel: 0.74,
+    isDeviceCharging: false,
   ),
 ];
 
@@ -225,37 +249,21 @@ List<Location> tLocations = [
     recordedLocation: tRecordedLocations[0],
     userId: tUserId,
     deviceId: tDeviceId,
-    activityType: ActivityType.unknown,
-    activityConfidence: -1,
-    batteryLevel: -1,
-    isDeviceCharging: false,
   ),
   Location.fromRecordedLocation(
     recordedLocation: tRecordedLocations[1],
     userId: tUserId,
     deviceId: tDeviceId,
-    activityType: ActivityType.unknown,
-    activityConfidence: -1,
-    batteryLevel: -1,
-    isDeviceCharging: false,
   ),
   Location.fromRecordedLocation(
     recordedLocation: tRecordedLocations[2],
     userId: tUserId,
     deviceId: tDeviceId,
-    activityType: ActivityType.unknown,
-    activityConfidence: -1,
-    batteryLevel: -1,
-    isDeviceCharging: false,
   ),
   Location.fromRecordedLocation(
     recordedLocation: tRecordedLocations[3],
     userId: tUserId,
     deviceId: tDeviceId,
-    activityType: ActivityType.unknown,
-    activityConfidence: -1,
-    batteryLevel: -1,
-    isDeviceCharging: false,
   ),
 ];
 

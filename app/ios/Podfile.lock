@@ -1,28 +1,22 @@
 PODS:
   - Flutter (1.0.0)
-  - flutter_activity_recognition (0.0.1):
-    - Flutter
   - super_keyboard (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - flutter_activity_recognition (from `.symlinks/plugins/flutter_activity_recognition/ios`)
   - super_keyboard (from `.symlinks/plugins/super_keyboard/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  flutter_activity_recognition:
-    :path: ".symlinks/plugins/flutter_activity_recognition/ios"
   super_keyboard:
     :path: ".symlinks/plugins/super_keyboard/ios"
 
 SPEC CHECKSUMS:
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  flutter_activity_recognition: 52dfad4c1e9cec99f0841b3ed0efcc9d424b3deb
   super_keyboard: 016de6ce9ab826f9a0b185608209d6a3b556d577
 
-PODFILE CHECKSUM: 5949f49ab71f21c161605e965102c73a5bd9cdb2
+PODFILE CHECKSUM: 5f3988a369b6fc2f98d6f85e0fcf33ce6fd9f8b3
 
 COCOAPODS: 1.16.2

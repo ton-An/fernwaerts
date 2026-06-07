@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/authentication/no_saved_device_failure.dart';
@@ -24,11 +23,6 @@ import 'package:webfabrik_theme/webfabrik_theme.dart';
 /// current user and device IDs, starts the platform tracking service, listens
 /// for raw location updates, converts them into persisted [Location] records,
 /// and stores each record through [LocationDataRepository].
-///
-/// It also updates the platform distance filter after every recorded location.
-/// Faster movement increases the filter distance, while stationary or
-/// zero-speed updates keep a conservative default and schedule a delayed
-/// tracking re-initialization.
 ///
 /// Failures:
 /// - [StorageReadFailure]
@@ -119,63 +113,5 @@ class InitBackgroundLocationTracking {
 
       await locationDataRepository.saveLocation(location: location);
     });
-  }
-
-  /// Updates the platform distance filter based on the current speed.
-  ///
-  /// Returns:
-  /// - [Timer] that re-initializes tracking when no location update arrives
-  ///   inside the expected time window
-  Future<Timer> _updateDistanceFilter({
-    required Location location,
-    required Timer? distanceFilterTimeout,
-  }) async {
-    distanceFilterTimeout?.cancel();
-
-    final double speedInMetersPerSecond = location.speed.toDouble();
-
-    late final double distanceFilterInMeters;
-    late final double secondsUntilFilterTimeout;
-
-    if (speedInMetersPerSecond <= 0.0) {
-      distanceFilterInMeters = 500;
-      secondsUntilFilterTimeout = 1000;
-    } else {
-      distanceFilterInMeters = _calculateDistanceFilter(
-        speedInMetersPerSecond: speedInMetersPerSecond,
-      );
-
-      secondsUntilFilterTimeout =
-          distanceFilterInMeters / speedInMetersPerSecond * 1.5;
-    }
-
-    Timer newDistanceFilterTimeout = Timer(
-      Duration(seconds: secondsUntilFilterTimeout.ceil()),
-      () async {
-        await locationTrackingRepository.initTracking();
-      },
-    );
-
-    await locationTrackingRepository.updateDistanceFilter(
-      distanceFilter: distanceFilterInMeters,
-    );
-
-    return newDistanceFilterTimeout;
-  }
-
-  /// Calculates a speed-sensitive distance filter in meters.
-  ///
-  /// The curve starts slowly, increases exponentially, then levels off near the
-  /// maximum distance so high-speed travel records fewer points.
-  double _calculateDistanceFilter({required double speedInMetersPerSecond}) {
-    final double speedInKmh = speedInMetersPerSecond * 3.6;
-
-    const double maxDistanceInMeters = 10000;
-    const double growthFactor = 0.008;
-    const double levelOffFactor = 2.2;
-
-    return maxDistanceInMeters *
-            pow(1 - pow(e, -growthFactor * speedInKmh), levelOffFactor) +
-        100;
   }
 }

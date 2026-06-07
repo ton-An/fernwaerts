@@ -1,7 +1,6 @@
 import 'package:battery_plus/battery_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_activity_recognition/flutter_activity_recognition.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:location_history/core/data/datasources/platform_wrapper.dart';
@@ -94,7 +93,6 @@ void registerThirdPartyDependencies() {
   getIt.registerLazySingleton(() => Dio());
   getIt.registerLazySingleton(() => const FlutterSecureStorage());
   getIt.registerLazySingleton(() => Battery());
-  getIt.registerLazySingleton(() => FlutterActivityRecognition.instance);
   getIt.registerLazySingleton(() => DeviceInfoPlugin());
   getIt.registerSingletonAsync<PackageInfo>(
     () async => await PackageInfo.fromPlatform(),
@@ -233,8 +231,9 @@ void registerAuthenticationDependencies() {
     ),
   );
   getIt.registerLazySingleton<PermissionsLocalDataSource>(
-    () => PermissionsLocalDataSourceImpl(flutterActivityRecognition: getIt()),
+    () => PermissionsLocalDataSourceImpl(traceletAuthorizationWrapper: getIt()),
   );
+  getIt.registerLazySingleton(() => const TraceletAuthorizationWrapper());
   getIt.registerLazySingleton<BaseDeviceLocalDataSource>(
     () => BaseDeviceLocalDataSourceImpl(
       secureStorage: getIt(),

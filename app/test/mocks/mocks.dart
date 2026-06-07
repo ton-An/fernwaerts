@@ -1,6 +1,5 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_activity_recognition/flutter_activity_recognition.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:location_history/core/data/datasources/platform_wrapper.dart';
 import 'package:location_history/core/data/datasources/server_remote_handler.dart';
@@ -49,9 +48,6 @@ class MockPostgrestTransformBuilder<T> extends Mock
 
 class MockFlutterSecureStorage extends Mock implements FlutterSecureStorage {}
 
-class MockFlutterActivityRecognition extends Mock
-    implements FlutterActivityRecognition {}
-
 class MockDeviceInfoPlugin extends Mock implements DeviceInfoPlugin {}
 
 class MockPackageInfo extends Mock implements PackageInfo {}
@@ -74,6 +70,9 @@ class MockRepositoryFailureHandler extends Mock
 class MockSupabaseHandler extends Mock implements SupabaseHandler {}
 
 class MockPlatformWrapper extends Mock implements PlatformWrapper {}
+
+class MockTraceletAuthorizationWrapper extends Mock
+    implements TraceletAuthorizationWrapper {}
 
 // -- Authentication
 class MockDeviceRemoteDataSource extends Mock

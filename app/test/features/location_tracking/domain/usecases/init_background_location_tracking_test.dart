@@ -1,9 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:location_history/core/failures/storage/storage_read_failure.dart';
-import 'package:location_history/features/location_tracking/domain/models/battery_status.dart';
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
-import 'package:location_history/features/location_tracking/domain/models/recognized_activity.dart';
 import 'package:location_history/features/location_tracking/domain/usecases/init_background_location_tracking.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -60,16 +58,10 @@ void main() {
       (_) => Stream<RecordedLocation>.fromIterable(tRecordedLocations),
     );
     when(
-      () => mockLocationTrackingRepository.activityChangeStream(),
-    ).thenAnswer((_) => const Stream<RecognizedActivity>.empty());
-    when(
       () => mockLocationDataRepository.saveLocation(
         location: any(named: 'location'),
       ),
     ).thenAnswer((_) async => const Right(None()));
-    when(
-      () => mockBatteryRepository.getBatteryStatus(),
-    ).thenAnswer((_) async => BatteryStatus.unknown);
   });
 
   setUpAll(() {
@@ -156,46 +148,6 @@ void main() {
     verify(() => mockLocationTrackingRepository.locationChangeStream());
   });
 
-  test('should update the distance filter', () async {
-    // act
-    await initBackgroundLocationTracking();
-    await Future.delayed(const Duration(seconds: 1));
-
-    // assert
-    verify(
-      () => mockLocationTrackingRepository.updateDistanceFilter(
-        distanceFilter: any(
-          named: 'distanceFilter',
-          that: inInclusiveRange(100, 120),
-        ),
-      ),
-    );
-    verify(
-      () => mockLocationTrackingRepository.updateDistanceFilter(
-        distanceFilter: any(
-          named: 'distanceFilter',
-          that: inInclusiveRange(400, 550),
-        ),
-      ),
-    );
-    verify(
-      () => mockLocationTrackingRepository.updateDistanceFilter(
-        distanceFilter: any(
-          named: 'distanceFilter',
-          that: inInclusiveRange(3600, 4600),
-        ),
-      ),
-    );
-    verify(
-      () => mockLocationTrackingRepository.updateDistanceFilter(
-        distanceFilter: any(
-          named: 'distanceFilter',
-          that: inInclusiveRange(9000, 10100),
-        ),
-      ),
-    );
-  });
-
   test('should save locations to the database', () async {
     // act
     await initBackgroundLocationTracking();
@@ -215,25 +167,4 @@ void main() {
       () => mockLocationDataRepository.saveLocation(location: tLocations[3]),
     );
   });
-
-  test(
-    'should trigger re-initialization of location services if the distance filter timeout is exceeded',
-    () async {
-      // arrange
-      when(
-        () => mockLocationTrackingRepository.locationChangeStream(),
-      ).thenAnswer(
-        (_) =>
-            Stream<RecordedLocation>.fromIterable(tSlowSpeedRecordedLocations),
-      );
-
-      // act
-      await initBackgroundLocationTracking();
-      await Future.delayed(const Duration(seconds: 90));
-
-      // assert
-      verify(() => mockLocationTrackingRepository.initTracking()).called(2);
-    },
-    timeout: const Timeout(Duration(seconds: 100)),
-  );
 }

@@ -51,7 +51,6 @@ dependencies:
   #   git:
   #     url: https://github.com/josxha/flutter-maplibre
   #     ref: ios
-  flutter_activity_recognition: ^4.0.0
   flutter_map: ^8.1.1
   latlong2: ^0.9.1
   tracelet: ^3.2.5
@@ -78,7 +77,6 @@ dependencies:
   package_info_plus: ^10.1.0
   uuid: ^4.5.1
   super_keyboard: ^0.4.0
-  permission_handler: ^12.0.1
   battery_plus: ^7.0.0
   device_info_plus: ^13.1.0
   talker: ^5.1.17
