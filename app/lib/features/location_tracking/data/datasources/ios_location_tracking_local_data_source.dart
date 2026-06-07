@@ -52,6 +52,7 @@ class IOSLocationTrackingLocalDataSourceImpl
           preventSuspend: true,
           showsBackgroundLocationIndicator: true,
         ),
+        geo: const GeoConfig(batteryBudgetPerHour: 1),
         persistence: const PersistenceConfig(persistMode: PersistMode.none),
       ),
     );
