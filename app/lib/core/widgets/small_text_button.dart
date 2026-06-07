@@ -84,11 +84,11 @@ class _SmallTextButtonState extends State<SmallTextButton>
         children: [
           Container(
             padding: EdgeInsetsGeometry.symmetric(
-              horizontal: theme.spacing.xMedium,
-              vertical: theme.spacing.xxSmall,
+              horizontal: theme.spacing.small,
+              vertical: theme.spacing.small,
             ),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(theme.radii.small),
+              borderRadius: BorderRadius.circular(theme.radii.small * .66),
               color: theme.colors.backgroundContrast.withValues(
                 alpha: _fadeAnimation.value,
               ),
@@ -96,7 +96,10 @@ class _SmallTextButtonState extends State<SmallTextButton>
             child: Text(
               widget.text,
               textAlign: TextAlign.center,
-              style: theme.text.body.copyWith(color: theme.colors.hint),
+              style: theme.text.body.copyWith(
+                color: theme.colors.hint,
+                height: 1,
+              ),
             ),
           ),
         ],
