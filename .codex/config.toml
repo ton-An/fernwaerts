@@ -24,6 +24,9 @@ approval_mode = "approve"
 [mcp_servers.dart.tools.dart_format]
 approval_mode = "approve"
 
+[mcp_servers.dart.tools.roots]
+approval_mode = "approve"
+
 [mcp_servers.XcodeBuildMCP]
 command = "npx"
 args = ["-y", "xcodebuildmcp@latest", "mcp"]
