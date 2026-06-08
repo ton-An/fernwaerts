@@ -29,6 +29,7 @@
     "password": "Password",
     "confirmPassword": "Confirm Password",
     "getStarted": "Get Started",
+    "version": "Version",
     "createAdmin": "Create Admin",
     "adminSignUpDescription": "You are accessing a fresh install.\nPlease create an admin account.",
     "openStreetMapAttribution": "© OpenStreetMap",

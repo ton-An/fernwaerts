@@ -274,6 +274,12 @@ abstract class AppLocalizations {
   /// **'Get Started'**
   String get getStarted;
 
+  /// No description provided for @version.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get version;
+
   /// No description provided for @createAdmin.
   ///
   /// In en, this message translates to:

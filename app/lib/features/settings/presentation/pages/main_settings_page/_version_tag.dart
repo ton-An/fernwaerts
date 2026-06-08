@@ -32,7 +32,7 @@ class _VersionTagState extends State<_VersionTag> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SmallTextButton(
-            text: "Version",
+            text: AppLocalizations.of(context).version,
             onPressed: () {
               _traceletDoctorTapCount++;
 
