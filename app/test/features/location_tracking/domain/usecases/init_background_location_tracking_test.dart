@@ -48,11 +48,6 @@ void main() {
       () => mockLocationTrackingRepository.initTracking(),
     ).thenAnswer((_) async => Future.value());
     when(
-      () => mockLocationTrackingRepository.updateDistanceFilter(
-        distanceFilter: any(named: 'distanceFilter'),
-      ),
-    ).thenAnswer((_) async => Future.value());
-    when(
       () => mockLocationTrackingRepository.locationChangeStream(),
     ).thenAnswer(
       (_) => Stream<RecordedLocation>.fromIterable(tRecordedLocations),

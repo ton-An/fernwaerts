@@ -14,7 +14,7 @@ abstract class IOSLocationTrackingLocalDataSource {
 
   /// Initializes the tracking service.
   ///
-  /// Call this before [locationChangeStream] or [updateDistanceFilter].
+  /// Call this before [locationChangeStream].
   ///
   /// Throws:
   /// - [PlatformException] from the underlying tracking plugin

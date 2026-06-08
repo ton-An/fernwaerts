@@ -4,7 +4,7 @@ import 'package:location_history/features/location_tracking/domain/models/record
 /// Repository contract for background location tracking.
 ///
 /// The domain layer depends on this contract to start or stop tracking, receive
-/// raw location updates, and tune how frequently movement is reported.
+/// raw location updates.
 /// {@endtemplate}
 abstract class LocationTrackingRepository {
   /// {@macro location_tracking_repository}
@@ -12,8 +12,7 @@ abstract class LocationTrackingRepository {
 
   /// Initializes the tracking service.
   ///
-  /// This method should be called before [locationChangeStream] or
-  /// [updateDistanceFilter].
+  /// This method should be called before [locationChangeStream].
   Future<void> initTracking();
 
   /// Stops the tracking service.
