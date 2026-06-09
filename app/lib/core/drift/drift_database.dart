@@ -1,9 +1,11 @@
 import 'package:drift/drift.dart';
 import 'package:location_history/core/drift/activity_type_sql_converter.dart';
+import 'package:location_history/core/drift/recording_trigger_sql_converter.dart';
 import 'package:location_history/features/authentication/domain/enums/operating_system.dart';
 import 'package:location_history/features/authentication/domain/models/device.dart';
 import 'package:location_history/features/authentication/domain/models/user.dart';
 import 'package:location_history/features/location_tracking/domain/enums/activity_type.dart';
+import 'package:location_history/features/location_tracking/domain/enums/recording_trigger.dart';
 import 'package:location_history/features/location_tracking/domain/models/location.dart';
 import 'package:uuid/uuid.dart';
 
