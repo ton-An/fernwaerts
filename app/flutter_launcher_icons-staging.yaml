@@ -3,7 +3,7 @@ flutter_launcher_icons:
   image_path: "assets/images/app_icons/app_icon_staging.png"
 
   android: "launcher_icon"
-  min_sdk_android: 21
+  min_sdk_android: 26
 
 
   ios: true
