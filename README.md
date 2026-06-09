@@ -30,8 +30,8 @@
 
 ### 🧭 Alpha Status
 
-Fernwärts is not ready for alpha yet. The current alpha readiness checklist is
-tracked internally. A public roadmap will be added soon.
+Fernwärts is not ready for alpha yet. The public alpha roadmap is tracked in the
+[Road to Alpha GitHub Project](https://github.com/users/ton-An/projects/1).
 
 ---
 
