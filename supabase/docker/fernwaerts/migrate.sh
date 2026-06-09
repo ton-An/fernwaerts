@@ -16,10 +16,17 @@ set -euo pipefail
 : "${PS_SOURCE_PASSWORD:?required}"
 : "${PS_STORAGE_PASSWORD:?required}"
 
-ADMIN_DB_URL="postgresql://supabase_admin:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable"
-DB_URL="postgresql://postgres:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable"
+# Connection settings go through libpq env vars so the password never appears
+# in process argv (visible in `ps` for the lifetime of each command). The
+# supabase CLI uses pgconn, which honors the same env vars, so the push URL
+# below carries no password either.
+export PGHOST="${POSTGRES_HOST}"
+export PGPORT="${POSTGRES_PORT}"
+export PGDATABASE="${POSTGRES_DB}"
 export PGPASSWORD="${POSTGRES_PASSWORD}"
 export PGSSLMODE=disable
+
+DB_URL="postgresql://postgres@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?sslmode=disable"
 
 log() { printf '[migrate] %s\n' "$*"; }
 
@@ -30,20 +37,20 @@ done
 log "postgres is ready"
 
 log "provisioning powersync storage user + database"
-if psql "${ADMIN_DB_URL}" -tAc "SELECT 1 FROM pg_roles WHERE rolname='powersync_storage_user'" | grep -q 1; then
-  psql "${ADMIN_DB_URL}" -v ON_ERROR_STOP=1 -q \
+if psql -U supabase_admin -tAc "SELECT 1 FROM pg_roles WHERE rolname='powersync_storage_user'" | grep -q 1; then
+  psql -U supabase_admin -v ON_ERROR_STOP=1 -q \
     -v pw="${PS_STORAGE_PASSWORD}" <<'SQL'
 ALTER USER powersync_storage_user WITH PASSWORD :'pw';
 SQL
 else
-  psql "${ADMIN_DB_URL}" -v ON_ERROR_STOP=1 -q \
+  psql -U supabase_admin -v ON_ERROR_STOP=1 -q \
     -v pw="${PS_STORAGE_PASSWORD}" <<'SQL'
 CREATE USER powersync_storage_user WITH PASSWORD :'pw';
 SQL
 fi
 
-if ! psql "${ADMIN_DB_URL}" -tAc "SELECT 1 FROM pg_database WHERE datname='_powersync'" | grep -q 1; then
-  psql "${ADMIN_DB_URL}" -v ON_ERROR_STOP=1 -q -c \
+if ! psql -U supabase_admin -tAc "SELECT 1 FROM pg_database WHERE datname='_powersync'" | grep -q 1; then
+  psql -U supabase_admin -v ON_ERROR_STOP=1 -q -c \
     "CREATE DATABASE _powersync WITH OWNER powersync_storage_user"
 fi
 
@@ -52,7 +59,7 @@ cd /opt/migrate/supabase
 supabase db push --yes --db-url "${DB_URL}"
 
 log "setting powersync replication role password"
-psql "${ADMIN_DB_URL}" -v ON_ERROR_STOP=1 -q \
+psql -U supabase_admin -v ON_ERROR_STOP=1 -q \
   -v pw="${PS_SOURCE_PASSWORD}" <<'SQL'
 ALTER ROLE powersync_role WITH PASSWORD :'pw';
 SQL
