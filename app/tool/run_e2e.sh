@@ -38,6 +38,8 @@ export PS_SOURCE_PASSWORD="${PS_SOURCE_PASSWORD:-fernwaerts-e2e-ps-source}"
 export PS_STORAGE_PASSWORD="${PS_STORAGE_PASSWORD:-fernwaerts-e2e-ps-storage}"
 export DASHBOARD_USERNAME="${DASHBOARD_USERNAME:-fernwaerts}"
 export DASHBOARD_PASSWORD="${DASHBOARD_PASSWORD:-fernwaerts-e2e-dashboard}"
+export LOGFLARE_PUBLIC_ACCESS_TOKEN="${LOGFLARE_PUBLIC_ACCESS_TOKEN:-fernwaerts-e2e-logflare-public}"
+export LOGFLARE_PRIVATE_ACCESS_TOKEN="${LOGFLARE_PRIVATE_ACCESS_TOKEN:-fernwaerts-e2e-logflare-private}"
 
 cd "$DEPLOY_DIR"
 

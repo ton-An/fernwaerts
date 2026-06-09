@@ -1,5 +1,6 @@
 #!/command/with-contenv sh
 exec 2>&1
-export LOGFLARE_PUBLIC_ACCESS_TOKEN=fernwaerts-public
-export LOGFLARE_API_KEY=fernwaerts-public
+# vector.yml's sinks authenticate to Logflare with LOGFLARE_API_KEY; ingestion
+# uses the public token.
+export LOGFLARE_API_KEY="${LOGFLARE_PUBLIC_ACCESS_TOKEN}"
 exec /usr/local/bin/vector --config /etc/vector/vector.yml
