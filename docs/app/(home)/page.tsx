@@ -46,7 +46,7 @@ export default function HomePage() {
                     </div>
                     <div className="flex w-full sm:w-auto flex-col sm:flex-row justify-center gap-3 sm:gap-4 mt-4 sm:mt-6">
                         <TextButton
-                            text="📲&nbsp;&nbsp;Download App"
+                            text="📱&nbsp;&nbsp;Download App"
                             isPrimaryButton={true}
                             href="https://github.com/ton-an/fernwaerts"
                         />
@@ -64,7 +64,7 @@ export default function HomePage() {
                     </div>
                 </div>
             </div>
-            <div className="absolute w-full h-[900px] sm:h-[1200px] lg:h-[1500px] top-[520px] sm:top-[500px] overflow-clip">
+            <div className="home-globe-background absolute w-full h-[900px] sm:h-[1200px] lg:h-[1500px] top-[520px] sm:top-[500px] overflow-clip">
                 <div className="absolute -right-[520px] sm:-right-[460px] lg:-right-[400px] scale-[0.58] sm:scale-75 lg:scale-100 origin-top-right">
                     {" "}
                     <Globe />
