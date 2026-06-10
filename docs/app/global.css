@@ -13,3 +13,26 @@
     --color-fd-primary: #23AE54;
     --color-fd-accent: #EDBB32;
 }
+
+html,
+body {
+    overflow-x: clip;
+}
+
+.home-globe-map .mapboxgl-ctrl-logo {
+    margin-bottom: 5.5rem;
+}
+
+.home-map-attribution {
+    display: flex;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms ease-out;
+    visibility: hidden;
+}
+
+.home-map-attribution-visible {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+}

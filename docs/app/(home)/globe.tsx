@@ -361,30 +361,33 @@ export default function RealisticGlobe() {
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_API_KEY;
 
     return (
-        <MapGL
-            ref={mapRef}
-            onLoad={handleMapLoad}
-            initialViewState={{
-                longitude: -100,
-                latitude: 40,
-                zoom: 2.5,
-            }}
-            mapboxAccessToken={mapboxToken}
-            style={{ width: 1500, height: 1500 }}
-            mapStyle="mapbox://styles/antonswebfabrikeu/cmq7vq1bm001v01sehwdi0662"
-            projection={"globe"}
-            dragRotate={false}
-            dragPan={false}
-            touchZoomRotate={false}
-            scrollZoom={false}
-            doubleClickZoom={false}
-            attributionControl={false}
-            light={{
-                anchor: "viewport",
-                color: "#FFB700",
-                intensity: 1,
-                position: [1, 120, 120],
-            }}
-        />
+        <div className="home-globe-map">
+            <MapGL
+                ref={mapRef}
+                onLoad={handleMapLoad}
+                initialViewState={{
+                    longitude: -100,
+                    latitude: 40,
+                    zoom: 2.5,
+                }}
+                mapboxAccessToken={mapboxToken}
+                style={{ width: 1500, height: 1800 }}
+                mapStyle="mapbox://styles/antonswebfabrikeu/cmq7vq1bm001v01sehwdi0662"
+                projection={"globe"}
+                dragRotate={false}
+                dragPan={false}
+                touchZoomRotate={false}
+                scrollZoom={false}
+                doubleClickZoom={false}
+                logoPosition="bottom"
+                attributionControl={false}
+                light={{
+                    anchor: "viewport",
+                    color: "#FFB700",
+                    intensity: 1,
+                    position: [1, 120, 120],
+                }}
+            />
+        </div>
     );
 }
