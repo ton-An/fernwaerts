@@ -30,6 +30,7 @@ class Locations extends Table {
   RealColumn get activityConfidence => real().named('activity_confidence')();
   TextColumn get recordingTrigger =>
       text()
+          .map(const RecordingTriggerSqlConverter())
           .named('recording_trigger')
           .withDefault(const Constant('standard'))();
   RealColumn get batteryLevel => real().named('battery_level')();
