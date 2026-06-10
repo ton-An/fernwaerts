@@ -13,3 +13,7 @@
     --color-fd-primary: #23AE54;
     --color-fd-accent: #EDBB32;
 }
+
+.home-globe-map .mapboxgl-ctrl-logo {
+    margin-bottom: 5.5rem;
+}
