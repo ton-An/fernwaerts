@@ -1,15 +1,7 @@
-import 'package:flutter_activity_recognition/flutter_activity_recognition.dart';
 import 'package:location_history/core/failures/permission/activity_permission_not_granted_failure.dart';
 import 'package:location_history/core/failures/permission/background_location_permission_not_granted_failure.dart';
 import 'package:location_history/core/failures/permission/basic_location_permission_not_granted_failure.dart';
-import 'package:permission_handler/permission_handler.dart';
-
-/*
-  To-Do:
-    - [ ] Might need to add location precision permission for ios
-    - [ ] At the moment the permission_handler package has a bug where you can't await the response for the locationAlways Permission. 
-          Due to that the BackgroundLocationPermissionNotGrantedFailure will be thrown before the user even has a chance to allow the permission.
-*/
+import 'package:tracelet/tracelet.dart';
 
 /// {@template permissions_local_data_source}
 /// Local permission data source contract for activity and location prompts.
@@ -38,35 +30,53 @@ abstract class PermissionsLocalDataSource {
 
 class PermissionsLocalDataSourceImpl extends PermissionsLocalDataSource {
   const PermissionsLocalDataSourceImpl({
-    required this.flutterActivityRecognition,
+    required this.traceletAuthorizationWrapper,
   });
 
-  final FlutterActivityRecognition flutterActivityRecognition;
+  final TraceletAuthorizationWrapper traceletAuthorizationWrapper;
 
   @override
   Future<void> requestActivityPermission() async {
-    final ActivityPermission activityPermissionState =
-        await flutterActivityRecognition.requestPermission();
+    final MotionAuthorizationStatus motionAuthorizationStatus =
+        await traceletAuthorizationWrapper.requestMotionAuthorization();
 
-    if (activityPermissionState != ActivityPermission.GRANTED) {
+    if (motionAuthorizationStatus != MotionAuthorizationStatus.granted) {
       throw const ActivityPermissionNotGrantedFailure();
     }
   }
 
   @override
   Future<void> requestLocationPermission() async {
-    final PermissionStatus basicLocationPermissionStatus =
-        await Permission.location.request();
+    final AuthorizationStatus locationAuthorizationStatus =
+        await traceletAuthorizationWrapper.requestLocationAuthorization();
 
-    if (basicLocationPermissionStatus != PermissionStatus.granted) {
+    if (locationAuthorizationStatus == AuthorizationStatus.denied ||
+        locationAuthorizationStatus == AuthorizationStatus.deniedForever ||
+        locationAuthorizationStatus == AuthorizationStatus.notDetermined) {
       throw const BasicLocationPermissionNotGrantedFailure();
     }
 
-    final PermissionStatus backgroundLocationPermissionStatus =
-        await Permission.locationAlways.request();
+    final AuthorizationStatus backgroundLocationAuthorizationStatus =
+        await traceletAuthorizationWrapper.requestLocationAuthorization();
 
-    if (backgroundLocationPermissionStatus != PermissionStatus.granted) {
+    if (backgroundLocationAuthorizationStatus != AuthorizationStatus.always) {
       throw const BackgroundLocationPermissionNotGrantedFailure();
     }
+  }
+}
+
+/// Wrapper around Tracelet static authorization APIs.
+///
+/// Keeping these calls behind an injectable wrapper lets the data source stay
+/// testable while still using Tracelet's native permission flow.
+class TraceletAuthorizationWrapper {
+  const TraceletAuthorizationWrapper();
+
+  Future<MotionAuthorizationStatus> requestMotionAuthorization() {
+    return Tracelet.requestMotionAuthorization();
+  }
+
+  Future<AuthorizationStatus> requestLocationAuthorization() {
+    return Tracelet.requestLocationAuthorization();
   }
 }

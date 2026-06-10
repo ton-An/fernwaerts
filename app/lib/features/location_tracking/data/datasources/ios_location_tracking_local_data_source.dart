@@ -1,19 +1,12 @@
-import 'dart:async';
-
-import 'package:background_location_2/background_location.dart';
 import 'package:flutter/services.dart';
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
-
-/*
-  To-Do:
-    - [ ] Add error handling
-*/
+import 'package:tracelet/tracelet.dart';
 
 /// {@template ios_location_tracking_local_data_source}
 /// Data source contract for the iOS background location tracking plugin.
 ///
-/// This layer owns direct interaction with [BackgroundLocation] and exposes
-/// plugin updates as domain [RecordedLocation] values.
+/// This layer owns direct interaction with [Tracelet] and exposes plugin
+/// updates as domain [RecordedLocation] values.
 /// {@endtemplate}
 abstract class IOSLocationTrackingLocalDataSource {
   /// {@macro ios_location_tracking_local_data_source}
@@ -21,7 +14,7 @@ abstract class IOSLocationTrackingLocalDataSource {
 
   /// Initializes the tracking service.
   ///
-  /// Call this before [locationChangeStream] or [updateDistanceFilter].
+  /// Call this before [locationChangeStream].
   ///
   /// Throws:
   /// - [PlatformException] from the underlying tracking plugin
@@ -40,23 +33,10 @@ abstract class IOSLocationTrackingLocalDataSource {
   /// Emits:
   /// - [RecordedLocation] values reported by the device
   Stream<RecordedLocation> locationChangeStream();
-
-  /// Updates the distance filter for the tracking service.
-  ///
-  /// [initTracking] must be called before updating this setting.
-  ///
-  /// Parameters:
-  /// - distanceFilter: [double] distance in meters that should be traveled
-  ///   before another location is reported
-  ///
-  /// Throws:
-  /// - [PlatformException] from the underlying tracking plugin
-  Future<void> updateDistanceFilter({required double distanceFilter});
 }
 
 /// {@template ios_location_tracking_local_data_source_impl}
-/// [BackgroundLocation] implementation of
-/// [IOSLocationTrackingLocalDataSource].
+/// [Tracelet] implementation of [IOSLocationTrackingLocalDataSource].
 /// {@endtemplate}
 class IOSLocationTrackingLocalDataSourceImpl
     extends IOSLocationTrackingLocalDataSource {
@@ -65,39 +45,32 @@ class IOSLocationTrackingLocalDataSourceImpl
 
   @override
   Future<void> initTracking() async {
-    await BackgroundLocation.stopLocationService();
-    await BackgroundLocation.startLocationService(
-      distanceFilter: 100,
-      fastestInterval: 0,
-      interval: 0,
-      startOnBoot: true,
-      backgroundCallback: (_) => '',
-      priority: LocationPriority.priorityHighAccuracy,
+    await Tracelet.ready(
+      Config.lowPower().copyWith(
+        app: const AppConfig(startOnBoot: true, stopOnTerminate: false),
+        ios: const IosConfig(
+          preventSuspend: true,
+          showsBackgroundLocationIndicator: true,
+        ),
+        geo: const GeoConfig(batteryBudgetPerHour: 1),
+        persistence: const PersistenceConfig(persistMode: PersistMode.none),
+      ),
     );
+    await Tracelet.start();
   }
 
   @override
   Future<void> stopTracking() async {
-    await BackgroundLocation.stopLocationService();
+    Tracelet.removeListeners();
+    await Tracelet.stop();
   }
 
   @override
   Stream<RecordedLocation> locationChangeStream() {
-    final StreamController<RecordedLocation> locationChangeStreamController =
-        StreamController();
-
-    BackgroundLocation.getLocationUpdates((Location bgLocation) {
-      final RecordedLocation location = RecordedLocation.fromBGLocation(
-        bgLocation: bgLocation,
-      );
-      locationChangeStreamController.add(location);
-    });
-
-    return locationChangeStreamController.stream;
-  }
-
-  @override
-  Future<void> updateDistanceFilter({required double distanceFilter}) async {
-    await BackgroundLocation.updateDistanceFilter(distanceFilter);
+    return Tracelet.locationStream.map(
+      (Location traceletLocation) => RecordedLocation.fromTraceletLocation(
+        traceletLocation: traceletLocation,
+      ),
+    );
   }
 }

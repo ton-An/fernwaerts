@@ -1,11 +1,10 @@
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
-import 'package:location_history/features/location_tracking/domain/models/recognized_activity.dart';
 
 /// {@template location_tracking_repository}
 /// Repository contract for background location tracking.
 ///
 /// The domain layer depends on this contract to start or stop tracking, receive
-/// raw location updates, and tune how frequently movement is reported.
+/// raw location updates.
 /// {@endtemplate}
 abstract class LocationTrackingRepository {
   /// {@macro location_tracking_repository}
@@ -13,8 +12,7 @@ abstract class LocationTrackingRepository {
 
   /// Initializes the tracking service.
   ///
-  /// This method should be called before [locationChangeStream] or
-  /// [updateDistanceFilter].
+  /// This method should be called before [locationChangeStream].
   Future<void> initTracking();
 
   /// Stops the tracking service.
@@ -27,19 +25,4 @@ abstract class LocationTrackingRepository {
   /// Emits:
   /// - [RecordedLocation] values reported by the device
   Stream<RecordedLocation> locationChangeStream();
-
-  /// Streams activity classifications emitted by the platform.
-  ///
-  /// Emits:
-  /// - [RecognizedActivity] values reported by the device
-  Stream<RecognizedActivity> activityChangeStream();
-
-  /// Updates the distance filter for the tracking service.
-  ///
-  /// [initTracking] must be called before updating this setting.
-  ///
-  /// Parameters:
-  /// - distanceFilter: [double] distance in meters that should be traveled
-  ///   before another location is reported
-  Future<void> updateDistanceFilter({required double distanceFilter});
 }

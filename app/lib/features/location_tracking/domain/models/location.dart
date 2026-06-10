@@ -2,6 +2,7 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:location_history/features/location_tracking/domain/enums/activity_type.dart';
+import 'package:location_history/features/location_tracking/domain/enums/recording_trigger.dart';
 import 'package:location_history/features/location_tracking/domain/models/recorded_location.dart';
 import 'package:uuid/uuid.dart';
 
@@ -30,6 +31,7 @@ class Location extends Equatable {
     required double altitudeAccuracy,
     required ActivityType activityType,
     required double activityConfidence,
+    required RecordingTrigger recordingTrigger,
     required double batteryLevel,
     required bool isDeviceCharging,
   }) {
@@ -49,6 +51,7 @@ class Location extends Equatable {
       altitudeAccuracy: altitudeAccuracy,
       activityType: activityType,
       activityConfidence: activityConfidence,
+      recordingTrigger: recordingTrigger,
       batteryLevel: batteryLevel,
       isDeviceCharging: isDeviceCharging,
     );
@@ -71,6 +74,7 @@ class Location extends Equatable {
     required this.altitudeAccuracy,
     required this.activityType,
     required this.activityConfidence,
+    this.recordingTrigger = RecordingTrigger.standard,
     required this.batteryLevel,
     required this.isDeviceCharging,
   }) : id = id ?? (const Uuid()).v4();
@@ -98,6 +102,8 @@ class Location extends Equatable {
   final ActivityType activityType;
   final double activityConfidence;
 
+  final RecordingTrigger recordingTrigger;
+
   final double batteryLevel;
   final bool isDeviceCharging;
 
@@ -117,10 +123,6 @@ class Location extends Equatable {
     required RecordedLocation recordedLocation,
     required String userId,
     required String deviceId,
-    required ActivityType activityType,
-    required double activityConfidence,
-    required double batteryLevel,
-    required bool isDeviceCharging,
   }) {
     return Location(
       userId: userId,
@@ -135,10 +137,10 @@ class Location extends Equatable {
       headingAccuracy: recordedLocation.headingAccuracy,
       ellipsoidalAltitude: recordedLocation.ellipsoidalAltitude,
       altitudeAccuracy: recordedLocation.altitudeAccuracy,
-      activityType: activityType,
-      activityConfidence: activityConfidence,
-      batteryLevel: batteryLevel,
-      isDeviceCharging: isDeviceCharging,
+      activityType: recordedLocation.activityType,
+      activityConfidence: recordedLocation.activityConfidence,
+      batteryLevel: recordedLocation.batteryLevel,
+      isDeviceCharging: recordedLocation.isDeviceCharging,
     );
   }
 
@@ -158,6 +160,7 @@ class Location extends Equatable {
     altitudeAccuracy,
     activityType,
     activityConfidence,
+    recordingTrigger,
     batteryLevel,
     isDeviceCharging,
   ];

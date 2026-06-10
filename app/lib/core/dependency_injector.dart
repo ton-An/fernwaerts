@@ -1,7 +1,6 @@
 import 'package:battery_plus/battery_plus.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_activity_recognition/flutter_activity_recognition.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:location_history/core/data/datasources/platform_wrapper.dart';
@@ -41,7 +40,6 @@ import 'package:location_history/features/calendar/presentation/cubits/calendar_
 import 'package:location_history/features/calendar/presentation/cubits/decennially_calendar_cubit/decennially_calendar_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/monthly_calendar_cubit/monthly_calendar_cubit.dart';
 import 'package:location_history/features/calendar/presentation/cubits/yearly_calendar_cubit/yearly_calendar_cubit.dart';
-import 'package:location_history/features/location_tracking/data/datasources/activity_recognition_local_data_source.dart';
 import 'package:location_history/features/location_tracking/data/datasources/battery_local_data_source.dart';
 import 'package:location_history/features/location_tracking/data/datasources/ios_location_tracking_local_data_source.dart';
 import 'package:location_history/features/location_tracking/data/datasources/location_data_remote_data_source.dart';
@@ -95,7 +93,6 @@ void registerThirdPartyDependencies() {
   getIt.registerLazySingleton(() => Dio());
   getIt.registerLazySingleton(() => const FlutterSecureStorage());
   getIt.registerLazySingleton(() => Battery());
-  getIt.registerLazySingleton(() => FlutterActivityRecognition.instance);
   getIt.registerLazySingleton(() => DeviceInfoPlugin());
   getIt.registerSingletonAsync<PackageInfo>(
     () async => await PackageInfo.fromPlatform(),
@@ -234,8 +231,9 @@ void registerAuthenticationDependencies() {
     ),
   );
   getIt.registerLazySingleton<PermissionsLocalDataSource>(
-    () => PermissionsLocalDataSourceImpl(flutterActivityRecognition: getIt()),
+    () => PermissionsLocalDataSourceImpl(traceletAuthorizationWrapper: getIt()),
   );
+  getIt.registerLazySingleton(() => const TraceletAuthorizationWrapper());
   getIt.registerLazySingleton<BaseDeviceLocalDataSource>(
     () => BaseDeviceLocalDataSourceImpl(
       secureStorage: getIt(),
@@ -293,7 +291,6 @@ void registerLocationTrackingDependencies() {
   getIt.registerLazySingleton(() => const ComputeActivitySegments());
   getIt.registerLazySingleton<LocationTrackingRepository>(
     () => LocationTrackingRepositoryImpl(
-      activityRecognitionLocalDataSource: getIt(),
       iosLocationTrackingLocalDataSource: getIt(),
     ),
   );
@@ -304,11 +301,6 @@ void registerLocationTrackingDependencies() {
   );
   getIt.registerLazySingleton<BatteryRepository>(
     () => BatteryRepositoryImpl(batteryLocalDataSource: getIt()),
-  );
-  getIt.registerLazySingleton<ActivityRecognitionLocalDataSource>(
-    () => ActivityRecognitionLocalDataSourceImpl(
-      flutterActivityRecognition: getIt(),
-    ),
   );
   getIt.registerLazySingleton<BatteryLocalDataSource>(
     () => BatteryLocalDataSourceImpl(battery: getIt()),

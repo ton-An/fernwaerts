@@ -58,6 +58,9 @@
 		<key>UIBackgroundModes</key>
 		<array>
 			<string>location</string>
+			<string>fetch</string>
+			<string>processing</string>
+			<string>audio</string>
 		</array>
 		<key>UILaunchStoryboardName</key>
 		<string>LaunchScreen</string>
@@ -97,5 +100,11 @@
 				</array>
 			</dict>
 		</dict>
+		<key>BGTaskSchedulerPermittedIdentifiers</key>
+		<array>
+			<string>com.tracelet.schedule.start</string>
+			<string>com.tracelet.schedule.stop</string>
+			<string>com.tracelet.periodic.refresh</string>
+		</array>
 	</dict>
 </plist>

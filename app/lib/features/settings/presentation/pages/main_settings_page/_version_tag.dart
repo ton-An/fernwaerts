@@ -12,7 +12,9 @@ class _VersionTag extends StatefulWidget {
 }
 
 class _VersionTagState extends State<_VersionTag> {
-  int _tapCount = 0;
+  int _traceletDoctorTapCount = 0;
+  int _talkerDebuggerTapCount = 0;
+
   String? _appVersion;
 
   @override
@@ -25,15 +27,33 @@ class _VersionTagState extends State<_VersionTag> {
   @override
   Widget build(BuildContext context) {
     if (_appVersion != null) {
-      return SmallTextButton(
-        text: _appVersion!,
-        onPressed: () {
-          _tapCount++;
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SmallTextButton(
+            text: AppLocalizations.of(context)!.version,
+            onPressed: () {
+              _traceletDoctorTapCount++;
 
-          if (_tapCount >= 5) {
-            context.push(DebugPage.route);
-          }
-        },
+              if (_traceletDoctorTapCount >= 5) {
+                _traceletDoctorTapCount = 0;
+                TraceletDoctor.show(context);
+              }
+            },
+          ),
+          SmallTextButton(
+            text: _appVersion!,
+            onPressed: () {
+              _talkerDebuggerTapCount++;
+
+              if (_talkerDebuggerTapCount >= 5) {
+                _talkerDebuggerTapCount = 0;
+                context.push(DebugPage.route);
+              }
+            },
+          ),
+        ],
       );
     }
 

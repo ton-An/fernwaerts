@@ -4,123 +4,118 @@ publish_to: "none"
 version: 0.0.1
 
 environment:
-  sdk: ^3.7.0
-  flutter: ">=1.17.0"
+    sdk: ^3.7.0
+    flutter: ">=1.17.0"
 
 dependencies:
-  # Flutter SDK
-  flutter:
-    sdk: flutter
-  flutter_localizations:
-    sdk: flutter
-  intl: ^0.20.2
-  cupertino_icons: ^1.0.8
+    # Flutter SDK
+    flutter:
+        sdk: flutter
+    flutter_localizations:
+        sdk: flutter
+    intl: ^0.20.2
+    cupertino_icons: ^1.0.8
 
-  # State Management
-  flutter_bloc: ^9.1.0
+    # State Management
+    flutter_bloc: ^9.1.0
 
-  # Dependency Injection
-  get_it: ^9.2.1 
+    # Dependency Injection
+    get_it: ^9.2.1
 
-  # Routing
-  go_router: ^17.2.1  
+    # Routing
+    go_router: ^17.2.1
 
-  # Functional Programming & Error Handling
-  fpdart: ^1.1.1
+    # Functional Programming & Error Handling
+    fpdart: ^1.1.1
 
-  # Data Models & Serialization
-  freezed_annotation: ^3.0.0
-  json_annotation: ^4.8.1
-  equatable: ^2.0.7
+    # Data Models & Serialization
+    freezed_annotation: ^3.0.0
+    json_annotation: ^4.8.1
+    equatable: ^2.0.7
 
-  # UI & Design
-  webfabrik_theme:
-    git: https://github.com/ton-An/webfabrik_theme
-  elevated_flex:
-    git: https://github.com/ton-An/elevated_flex
-  flutter_carousel_widget:
-    git: https://github.com/ton-An/flutter_carousel_widget
-  gap: ^3.0.1
-  dotted_line: ^3.2.3
-  simple_shadow: ^0.3.1
-  flutter_svg: ^2.1.0
-  gradient_borders: ^1.0.1
+    # UI & Design
+    webfabrik_theme:
+        git: https://github.com/ton-An/webfabrik_theme
+    elevated_flex:
+        git: https://github.com/ton-An/elevated_flex
+    flutter_carousel_widget:
+        git: https://github.com/ton-An/flutter_carousel_widget
+    gap: ^3.0.1
+    dotted_line: ^3.2.3
+    simple_shadow: ^0.3.1
+    flutter_svg: ^2.1.0
+    gradient_borders: ^1.0.1
 
-  # Maps & Location
-  # maplibre:
-  #   git:
-  #     url: https://github.com/josxha/flutter-maplibre
-  #     ref: ios
-  flutter_activity_recognition: ^4.0.0
-  flutter_map: ^8.1.1
-  latlong2: ^0.9.1
-  background_location_2: 
-    git: https://github.com/ton-An/background_location
-  
-  # Networking
-  dio: ^5.8.0+1
-  http: ^1.3.0
+    # Maps & Location
+    # maplibre:
+    #   git:
+    #     url: https://github.com/josxha/flutter-maplibre
+    #     ref: ios
+    flutter_map: ^8.1.1
+    latlong2: ^0.9.1
+    tracelet: ^3.2.8
+    tracelet_doctor: ^3.2.8
 
-  # Data Storage
-  flutter_secure_storage: ^10.3.1
-  supabase_flutter: ^2.8.4
-  sqflite: ^2.4.2
-  drift_sqlite_async: ^0.3.1
-  drift: ^2.28.1
-  drift_postgres: ^1.3.1
-  
-  # Media
-  video_player: ^2.9.3
+    # Networking
+    dio: ^5.8.0+1
+    http: ^1.3.0
 
-  # Utilities
-  in_date_utils: ^1.2.1
-  url_launcher: ^6.3.1
-  package_info_plus: ^10.1.0
-  uuid: ^4.5.1
-  super_keyboard: ^0.4.0
-  permission_handler: ^12.0.1
-  battery_plus: ^7.0.0
-  device_info_plus: ^13.1.0
-  talker: ^5.1.17
-  talker_flutter: ^5.1.17
-  talker_bloc_logger: ^5.1.17
-  powersync: ^2.2.0
-  path_provider: ^2.1.5
-  path: ^1.9.1
+    # Data Storage
+    flutter_secure_storage: ^10.3.1
+    supabase_flutter: ^2.8.4
+    sqflite: ^2.4.2
+    drift_sqlite_async: ^0.3.1
+    drift: ^2.28.1
+    drift_postgres: ^1.3.1
 
-  
+    # Media
+    video_player: ^2.9.3
 
+    # Utilities
+    in_date_utils: ^1.2.1
+    url_launcher: ^6.3.1
+    package_info_plus: ^10.1.0
+    uuid: ^4.5.1
+    super_keyboard: ^0.4.0
+    battery_plus: ^7.0.0
+    device_info_plus: ^13.1.0
+    talker: ^5.1.17
+    talker_flutter: ^5.1.17
+    talker_bloc_logger: ^5.1.17
+    powersync: ^2.2.0
+    path_provider: ^2.1.5
+    path: ^1.9.1
 
 dev_dependencies:
-  # Testing
-  flutter_test:
-    sdk: flutter
-  integration_test:
-    sdk: flutter
-  mocktail: ^1.0.4
-  mock_supabase_http_client: ^0.0.3+2
-  sqflite_common_ffi: ^2.3.5
+    # Testing
+    flutter_test:
+        sdk: flutter
+    integration_test:
+        sdk: flutter
+    mocktail: ^1.0.4
+    mock_supabase_http_client: ^0.0.3+2
+    sqflite_common_ffi: ^2.3.5
 
-  # Linting & Analysis
-  flutter_lints: ^6.0.0
-  pubspec_checker: ^1.1.0
+    # Linting & Analysis
+    flutter_lints: ^6.0.0
+    pubspec_checker: ^1.1.0
 
-  # Code Generation
-  build_runner: ^2.4.8
-  freezed: ^3.0.6
-  json_serializable: ^6.7.1
+    # Code Generation
+    build_runner: ^2.4.8
+    freezed: ^3.0.6
+    json_serializable: ^6.7.1
 
-  # App Icon File Generation
-  flutter_launcher_icons: "^0.14.3"
-  drift_dev: ^2.28.1
-  path_provider_platform_interface: ^2.1.2
-  plugin_platform_interface: ^2.1.8
+    # App Icon File Generation
+    flutter_launcher_icons: "^0.14.3"
+    drift_dev: ^2.28.1
+    path_provider_platform_interface: ^2.1.2
+    plugin_platform_interface: ^2.1.8
 
 flutter:
-  uses-material-design: true
-  generate: true
+    uses-material-design: true
+    generate: true
 
-  assets:
-    - assets/videos/
-    - assets/images/app_icons/
-    - assets/images/logos/
+    assets:
+        - assets/videos/
+        - assets/images/app_icons/
+        - assets/images/logos/

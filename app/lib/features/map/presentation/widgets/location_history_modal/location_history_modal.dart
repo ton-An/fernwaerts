@@ -14,6 +14,7 @@ import 'package:location_history/features/map/presentation/cubits/map_animation_
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
 import 'package:location_history/features/map/presentation/cubits/map_state.dart';
 import 'package:location_history/features/settings/presentation/pages/main_settings_page/main_settings_page.dart';
+import 'package:tracelet_doctor/tracelet_doctor.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 part '_activity_icon.dart';

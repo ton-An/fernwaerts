@@ -28,6 +28,7 @@ import 'package:location_history/features/calendar/presentation/cubits/yearly_ca
 import 'package:location_history/features/map/presentation/cubits/map_animation_cubit.dart';
 import 'package:location_history/features/map/presentation/cubits/map_cubit.dart';
 import 'package:location_history/features/map/presentation/pages/map_page/map_page.dart';
+import 'package:location_history/features/location_tracking/data/datasources/tracelet_headless_task.dart';
 import 'package:location_history/features/settings/presentation/cubits/account_settings_cubit/account_settings_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/invite_new_user_cubit/invite_new_user_cubit.dart';
 import 'package:location_history/features/settings/presentation/cubits/password_change_cubit/password_change_cubit.dart';
@@ -43,6 +44,7 @@ import 'package:location_history/features/settings/presentation/widgets/settings
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:talker_bloc_logger/talker_bloc_logger.dart';
 import 'package:talker_flutter/talker_flutter.dart';
+import 'package:tracelet/tracelet.dart' show Tracelet;
 import 'package:webfabrik_theme/webfabrik_theme.dart';
 
 /*
@@ -61,6 +63,7 @@ void main() async {
       WidgetsFlutterBinding.ensureInitialized();
 
       initGetIt();
+      await Tracelet.registerHeadlessTask(traceletHeadlessTask);
 
       SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
