@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-10T10:28:10+02:00",
+  "title": "Design System: Fernwaerts",
+  "extensions": {
+    "colorMeta": {
+      "fern-green": {
+        "role": "primary",
+        "displayName": "Fern Green",
+        "canonical": "#23AE54",
+        "tonalRamp": ["#E9F8EE", "#BDE9CB", "#72D391", "#23AE54", "#17763A"]
+      },
+      "fern-green-app": {
+        "role": "primary",
+        "displayName": "App Fern Green",
+        "canonical": "#53C46C",
+        "tonalRamp": ["#EDF9F0", "#CBEFD2", "#8CDC9D", "#53C46C", "#2C8540"]
+      },
+      "trail-yellow": {
+        "role": "secondary",
+        "displayName": "Trail Yellow",
+        "canonical": "#EDBB32",
+        "tonalRamp": ["#FEF7E4", "#FAE6A6", "#F4CF5C", "#EDBB32", "#9A7412"]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#111827",
+        "tonalRamp": ["#F9FAFB", "#E5E7EB", "#9CA3AF", "#4B5563", "#111827"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Product name and first-viewport homepage claims only."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Major homepage sections and docs landing headings."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Readable public copy, setup instructions, and docs prose."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Navigation, attribution, small controls, and metadata."
+      }
+    },
+    "elevation": {
+      "app-sheet-blur": {
+        "displayName": "App Sheet Blur",
+        "value": "backdrop-filter: blur(18px)",
+        "purpose": "Bottom sheets, settings panels, and map overlays."
+      },
+      "homepage-atmosphere": {
+        "displayName": "Homepage Atmosphere",
+        "value": "backdrop-blur-2xl with translucent fill",
+        "purpose": "Panels over meaningful video or map imagery."
+      },
+      "marker-shadow": {
+        "displayName": "Marker Shadow",
+        "value": "black at 22% opacity, elevation 2",
+        "purpose": "Separating map route markers from map content."
+      }
+    },
+    "motion": {
+      "globe-pan": {
+        "duration": "20000ms",
+        "easing": "easeOutCubic",
+        "purpose": "Slow homepage spatial atmosphere."
+      },
+      "footer-signature": {
+        "duration": "500ms-1500ms",
+        "easing": "ease-out / ease-in-out",
+        "purpose": "One-time signature reveal on intersection."
+      },
+      "app-press": {
+        "duration": "theme.durations.xxTiny forward, theme.durations.short reverse",
+        "easing": "easeOut / easeIn",
+        "purpose": "Subtle app-like tap feedback."
+      }
+    },
+    "componentMeta": {
+      "button-primary": {
+        "displayName": "Primary Button",
+        "states": {
+          "default": "Fern Green background, white text, 12px radius",
+          "hover": "Fresh Fern Hover background",
+          "focus": "Visible green focus ring"
+        }
+      },
+      "button-secondary": {
+        "displayName": "Secondary Button",
+        "states": {
+          "default": "Trail Yellow background, white text, 12px radius",
+          "hover": "Sunlit Trail Hover background"
+        }
+      },
+      "panel-translucent": {
+        "displayName": "Translucent App Panel",
+        "states": {
+          "default": "White translucent fill, app-like blur, rounded sheet geometry",
+          "dark": "White at 10% alpha over dark surfaces"
+        }
+      },
+      "map-timeline": {
+        "displayName": "Map And Timeline Materials",
+        "states": {
+          "default": "Route lines, place markers, calendar states, bottom sheets, and screenshots drive homepage imagery"
+        }
+      }
+    },
+    "rules": {
+      "northStar": "Pocket Atlas",
+      "dos": [
+        "Base homepage redesigns on the Flutter app's map, calendar, modal, and translucent-sheet language.",
+        "Use Fern Green #23AE54 as the public primary and App Fern Green #53C46C for app-led surfaces.",
+        "Show concrete product states instead of abstract SaaS claims.",
+        "Keep privacy and setup copy high contrast and direct."
+      ],
+      "donts": [
+        "Do not make Fernwaerts feel like a crypto or web3 app.",
+        "Do not make the homepage look like a generic SaaS landing page.",
+        "Do not imply surveillance, growth analytics, enterprise monitoring, or investor-dashboard metrics.",
+        "Do not use gradient text, repeated tiny uppercase section eyebrows, or identical icon-card grids as default homepage structure."
+      ]
+    }
+  }
+}

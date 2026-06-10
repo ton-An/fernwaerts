@@ -12,7 +12,7 @@ export default function MapAttribution() {
 
 function Link({ href, title }: { href: string, title: string }) {
     return (
-        <a className='hover:text-black/40 transition-color duration-300' target="_blank" href={href}>{title}</a>
+        <a className='hover:text-black/40 transition-colors duration-300' target="_blank" href={href}>{title}</a>
     );
 }
 
