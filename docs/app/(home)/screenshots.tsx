@@ -24,16 +24,16 @@ const screenshots = [
 
 export default function Screenshots() {
     return (
-        <section className="flex flex-col items-center z-1 relative mt-32">
-            <div className="flex flex-col items-center mb-12 px-12 py-8 shadow-lg rounded-3xl backdrop-blur-2xl bg-white/60 dark:bg-white/10">
+        <section className="flex flex-col items-center z-1 relative mt-24 sm:mt-32 w-full px-4 sm:px-6">
+            <div className="flex flex-col items-center mb-10 sm:mb-12 w-full max-w-sm sm:w-auto sm:max-w-none px-6 sm:px-12 py-6 sm:py-8 shadow-lg rounded-2xl sm:rounded-3xl backdrop-blur-2xl bg-white/60 dark:bg-white/10">
                 <div className="relative">
-                    <h2 className="relative text-gray-900/90 dark:text-white text-5xl font-bold text-center z-1">A Peek Inside</h2>
-                    <Wave className="absolute -bottom-6 -left-7 z-0" color="stroke-fernwaerts-primary" />
+                    <h2 className="relative text-gray-900/90 dark:text-white text-4xl sm:text-5xl font-bold text-center z-1">A Peek Inside</h2>
+                    <Wave className="absolute -bottom-6 -left-7 z-0 scale-75 sm:scale-100" color="stroke-fernwaerts-primary" />
                 </div>
             </div>
-            <div className="flex flex-row flex-wrap justify-center gap-10 px-6">
+            <div className="flex flex-row flex-wrap justify-center gap-10 w-full">
                 {screenshots.map(({ src, alt, title, subtitle }) => (
-                    <figure key={src} className="w-64 flex flex-col items-stretch gap-6">
+                    <figure key={src} className="w-full max-w-64 flex flex-col items-stretch gap-6">
                         <Image
                             src={src}
                             width={1368}

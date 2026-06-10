@@ -371,7 +371,7 @@ export default function RealisticGlobe() {
                     zoom: 2.5,
                 }}
                 mapboxAccessToken={mapboxToken}
-                style={{ width: 1500, height: 1500 }}
+                style={{ width: 1500, height: 1800 }}
                 mapStyle="mapbox://styles/antonswebfabrikeu/cmq7vq1bm001v01sehwdi0662"
                 projection={"globe"}
                 dragRotate={false}
