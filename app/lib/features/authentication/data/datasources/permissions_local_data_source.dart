@@ -56,7 +56,10 @@ class PermissionsLocalDataSourceImpl extends PermissionsLocalDataSource {
       throw const BasicLocationPermissionNotGrantedFailure();
     }
 
-    if (locationAuthorizationStatus != AuthorizationStatus.always) {
+    final AuthorizationStatus backgroundLocationAuthorizationStatus =
+        await traceletAuthorizationWrapper.requestLocationAuthorization();
+
+    if (backgroundLocationAuthorizationStatus != AuthorizationStatus.always) {
       throw const BackgroundLocationPermissionNotGrantedFailure();
     }
   }
