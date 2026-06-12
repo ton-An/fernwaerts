@@ -134,11 +134,10 @@ topics.
 
 ## Testing Strategy
 
-- Add unit tests for behavior, not for thin pass-through wrappers.
+- Test observable behavior; skip static configuration and thin pass-through
+  code unless it contains meaningful branching, transformation, or sequencing.
 - Prioritize unit tests for business rules, branching, sequencing, failure
   mapping, calculations, stream handling, and sensitive data boundaries.
-- Do not add tests that only prove one layer calls the next with the same
-  arguments unless that call order or condition is the behavior being protected.
 - Repository tests should focus on exception-to-`Failure` mapping and meaningful
   data transformations. Data source tests should focus on storage keys, request
   shape, platform mapping, Drift queries, and thrown failures.
