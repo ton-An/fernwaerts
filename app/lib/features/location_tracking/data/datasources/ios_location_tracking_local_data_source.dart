@@ -46,14 +46,15 @@ class IOSLocationTrackingLocalDataSourceImpl
   @override
   Future<void> initTracking() async {
     await Tracelet.ready(
-      Config.lowPower().copyWith(
-        app: const AppConfig(startOnBoot: true, stopOnTerminate: false),
-        ios: const IosConfig(
+      const Config(
+        app: AppConfig(startOnBoot: true, stopOnTerminate: false),
+        ios: IosConfig(
           preventSuspend: true,
           showsBackgroundLocationIndicator: true,
+          pausesLocationUpdatesAutomatically: true,
         ),
-        geo: const GeoConfig(batteryBudgetPerHour: 1),
-        persistence: const PersistenceConfig(persistMode: PersistMode.none),
+        geo: GeoConfig(distanceFilter: 100),
+        persistence: PersistenceConfig(persistMode: PersistMode.none),
       ),
     );
     await Tracelet.start();
