@@ -64,7 +64,7 @@ class BigCalendarCell extends StatelessWidget {
                           : theme.colors.text,
                   fontWeight:
                       cellType == BigCalendarCellType.fullySelected
-                          ? FontWeight.w600
+                          ? FontWeight.w500
                           : FontWeight.w400,
                 ),
               ),

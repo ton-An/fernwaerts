@@ -73,7 +73,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
             const MediumGap(),
 
             CustomCupertinoTextField(
-              hint: AppLocalizations.of(context)!.newEmailAddress,
+              hint: "Manage your overall setup and preferences",
               semanticLabel:
                   AppLocalizations.of(context)!.semanticNewEmailAddressField,
               controller: _emailController,

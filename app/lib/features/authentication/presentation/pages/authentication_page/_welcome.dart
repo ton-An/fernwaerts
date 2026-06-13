@@ -35,7 +35,7 @@ class _Welcome extends StatelessWidget {
           Text(
             AppLocalizations.of(context)!.appName,
             textAlign: TextAlign.center,
-            style: theme.text.largeTitle.copyWith(fontWeight: FontWeight.w600),
+            style: theme.text.largeTitle,
           ),
           const SmallGap(),
           Text(

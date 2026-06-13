@@ -118,9 +118,7 @@ class _DateButtonState extends State<_DateButton>
   }
 
   TextStyle _getLabelStyle(WebfabrikThemeData theme) {
-    final TextStyle largeLabelStyle = theme.text.title3.copyWith(
-      fontWeight: FontWeight.w600,
-    );
+    final TextStyle largeLabelStyle = theme.text.title3;
 
     switch (_labelSize) {
       case _LabelSize.small:

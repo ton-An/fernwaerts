@@ -26,10 +26,7 @@ class SettingsSectionTitle extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: theme.text.title1.copyWith(fontWeight: FontWeight.w600),
-        ),
+        Text(title, style: theme.text.title1),
         if (description != null) ...[
           const SmallGap(),
           Text(

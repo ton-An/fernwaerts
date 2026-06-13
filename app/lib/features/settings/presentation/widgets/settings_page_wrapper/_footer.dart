@@ -48,10 +48,7 @@ class _Footer extends StatelessWidget {
               },
             ),
           ),
-          Text(
-            title,
-            style: theme.text.title1.copyWith(fontWeight: FontWeight.w600),
-          ),
+          Text(title, style: theme.text.title1),
           const SizedBox(width: 28),
         ],
       ),

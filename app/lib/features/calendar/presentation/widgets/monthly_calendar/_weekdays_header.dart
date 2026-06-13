@@ -22,7 +22,7 @@ class _WeekdaysHeader extends StatelessWidget {
                   weekdays[(i + 1) % 7].toUpperCase(),
                   style: WebfabrikTheme.of(
                     context,
-                  ).text.footnote.copyWith(fontWeight: FontWeight.w600),
+                  ).text.footnote.copyWith(fontWeight: FontWeight.w500),
                 ),
               ),
             ),
