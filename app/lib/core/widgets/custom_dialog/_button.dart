@@ -29,8 +29,7 @@ class _Button extends StatelessWidget {
         child: Center(
           child: Text(
             label,
-            style: theme.text.body.copyWith(
-              fontWeight: FontWeight.w600,
+            style: theme.text.headline.copyWith(
               color: highlight ? theme.colors.error : null,
             ),
           ),

@@ -49,10 +49,7 @@ class UserManagementSettingsPage extends StatelessWidget {
 
         const XXMediumGap(),
 
-        Text(
-          AppLocalizations.of(context)!.yourUsers,
-          style: theme.text.title3.copyWith(fontWeight: FontWeight.w600),
-        ),
+        Text(AppLocalizations.of(context)!.yourUsers, style: theme.text.title3),
         const XXSmallGap(),
         BlocListener<UserManagementCubit, UserManagementState>(
           listener: (BuildContext context, UserManagementState state) {

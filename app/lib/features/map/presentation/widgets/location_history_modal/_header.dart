@@ -22,7 +22,7 @@ class _Header extends StatelessWidget {
             padding: EdgeInsets.only(left: theme.spacing.xTiny),
             child: Text(
               AppLocalizations.of(context)!.yourHistory,
-              style: theme.text.title1.copyWith(fontWeight: FontWeight.w600),
+              style: theme.text.title1,
             ),
           ),
           Row(

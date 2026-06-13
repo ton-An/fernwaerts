@@ -50,12 +50,7 @@ class CustomDialog extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SmallGap(),
-                Text(
-                  title,
-                  style: theme.text.title2.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+                Text(title, style: theme.text.title2),
                 const XXSmallGap(),
                 Text(
                   message,

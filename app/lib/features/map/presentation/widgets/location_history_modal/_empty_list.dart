@@ -17,7 +17,6 @@ class _EmptyList extends StatelessWidget {
           child: Text(
             AppLocalizations.of(context)!.noData,
             style: theme.text.title3.copyWith(
-              fontWeight: FontWeight.w700,
               color: theme.colors.text.withValues(alpha: .4),
             ),
           ),

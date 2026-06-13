@@ -43,12 +43,10 @@ class _Description extends StatelessWidget {
                 child: Text(
                   label,
                   textAlign: TextAlign.center,
-                  style: theme.text.largeTitle.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: theme.text.largeTitle,
                 ),
               ),
-              const SmallGap(),
+              const XSmallGap(),
               Text(
                 description,
                 textAlign: TextAlign.center,

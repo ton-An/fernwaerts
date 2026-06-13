@@ -94,7 +94,7 @@ class _DayCell extends StatelessWidget {
         type == _DayCellType.rangeStart ||
         type == _DayCellType.rangeEnd) {
       color = theme.colors.background;
-      fontWeight = FontWeight.bold;
+      fontWeight = FontWeight.w500;
     } else {
       if (type == _DayCellType.filler) {
         color = theme.colors.hint;

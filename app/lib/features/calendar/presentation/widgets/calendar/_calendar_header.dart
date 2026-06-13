@@ -43,9 +43,7 @@ class _CalendarHeader extends StatelessWidget {
                                 yearlyCalendarState,
                                 decenniallyCalendarState,
                               ),
-                              style: theme.text.title3.copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style: theme.text.title3,
                             ),
                           ),
                         ),
