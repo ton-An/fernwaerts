@@ -31,6 +31,10 @@ approval_mode = "approve"
 command = "npx"
 args = ["-y", "xcodebuildmcp@latest", "mcp"]
 
+[mcp_servers.playwright]
+command = "npx"
+args = ["-y", "@playwright/mcp@latest"]
+
 [mcp_servers.docs]
 type = "http"
 url = "https://docs.powersync.com/mcp"

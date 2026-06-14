@@ -20,6 +20,8 @@ Repository-wide guidance for coding agents.
   MCP server before shell commands or web search.
 - For launching, controlling, and inspecting iOS simulators, use XcodeBuildMCP
   simulator tools.
+- For local web app and docs UI inspection, use the Playwright MCP server to
+  open pages, click through workflows, and capture screenshots.
 - Use structured tools/parsers for structured files when practical.
 - Do not commit secrets, Supabase keys, local env files, dependency folders,
   build output, local volumes, or device-specific artifacts.
