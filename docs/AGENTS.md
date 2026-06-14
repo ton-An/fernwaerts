@@ -28,40 +28,83 @@ content/docs/
   <topic>.mdx
 ```
 
+## Documentation Framework
+
+Use the Diataxis documentation framework for all product and contributor
+documentation. Every documentation page must fit one primary document type:
+
+- Tutorial: learning-oriented lessons that guide newcomers through a practical
+  first success.
+- How-to guide: problem-oriented recipes that help users complete a specific
+  task.
+- Reference: information-oriented descriptions of commands, configuration,
+  APIs, schemas, options, or behavior.
+- Explanation: understanding-oriented discussion that clarifies concepts,
+  tradeoffs, architecture, or design decisions.
+
+Do not mix document types unless the page clearly benefits the reader. If a
+task requires multiple modes, split the content into separate pages or clearly
+separated sections.
+
 ## Writing Style
 
-- Start with what the page helps the user do.
-- Prefer short sections, direct setup steps, and concrete commands.
-- List prerequisites before commands.
-- Use ordered lists for procedures.
-- Use fenced code blocks for commands.
-- State expected outcomes after setup or verification steps.
+- Write in simple, clear, unambiguous language.
+- Do not use marketing jargon or buzzwords.
+- Put the reader's goal before implementation detail.
+- Use consistent terminology.
+- Keep instructions accurate and current. Verify commands, filenames, config
+  keys, and technical claims before presenting them as facts.
+- Use short sections with descriptive headings.
+- Prefer concrete steps, examples, and expected outcomes over abstract advice.
+- Use ordered lists for procedures and fenced code blocks for commands.
 - Use warnings only for destructive actions, privacy-sensitive behavior, or
   configuration that can expose data.
-- Do not duplicate long setup procedures. Link to the canonical page.
-- For contributor docs, describe purpose, inputs, outputs, failures, side
-  effects, and verification.
 
-## Workflows
+## Documentation Workflow
 
-Adding a docs page:
+Follow this workflow for every documentation request before writing full
+content:
 
-1. Add or update MDX under `content/docs/`.
-2. Update source/navigation config if the page should appear in navigation.
-3. Verify internal links.
-4. Run the docs build when dependencies are available.
+1. Acknowledge and clarify the request. Determine the document type, target
+   audience, reader goal, and scope, including what should be excluded.
+2. Propose a structure. Provide a detailed outline with section titles and a
+   short purpose for each section.
+3. Wait for approval before drafting full documentation, unless the user has
+   explicitly asked for an immediate edit and the missing details can be safely
+   inferred from local context.
+4. Generate or edit the content in well-formatted Markdown or MDX.
+5. Verify formatting, links, code snippets, commands, navigation changes, and
+   build behavior according to the scope of the change.
 
-Changing public product/setup copy:
+When adding or updating a docs page:
 
-1. Check terminology against the root `README.md`.
-2. Update related docs pages if setup behavior changes.
-3. Build the docs site when dependencies are available.
+1. Confirm the page's Diataxis type and reader goal.
+2. Add or update MDX under `content/docs/`.
+3. Update source/navigation config if the page should appear in navigation.
+4. Check internal links and terminology.
+5. Run the docs build when dependencies are available.
 
-Changing home page UI:
+When changing public product/setup copy:
+
+1. Confirm the target audience and setup outcome.
+2. Check terminology against the root `README.md`.
+3. Update related docs pages if setup behavior changes.
+4. Build the docs site when dependencies are available.
+
+When changing contributor documentation:
+
+1. Confirm whether the page is a how-to guide, reference, or explanation.
+2. Describe purpose, inputs, outputs, failures, side effects, and verification
+   when they are relevant to the document type.
+3. Link to canonical setup or workflow pages instead of duplicating long
+   procedures.
+
+When changing home page UI:
 
 1. Update components under `app/(home)/`.
 2. Run the docs build.
-3. Use the dev server for visual review when layout changes.
+3. Use the Playwright MCP server to open the local docs site, inspect the
+   rendered page, and capture screenshots when layout changes.
 
 ## Commands
 
@@ -78,6 +121,7 @@ npm run build
 - MDX-only change: inspect formatting and links; run `npm run build` when
   practical.
 - Navigation/source config change: run `npm run build`.
-- React/layout change: run `npm run build`; use `npm run dev` for visual review
-  when relevant.
+- React/layout change: run `npm run build`; use the Playwright MCP server to
+  open, click through, and screenshot the local page when visual review is
+  relevant.
 - If verification cannot run, report the skipped command and reason.
