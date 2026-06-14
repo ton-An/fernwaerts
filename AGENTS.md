@@ -89,14 +89,26 @@ When editing any `AGENTS.md`:
   `Co-authored-by: Codex <codex@openai.com>`.
 - Use short snake_case branch names, for example `pre_alpha_polish` or
   `location_visualization`.
-- Keep PR descriptions succinct. Use the repository's recent PRs as the model:
-  a brief summary paragraph, a short bullet list of important changes, any
-  notable bug fixes or behavior changes, and the exact verification command.
-- Do not include exhaustive file-by-file walkthroughs, implementation diaries,
-  tool-generated marketing copy, or generic risk/test boilerplate in PR
-  descriptions.
-- Mention only reviewer-relevant context: what changed, why it matters, how it
-  was verified, and any known follow-up.
+
+### Pull Requests
+
+- Before creating a PR, inspect the full branch diff, confirm that every change
+  belongs to the requested scope, and run the relevant verification.
+- Default to a draft PR unless the user explicitly requests ready for review.
+- Write the PR title in the same style as the repository's commit messages,
+  using the convention above, and derive the description from the actual diff
+  and verification results; do not rely on auto-generated fill text.
+- Keep the description focused and use only the sections that add information:
+  - `Summary`: one short paragraph stating what changed and why.
+  - `Changes`: a few bullets covering reviewer-relevant behavior or design
+    decisions, not a file inventory.
+  - `Verification`: exact commands run and their outcome.
+  - `Fixes <issue>` or `Known follow-up`: include only when applicable.
+- For bug fixes, state the root cause and observable behavior change without
+  retelling the implementation step by step.
+- Omit empty sections, title repetition, exhaustive file walkthroughs,
+  implementation diaries, marketing language, generic risk boilerplate, and
+  unsupported claims about tests or compatibility.
 
 ## Cross-Project Workflows
 
