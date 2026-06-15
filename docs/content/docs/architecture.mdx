@@ -6,50 +6,15 @@ description: A high-level view of the app, its supporting services, and where yo
 import { StackDiagram } from '@/app/components/stack-diagram';
 
 Fernwaerts is a local-first app. Your phone does the day-to-day work: it records
-locations, keeps a local copy of your history, and turns that data into the map
-and timeline you see in the app.
+locations, keeps a local copy of your history, and processes that data into the
+movement segments, places, map, and timeline you see in the app. This includes
+tasks such as detecting movement and reverse geocoding places.
 
-The self-hosted server supports the app with authentication, durable storage,
-and sync. It is not the main processing engine for your location history.
+The self-hosted server provides authentication and a durable copy of your data
+so your history can persist and stay synchronized across multiple devices. It
+is not the main processing engine for your location history.
+
+Keeping everyday processing on the phone also leaves room for a future version
+of Fernwaerts that works entirely locally, without a self-hosted server.
 
 <StackDiagram />
-
-## Data flow
-
-1. **The Fernwaerts app writes new data through Supabase.** Supabase checks the
-   signed-in user's access before passing the write to PostgreSQL.
-2. **PostgreSQL stores the durable server copy.** It is the source for data
-   replicated by PowerSync.
-3. **PowerSync sends PostgreSQL data back to the app.** The app reads from its
-   synchronized local data so it can continue working without a connection.
-4. **Authentication happens between the app and Supabase.** This is separate
-   from the PowerSync read path.
-## Processing happens on the device
-
-The app is designed so that a working network connection is not required for
-every read or interaction. Location capture, local storage, and the processing
-needed to present your history happen in the Flutter app on your device.
-
-This has two practical consequences:
-
-- Your recent history remains available when the server cannot be reached.
-- The server does not need to run a separate analytics pipeline to turn raw
-  locations into the views you use every day.
-
-Sync still sends the location records needed for backup and use on another
-signed-in device to the server you chose to run. Self-hosting means that this
-server-side copy remains under your control.
-
-## What each part does
-
-| Part | Responsibility |
-| --- | --- |
-| **Flutter app** | Captures locations, stores and processes history on the device, and presents the map, timeline, settings, and account experience. |
-| **PowerSync** | Replicates the user's PostgreSQL data to the app for local reads. |
-| **Supabase** | Receives app writes and handles authentication and access control. |
-| **PostgreSQL** | Stores the durable server copy used by PowerSync. |
-## The privacy boundary
-
-The phone and self-hosted server contain the parts of the system that handle
-your location records. Access is tied to the signed-in user, and synchronized
-data stays within the server deployment you control.

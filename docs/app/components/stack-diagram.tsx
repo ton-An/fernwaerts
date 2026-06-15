@@ -90,7 +90,13 @@ const nodes: Node[] = [
     style: { width: 210, height: 72 },
     className: 'stack-node-card stack-node-card--app',
     data: {
-      icon: <Logo name="flutter" />,
+      icon: (
+        <img
+          alt=""
+          className="stack-node__logo"
+          src="/images/app_icon_transparent_bg.png"
+        />
+      ),
       name: 'Fernwaerts app',
       detail: 'Writes new data and reads synchronized history locally',
     },
