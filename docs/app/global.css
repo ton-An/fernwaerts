@@ -19,7 +19,6 @@
     --fern-yellow: #EDBB32;
     --fern-ink: #111827;
     --fern-muted: #4B5563;
-    --stack-diagram-grid: #c9dfcf;
 }
 
 html,
@@ -52,8 +51,6 @@ body {
 .stack-diagram__canvas {
     height: 27rem;
     overflow: hidden;
-    border-radius: 12px;
-    background: #f5faf6;
 }
 
 .stack-diagram__canvas .react-flow__node {
@@ -98,7 +95,7 @@ body {
 }
 
 .stack-diagram__canvas .react-flow__edge-textbg {
-    fill: #f5faf6;
+    fill: var(--color-fd-background);
 }
 
 @keyframes stack-data-flow {
@@ -204,54 +201,43 @@ body {
     }
 }
 
-@media (prefers-color-scheme: dark) {
-    .stack-diagram__canvas {
-        background: #141a16;
-        --stack-diagram-grid: #2b3b2f;
-    }
+.dark .stack-diagram__canvas .react-flow__edge-path {
+    stroke: #7ca287;
+}
 
-    .stack-diagram__canvas .react-flow__edge-path {
-        stroke: #7ca287;
-    }
+.dark .stack-diagram__canvas .react-flow__arrowhead path {
+    fill: #7ca287;
+    stroke: #7ca287;
+}
 
-    .stack-diagram__canvas .react-flow__arrowhead path {
-        fill: #7ca287;
-        stroke: #7ca287;
-    }
+.dark .stack-diagram__canvas .react-flow__edge-text {
+    fill: #b4dbbf;
+}
 
-    .stack-diagram__canvas .react-flow__edge-text {
-        fill: #b4dbbf;
-    }
+.dark .stack-server-group {
+    border-color: #3e6248 !important;
+    background: rgb(24 32 26 / 82%) !important;
+    color: #c5e6cd !important;
+}
 
-    .stack-diagram__canvas .react-flow__edge-textbg {
-        fill: #141a16;
-    }
+.dark .stack-node-card--app {
+    border-color: #53c46c !important;
+    background: #17261b !important;
+    color: #e8f8ec !important;
+}
 
-    .stack-server-group {
-        border-color: #3e6248 !important;
-        background: rgb(24 32 26 / 82%) !important;
-        color: #c5e6cd !important;
-    }
+.dark .stack-node-card--service,
+.dark .stack-node-card--database {
+    border-color: #435047 !important;
+    background: #1c231e !important;
+    color: #f3f4f6 !important;
+}
 
-    .stack-node-card--app {
-        border-color: #53c46c !important;
-        background: #17261b !important;
-        color: #e8f8ec !important;
-    }
+.dark .stack-node div > span {
+    color: #aebbb2;
+}
 
-    .stack-node-card--service,
-    .stack-node-card--database {
-        border-color: #435047 !important;
-        background: #1c231e !important;
-        color: #f3f4f6 !important;
-    }
-
-    .stack-node div > span {
-        color: #aebbb2;
-    }
-
-    .stack-diagram__caption,
-    .stack-diagram__status {
-        color: #d1d5db;
-    }
+.dark .stack-diagram__caption,
+.dark .stack-diagram__status {
+    color: #d1d5db;
 }

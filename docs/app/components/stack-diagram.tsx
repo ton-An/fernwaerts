@@ -2,8 +2,6 @@
 
 import logos from '@iconify-json/logos/icons.json';
 import {
-  Background,
-  BackgroundVariant,
   Handle,
   MarkerType,
   Position,
@@ -98,7 +96,7 @@ const nodes: Node[] = [
         />
       ),
       name: 'Fernwaerts app',
-      detail: 'Writes new data and reads synchronized history locally',
+      detail: 'Records and processes your location history',
     },
   },
   {
@@ -154,7 +152,7 @@ const nodes: Node[] = [
         />
       ),
       name: 'PowerSync',
-      detail: 'Replicates PostgreSQL data to the app',
+      detail: "Syncs server data into the app's local copy",
     },
   },
 ];
@@ -219,7 +217,7 @@ const edges: Edge[] = [
     sourceHandle: 'left-out',
     target: 'app',
     targetHandle: 'read-in',
-    label: 'read',
+    label: 'sync',
     ...edgeDefaults,
   },
 ];
@@ -248,20 +246,13 @@ export function StackDiagram() {
           zoomOnDoubleClick={false}
           preventScrolling={false}
           proOptions={{ hideAttribution: true }}
-        >
-          <Background
-            variant={BackgroundVariant.Dots}
-            gap={24}
-            size={1}
-            color="var(--stack-diagram-grid)"
-          />
-        </ReactFlow>
+        />
       </div>
 
       <figcaption id="stack-diagram-caption" className="stack-diagram__caption">
         Writes travel from the app through Supabase to PostgreSQL. PowerSync
-        replicates the stored data back to the app. Authentication is handled
-        directly between the app and Supabase.
+        syncs the stored data back into the app's local copy. Authentication is
+        handled directly between the app and Supabase.
       </figcaption>
     </figure>
   );
