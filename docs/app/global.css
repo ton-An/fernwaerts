@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
+@import '@xyflow/react/dist/style.css';
 
 @theme {
   --color-fernwaerts-primary: #23AE54; 
@@ -12,6 +13,13 @@
 :root {  
     --color-fd-primary: #23AE54;
     --color-fd-accent: #EDBB32;
+    --fern-green: #23AE54;
+    --fern-green-app: #53C46C;
+    --fern-green-soft: #EAF8EE;
+    --fern-yellow: #EDBB32;
+    --fern-ink: #111827;
+    --fern-muted: #4B5563;
+    --stack-diagram-grid: #c9dfcf;
 }
 
 html,
@@ -35,4 +43,215 @@ body {
     opacity: 1;
     pointer-events: auto;
     visibility: visible;
+}
+
+.stack-diagram {
+    margin: 2rem 0;
+}
+
+.stack-diagram__canvas {
+    height: 27rem;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #f5faf6;
+}
+
+.stack-diagram__canvas .react-flow__node {
+    cursor: default;
+    font-family: inherit;
+}
+
+.stack-diagram__canvas .react-flow__handle {
+    width: 1px;
+    height: 1px;
+    border: 0;
+    opacity: 0;
+}
+
+.stack-diagram__canvas .react-flow__edge-path {
+    stroke: #688570;
+}
+
+.stack-diagram__canvas .stack-data-edge .react-flow__edge-path {
+    stroke-dasharray: 7 7;
+    animation: stack-data-flow 900ms linear infinite;
+}
+
+.stack-diagram__canvas .stack-internal-edge .react-flow__edge-path {
+    stroke: #3f7650;
+    stroke-width: 2;
+}
+
+.stack-diagram__canvas .stack-auth-edge .react-flow__edge-path {
+    stroke: #8b9a90;
+}
+
+.stack-diagram__canvas .react-flow__arrowhead path {
+    fill: #688570;
+    stroke: #688570;
+}
+
+.stack-diagram__canvas .react-flow__edge-text {
+    fill: #356141;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.stack-diagram__canvas .react-flow__edge-textbg {
+    fill: #f5faf6;
+}
+
+@keyframes stack-data-flow {
+    to {
+        stroke-dashoffset: -14;
+    }
+}
+
+.stack-server-group {
+    border: 1px solid #a9ceb3 !important;
+    border-radius: 12px !important;
+    background: rgb(255 255 255 / 72%) !important;
+    color: #244c30 !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    text-align: left !important;
+    box-shadow: none !important;
+}
+
+.stack-server-group::before {
+    position: absolute;
+    top: 12px;
+    left: 16px;
+    content: 'Your self-hosted server';
+}
+
+.stack-node-card {
+    display: flex !important;
+    align-items: center !important;
+    border-radius: 10px !important;
+    padding: 10px 12px !important;
+    box-shadow: none !important;
+    text-align: left !important;
+}
+
+.stack-node-card--app {
+    border: 1px solid #23ae54 !important;
+    background: #eaf8ee !important;
+    color: #123f20 !important;
+}
+
+.stack-node-card--service,
+.stack-node-card--database {
+    border: 1px solid #d3ddd6 !important;
+    background: #ffffff !important;
+    color: var(--fern-ink) !important;
+}
+
+.stack-node {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.stack-node__logo {
+    width: 32px;
+    height: 32px;
+    flex: 0 0 32px;
+    object-fit: contain;
+}
+
+.stack-node strong,
+.stack-node span {
+    display: block;
+}
+
+.stack-node strong {
+    margin-bottom: 0.15rem;
+    font-size: 13px;
+    line-height: 1.25;
+}
+
+.stack-node div > span {
+    color: #53635a;
+    font-size: 10px;
+    line-height: 1.35;
+}
+
+.stack-diagram__caption {
+    padding: 0.75rem 0 0;
+    color: var(--fern-muted);
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+.stack-diagram__status {
+    display: grid;
+    min-height: 18rem;
+    place-items: center;
+    margin: 0;
+    color: #4b5563;
+}
+
+@media (max-width: 767px) {
+    .stack-diagram__canvas {
+        height: 24rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .stack-diagram__canvas .stack-data-edge .react-flow__edge-path {
+        animation: none;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .stack-diagram__canvas {
+        background: #141a16;
+        --stack-diagram-grid: #2b3b2f;
+    }
+
+    .stack-diagram__canvas .react-flow__edge-path {
+        stroke: #7ca287;
+    }
+
+    .stack-diagram__canvas .react-flow__arrowhead path {
+        fill: #7ca287;
+        stroke: #7ca287;
+    }
+
+    .stack-diagram__canvas .react-flow__edge-text {
+        fill: #b4dbbf;
+    }
+
+    .stack-diagram__canvas .react-flow__edge-textbg {
+        fill: #141a16;
+    }
+
+    .stack-server-group {
+        border-color: #3e6248 !important;
+        background: rgb(24 32 26 / 82%) !important;
+        color: #c5e6cd !important;
+    }
+
+    .stack-node-card--app {
+        border-color: #53c46c !important;
+        background: #17261b !important;
+        color: #e8f8ec !important;
+    }
+
+    .stack-node-card--service,
+    .stack-node-card--database {
+        border-color: #435047 !important;
+        background: #1c231e !important;
+        color: #f3f4f6 !important;
+    }
+
+    .stack-node div > span {
+        color: #aebbb2;
+    }
+
+    .stack-diagram__caption,
+    .stack-diagram__status {
+        color: #d1d5db;
+    }
 }
