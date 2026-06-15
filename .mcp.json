@@ -15,6 +15,13 @@
         "mcp"
       ]
     },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ]
+    },
     "docs": {
       "type": "http",
       "url": "https://docs.powersync.com/mcp"

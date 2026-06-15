@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 export default function Footer() {
@@ -27,8 +28,9 @@ export default function Footer() {
     }, []);
 
     return (
-        <a href="https://antons-webfabrik.eu" target="_blank" className="z-2">
-            <div className="signature-container">
+        <div className="flex flex-col items-center gap-8 z-2 pb-12">
+            <a href="https://antons-webfabrik.eu" target="_blank">
+                <div className="signature-container">
                 <span className={`by-text ${isVisible ? "animate" : ""}`}>
                     BY
                 </span>
@@ -97,7 +99,16 @@ export default function Footer() {
 
 
       `}
-            </style>
-        </a>
+                </style>
+            </a>
+            <nav className="flex items-center gap-4 text-sm">
+                <Link
+                    href="/impressum"
+                    className="font-medium text-fernwaerts-primary hover:text-fernwaerts-primary-accent transition-colors duration-300"
+                >
+                    Impressum
+                </Link>
+            </nav>
+        </div>
     );
 }

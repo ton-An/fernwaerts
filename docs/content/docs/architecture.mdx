@@ -1,0 +1,29 @@
+---
+title: Architecture overview
+description: A high-level view of the app, its supporting services, and where your location data is processed.
+---
+
+import { StackDiagram } from '@/app/components/stack-diagram';
+
+Fernwaerts is a local-first app. Your phone does the day-to-day work, and the
+self-hosted server keeps a durable, synchronized copy of your data.
+
+## What your phone does
+
+Your phone is the main engine for your location history. It records your
+locations and keeps a local copy of your history. From that data it builds the
+movement segments, places, map, and timeline you see in the app, detecting
+movement and reverse geocoding places along the way.
+
+## What the server does
+
+The self-hosted server provides authentication and a durable copy of your data,
+so your history can persist and stay synchronized across multiple devices. It is
+not the main processing engine for your location history.
+
+Keeping everyday processing on the phone also leaves room for a future version
+of Fernwaerts that works entirely locally, without a self-hosted server.
+
+## How data moves
+
+<StackDiagram />

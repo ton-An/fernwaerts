@@ -20,6 +20,8 @@ Repository-wide guidance for coding agents.
   MCP server before shell commands or web search.
 - For launching, controlling, and inspecting iOS simulators, use XcodeBuildMCP
   simulator tools.
+- For local web app and docs UI inspection, use the Playwright MCP server to
+  open pages, click through workflows, and capture screenshots.
 - Use structured tools/parsers for structured files when practical.
 - Do not commit secrets, Supabase keys, local env files, dependency folders,
   build output, local volumes, or device-specific artifacts.
@@ -51,6 +53,27 @@ Preserve per-user data isolation when changing any of these areas.
 - Repo-local skills live under `.agents/skills/`; read the relevant `SKILL.md`
   before PowerSync, Supabase, or Postgres work.
 - Keep detailed skill guidance in the skill files, not in `AGENTS.md`.
+
+## Agent Orchestration
+
+- For non-trivial tasks, first decide whether subagents are warranted.
+- Use `.agents/agents/debugger.toml` by default for broad bug hunts, unclear
+  root cause, or multiple plausible failure paths.
+- Use `.agents/agents/reviewer.toml` before PRs and after risky or
+  cross-project changes.
+- Use `.agents/agents/pr-writer.toml` when drafting PR text from a completed
+  diff.
+- The main Codex chat usually acts as orchestrator and engineer; use
+  `.agents/agents/engineer.toml` only when delegating implementation is
+  explicitly useful.
+- Use narrow read-only subagents by default for cross-area work, auth, location
+  history, device identity, Supabase RLS, PowerSync sync rules, offline
+  persistence, security/privacy review, and broad debugging.
+- Do not use subagents for narrow, obvious, single-file changes unless new risk
+  appears.
+- The main agent owns synthesis, edits, verification, and the final answer.
+  Subagents should report concrete files, lines, risks, confidence, and focused
+  verification ideas.
 
 ## AGENTS.md Maintenance
 

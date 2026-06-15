@@ -18,3 +18,5 @@ TODOs.md
 location_history.iml
 .env
 /build
+.next-dev/
+.playwright-mcp/

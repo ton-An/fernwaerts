@@ -1,13 +1,122 @@
 ---
-title: Hello World
-description: Your first document
+title: Quick start
+description: Set up your own Fernwaerts server.
 ---
 
-Welcome to the docs! You can start writing documents in `/content/docs`.
+Here is a quick, no-choices path to install Fernwaerts and connect the app.
 
-## What is Next?
+## Requirements
 
-<Cards>
-  <Card title="Learn more about Next.js" href="https://nextjs.org/docs" />
-  <Card title="Learn more about Fumadocs" href="https://fumadocs.vercel.app" />
-</Cards>
+- A system with at least 4GB of RAM and 2 CPU cores.
+- [Docker](https://docs.docker.com/engine/install/)
+
+## Set Up the Server
+
+### Step 1 - Create the Required Files
+
+Create a directory of your choice to hold the `compose.yml` and `.env` files.
+
+```bash
+mkdir ./fernwaerts
+cd ./fernwaerts
+```
+
+Create [`compose.yml`](https://github.com/ton-An/fernwaerts/blob/main/supabase/deploy/compose.yml)
+with the following content:
+
+<include cwd lang="yaml" meta='title="compose.yml"'>
+  ../supabase/deploy/compose.yml
+</include>
+
+Create [`.env`](https://github.com/ton-An/fernwaerts/blob/main/supabase/deploy/.env.example)
+with the following content:
+
+<include cwd lang="bash" meta='title=".env"'>
+  ../supabase/deploy/.env.example
+</include>
+
+### Step 2 - Populate `.env`
+
+Open `.env` and fill in the empty values.
+
+Generate strong values for secrets:
+
+```bash
+openssl rand -hex 32
+```
+
+Use your `JWT_SECRET` to generate `ANON_KEY` and `SERVICE_ROLE_KEY` with the
+Supabase self-hosted API key generator.
+
+Replace the example URLs with your own domain:
+
+```bash
+SITE_URL=https://app.example.com
+API_EXTERNAL_URL=https://api.example.com
+SUPABASE_PUBLIC_URL=https://api.example.com
+POWERSYNC_EXTERNAL_URL=https://sync.example.com
+```
+
+Configure SMTP so Fernwaerts can send invite emails:
+
+```bash
+SMTP_ADMIN_EMAIL=admin@example.com
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_USER=smtp-user
+SMTP_PASS=smtp-password
+SMTP_SENDER_NAME=Fernwaerts
+```
+
+Without SMTP, Supabase Auth logs email links in the GoTrue container logs
+instead of sending them.
+
+### Step 3 - Start the Containers
+
+From the directory you created in Step 1, run:
+
+```bash
+docker compose up -d
+```
+
+Check that the server is running:
+
+```bash
+docker compose ps
+```
+
+## First Setup in the App
+
+1. Open Fernwaerts and enter the value from `SUPABASE_PUBLIC_URL`.
+2. On a fresh server, enter a username, email address, password, and password
+   confirmation. Then tap **Create Admin**.
+3. Use a strong password. It must contain at least 8 characters, including
+   lowercase, uppercase, number, and symbol characters.
+
+<div className="not-prose my-5 grid gap-4 sm:grid-cols-2">
+  <figure className="rounded-lg border bg-fd-card p-3">
+    <div className="flex justify-center">
+      <img
+        src="/images/self-hosting/server_details.png"
+        alt="Fernwaerts server URL screen"
+        className="w-full max-w-44 sm:max-w-48"
+      />
+    </div>
+    <figcaption className="mt-2 text-center text-sm text-fd-muted-foreground">
+      Server URL
+    </figcaption>
+  </figure>
+
+  <figure className="rounded-lg border bg-fd-card p-3">
+    <div className="flex justify-center">
+      <img
+        src="/images/self-hosting/create_admin.png"
+        alt="Fernwaerts create admin screen"
+        className="w-full max-w-44 sm:max-w-48"
+      />
+    </div>
+    <figcaption className="mt-2 text-center text-sm text-fd-muted-foreground">
+      Create Admin
+    </figcaption>
+  </figure>
+</div>
