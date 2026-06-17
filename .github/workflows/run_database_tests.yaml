@@ -1,4 +1,4 @@
-name: "[Alpha] Database tests"
+name: Run database tests
 
 on:
   push:
