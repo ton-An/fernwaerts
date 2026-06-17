@@ -74,7 +74,7 @@ jobs:
           FERNWAERTS_VERSION: ${{ github.sha }}
         with:
           api-level: 35
-          target: google_apis
+          target: default
           arch: x86_64
           profile: pixel_6
           script: bash app/tool/run_e2e.sh --platform android
