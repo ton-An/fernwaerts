@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:webfabrik_theme/webfabrik_theme.dart';
@@ -102,12 +103,14 @@ Future<void> enterTextInto(
   await tester.pump(const Duration(milliseconds: 50));
 }
 
-/// Clears a visible notification through the UI instead of DI internals.
+/// Clears a visible notification.
 Future<void> dismissNotificationIfPresent(WidgetTester tester, String _) async {
   final notification = find.byType(InAppNotificationWidget);
   if (notification.evaluate().isEmpty) return;
 
-  await tester.fling(notification.first, const Offset(0, -300), 1000);
+  final context = tester.element(notification.first);
+  context.read<InAppNotificationCubit>().dismissNotification();
+  await tester.pump();
   await pumpUntilGone(tester, notification);
 }
 
