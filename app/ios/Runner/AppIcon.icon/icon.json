@@ -28,6 +28,51 @@
               -12.5
             ]
           }
+        },
+        {
+          "blend-mode" : "normal",
+          "fill" : "automatic",
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "app_icon_transparent.png",
+          "name" : "app_icon_transparent",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              0,
+              -12.5
+            ]
+          }
+        },
+        {
+          "blend-mode" : "normal",
+          "fill" : "automatic",
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "app_icon_transparent.png",
+          "name" : "app_icon_transparent",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              0,
+              -12.5
+            ]
+          }
+        },
+        {
+          "blend-mode" : "normal",
+          "fill" : "automatic",
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "app_icon_transparent.png",
+          "name" : "app_icon_transparent",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              0,
+              -12.5
+            ]
+          }
         }
       ],
       "shadow" : {
