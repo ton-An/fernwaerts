@@ -1,0 +1,42 @@
+name: Run database tests
+
+on:
+  push:
+    branches: [main]
+
+  pull_request:
+    branches: [main]
+
+  workflow_dispatch:
+
+concurrency:
+  group: database-tests-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  database-tests:
+    name: Database tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: ./supabase
+
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4
+
+      - name: Install Supabase CLI
+        uses: supabase/setup-cli@v2
+        with:
+          version: 2.105.0
+          github-token: ${{ github.token }}
+
+      - name: Start local database
+        run: supabase db start
+
+      - name: Run database tests
+        run: supabase test db --local tests/database

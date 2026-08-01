@@ -119,14 +119,13 @@ When editing any `AGENTS.md`:
   belongs to the requested scope, and run the relevant verification.
 - Default to a draft PR unless the user explicitly requests ready for review.
 - Write the PR title in the same style as the repository's commit messages,
-  using the convention above, and derive the description from the actual diff
-  and verification results; do not rely on auto-generated fill text.
+  using the convention above, and derive the description from the actual diff;
+  do not rely on auto-generated fill text.
 - Keep the description focused and use only the sections that add information:
   - `Summary`: one short paragraph stating what changed and why.
   - `Changes`: a few bullets covering reviewer-relevant behavior or design
     decisions, not a file inventory.
-  - `Verification`: exact commands run and their outcome.
-  - `Fixes <issue>` or `Known follow-up`: include only when applicable.
+  - `Fixes <issue>`: include only when applicable.
 - For bug fixes, state the root cause and observable behavior change without
   retelling the implementation step by step.
 - Omit empty sections, title repetition, exhaustive file walkthroughs,
